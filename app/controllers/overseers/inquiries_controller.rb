@@ -284,7 +284,8 @@ class Overseers::InquiriesController < Overseers::BaseController
       Rails.cache.delete(:inquiry)
     elsif params[:company_id].present? && !Rails.cache.exist?(:inquiry)
       @company = Company.find(params[:company_id])
-      @inquiry = @company.inquiries.build(overseer: current_overseer)
+      @subject = params['subject']
+      @inquiry = @company.inquiries.build(overseer: current_overseer, subject: @subject)
     elsif !params[:company_id].present? && !Rails.cache.exist?(:inquiry)
       @inquiry = Inquiry.new
     end
@@ -294,9 +295,10 @@ class Overseers::InquiriesController < Overseers::BaseController
 
   def next_inquiry_step
     @company = Company.find(params[:inquiry][:company_id])
+    @subject = params[:inquiry][:subject]
     @inquiry = @company.inquiries.build(inquiry_params.merge(overseer: current_overseer))
     Rails.cache.write(:inquiry, @inquiry, expires_in: 25.minutes)
-    redirect_to new_overseers_inquiry_path(company_id: @company.to_param)
+    redirect_to new_overseers_inquiry_path(company_id: @company.to_param, subject: @subject)
     authorize_acl @inquiry
   end
 
@@ -457,7 +459,9 @@ class Overseers::InquiriesController < Overseers::BaseController
   def destroy_supplier
     authorize_acl @inquiry
     if params[:inquiry_product_supplier_id].present?
-      InquiryProductSupplier.find(params[:inquiry_product_supplier_id]).destroy
+      ips = InquiryProductSupplier.find(params[:inquiry_product_supplier_id])
+      Services::Suppliers::UpdateSupplierProduct.new(ips).call
+      ips.destroy
     end
   end
 

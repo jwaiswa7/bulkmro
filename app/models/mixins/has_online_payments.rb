@@ -14,5 +14,17 @@ module Mixins::HasOnlinePayments
         self.update_attributes(metadata: razorpay_obj.to_json, status: razorpay_obj.status) if razorpay_obj.present?
       end
     end
+
+    def all_orders
+      Razorpay::Order.all(count: 100)
+    end
+
+    def get_order(order_id)
+      Razorpay::Order.fetch(order_id)
+    end
+
+    def order_payments(order_id)
+      get_order(order_id).payments
+    end
   end
 end
