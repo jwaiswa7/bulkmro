@@ -1,9 +1,11 @@
 import callAjaxFunction from "../common/callAjaxFunction";
 import disableBackdateOption from "../common/disableBackdateOption";
 import newdashboardload from "../common/newSalesDashboard";
+import navigationMenu from "../../components/navigationMenu";
 
 const show = () => {
     newdashboardload();
+    navigationMenu();
     $('.datatable').on('click', '.update-followup', function (e) {
         var id = $(this).data('inquiry-id');
         var json = {
