@@ -16,7 +16,7 @@ class Overseers::DashboardController < Overseers::BaseController
       #   @dashboard = service.call
       # end
       # render 'admin_dashboard'
-      redirect_to :controller => 'inquiries', :action => 'index'
+      redirect_to controller: 'inquiries', action: 'index'
     else
       render 'default_dashboard'
     end
