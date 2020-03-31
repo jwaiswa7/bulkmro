@@ -14,11 +14,12 @@ class Overseers::DashboardController < Overseers::BaseController
       @dashboard = Overseers::Dashboard.new(current_overseer)
       render 'accounts_dashboard'
     elsif current_overseer.admin?
-      @dashboard = Rails.cache.fetch('admin_dashboard_data') do
-        service = Services::Overseers::Dashboards::Admin.new
-        @dashboard = service.call
-      end
-      render 'admin_dashboard'
+      # @dashboard = Rails.cache.fetch('admin_dashboard_data') do
+      #   service = Services::Overseers::Dashboards::Admin.new
+      #   @dashboard = service.call
+      # end
+      # render 'admin_dashboard'
+      redirect_to controller: 'inquiries', action: 'index'
     else
       render 'default_dashboard'
     end
