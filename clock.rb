@@ -28,9 +28,9 @@ every(1.hour, 'adjust_dynos') do
   Services::Shared::Heroku::DynoAdjuster.new
 end if Rails.env.production?
 
-every(3.hour, 'update_admin_dashboard_cache') do
-  UpdateAdminDashboardCacheJob.perform_later
-end if Rails.env.production?
+# every(3.hour, 'update_admin_dashboard_cache') do
+#   UpdateAdminDashboardCacheJob.perform_later
+# end if Rails.env.production?
 
 every(1.day, 'set_overseer_monthly_target', at: '00:10') do
   puts 'For setting Monthly Targets'
