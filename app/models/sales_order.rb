@@ -108,9 +108,9 @@ class SalesOrder < ApplicationRecord
   }, _prefix: true
 
   enum main_summary_status: {
-      'Requested': 10,
       'Accounts Approval Pending': 20,
       'Approved': 60,
+      'Cancelled': 50
   }, _suffix: true
 
   enum remote_status: {

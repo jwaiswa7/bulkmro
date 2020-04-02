@@ -6,7 +6,7 @@ class Overseers::SalesOrdersController < Overseers::BaseController
 
     respond_to do |format|
       format.html {
-        @statuses = SalesOrder.statuses.except("Approved", "Order Deleted", "Hold by Finance", "Cancelled", 'SAP Rejected')
+        @statuses = SalesOrder.statuses.except("Approved", "Order Deleted", "Hold by Finance", "Cancelled", 'SAP Rejected', 'Requested', 'CO')
         @main_summary_statuses = SalesOrder.main_summary_statuses.except('Approved')
         render 'pending'
       }
@@ -133,7 +133,7 @@ class Overseers::SalesOrdersController < Overseers::BaseController
 
     respond_to do |format|
       format.html {
-        @statuses = SalesOrder.statuses.except('SAP Rejected', 'Hold by Finance')
+        @statuses = SalesOrder.statuses.except('SAP Rejected', 'Hold by Finance', 'Requested','CO')
 
         @alias_name = 'Total Sales Order'
         @main_summary_statuses = SalesOrder.main_summary_statuses
@@ -154,7 +154,7 @@ class Overseers::SalesOrdersController < Overseers::BaseController
 
     @indexed_sales_orders = service.indexed_records
     @sales_orders = service.records
-    @statuses = SalesOrder.statuses.except('SAP Rejected', 'Hold by Finance')
+    @statuses = SalesOrder.statuses.except('SAP Rejected', 'Hold by Finance', 'CO', 'Requested')
 
 
     @main_summary_statuses = SalesOrder.main_summary_statuses.except('SAP Rejected')

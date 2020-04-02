@@ -4,7 +4,7 @@ class SalesOrdersIndex < BaseIndex
   remote_statuses = SalesOrder.remote_statuses
   effective_statuses = SalesOrder.effective_statuses
 
-  define_type SalesOrder.where.not(status: ['SAP Rejected', 'Hold by Finance']).with_includes do
+  define_type SalesOrder.where.not(status: ['SAP Rejected', 'Hold by Finance', 'Requested', 'CO']).with_includes do
     witchcraft!
     field :id, type: 'integer'
     field :order_number, value: -> (record) { record.order_number }, type: 'long'
