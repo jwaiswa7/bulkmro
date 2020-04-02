@@ -52,6 +52,6 @@ class InquiryProductSupplier < ApplicationRecord
   end
 
   def latest_pq_received_date
-    self.product.fetch_supplier_products(self.supplier)
+    self.supplier_rfq.updated_at if self.supplier_rfq.present? && self.supplier_rfq.supplier_quote_submitted == true
   end
 end
