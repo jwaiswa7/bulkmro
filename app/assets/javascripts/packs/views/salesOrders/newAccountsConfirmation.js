@@ -1,7 +1,7 @@
 
 const newAccountsConfirmation = () => {
     $('.account-approval').prop('disabled', true);
-    $('.account-rejection').click();
+    // $('.account-rejection').click();
     // $('input[type=checkbox]').removeAttr('required');
 
     $('.new_accounts_confirmation input[type=checkbox]').click(function (f) {

@@ -1,6 +1,6 @@
 require 'clockwork'
 include Clockwork
-require './config/boot'
+# require './config/boot'
 require './config/environment'
 require 'active_support/time'
 require 'sidekiq'
@@ -28,9 +28,9 @@ every(1.hour, 'adjust_dynos') do
   Services::Shared::Heroku::DynoAdjuster.new
 end if Rails.env.production?
 
-every(3.hour, 'update_admin_dashboard_cache') do
-  UpdateAdminDashboardCacheJob.perform_later
-end if Rails.env.production?
+# every(3.hour, 'update_admin_dashboard_cache') do
+#   UpdateAdminDashboardCacheJob.perform_later
+# end if Rails.env.production?
 
 every(1.day, 'set_overseer_monthly_target', at: '00:10') do
   puts 'For setting Monthly Targets'
@@ -127,12 +127,13 @@ end
 #   end
 # end
 
-# every(1.day, 'generate_exports_daily', at: '04:00') do
-#   to-do check for memory leaks on heroku
-#   Chewy.strategy(:atomic) do
-#     Services::Overseers::Exporters::GenerateExportsDaily.new
-#   end
-# end
+every(1.day, 'generate_exports_daily', at: '22:00') do
+  # to-do check for memory leaks on heroku
+  Chewy.strategy(:atomic) do
+    service = Services::Overseers::Exporters::GenerateExportsDaily.new
+    service.call
+  end
+end
 
 # every(1.day, 'resync_failed_requests', at: '07:00') do
 #   service = Services::Overseers::FailedRemoteRequests::Resync.new

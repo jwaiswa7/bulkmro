@@ -35,11 +35,11 @@ class Overseers::SalesQuotePolicy < Overseers::ApplicationPolicy
   end
 
   def reset_quote?
-    record == record.inquiry.final_sales_quote
+    admin_or_manager? && record == record.inquiry.final_sales_quote
   end
 
   def reset_quote_for_manager?
-    true
+    admin_or_manager?
   end
 
   def preview?
