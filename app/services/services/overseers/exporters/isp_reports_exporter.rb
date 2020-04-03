@@ -16,7 +16,8 @@ class Services::Overseers::Exporters::IspReportsExporter < Services::Overseers::
   end
 
   def call
-    perform_export_later('IspReportsExporter', @arguments)
+    # perform_export_later('IspReportsExporter', @arguments)
+    ApplicationExportJob.perform_now('IspReportsExporter', @arguments)
   end
 
   def build_csv
