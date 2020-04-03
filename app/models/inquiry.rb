@@ -442,7 +442,7 @@ class Inquiry < ApplicationRecord
     when 'Quotation Sent', 'Follow-Up on Quotation', 'Expected Order', 'SO Not Created-Customer PO Awaited', 'SO Not Created-Pending Customer PO Revision'
       self.final_sales_quote.present? ? self.final_sales_quote&.try(:calculated_total) : self.last_synced_quote&.try(:calculated_total)
     when 'Order Won'
-      self.sales_orders.present? ? self.sales_orders.approved.map(&:calculated_total).sum :  self.final_sales_quote&.try(:calculated_total)
+      self.sales_orders.present? ? self.sales_orders.approved.map(&:calculated_total).sum : self.final_sales_quote&.try(:calculated_total)
     when 'Draft SO For Approval by Sales Manager', 'SO Draft: Pending Accounts Approval', 'SO Rejected by Sales Manager', 'Rejected by Accounts'
       self.sales_orders.map(&:calculated_total).compact.sum || self.final_sales_quote&.try(:calculated_total)
     when 'Order Lost'
