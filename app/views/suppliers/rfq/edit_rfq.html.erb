@@ -159,11 +159,11 @@
         </div>
       </div>
       <div class="card-footer">
-        <%# if is_authorized(inquiry_product_supplier, 'request_for_quote') %>
-        <%= button_tag(type: "submit", class: "btn btn-warning btn-block") do %>
-          <i class="fal fa-pen"></i> Update All
+        <% if policy(@rfq).edit_supplier_rfqs? %>
+          <%= button_tag(type: "submit", class: "btn bmro-button btn-block") do %>
+            <i class="fal fa-pen"></i> Update All
+          <% end %>
         <% end %>
-        <%# end %>
       </div>
     </div>
   <% end %>
