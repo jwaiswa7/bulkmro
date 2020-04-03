@@ -155,10 +155,12 @@
       <% end %>
     <% end %>
     <br>
-    <div class="card-footer">
-      <%= link_to edit_rfq_suppliers_rfq_index_path(rfq_id: @rfq.id), :class => "mt-2 btn bmro-button btn-block btn-sm" do %>
-        <i class="fal fa-pen"></i> Edit RFQ
-      <% end %>
-    </div>
+    <% if policy(@rfq).edit_supplier_rfqs? %>
+      <div class="card-footer">
+        <%= link_to edit_rfq_suppliers_rfq_index_path(rfq_id: @rfq.id), :class => "mt-2 btn bmro-button btn-block btn-sm" do %>
+          <i class="fal fa-pen"></i> Edit RFQ
+        <% end %>
+      </div>
+    <% end %>
   </div>
 </div>
