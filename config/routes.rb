@@ -171,6 +171,7 @@ Rails.application.routes.draw do
       collection do
         get 'get_resources'
         get 'isp_report'
+        get 'export_isp_report'
       end
     end
 

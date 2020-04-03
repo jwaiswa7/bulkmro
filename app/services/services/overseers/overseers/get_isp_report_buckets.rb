@@ -5,7 +5,10 @@ class Services::Overseers::Overseers::GetIspReportBuckets < Services::Shared::Ba
     @sales_orders_records = all_indexed_records[:sales_orders_records].aggregations['inside_sales_owners']['buckets']
     @purchase_order_records = all_indexed_records[:purchase_order_records].aggregations['inside_sales_owners']['buckets']
     @overseers = overseers
-    @inside_sales_owner_id = params[:isp_report][:procurement_specialist].to_i if params[:isp_report].present? && params[:isp_report][:procurement_specialist].present?
+    if params[:isp_report].present? && params[:isp_report][:procurement_specialist].present?
+      procurement_specialist = params[:isp_report][:procurement_specialist].split('.csv')[0]
+      @inside_sales_owner_id = procurement_specialist.to_i if procurement_specialist.present?
+    end
   end
 
   def call
