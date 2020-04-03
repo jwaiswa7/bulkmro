@@ -8,7 +8,7 @@ class Services::Overseers::Finders::CancelledSalesOrders < Services::Overseers::
       super.filter(filter_by_owner(current_overseer.self_and_descendant_ids).merge(filter_by_value(:status, SalesOrder.statuses['Cancelled'])))
     else
       super.filter(filter_by_value(:status, SalesOrder.statuses['Cancelled']))
-                      end
+    end
 
     if @status.present?
       indexed_records = indexed_records.filter(filter_by_value(:status, @status.to_i))

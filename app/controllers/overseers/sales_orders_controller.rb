@@ -6,7 +6,7 @@ class Overseers::SalesOrdersController < Overseers::BaseController
 
     respond_to do |format|
       format.html {
-        @statuses = SalesOrder.statuses.except("Approved", "Order Deleted", "Hold by Finance", "Cancelled", 'SAP Rejected', 'Requested', 'CO')
+        @statuses = SalesOrder.statuses.except('Approved', 'Order Deleted', 'Hold by Finance', 'Cancelled', 'SAP Rejected', 'Requested', 'CO')
         @main_summary_statuses = SalesOrder.main_summary_statuses.except('Approved')
         render 'pending'
       }
@@ -56,7 +56,7 @@ class Overseers::SalesOrdersController < Overseers::BaseController
         @total_values = status_service.indexed_total_values
         @statuses = status_service.indexed_statuses
         @main_summary_statuses = SalesOrder.main_summary_statuses
-        render 'pending'
+        render 'cancelled'
       end
     end
   end
@@ -133,7 +133,7 @@ class Overseers::SalesOrdersController < Overseers::BaseController
 
     respond_to do |format|
       format.html {
-        @statuses = SalesOrder.statuses.except('SAP Rejected', 'Hold by Finance', 'Requested','CO')
+        @statuses = SalesOrder.statuses.except('SAP Rejected', 'Hold by Finance', 'Requested', 'CO')
 
         @alias_name = 'Total Sales Order'
         @main_summary_statuses = SalesOrder.main_summary_statuses
@@ -164,7 +164,6 @@ class Overseers::SalesOrdersController < Overseers::BaseController
     respond_to do |format|
       format.html { render 'not_invoiced' }
       format.json do
-
         @total_values = status_service.indexed_total_values
         @statuses = status_service.indexed_statuses
         @statuses_count = @statuses.values.sum
