@@ -1,3 +1,4 @@
+
 const clickOnCompose = function () {
     $(".compose-email").click(function (e) {
         let inquiry_number = $(this).data('id');
@@ -25,7 +26,7 @@ const clickOnCompose = function () {
         });
     });
 
-    $('#myModal').on('hidden.bs.modal', function () {
+    $('#emailModal').on('hidden.bs.modal', function () {
         tinymce.remove('.html-editor');
     });
 }

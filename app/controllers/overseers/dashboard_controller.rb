@@ -14,11 +14,12 @@ class Overseers::DashboardController < Overseers::BaseController
       @dashboard = Overseers::Dashboard.new(current_overseer)
       render 'accounts_dashboard'
     elsif current_overseer.admin?
-      @dashboard = Rails.cache.fetch('admin_dashboard_data') do
-        service = Services::Overseers::Dashboards::Admin.new
-        @dashboard = service.call
-      end
-      render 'admin_dashboard'
+      # @dashboard = Rails.cache.fetch('admin_dashboard_data') do
+      #   service = Services::Overseers::Dashboards::Admin.new
+      #   @dashboard = service.call
+      # end
+      # render 'admin_dashboard'
+      redirect_to controller: 'inquiries', action: 'index'
     else
       render 'default_dashboard'
     end
@@ -48,7 +49,7 @@ class Overseers::DashboardController < Overseers::BaseController
     email_message.assign_attributes(
         subject: inquiry.subject,
         body: InquiryMailer.acknowledgement(email_message).body.raw_source,
-    )
+        )
     respond_to do |format|
       format.html { render partial: 'overseers/dashboard/email_message', locals: {inquiry: inquiry, email_message: email_message} }
     end
@@ -68,7 +69,7 @@ class Overseers::DashboardController < Overseers::BaseController
   def  update_invoice_request
     invoice_request = InvoiceRequest.find_by_id(params['invoice_request']['invoice_request_id'])
     if params['invoice_request']['grpo_number'].present?
-      invoice_request.update_attribute('grpo_number',params['invoice_request']['grpo_number'].to_i)
+      invoice_request.update_attribute('grpo_number', params['invoice_request']['grpo_number'].to_i)
     end
     if params['invoice_request']['ap_invoice_number'].present?
       invoice_request.update_attribute('ap_invoice_number', params['invoice_request']['ap_invoice_number'].to_i)
@@ -78,10 +79,14 @@ class Overseers::DashboardController < Overseers::BaseController
 
   def get_filtered_inquiries
     @dashboard = Overseers::Dashboard.new(current_overseer)
-    statuses_for_invoice_req = ['GRPO Pending','Pending AP Invoice','Pending AR Invoice']
+    statuses_for_invoice_req = ['GRPO Pending', 'Pending AP Invoice']
     if statuses_for_invoice_req.include? params['status']
       respond_to do |format|
         format.html {render partial: 'inquiry_list_wrapper', locals: {inq_for_dash: @dashboard.invoice_requests.map { |inv_req| inv_req.inquiry if inv_req.status == params['status'] }.compact}}
+      end
+    elsif params['status'] == 'AR Invoice requested'
+      respond_to do |format|
+        format.html {render partial: 'inquiry_list_wrapper', locals: {inq_for_dash: @dashboard.ar_invoice_requests.map { |inv_req| inv_req.inquiry if inv_req.status == params['status'] }.compact}}
       end
     else
       respond_to do |format|
@@ -95,7 +100,7 @@ class Overseers::DashboardController < Overseers::BaseController
     if current_overseer.inside_sales_executive?
       inquiry = @dashboard.inq_for_dash.where(inquiry_number: params['inquiry_number'].to_i)
 
-      if (inquiry.last.customer_po_number.blank? || inquiry.last.customer_order_date.blank? || (inquiry.last.approvals.any? && inquiry.last.inquiry_product_suppliers.any? && inquiry.last.sales_quotes.persisted.blank?) || (inquiry.last.final_sales_quote.present? && policy(inquiry.last.final_sales_quote).new_sales_order?) )
+      if inquiry.last.customer_po_number.blank? || inquiry.last.customer_order_date.blank? || (inquiry.last.approvals.any? && inquiry.last.inquiry_product_suppliers.any? && inquiry.last.sales_quotes.persisted.blank?) || (inquiry.last.final_sales_quote.present? && policy(inquiry.last.final_sales_quote).new_sales_order?)
         inquiry_has_tasks = true
       else
         inquiry_has_tasks = false

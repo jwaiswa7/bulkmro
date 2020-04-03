@@ -22,7 +22,7 @@
     <% inq_for_dash.each do |inquiry| %>
 
       <% inquiry.invoice_requests.each do |invoice_req| %>
-        <% if (invoice_req.status == 'GRPO Pending' ||  invoice_req.status == 'Pending AR Invoice') && !invoice_req.grpo_number.present? %>
+        <% if (invoice_req.status == 'GRPO Pending') && !invoice_req.grpo_number.present? %>
           <div class="bmro-width100 bmro-padding-task">
             <div class="bmro-task-no-td bmro-task-td-width-new-account bmro-fl bmro-position-relative" >
               <span class="bmro-big-heading bmro-fl bmro-no-mrl bmro-td-span"><%= inquiry.inquiry_number %></span>
@@ -81,19 +81,21 @@
             </div>
           </div>
         <% end %>
+      <% end %>
 
-        <% if invoice_req.status == 'Pending AR Invoice' %>
+      <% inquiry.ar_invoice_requests.each do |ar_invoice_request| %>
+        <% if ar_invoice_request.status == 'AR Invoice requested' %>
           <div class="bmro-width100 bmro-padding-task">
             <div class="bmro-task-no-td bmro-task-td-width-new-account bmro-fl bmro-position-relative" >
               <span class="bmro-big-heading bmro-fl bmro-no-mrl bmro-td-span"><%= inquiry.inquiry_number %></span>
             </div>
 
             <div class="bmro-task-no-td bmro-task-td-width-new-account bmro-fl" >
-              <span class="bmro-big-heading bmro-fl bmro-no-mrl bmro-td-span"><%= invoice_req.sales_order.present? ? invoice_req.sales_order.order_number : '-----------' %></span>
+              <span class="bmro-big-heading bmro-fl bmro-no-mrl bmro-td-span"><%= ar_invoice_request.sales_order.present? ? ar_invoice_request.sales_order.order_number : '-----------' %></span>
             </div>
 
             <div class="bmro-task-no-td bmro-task-td-width-new-account bmro-fl">
-              <span class="bmro-big-heading bmro-fl bmro-no-mrl bmro-td-span"><%= invoice_req.purchase_order.po_number %></span>
+              <span class="bmro-big-heading bmro-fl bmro-no-mrl bmro-td-span">-----------</span>
             </div>
 
             <div class="bmro-task-print bmro-task-width-new-account bmro-fl" >
@@ -102,11 +104,12 @@
               </div>
             </div>
             <div class="bmro-action-button-parent bmro-action-width bmro-fl">
-              <%= link_to 'AR pending invoice', edit_overseers_ar_invoice_request_path(invoice_req.ar_invoice_number ), class: "btn bmro-button btn-dashboard", target: "_blank" %>
+              <%= link_to 'AR pending invoice', edit_overseers_ar_invoice_request_path(ar_invoice_request), class: "btn bmro-button btn-dashboard", target: "_blank" %>
             </div>
           </div>
         <% end %>
       <% end %>
+
       <% if inquiry.status == 'SO Draft: Pending Accounts Approval' %>
 
         <div class="bmro-width100 bmro-padding-task">
