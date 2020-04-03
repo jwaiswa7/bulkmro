@@ -5,6 +5,8 @@ module StatusesHelper
     case status.to_sym
     when :'Processing'
       'status-color-yellow'
+    when :'Accounts Approval Pending'
+      'status-color-yellow'
     when :'Material Ready For Dispatch'
       'status-color-green'
     when :'Partially Shipped'
