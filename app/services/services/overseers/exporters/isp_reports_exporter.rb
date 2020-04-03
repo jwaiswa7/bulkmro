@@ -31,11 +31,11 @@ class Services::Overseers::Exporters::IspReportsExporter < Services::Overseers::
     end
     @indexed_records.each do |record|
       rows.push(
-          name: record[:name],
-          inquiries_count: record[:inquiries_count],
-          sales_quotes_count: record[:sales_quotes_count],
-          sales_orders_count: record[:sales_orders_count],
-          purchase_orders_count: record[:purchase_orders_count]
+        name: record[:name],
+        inquiries_count: record[:inquiries_count],
+        sales_quotes_count: record[:sales_quotes_count],
+        sales_orders_count: record[:sales_orders_count],
+        purchase_orders_count: record[:purchase_orders_count]
       )
     end
     @export.update_attributes(status: 'Completed')
