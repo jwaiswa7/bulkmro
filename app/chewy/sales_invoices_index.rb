@@ -27,6 +27,8 @@ class SalesInvoicesIndex < BaseIndex
     field :outside_sales_owner, value: -> (record) { record.inquiry.outside_sales_owner.to_s if record.inquiry.present? }, analyzer: 'substring'
     field :inside_sales_executive, value: -> (record) { record.inquiry.inside_sales_owner_id if record.inquiry.present? }
     field :outside_sales_executive, value: -> (record) { record.inquiry.outside_sales_owner_id if record.inquiry.present? }
+    field :billing_contact, value: -> (record) {record.inquiry.billing_contact.try(:name)}, analyzer: 'substring'
+    field :shipping_contact, value: -> (record) {record.inquiry.shipping_contact.try(:name)}, analyzer: 'substring'
     field :mis_date, value: -> (record) { record.mis_date }, type: 'date'
     field :created_at, value: ->(record) { record.created_at.to_date if record.created_at.present? }, type: 'date'
     field :updated_at, type: 'date'

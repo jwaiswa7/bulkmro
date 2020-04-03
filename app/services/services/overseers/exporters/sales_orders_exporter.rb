@@ -19,7 +19,8 @@ class Services::Overseers::Exporters::SalesOrdersExporter < Services::Overseers:
         'Outside Sales',
         'Sales Manager',
         'Quote Type',
-        'Opportunity Type'
+        'Opportunity Type',
+        'Total Marging'
     ]
   end
 
@@ -31,9 +32,9 @@ class Services::Overseers::Exporters::SalesOrdersExporter < Services::Overseers:
     @export_time['creation'] = Time.now
     ExportMailer.export_notification_mail(@export_name,true,@export_time).deliver_now
     if @ids.present?
-      records = model.where(id: @ids).remote_approved.where.not(sales_quote_id: nil).order(mis_date: :desc)
+      records = model.where(id: @ids).remote_approved.order_not_deleted.where.not(sales_quote_id: nil).order(mis_date: :desc)
     else
-      records = model.remote_approved.where.not(sales_quote_id: nil).where(mis_date: start_at..end_at).order(mis_date: :desc)
+      records = model.remote_approved.order_not_deleted.where.not(sales_quote_id: nil).where(mis_date: start_at..end_at).order(mis_date: :desc)
     end
     @export = Export.create!(export_type: 40, status: 'Processing', filtered: @ids.present?, created_by_id: @overseer.id, updated_by_id: @overseer.id)
     records.find_each(batch_size: 200) do |sales_order|
@@ -55,6 +56,7 @@ class Services::Overseers::Exporters::SalesOrdersExporter < Services::Overseers:
         sales_manager: inquiry.sales_manager.full_name,
         quote_type: inquiry.try(:quote_category) || '',
         opportunity_type: inquiry.try(:opportunity_type) || '',
+        total_margin: sales_order.calculated_total_margin
                 ) if inquiry.present?
     end
     @export.update_attributes(status: 'Completed')

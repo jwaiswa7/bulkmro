@@ -3,7 +3,7 @@ class Warehouse < ApplicationRecord
   include Mixins::CanBeActivated
 
   default_scope { order(name: :asc) }
-  pg_search_scope :locate, against: [:name], associated_against: { address: [:name, :country_code, :street1, :street2, :state_name, :city_name, :pincode] }, using: { tsearch: { prefix: true } }
+  pg_search_scope :locate, against: [:name, :series_code], associated_against: { address: [:name, :country_code, :street1, :street2, :state_name, :city_name, :pincode] }, using: { tsearch: { prefix: true } }
 
   belongs_to :address, required: true
   accepts_nested_attributes_for :address
@@ -35,7 +35,8 @@ class Warehouse < ApplicationRecord
       'BHW': 13,
       'AMB': 14,
       'HR': 15,
-      'SHT': 16
+      'SHT': 16,
+      'AMD': 17
   }
 
 
