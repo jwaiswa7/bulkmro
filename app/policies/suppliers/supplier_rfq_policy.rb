@@ -13,5 +13,4 @@ class Suppliers::SupplierRfqPolicy < Suppliers::ApplicationPolicy
   def update_ips?
     true
   end
-
 end
