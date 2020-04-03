@@ -154,6 +154,32 @@ class Overseers::OverseersController < Overseers::BaseController
     end
   end
 
+  def export_isp_report
+    authorize_acl :overseer
+    service = Services::Overseers::Finders::IspReport.new(params, current_overseer)
+    service.call
+    records = service.records
+    @overseers = Inquiry.procurement_specialists
+
+    report_bucket_service = Services::Overseers::Overseers::GetIspReportBuckets.new(records, @overseers, params)
+    indexed_isp_reports = report_bucket_service.call
+    if params['isp_report'].present?
+      @date_range = params['isp_report']['date_range']
+      @category = params['isp_report']['category']
+    end
+    isp_params = {}
+    if params['isp_report'].present?
+      isp_params['date_range'] = params['isp_report']['date_range']
+    else
+      isp_params['date_range'] = 'Overall'
+    end
+
+    export_service = Services::Overseers::Exporters::IspReportsExporter.new([], current_overseer, indexed_isp_reports, isp_params)
+    export_service.call
+
+    redirect_to url_for(Export.isp_reports.not_filtered.last.report)
+  end
+
   private
 
     def overseer_params
