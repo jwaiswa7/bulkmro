@@ -50,4 +50,8 @@ class InquiryProductSupplier < ApplicationRecord
   def total_unit_cost_price_with_freight_with_tax
     unit_cost_price_with_freight_with_tax * (self.inquiry_product.quantity) if unit_cost_price_with_freight_with_tax.present?
   end
+
+  def latest_pq_received_date
+    self.supplier_rfq.updated_at if self.supplier_rfq.present? && self.supplier_rfq.supplier_quote_submitted == true
+  end
 end

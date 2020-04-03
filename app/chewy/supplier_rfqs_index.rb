@@ -11,6 +11,7 @@ class SupplierRfqsIndex < BaseIndex
     field :line_items, value: -> (record) { record.inquiry_product_suppliers.map { |ips| ips.inquiry_product.product }.count }, analyzer: 'substring'
     field :supplier_id, value: -> (record) { record.supplier_id }, type: 'integer'
     field :created_at, type: 'date'
+    field :updated_at, type: 'date'
     field :potential_value, value: -> (record) { record.calculated_total.to_s if record.calculated_total.present? }, type: 'double'
     field :calculated_total, value: -> (record) { record.calculated_total.to_s if record.calculated_total.present? }, analyzer: 'substring'
     field :calculated_total_with_tax, value: -> (record) { record.calculated_total_with_tax.to_s if record.calculated_total_with_tax.present? }, analyzer: 'substring'
