@@ -24,11 +24,6 @@ class Services::Overseers::Exporters::IspReportsExporter < Services::Overseers::
     @export_time['creation'] = Time.now
     ExportMailer.export_notification_mail(@export_name, true, @export_time).deliver_now
     @export = Export.create!(export_type: 105, status: 'Processing', filtered: @ids.present?, created_by_id: @overseer.id, updated_by_id: @overseer.id)
-    if @indexed_records.present?
-      records = @indexed_records
-    else
-      records = []
-    end
     @indexed_records.each do |record|
       rows.push(
         name: record[:name],
