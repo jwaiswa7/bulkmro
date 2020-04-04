@@ -4378,11 +4378,11 @@ td .media.chat-item{
 }
 
 .bmro-task-td-width-new-account{
-  width:13%;
+  width:14%;
 }
 
 .bmro-task-width-new-account{
-  width:30%;
+  width:41%;
 }
 
 .no-data-dash-alignment{
@@ -4392,4 +4392,16 @@ td .media.chat-item{
 .no-data-dash-alignment span {
   float: none;
   margin-left: 0px;
+}
+
+.bmro-padding-task-new-account{
+  padding-top: 9px;
+  padding-bottom: 9px;
+  border-bottom: 1px solid #EDEDED;
+  border-left: 4px solid transparent;
+  padding-left: 23px;
+  padding-right: 7px;
+}
+.bmro-action-width-new-account{
+  width:100%;
 }
