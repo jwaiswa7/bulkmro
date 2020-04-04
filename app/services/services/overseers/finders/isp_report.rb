@@ -32,11 +32,13 @@ class Services::Overseers::Finders::IspReport < Services::Overseers::Finders::Ba
         sales_quotes_indexed_records = date_range_query(sales_quotes_indexed_records, date_range)
         sales_orders_indexed_records = date_range_query(sales_orders_indexed_records, date_range)
         purchase_order_indexed_records = date_range_query(purchase_order_indexed_records, date_range)
-      elsif @isp_report_params['procurement_specialist'].present?
-        inquiry_indexed_records = inquiry_indexed_records.filter(filter_by_value('inside_sales_owner_id', @isp_report_params['procurement_specialist'].to_i))
-        sales_quotes_indexed_records = sales_quotes_indexed_records.filter(filter_by_value('inside_sales_owner_id', @isp_report_params['procurement_specialist'].to_i))
-        sales_orders_indexed_records = sales_orders_indexed_records.filter(filter_by_value('inside_sales_owner_id', @isp_report_params['procurement_specialist'].to_i))
-        purchase_order_indexed_records = purchase_order_indexed_records.filter(filter_by_value('inside_sales_owner_id', @isp_report_params['procurement_specialist'].to_i))
+      end
+      procurement_specialist = @isp_report_params['procurement_specialist'].present? ? @isp_report_params['procurement_specialist'].split('.csv')[0] : ''
+      if procurement_specialist.present?
+        inquiry_indexed_records = inquiry_indexed_records.filter(filter_by_value('inside_sales_owner_id', procurement_specialist.to_i))
+        sales_quotes_indexed_records = sales_quotes_indexed_records.filter(filter_by_value('inside_sales_owner_id', procurement_specialist.to_i))
+        sales_orders_indexed_records = sales_orders_indexed_records.filter(filter_by_value('inside_sales_owner_id', procurement_specialist.to_i))
+        purchase_order_indexed_records = purchase_order_indexed_records.filter(filter_by_value('inside_sales_owner_id', procurement_specialist.to_i))
 
       end
     end
