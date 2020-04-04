@@ -28,8 +28,8 @@
               <span class="bmro-big-heading bmro-fl bmro-no-mrl bmro-td-span"><%= inquiry.inquiry_number %></span>
             </div>
 
-            <div class="bmro-task-no-td bmro-task-td-width-new-account bmro-fl" >
-              <span class="bmro-big-heading bmro-fl bmro-no-mrl bmro-td-span"><%= invoice_req.sales_order.present? ? invoice_req.sales_order.order_number : '-----------' %></span>
+            <div class="bmro-task-no-td bmro-task-td-width-new-account bmro-fl no-data-dash-alignment">
+              <span class="bmro-big-heading bmro-fl bmro-no-mrl bmro-td-span"><%= invoice_req.sales_order.present? ? invoice_req.sales_order.order_number : '--' %></span>
             </div>
 
             <div class="bmro-task-no-td bmro-task-td-width-new-account bmro-fl" >
@@ -58,8 +58,8 @@
               <span class="bmro-big-heading bmro-fl bmro-no-mrl bmro-td-span"><%= inquiry.inquiry_number %></span>
             </div>
 
-            <div class="bmro-task-no-td bmro-task-td-width-new-account bmro-fl" >
-              <span class="bmro-big-heading bmro-fl bmro-no-mrl bmro-td-span"><%= invoice_req.sales_order.present? ? invoice_req.sales_order.order_number : '-----------' %></span>
+            <div class="bmro-task-no-td bmro-task-td-width-new-account bmro-fl no-data-dash-alignment">
+              <span class="bmro-big-heading bmro-fl bmro-no-mrl bmro-td-span"><%= invoice_req.sales_order.present? ? invoice_req.sales_order.order_number : '--' %></span>
             </div>
 
             <div class="bmro-task-no-td bmro-task-td-width-new-account bmro-fl" >
@@ -90,12 +90,12 @@
               <span class="bmro-big-heading bmro-fl bmro-no-mrl bmro-td-span"><%= inquiry.inquiry_number %></span>
             </div>
 
-            <div class="bmro-task-no-td bmro-task-td-width-new-account bmro-fl" >
-              <span class="bmro-big-heading bmro-fl bmro-no-mrl bmro-td-span"><%= ar_invoice_request.sales_order.present? ? ar_invoice_request.sales_order.order_number : '-----------' %></span>
+            <div class="bmro-task-no-td bmro-task-td-width-new-account bmro-fl no-data-dash-alignment">
+              <span class="bmro-big-heading bmro-fl bmro-no-mrl bmro-td-span"><%= ar_invoice_request.sales_order.present? ? ar_invoice_request.sales_order.order_number : '--' %></span>
             </div>
 
-            <div class="bmro-task-no-td bmro-task-td-width-new-account bmro-fl">
-              <span class="bmro-big-heading bmro-fl bmro-no-mrl bmro-td-span">-----------</span>
+            <div class="bmro-task-no-td bmro-task-td-width-new-account bmro-fl no-data-dash-alignment">
+              <span class="bmro-big-heading bmro-fl bmro-no-mrl bmro-td-span">--</span>
             </div>
 
             <div class="bmro-task-print bmro-task-width-new-account bmro-fl" >
@@ -117,17 +117,17 @@
             <span class="bmro-big-heading bmro-fl bmro-no-mrl bmro-td-span"><%= inquiry.inquiry_number %></span>
           </div>
 
-          <div class="bmro-task-no-td bmro-task-td-width bmro-fl" >
-            <span class="bmro-big-heading bmro-fl bmro-no-mrl bmro-td-span"> <%= (inquiry.sales_orders.present? && inquiry.sales_orders.last.order_number != nil) ? inquiry.sales_orders.last.order_number : '#SAP Request Pending' %> </span>
+          <div class="bmro-task-no-td bmro-task-td-width-new-account bmro-fl no-data-dash-alignment">
+            <span class="bmro-big-heading bmro-fl bmro-no-mrl bmro-td-span"> <%= (inquiry.sales_orders.present? && inquiry.sales_orders.last.order_number != nil) ? inquiry.sales_orders.last.order_number : '--' %> </span>
           </div>
 
-          <div class="bmro-task-no-td bmro-task-td-width-new-account bmro-fl" >
-            <span class="bmro-big-heading bmro-fl bmro-no-mrl bmro-td-span"> ------------ </span>
+          <div class="bmro-task-no-td bmro-task-td-width-new-account bmro-fl no-data-dash-alignment" >
+            <span class="bmro-big-heading bmro-fl bmro-no-mrl bmro-td-span">--</span>
           </div>
 
           <div class="bmro-task-print bmro-task-width-new-account bmro-fl" >
             <div class="bmro-commited-data bmro-task-td">
-              Sales Order Approve / Reject
+              Sales Order
             </div>
           </div>
 
