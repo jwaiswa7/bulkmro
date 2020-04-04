@@ -1,7 +1,7 @@
 class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseController
   before_action :set_sales_order, only: [:show, :proforma, :edit, :update, :new_confirmation, :create_confirmation,
                                          :resync, :edit_mis_date, :update_mis_date, :fetch_order_data, :relationship_map,
-                                         :get_relationship_map_json, :new_accounts_confirmation, :create_account_confirmation, :order_cancellation_modal, :cancellation, :revise_committed_delivery_date, :update_revised_committed_delivery_date]
+                                         :get_relationship_map_json, :new_accounts_confirmation, :create_account_confirmation, :order_cancellation_modal, :order_cancellation_modal_by_isp, :cancellation, :isp_order_cancellation, :revise_committed_delivery_date, :update_revised_committed_delivery_date, :isp_so_cancellation_email]
   before_action :set_notification, only: [:create_confirmation, :create_account_confirmation]
 
   def index
@@ -207,15 +207,73 @@ class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseCo
     end
   end
 
+  def order_cancellation_modal_by_isp
+    authorize @sales_order
+    respond_to do |format|
+      format.html { render partial: 'cancellation_by_isp' }
+    end
+  end
+
   def cancellation
     authorize_acl @sales_order
     @status = Services::Overseers::SalesOrders::CancelSalesOrder.new(@sales_order, sales_order_params.merge(status: 'Cancelled', remote_status: 'Cancelled by SAP')).call
     if @status.key?(:empty_message)
       render json: {error: 'Cancellation Message is Required'}, status: 500
     elsif @status[:status] == 'success'
-      render json: {error: @status[:message]}, status: 200
+      render json: {notice: @status[:message]}, status: 200
     elsif @status[:status] == 'failed'
       render json: {error: @status[:message]}, status: 500
+    end
+  end
+
+  def isp_order_cancellation
+    authorize_acl @sales_order
+    if sales_order_params['comments_attributes']['0']['message'].present?
+      @status = Services::Overseers::SalesOrders::CancelSalesOrder.new(@sales_order, sales_order_params.merge(status: 'Cancelled', remote_status: 'Cancelled by SAP')).call
+      if @status[:status] == 'success'
+        render json: {notice: @status[:message]}, status: 200
+      elsif @status[:status] == 'failed'
+        render json: {error: @status[:message]}, status: 500
+      end
+    else
+      render json: {error: 'SO Cancellation Message is Required'}, status: 500
+    end
+  end
+
+  def isp_so_cancellation_email
+    authorize_acl @sales_order
+    if sales_order_params['comments_attributes']['0']['message'].present?
+      so_cancellation_reason = "Reason for SO Cancellation: #{sales_order_params['comments_attributes']['0']['message']}"
+      @sales_order.comments.build(message: so_cancellation_reason, overseer: current_overseer, inquiry: @inquiry)
+      @sales_order.save
+      @email_message = @sales_order.email_messages.build(overseer: current_overseer, inquiry: @inquiry, email_type: 'Request for SO Cancellation')
+      if Settings.domain == 'sprint.bulkmro.com'
+        from = @inquiry.inside_sales_owner.try(:email)
+        to = 'accounts@bulkmro.com'
+        cc = [@inquiry.company.try(:sales_manager).try(:email), @inquiry.inside_sales_owner.try(:email)]
+        subject = "Request for SO Cancellation for Inquiry ##{@sales_order.inquiry.inquiry_number} Sales Order ##{@sales_order.order_number}"
+      else
+        from = 'bulkmro007@gmail.com'
+        to = 'bulkmro007@gmail.com'
+        cc = ['bhumika.desai@bulkmro.com']
+        subject = "Testing server - Request for SO Cancellation for Inquiry ##{@sales_order.inquiry.inquiry_number} Sales Order ##{@sales_order.order_number}"
+      end
+      @email_message.assign_attributes(
+        from: from,
+        to: to,
+        cc: cc,
+        subject: subject,
+        body: SalesOrderMailer.request_cancel_so_email(@email_message).body.raw_source
+      )
+      if @email_message.save
+        if SalesOrderMailer.send_request_cancel_so_email(@email_message).deliver_now
+          render json: {notice: 'Email sent to Accounts team for cancellation!'}, status: 200
+        else
+          render json: {error: 'Email not sent! Something went wrong!!'}, status: 500
+        end
+      end
+    else
+      render json: {error: 'SO Cancellation Message is Required'}, status: 500
     end
   end
 

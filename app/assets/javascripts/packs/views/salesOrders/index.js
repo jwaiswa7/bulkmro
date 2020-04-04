@@ -12,32 +12,81 @@ const index = () => {
     let controller = camelize($('body').data().controller);
     exportFilteredRecords(Routes.export_filtered_records_overseers_sales_orders_path(), 'Email sent with Filtered ' + controller.titleize() + '!')
     salesOrderCancel();
+    salesOrderCancelAutoEmail();
 
     commanComment('sales-order','sales_orders');
     removeHrefExport();
+    $('.sprint-loader').hide();
 };
 
 let salesOrderCancel = () => {
     $('.cancel-sales-order-button').click(function () {
-        let inqId = $(this).data('inquiry-id');
-        let orderId = $(this).data('order-id');
-
+        let url = $(this).data('url');
+        $('.confirm-sales-order-cancel').prop('disabled', true);
         $.ajax({
-            url: Routes.order_cancellation_modal_overseers_inquiry_sales_order_path(inqId, orderId),
+            url: url,
             success: function (data) {
                 $('.sales-order-cancel').empty();
                 $('.sales-order-cancel').append(data);
                 $('#cancelSalesOrder').modal('show');
-                orderCancelledSubmit()
+                $('.confirm-sales-order-cancel').prop('disabled', true);
+                $('.sprint-loader').hide();
+
+                $('.cancellation-msg').on('keyup', function (event) {
+                    if($(this).val() === '' || $(this).val() === 'undefined') {
+                        $('.confirm-sales-order-cancel').prop('disabled', true);
+                    }
+                    else {
+                        $('.confirm-sales-order-cancel').prop('disabled', false);
+                    }
+                });
+                orderCancelledSubmit();
             }
         });
     });
 };
 
+let salesOrderCancelAutoEmail = () => {
+    $('.cancel-sales-order-isp').click(function () {
+        let url = $(this).data('url');
+
+        // if url.split('/') ==
+        $.ajax({
+            url: url,
+            success: function (data) {
+                $('.sales-order-cancel').empty();
+                $('.sales-order-cancel').append(data);
+                $('#cancelSalesOrder').modal('show');
+                $('.sprint-loader').hide();
+                let data_url = $('.cancel-button').data('url');
+                let action = data_url.split('/').pop();
+                $('.cancel-button').prop('disabled', true);
+
+                $('.cancellation-msg').on('change', function (event) {
+                    if($(this).val() === '' || $(this).val() === 'undefined') {
+                        $('.cancel-button').prop('disabled', true);
+                    }
+                    else {
+                        $('.cancel-button').prop('disabled', false);
+                    }
+                });
+                if (action == 'isp_order_cancellation') {
+                    orderCancelAccount('.confirm-sales-order-cancel');
+                } else {
+                    orderCancelAccount('.auto-email-so-cancel');
+                }
+            }
+        });
+    });
+
+};
+
 let orderCancelledSubmit = () => {
     $("#cancelSalesOrder").on('click', '.confirm-sales-order-cancel', function (event) {
-        var formSelector = "#" + $(this).closest('form').attr('id'),
-        datastring = $(formSelector).serialize();
+        $(this).attr('disabled', true);
+        $('.sprint-loader').show();
+        let formSelector = "#" + $(this).closest('form').attr('id'),
+            datastring = $(formSelector).serialize();
 
         $.ajax({
             type: "PATCH",
@@ -46,13 +95,52 @@ let orderCancelledSubmit = () => {
             dataType: "json",
             success: function success(data) {
                 $('#cancelSalesOrder').modal('hide');
-                window.location.reload()
+                $.notify({
+                    message: data.responseJSON.notice
+                }, {
+                    type: 'warning'
+                }, {delay: 5000});
+                window.location.reload();
             },
             error: function error(_error) {
                 if (_error.responseJSON && _error.responseJSON.error)
                     $(formSelector).find('.error').empty().html("<div class='p-1'>" + _error.responseJSON.error + "</div>");
             }
         });
+        event.preventDefault();
+    });
+};
+
+let orderCancelAccount = (class_name) => {
+    $("#cancelSalesOrder").on('click', class_name, function (event) {
+        if (confirm('Are you sure you want to cancel SO?')) {
+            $(this).attr('disabled', true);
+            $('.sprint-loader').show();
+            let formSelector = "#" + $(this).closest('form').attr('id');
+            let url = $(this).data('url');
+            $(formSelector).attr('method', '');
+            $.ajax({
+                url: url,
+                type: "POST",
+                data: $(this).closest('form').serialize(),
+                dataType: "json",
+                success: function success(data) {
+                    $('#cancelSalesOrder').modal('hide');
+                    $.notify({
+                        message: data.notice
+                    }, {
+                        type: 'warning'
+                    }, {delay: 5000});
+                    window.location.reload();
+                },
+                error: function error(_error) {
+                    if (_error.responseJSON && _error.responseJSON.error)
+                        $(formSelector).find('.error').empty().html("<div class='p-1'>" + _error.responseJSON.error + "</div>");
+                }
+            });
+        } else {
+            $('#cancelSalesOrder').modal('hide');
+        }
         event.preventDefault();
     })
 };

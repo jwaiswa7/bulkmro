@@ -584,7 +584,7 @@ class Services::Shared::Migrations::AclMigrations < Services::Shared::BaseServic
   end
 
   def create_supplier_rfq_resources
-    role_name = ["Outside Sales Manager", "Outside Sales Executive", "Inside Sales and Logistic Manager", "Admin-Leadership Team", "Inside Sales Manager", "Inside Sales Executive",  "Outside Sales Team Leader", "Inside Sales Team Leader", "Admin"]
+    role_name = ['Outside Sales Manager', 'Outside Sales Executive', 'Inside Sales and Logistic Manager', 'Admin-Leadership Team', 'Inside Sales Manager', 'Inside Sales Executive',  'Outside Sales Team Leader', 'Inside Sales Team Leader', 'Admin']
     acl_resources_for_targets = {
         'supplier_rfq': %w(index show new edit create update destroy update_all send_email_request_for_quote add_supplier_rfqs edit_supplier_rfqs update_supplier_rfqs rfq_review),
         'inquiry_product_supplier': %w(request_for_quote),
@@ -636,5 +636,24 @@ class Services::Shared::Migrations::AclMigrations < Services::Shared::BaseServic
         end
       end
     end
+  end
+
+  def isp_so_cancellation_acl_resources
+    role_name = ['Admin', 'Inside Sales Executive']
+    acl_resources_for_targets = {
+        'sales_order': %w(order_cancellation_modal_by_isp isp_order_cancellation can_isp_cancel_so isp_so_cancellation_email),
+    }
+    acl_resources_for_targets.each do |key, val|
+      val.each do |action_name|
+        acl_resource = AclResource.where(resource_model_name: key, resource_action_name: action_name).first_or_create!
+        # update role
+        acl_roles = AclRole.where(role_name: role_name)
+        acl_roles.each do |acl_role|
+          update_role_resource(acl_role, acl_resource.id)
+        end
+      end
+    end
+    acl_resource = AclResource.new
+    acl_resource.update_acl_resource_cache
   end
 end
