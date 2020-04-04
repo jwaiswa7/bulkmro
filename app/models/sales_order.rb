@@ -150,6 +150,19 @@ class SalesOrder < ApplicationRecord
       "Wrong Order Values": 'Wrong Order Values'
   }
 
+  enum cancellation_reason: {
+      'Change in BM/ Item': 1,
+      'Customer PO Amend': 2,
+      'Change in Supplier': 3,
+      'Change in Unit Price': 4,
+      'Customer Requirement Canceled': 5,
+      'Change in Bill and Ship Address': 6,
+      'Change in Tax Rate': 7,
+      'Change in HSN': 8,
+      'Change in Inquiry': 9,
+      'Sync Issue': 10,
+  }
+
   scope :with_includes, -> { includes(:created_by, :updated_by, :inquiry) }
   scope :remote_approved, -> { where('(((sales_orders.status = ? OR sales_orders.status = ?) AND sales_orders.remote_status != ?) OR sales_orders.legacy_request_status = ?) AND sales_orders.status != ?', SalesOrder.statuses[:'Approved'], SalesOrder.statuses[:'CO'], SalesOrder.remote_statuses[:'Cancelled by SAP'], SalesOrder.legacy_request_statuses['Approved'], SalesOrder.statuses[:'Cancelled']) }
   scope :order_not_deleted, -> { where.not(remote_status: 'Order Deleted')}

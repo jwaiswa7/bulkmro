@@ -1,10 +1,11 @@
 json.data (@records) do |record|
   json.array! [
               record[:name],
-              record[:inquiries_count],
+              link_to(record[:inquiries_count], filtered_path(overseers_inquiries_path, [filter_by_value('Inside Sales', nil, record[:id]), filter_by_date_range('created date', @date_range)]), target: '_blank'),
               record[:sales_quotes_count],
-              record[:sales_orders_count],
-              record[:purchase_orders_count]
+              link_to(record[:sales_orders_count], filtered_path(overseers_sales_orders_path, [filter_by_value('Inside Sales', nil, record[:id]), filter_by_date_range('created date', @date_range)]), target: '_blank'),
+              link_to(record[:purchase_orders_count], filtered_path(overseers_purchase_orders_path, [filter_by_value('IS%26P', nil, record[:id]), filter_by_date_range('created date', @date_range)]), target: '_blank'),
+
               ]
 end
 json.recordsTotal @records.count
