@@ -44,18 +44,24 @@
               <%= row_action_button(new_accounts_confirmation_overseers_inquiry_sales_order_path(id: sales_order.to_param), 'comment-alt-check', 'Account Approval', 'warning') %>
             <% end %>
 
-            <% if is_authorized(sales_order, 'can_cancel_order') && sales_order.status == 'Approved' && sales_order.order_number.present? %>
+            <% if is_authorized(sales_order, 'can_cancel_order') && sales_order.status == 'Approved' && sales_order.remote_uid.present? && sales_order.order_number.present? %>
               <% if sales_order.is_invoices_cancelled %>
-                <%= link_to('', class: ['icon-title btn btn-sm btn-danger cancel-invoice cancel-sales-order-button'], 'data-order-id': sales_order.id, 'data-inquiry-id': sales_order.inquiry.id, title: 'Cancel', remote: true) do %>
+                <%= link_to('', class: ['icon-title btn btn-sm btn-danger cancel-invoice cancel-sales-order-button'], 'data-url': order_cancellation_modal_overseers_inquiry_sales_order_path(sales_order.inquiry.id, sales_order.id), title: 'Cancel', remote: true) do %>
                   <% concat content_tag(:span, '') %>
                   <% concat content_tag :i, nil, class: ['fal fa-ban'].join %>
                 <% end %>
                <% else %>
-                <%= link_to('', class: ['icon-title btn btn-sm btn-danger disabled'], 'data-order-id': sales_order.id, 'data-inquiry-id': sales_order.inquiry.id, title: 'Invoices against this SO is not cancelled', remote: true) do %>
+                <%= link_to('', class: ['icon-title btn btn-sm btn-danger disabled'], title: 'Invoices against this SO is not cancelled', remote: true) do %>
                   <% concat content_tag(:span, '') %>
                   <% concat content_tag :i, nil, class: ['fal fa-ban'].join %>
                 <% end %>
               <% end %>
+            <% end %>
+            <% if is_authorized(sales_order, 'can_isp_cancel_so') && sales_order.status == 'Approved' && sales_order.remote_uid.present? && sales_order.order_number.present? %>
+                <%= link_to('', class: ['icon-title btn btn-sm btn-danger cancel-sales-order-isp'], 'data-url': order_cancellation_modal_by_isp_overseers_inquiry_sales_order_path(sales_order.inquiry.id, sales_order.id), title: 'Cancel', remote: true) do %>
+                  <% concat content_tag(:span, '') %>
+                  <% concat content_tag :i, nil, class: ['fal fa-ban'].join %>
+                <% end %>
             <% end %>
             <% if is_authorized(sales_order, 'comments') && policy(sales_order).comments? %>
               <%= row_action_button(overseers_inquiry_comments_path(@inquiry, sales_order_id: sales_order.to_param), 'comment-lines', 'See Comments', 'success') %>

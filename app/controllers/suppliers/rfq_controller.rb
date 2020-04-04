@@ -3,7 +3,7 @@ class Suppliers::RfqController < Suppliers::BaseController
   before_action :supplier_rfqs_params, :set_rfq, only: :update
 
   def index
-    authorize :rfq
+    authorize :supplier_rfq
     @rfqs = SupplierRfq.where(supplier_id: current_company.id)
     service = Services::Suppliers::Finders::SupplierRfqs.new(params, current_suppliers_contact, current_company)
     service.call
@@ -16,12 +16,12 @@ class Suppliers::RfqController < Suppliers::BaseController
   end
 
   def edit_rfq
-    authorize :rfq
+    authorize :supplier_rfq
     @rfq = SupplierRfq.find(params[:rfq_id])
   end
 
   def update
-    authorize :rfq
+    authorize :supplier_rfq
     if @rfq.present?
       Services::Suppliers::BuildRevisionHistory.new(@rfq, supplier_rfqs_params).call
       @rfq.assign_attributes(supplier_rfqs_params)
@@ -60,12 +60,12 @@ class Suppliers::RfqController < Suppliers::BaseController
   end
 
   def show
-    authorize :rfq
+    authorize :supplier_rfq
     @rfq = SupplierRfq.find(params[:id])
   end
 
   def edit_supplier_rfqs
-    authorize :rfq
+    authorize :supplier_rfq
     @supplier = Company.find(params[:supplier_id])
     @inquiry = Inquiry.find(params[:inquiry_id])
     @supplier_rfqs = SupplierRfq.joins(:inquiry_product_suppliers).where(inquiry_id: @inquiry.id, supplier_id: @supplier.id).uniq

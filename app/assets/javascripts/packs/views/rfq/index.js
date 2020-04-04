@@ -4,9 +4,8 @@ import updateSummaryBox from '../common/updateSummaryBox'
 
 const index = () => {
 
-    bindSummaryBox(".summary_box", '.status-filter')
-    updateSummaryBox()
-    aggregateSummaryBox()
+    bindSummaryBox(".summary_box", '.status-filter');
+    updateSummaryBox();
 
 };
 

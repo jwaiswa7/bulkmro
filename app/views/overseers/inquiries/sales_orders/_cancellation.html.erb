@@ -15,11 +15,11 @@
               <%= sales_order.hidden_field :created_by_id %>
               <%= sales_order.hidden_field :inquiry_id, :value => @inquiry.id %>
               <%= sales_order.hidden_field :sales_order_id, :value => @sales_order.id %>
-              <%= sales_order.input :message, :placeholder => 'Type message', input_html: {:'data-parsely-no-valid-feedback' => ''}, required: true %>
+              <%= sales_order.input :message, :placeholder => 'Type message', input_html: {'data-parsely-no-valid-feedback': '', class: 'cancellation-msg'}, required: true %>
             <% end %>
           </div>
           <div class="modal-footer">
-            <button type="submit" class="btn btn-warning confirm-sales-order-cancel">Cancel Sales Order</button>
+            <button type="submit" class="btn bmro-button confirm-sales-order-cancel">Cancel Sales Order</button>
           </div>
         <% end %>
       </div>
