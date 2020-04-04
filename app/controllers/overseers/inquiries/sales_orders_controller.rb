@@ -247,13 +247,21 @@ class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseCo
       @sales_order.comments.build(message: so_cancellation_reason, overseer: current_overseer, inquiry: @inquiry)
       @sales_order.save
       @email_message = @sales_order.email_messages.build(overseer: current_overseer, inquiry: @inquiry, email_type: 'Request for SO Cancellation')
-      subject = "Request for SO Cancellation for Inquiry ##{@sales_order.inquiry.inquiry_number} Sales Order ##{@sales_order.order_number}"
+      if Settings.domain == 'sprint.bulkmro.com'
+        from = @inquiry.inside_sales_owner.try(:email)
+        to = 'accounts@bulkmro.com'
+        cc = [@inquiry.company.try(:sales_manager).try(:email), @inquiry.inside_sales_owner.try(:email)]
+        subject = "Request for SO Cancellation for Inquiry ##{@sales_order.inquiry.inquiry_number} Sales Order ##{@sales_order.order_number}"
+      else
+        from = 'bulkmro007@gmail.com'
+        to = 'bulkmro007@gmail.com'
+        cc = ['bhumika.desai@bulkmro.com']
+        subject = "Testing server - Request for SO Cancellation for Inquiry ##{@sales_order.inquiry.inquiry_number} Sales Order ##{@sales_order.order_number}"
+      end
       @email_message.assign_attributes(
-        from: 'meenakshi.naik@bulkmro.com',
-        # to: 'accounts@bulkmro.com',
-        to: 'bulkmro007@gmail.com',
-        # cc: [@inquiry.company.try(:sales_manager).try(:email), @inquiry.inside_sales_owner.try(:email)],
-        cc: ['bhumika.desai@bulkmro.com'],
+        from: from,
+        to: to,
+        cc: cc,
         subject: subject,
         body: SalesOrderMailer.request_cancel_so_email(@email_message).body.raw_source
       )

@@ -41,14 +41,12 @@ class SalesOrderMailer < ApplicationMailer
     @overseer = email_message.overseer
     @sales_order = email_message.sales_order
     @inquiry = email_message.inquiry
-    @from = Overseer.find(232) # comment while going to production
     @inside_sales_owner = email_message.inquiry.inside_sales_owner.full_name
     standard_email(email_message)
   end
 
   def send_request_cancel_so_email(email_message)
-    @overseer = Overseer.find(232) # comment while going to production
-    # @overseer = email_message.overseer #uncomment while going to production
+    @overseer = email_message.overseer
     @sales_order = email_message.sales_order
     @inquiry = email_message.inquiry
     email = htmlized_email(email_message)
