@@ -28,10 +28,10 @@ class Services::Overseers::Finders::IspReport < Services::Overseers::Finders::Ba
       date_range = @isp_report_params['date_range'].split('~')
 
       if !date_range.empty?
-        inquiry_indexed_records = date_range_query(inquiry_indexed_records, date_range)
-        sales_quotes_indexed_records = date_range_query(sales_quotes_indexed_records, date_range)
-        sales_orders_indexed_records = date_range_query(sales_orders_indexed_records, date_range)
-        purchase_order_indexed_records = date_range_query(purchase_order_indexed_records, date_range)
+        inquiry_indexed_records = date_range_query(inquiry_indexed_records,'created_at', date_range)
+        sales_quotes_indexed_records = date_range_query(sales_quotes_indexed_records,'created_at', date_range)
+        sales_orders_indexed_records = date_range_query(sales_orders_indexed_records,'mis_date', date_range)
+        purchase_order_indexed_records = date_range_query(purchase_order_indexed_records, 'created_at',date_range)
       end
       procurement_specialist = @isp_report_params['procurement_specialist'].present? ? @isp_report_params['procurement_specialist'].split('.csv')[0] : ''
       if procurement_specialist.present?
@@ -75,10 +75,10 @@ class Services::Overseers::Finders::IspReport < Services::Overseers::Finders::Ba
     if @isp_report_params.present?
       date_range = @isp_report_params['date_range'].split('~')
       if !date_range.empty?
-        inquiry_indexed_records = date_range_query(inquiry_indexed_records, date_range)
-        sales_quotes_indexed_records = date_range_query(sales_quotes_indexed_records, date_range)
-        sales_orders_indexed_records = date_range_query(sales_orders_indexed_records, date_range)
-        purchase_order_indexed_records = date_range_query(purchase_order_indexed_records, date_range)
+        inquiry_indexed_records = date_range_query(inquiry_indexed_records,'created_at', date_range)
+        sales_quotes_indexed_records = date_range_query(sales_quotes_indexed_records,'created_at', date_range)
+        sales_orders_indexed_records = date_range_query(sales_orders_indexed_records,'mis_date', date_range)
+        purchase_order_indexed_records = date_range_query(purchase_order_indexed_records,'created_at', date_range)
       end
     end
 
@@ -95,11 +95,11 @@ class Services::Overseers::Finders::IspReport < Services::Overseers::Finders::Ba
     }
   end
 
-  def date_range_query(indexed_records, date_range)
+  def date_range_query(indexed_records, key, date_range)
     if !date_range.empty?
       indexed_records.query(
         range: {
-          "created_at": {
+            :"#{key}" =>  {
               "time_zone": '+05:30',
               gte: date_range[0].strip.to_date.beginning_of_day,
               lte: date_range[1].strip.to_date.end_of_day
