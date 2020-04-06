@@ -21,9 +21,6 @@ const getInquiryTasks = function () {
                 $('.bmro-order-action').removeClass('bmro-order-hide');
                 $('.bmro-all-task-action').addClass('bmro-order-hide');
                 clickOnCompose()
-                // $('.bmro-Inquries-task').removeClass('bmro-active-white');
-                // $this.addClass('bmro-active-white');
-                // $('.bmro-reset-button').addClass('bmro-inquiry-show-hide');
             },
         });
     });

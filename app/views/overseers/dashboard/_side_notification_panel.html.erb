@@ -52,7 +52,6 @@
           <span class="bmro-today-span"><%= comment.message.html_safe %></span>
           <h5 class="bmro-big-heading bmro-hash-mt"><%= comment.created_by.to_s %> <span class="bmro-today-button"><%= comment.created_by.role %></span></h5>
           <span class="bmro-today-posted">Posted on: <%= comment.created_at.strftime("%d/%m/%Y %I:%M %P") %></span>
-
         </div>
       <%end %>
     <%end %>
