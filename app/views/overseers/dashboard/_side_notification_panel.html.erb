@@ -49,7 +49,7 @@
       <% comments.each do |comment| %>
         <div class="bmro-today-list">
           <h5 class="bmro-big-heading bmro-hash-mt">#<%= comment.id %> <span class="bmro-today-button">Comment</span></h5>
-          <span class="bmro-today-span"><%= comment.message %></span>
+          <span class="bmro-today-span"><%= comment.message.html_safe %></span>
           <h5 class="bmro-big-heading bmro-hash-mt"><%= comment.created_by.to_s %> <span class="bmro-today-button"><%= comment.created_by.role %></span></h5>
           <span class="bmro-today-posted">Posted on: <%= comment.created_at.strftime("%d/%m/%Y %I:%M %P") %></span>
 
