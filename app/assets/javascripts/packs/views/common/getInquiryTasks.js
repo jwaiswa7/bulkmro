@@ -16,6 +16,7 @@ const getInquiryTasks = function () {
                 inquiry_number: inquiry_number
             },
             success: function (data) {
+                console.log(data);
                 $('.inquiry-tasks').empty();
                 $('.inquiry-tasks').append(data);
                 $('.bmro-order-action').removeClass('bmro-order-hide');
