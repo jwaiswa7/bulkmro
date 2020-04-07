@@ -209,6 +209,8 @@ module StatusesHelper
       'status-color-red'
     when :'Stock Supplier PO Created'
       'status-color-green'
+    when :'Supplier PO Created'
+      'status-color-green'
     when :'Stock Requested'
       'status-color-green'
     when :'default'
