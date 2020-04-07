@@ -636,6 +636,8 @@ class Services::Shared::Migrations::AclMigrations < Services::Shared::BaseServic
         end
       end
     end
+    acl_resource = AclResource.new
+    acl_resource.update_acl_resource_cache
   end
 
   def isp_so_cancellation_acl_resources
