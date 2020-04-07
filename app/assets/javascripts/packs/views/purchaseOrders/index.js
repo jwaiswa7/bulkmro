@@ -12,6 +12,12 @@ const index = () => {
     exportFilteredRecords(Routes.export_filtered_records_overseers_purchase_orders_path(), 'Email sent with Filtered ' + controller.titleize() + '!')
     cancel_purchase_order();
     removeHrefExport();
+    $('.datatable').on('init.dt', function (event) {
+        var date = window.hasher.getParam('PO Date')
+        if (date != '' && $('.bmro-date-bag').val() == ''){
+            $('.bmro-date-bag').val(date).trigger('change')
+        }
+    });
 };
 
 const cancel_purchase_order = () => {
