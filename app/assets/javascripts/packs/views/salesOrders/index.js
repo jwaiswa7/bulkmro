@@ -19,7 +19,6 @@ const index = () => {
     $('.sprint-loader').hide();
     $('.datatable').on('init.dt', function (event) {
         var date = window.hasher.getParam('Order Date')
-        console.log('date',date)
         if (date != '' && $('.bmro-date-bag').val() == ''){
             $('.bmro-date-bag').val(date).trigger('change')
         }
