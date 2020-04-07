@@ -3,7 +3,7 @@ class Overseers::Companies::SupplierProductsController < Overseers::Companies::B
 
   def index
     @products = ApplyDatatableParams.to(@company.supplier_products, params.reject! {|k, v| k == 'company_id'})
-    authorize_acl @products
+    authorize_acl :supplier_product
   end
 
   def autocomplete
@@ -12,7 +12,7 @@ class Overseers::Companies::SupplierProductsController < Overseers::Companies::B
     supplier_products = (account || company).supplier_products
 
     @products = ApplyParams.to(supplier_products, params)
-    authorize_acl @products
+    authorize_acl :supplier_product
   end
 
   def show
@@ -20,7 +20,7 @@ class Overseers::Companies::SupplierProductsController < Overseers::Companies::B
   end
 
   def destroy_all
-    authorize_acl :customer_product
+    authorize_acl :supplier_product
     @company.supplier_products.destroy_all
 
     redirect_to overseers_company_path(@company)
