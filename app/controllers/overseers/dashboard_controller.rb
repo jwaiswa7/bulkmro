@@ -110,7 +110,7 @@ class Overseers::DashboardController < Overseers::BaseController
         format.html {render partial: 'task_list_wrapper', locals: {inq_for_dash: inquiry, show_all_tasks: false, show_inquiry_tasks: true, inquiry_has_tasks: inquiry_has_tasks}}
       end
 
-    elsif current_overseer.accounts?
+    elsif current_overseer.acl_role.role_name == 'Accounts'
       inquiry = []
       @dashboard.inq_for_account_dash.each do |inq|
         if inq.inquiry_number == params['inquiry_number'].to_i

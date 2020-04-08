@@ -76,7 +76,7 @@ class Overseers::Dashboard
   def main_statuses
     if self.overseer.inside_sales_executive?
       ['New Inquiry', 'Preparing Quotation', 'Quotation Sent', 'Follow Up on Quotation', 'Expected Order']
-    elsif self.overseer.accounts?
+    elsif self.overseer.acl_role.role_name == 'Accounts'
       ['GRPO Pending', 'Pending AP Invoice', 'AR Invoice requested', 'SO Draft: Pending Accounts Approval']
     end
   end
