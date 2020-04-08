@@ -15,7 +15,7 @@
   </div>
   <div class="bmro-width100 bmro-mt-collas subhead-height">
     <div class="bmro-width100 bmro-pl-pr">
-      <div class="bmro-all-task-th bmro-fl bmro-task-td-width-new-account">
+      <div class="bmro-all-task-th bmro-fl bmro-task-td-inquiry-width">
         <span class="bmro-task-th bmro-task-th-p0">Inquiry</span>
       </div>
       <div class="bmro-all-task-th bmro-fl bmro-task-td-width-new-account">
@@ -27,8 +27,8 @@
       <div class="bmro-all-task-th bmro-fl bmro-task-width-new-account">
         <span class="bmro-task-th bmro-task-th-p0">Task</span>
       </div>
-      <div class="bmro-all-task-th bmro-fr bmro-task-td-width">
-        <span class="bmro-task-th d-flex justify-content-end">Action</span>
+      <div class="bmro-all-task-th bmro-fr bmro-task-td-action-width">
+        <span class="bmro-task-th d-flex justify-content-end bmro-right-pad4">Action</span>
       </div>
     </div>
   </div>
@@ -43,11 +43,11 @@
       <% inquiry.invoice_requests.each do |invoice_req| %>
         <% if (invoice_req.status == 'GRPO Pending') && !invoice_req.grpo_number.present? %>
           <div class="bmro-width100 bmro-padding-task">
-            <div class="bmro-task-no-td bmro-task-td-width-new-account bmro-fl bmro-position-relative" >
+            <div class="bmro-task-no-td bmro-task-td-inquiry-width bmro-fl bmro-position-relative" >
               <span class="bmro-big-heading bmro-fl  bmro-td-span"><%= inquiry.inquiry_number %></span>
             </div>
 
-            <div class="bmro-task-no-td bmro-task-td-width-new-account bmro-fl ">
+            <div class="bmro-task-no-td bmro-task-td-width-new-account bmro-fl bmro-margin-small-rem">
               <span class="bmro-big-heading bmro-fl  bmro-td-span"><%= invoice_req.sales_order.present? ? invoice_req.sales_order.order_number : '--' %></span>
             </div>
 
@@ -66,7 +66,7 @@
                 <%= f.hidden_field :inquiry_number, value: inquiry.inquiry_number %>
                 <%= f.hidden_field :invoice_request_id, value: invoice_req.id %>
                 <%= f.input :grpo_number, placeholder: "SAP GRPO No", :as => :string, input_html: {class: "form-control bmro-new-submit-input",:maxlength => 9}, label: false %>
-                <%= f.submit :submit, class: "btn bmro-button btn-dashboard" %>
+                <%= f.submit :submit, class: "btn bmro-action-button " %>
               <% end %>
             </div>
             </div>
@@ -75,11 +75,11 @@
 
         <% if invoice_req.status == 'Pending AP Invoice' && !invoice_req.ap_invoice_number.present? %>
           <div class="bmro-width100 bmro-padding-task">
-            <div class="bmro-task-no-td bmro-task-td-width-new-account bmro-fl bmro-position-relative" >
+            <div class="bmro-task-no-td bmro-task-td-inquiry-width bmro-fl bmro-position-relative" >
               <span class="bmro-big-heading bmro-fl  bmro-td-span"><%= inquiry.inquiry_number %></span>
             </div>
 
-            <div class="bmro-task-no-td bmro-task-td-width-new-account bmro-fl ">
+            <div class="bmro-task-no-td bmro-task-td-width-new-account bmro-fl bmro-margin-small-rem ">
               <span class="bmro-big-heading bmro-fl  bmro-td-span"><%= invoice_req.sales_order.present? ? invoice_req.sales_order.order_number : '--' %></span>
             </div>
 
@@ -98,7 +98,7 @@
                 <%= f.hidden_field :inquiry_number, value: inquiry.inquiry_number %>
                 <%= f.hidden_field :invoice_request_id, value: invoice_req.id %>
                 <%= f.input :ap_invoice_number, placeholder: "SAP AP No", :as => :string, input_html: {class: "form-control bmro-new-submit-input"}, label: false %>
-                <%= f.submit :submit, class: "btn bmro-button btn-dashboard" %>
+                <%= f.submit :submit, class: "btn bmro-action-button " %>
               <% end %>
             </div>
             </div>
@@ -109,11 +109,11 @@
       <% inquiry.ar_invoice_requests.each do |ar_invoice_request| %>
         <% if ar_invoice_request.status == 'AR Invoice requested' %>
           <div class="bmro-width100 bmro-padding-task">
-            <div class="bmro-task-no-td bmro-task-td-width-new-account bmro-fl bmro-position-relative" >
+            <div class="bmro-task-no-td bmro-task-td-inquiry-width bmro-fl bmro-position-relative" >
               <span class="bmro-big-heading bmro-fl  bmro-td-span"><%= inquiry.inquiry_number %></span>
             </div>
 
-            <div class="bmro-task-no-td bmro-task-td-width-new-account bmro-fl ">
+            <div class="bmro-task-no-td bmro-task-td-width-new-account bmro-fl bmro-margin-small-rem ">
               <span class="bmro-big-heading bmro-fl  bmro-td-span"><%= ar_invoice_request.sales_order.present? ? ar_invoice_request.sales_order.order_number : '--' %></span>
             </div>
 
@@ -128,7 +128,7 @@
             </div>
             <div class="bmro-fr">
               <div class="bmro-action-button-parent bmro-action-width-new-account">
-              <%= link_to 'AR pending invoice', edit_overseers_ar_invoice_request_path(ar_invoice_request), class: "btn bmro-button btn-dashboard", target: "_blank" %>
+              <%= link_to 'AR pending invoice', edit_overseers_ar_invoice_request_path(ar_invoice_request), class: "btn bmro-action-button ", target: "_blank" %>
             </div>
             </div>
           </div>
@@ -138,11 +138,11 @@
       <% if inquiry.status == 'SO Draft: Pending Accounts Approval' %>
 
         <div class="bmro-width100 bmro-padding-task">
-          <div class="bmro-task-no-td bmro-task-td-width-new-account bmro-fl bmro-position-relative" >
+          <div class="bmro-task-no-td bmro-task-td-inquiry-width bmro-fl bmro-position-relative" >
             <span class="bmro-big-heading bmro-fl  bmro-td-span"><%= inquiry.inquiry_number %></span>
           </div>
 
-          <div class="bmro-task-no-td bmro-task-td-width-new-account bmro-fl ">
+          <div class="bmro-task-no-td bmro-task-td-width-new-account bmro-fl bmro-margin-small-rem">
             <span class="bmro-big-heading bmro-fl  bmro-td-span"> <%= (inquiry.sales_orders.present? && inquiry.sales_orders.last.order_number != nil) ? inquiry.sales_orders.last.order_number : '--' %> </span>
           </div>
 
@@ -157,7 +157,7 @@
           </div>
           <div class="bmro-fr">
           <div class="bmro-action-button-parent bmro-action-width-new-account">
-            <%= link_to 'Approve / Reject', new_accounts_confirmation_overseers_inquiry_sales_order_path(inquiry_id: inquiry.to_param, id: inquiry.sales_orders.last.to_param), class: "btn bmro-button btn-dashboard", target: "_blank" if inquiry.sales_orders.present? %>
+            <%= link_to 'Approve / Reject', new_accounts_confirmation_overseers_inquiry_sales_order_path(inquiry_id: inquiry.to_param, id: inquiry.sales_orders.last.to_param), class: "btn bmro-action-button ", target: "_blank" if inquiry.sales_orders.present? %>
           </div>
           </div>
         </div>
