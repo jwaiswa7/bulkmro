@@ -17,7 +17,7 @@ Rails.application.routes.draw do
   namespace :suppliers, path: '/' do
     devise_for :contacts, controllers: {sessions: 'suppliers/sessions', passwords: 'suppliers/passwords'}, path: :suppliers
   end
-  
+
   namespace :customers, path: '/' do
     devise_for :contacts, controllers: {sessions: 'customers/sessions', passwords: 'customers/passwords'}, path: :customers
   end
@@ -641,9 +641,12 @@ Rails.application.routes.draw do
             get 'relationship_map'
             get 'get_relationship_map_json'
             get 'order_cancellation_modal'
+            get 'order_cancellation_modal_by_isp'
             patch 'cancellation'
+            post 'isp_order_cancellation'
             get 'revise_committed_delivery_date'
             patch 'update_revised_committed_delivery_date'
+            post 'isp_so_cancellation_email'
           end
 
           collection do
@@ -980,7 +983,6 @@ Rails.application.routes.draw do
         get 'contact_companies'
       end
     end
-
   end
 
   namespace 'suppliers' do

@@ -20,7 +20,7 @@ class Overseers::SalesOrderPolicy < Overseers::ApplicationPolicy
   end
 
   def edit_mis_date?
-    record.persisted? && ['vijay.manjrekar@bulkmro.com', 'gaurang.shah@bulkmro.com', 'devang.shah@bulkmro.com', 'nilesh.desai@bulkmro.com', 'bhargav.trivedi@bulkmro.com','pradeep.ketkale@bulkmro.com'].include?(overseer.email)
+    record.persisted? && ['vijay.manjrekar@bulkmro.com', 'gaurang.shah@bulkmro.com', 'devang.shah@bulkmro.com', 'nilesh.desai@bulkmro.com', 'bhargav.trivedi@bulkmro.com', 'pradeep.ketkale@bulkmro.com'].include?(overseer.email)
   end
 
   def update_mis_date?
@@ -211,6 +211,14 @@ class Overseers::SalesOrderPolicy < Overseers::ApplicationPolicy
 
   def order_cancellation_modal?
     accounts? || admin?
+  end
+
+  def order_cancellation_modal_by_isp?
+    admin? || inside?
+  end
+
+  def can_isp_cancel_so?
+    (inside? || admin_or_manager?) && !record.po_requests.present? && !record.invoices.present? && !record.inward_dispatches.present? && !record.outward_dispatches.present? && record.created_at.month == Date.today.month
   end
 
   class Scope
