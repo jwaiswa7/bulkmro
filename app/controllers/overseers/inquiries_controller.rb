@@ -154,7 +154,7 @@ class Overseers::InquiriesController < Overseers::BaseController
     export_service = Services::Overseers::Exporters::KraReportsExporter.new([], current_overseer, indexed_kra_reports, kra_params)
     export_service.call
 
-    redirect_to url_for(Export.kra_report.not_filtered.last.report)
+    redirect_to url_for(Export.kra_reports.not_filtered.last.report)
   end
 
   def export_all
