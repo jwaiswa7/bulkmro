@@ -354,7 +354,7 @@ class Overseers::InquiriesController < Overseers::BaseController
     authorize_acl :inquiry
 
     respond_to do |format|
-      format.html { render partial: 'overseers/dashboard/edit_followup', locals: {obj: @inquiry, url: update_followup_date_overseers_inquiry_path(@inquiry)} }
+      format.html { render partial: 'overseers/dashboard/common/edit_followup', locals: {obj: @inquiry, url: update_followup_date_overseers_inquiry_path(@inquiry)} }
     end
   end
 

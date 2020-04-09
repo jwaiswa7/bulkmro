@@ -9,10 +9,13 @@ class Overseers::DashboardController < Overseers::BaseController
     # else
     if current_overseer.inside_sales_executive?
       @dashboard = Overseers::Dashboard.new(current_overseer)
-      render 'new_sales_dashboard'
+      render template: 'overseers/dashboard/sales_executive/new_sales_dashboard'
     elsif current_overseer.acl_role.role_name == 'Accounts'
       @dashboard = Overseers::Dashboard.new(current_overseer)
-      render 'accounts_dashboard'
+      render template: 'overseers/dashboard/accounts/accounts_dashboard'
+    elsif current_overseer.acl_role.role_name == 'Inside Sales and Logistic Manager'
+      @dashboard = Overseers::Dashboard.new(current_overseer)
+      render template: 'overseers/dashboard/sales_manager/sales_manager_dashboard'
     elsif current_overseer.admin?
       # @dashboard = Rails.cache.fetch('admin_dashboard_data') do
       #   service = Services::Overseers::Dashboards::Admin.new
@@ -38,7 +41,7 @@ class Overseers::DashboardController < Overseers::BaseController
     inquiry_status_records = inquiry.inquiry_status_records.order(created_at: :desc).group_by { |c| c.created_at.to_date }
     if inquiry_status_records
       respond_to do |format|
-        format.html { render partial: 'overseers/dashboard/inq_status_records_data', locals: {inquiry_status_records: inquiry_status_records, inquiry: inquiry} }
+        format.html { render partial: 'overseers/dashboard/common/inq_status_records_data', locals: {inquiry_status_records: inquiry_status_records, inquiry: inquiry} }
       end
     end
   end
@@ -51,7 +54,7 @@ class Overseers::DashboardController < Overseers::BaseController
       body: InquiryMailer.acknowledgement(email_message).body.raw_source,
         )
     respond_to do |format|
-      format.html { render partial: 'overseers/dashboard/email_message', locals: {inquiry: inquiry, email_message: email_message} }
+      format.html { render partial: 'overseers/dashboard/common/email_message', locals: {inquiry: inquiry, email_message: email_message} }
     end
   end
 
@@ -82,15 +85,15 @@ class Overseers::DashboardController < Overseers::BaseController
     statuses_for_invoice_req = ['GRPO Pending', 'Pending AP Invoice']
     if statuses_for_invoice_req.include? params['status']
       respond_to do |format|
-        format.html {render partial: 'inquiry_list_wrapper', locals: {inq_for_dash: @dashboard.invoice_requests.map { |inv_req| inv_req.inquiry if inv_req.status == params['status'] }.compact}}
+        format.html {render partial: 'overseers/dashboard/common/inquiry_list_wrapper', locals: {inq_for_dash: @dashboard.invoice_requests.map { |inv_req| inv_req.inquiry if inv_req.status == params['status'] }.compact}}
       end
     elsif params['status'] == 'AR Invoice requested'
       respond_to do |format|
-        format.html {render partial: 'inquiry_list_wrapper', locals: {inq_for_dash: @dashboard.ar_invoice_requests.map { |inv_req| inv_req.inquiry if inv_req.status == params['status'] }.compact}}
+        format.html {render partial: 'overseers/dashboard/common/inquiry_list_wrapper', locals: {inq_for_dash: @dashboard.ar_invoice_requests.map { |inv_req| inv_req.inquiry if inv_req.status == params['status'] }.compact}}
       end
     else
       respond_to do |format|
-        format.html {render partial: 'inquiry_list_wrapper', locals: {inq_for_dash: @dashboard.inq_for_dash.map { |inquiry| inquiry if inquiry.status == params['status'] }.compact}}
+        format.html {render partial: 'overseers/dashboard/common/inquiry_list_wrapper', locals: {inq_for_dash: @dashboard.inq_for_dash.map { |inquiry| inquiry if inquiry.status == params['status'] }.compact}}
       end
     end
   end
@@ -107,7 +110,7 @@ class Overseers::DashboardController < Overseers::BaseController
       end
 
       respond_to do |format|
-        format.html {render partial: 'task_list_wrapper', locals: {inq_for_dash: inquiry, show_all_tasks: false, show_inquiry_tasks: true, inquiry_has_tasks: inquiry_has_tasks}}
+        format.html {render partial: 'overseers/dashboard/sales_executive/task_list_wrapper', locals: {inq_for_dash: inquiry, show_all_tasks: false, show_inquiry_tasks: true, inquiry_has_tasks: inquiry_has_tasks}}
       end
 
     elsif current_overseer.acl_role.role_name == 'Accounts'
@@ -120,7 +123,7 @@ class Overseers::DashboardController < Overseers::BaseController
       end
 
       respond_to do |format|
-        format.html {render partial: 'account_task_list_wrapper', locals: {inq_for_dash: inquiry, show_all_tasks: false, show_inquiry_tasks: true, inquiry_has_tasks: true}}
+        format.html {render partial: 'overseers/dashboard/accounts/account_task_list_wrapper', locals: {inq_for_dash: inquiry, show_all_tasks: false, show_inquiry_tasks: true, inquiry_has_tasks: true}}
       end
     end
   end

@@ -7,6 +7,10 @@ class Overseers::Dashboard
     Inquiry.with_includes.where(inside_sales_owner_id: overseer.id).where('updated_at > ? OR quotation_followup_date > ?', Date.new(2018, 04, 01), Date.new(2018, 04, 01)).where.not(status: ['Order Won', 'Order Lost', 'Regret', 'Regret Request']).order(updated_at: :desc).compact
   end
 
+  def inquiries_for_manager
+    Inquiry.with_includes.where('updated_at > ? OR quotation_followup_date > ?', Date.new(2018, 04, 01), Date.new(2018, 04, 01)).where(status: ['Acknowledgement Mail', 'Preparing Quotation', 'Follow Up on Quotation', 'SO Not Created-Pending Customer PO Revision', 'SO Draft: Pending Accounts Approval']).order(updated_at: :desc).compact
+  end
+
   def invoice_requests
     InvoiceRequest.where('created_at > ?', Date.new(2019, 01, 01)).where(status: ['GRPO Pending', 'Pending AP Invoice']).order(updated_at: :desc).compact
   end
@@ -32,11 +36,17 @@ class Overseers::Dashboard
     inq_from_invoice_request + inq_from_ar_invoice_request + inquiries_with_so_approval_pending
   end
 
+  def inq_for_sales_manager_dash
+    inquiries_for_manager.group_by(&:inside_sales_owner_id)
+  end
+
   def inq_for_dash
     if self.overseer.inside_sales_executive?
       Inquiry.with_includes.where(inside_sales_owner_id: overseer.id).where('updated_at > ? OR quotation_followup_date > ?', Date.new(2018, 04, 01), Date.new(2018, 04, 01)).where.not(status: ['Order Won', 'Order Lost', 'Regret', 'Rejected by Accounts']).order(updated_at: :desc)
     elsif self.overseer.acl_role.role_name == 'Accounts'
       inq_for_account_dash
+    elsif self.overseer.acl_role.role_name == 'Inside Sales and Logistic Manager'
+      inquiries_for_manager
     end
   end
 
@@ -78,6 +88,8 @@ class Overseers::Dashboard
       ['New Inquiry', 'Preparing Quotation', 'Quotation Sent', 'Follow Up on Quotation', 'Expected Order']
     elsif self.overseer.acl_role.role_name == 'Accounts'
       ['GRPO Pending', 'Pending AP Invoice', 'AR Invoice requested', 'SO Draft: Pending Accounts Approval']
+    elsif self.overseer.acl_role.role_name == 'Inside Sales and Logistic Manager'
+      ['Acknowledgement Mail', 'Preparing Quotation', 'Follow Up on Quotation', 'SO Not Created-Pending Customer PO Revision', 'SO Draft: Pending Accounts Approval']
     end
   end
 
@@ -94,10 +106,13 @@ class Overseers::Dashboard
       else
         value_parameter = get_calculated_ar_invoice_request(ar_invoice_requests)
       end
+    elsif self.overseer.acl_role.role_name == 'Inside Sales and Logistic Manager'
+      count_parameter = inquiries_for_manager.pluck(:status)
+      value_parameter = inquiries_calculated_total(inquiries_for_manager, status)
     end
     {
-        count: count_parameter.count(status),
-        value: value_parameter
+        count: count_parameter.present? ? count_parameter.count(status) : 0,
+        value: value_parameter.present? ? value_parameter : 0
     }
   end
 

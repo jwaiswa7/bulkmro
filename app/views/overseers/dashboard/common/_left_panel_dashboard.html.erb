@@ -16,7 +16,7 @@
         <div class="bmro-dash-inqu h-100">
           <div class="bmro-width100 bmro-inquries-main inquiries-card h-100">
             <div class="inquiry-list-wrapper h-100">
-              <%= render partial: 'inquiry_list_wrapper', locals:{inq_for_dash: @dashboard.inq_for_dash} %>
+              <%= render partial: 'overseers/dashboard/common/inquiry_list_wrapper', locals:{inq_for_dash: @dashboard.inq_for_dash} %>
             </div>
           </div>
 
@@ -28,7 +28,7 @@
                 All Tasks
             </div>
 
-            <% if current_overseer.acl_role.role_name == 'Inside Sales Executive' %>
+            <% if current_overseer.acl_role.role_name == 'Inside Sales Executive' || current_overseer.acl_role.role_name == 'Inside Sales and Logistic Manager' %>
               <div class="bmro-width100 bmro-mt-collas subhead-height">
                 <div class="bmro-width100 bmro-pl-pr">
                   <div class="bmro-all-task-th bmro-task-td-width">
@@ -44,7 +44,7 @@
               </div>
               <div class="bmro-width100 bmro-mt-collas content-mid-height">
                 <div class="task-list-wrapper h-100">
-                  <%= render partial: 'task_list_wrapper', locals:{inq_for_dash: @dashboard.inq_for_dash, show_all_tasks: true, show_inquiry_tasks: false, inquiry_has_tasks: false} %>
+                  <%#= render partial: 'overseers/dashboard/sales_executive/task_list_wrapper', locals:{inq_for_dash: @dashboard.inq_for_dash, show_all_tasks: true, show_inquiry_tasks: false, inquiry_has_tasks: false} %>
                 </div>
               </div>
             <% elsif current_overseer.acl_role.role_name == 'Accounts' %>
@@ -69,7 +69,7 @@
               </div>
               <div class="bmro-width100 bmro-mt-collas content-mid-height">
                 <div class="task-list-wrapper h-100">
-                  <%= render partial: 'account_task_list_wrapper', locals:{inq_for_dash: @dashboard.inq_for_dash, show_all_tasks: true, show_inquiry_tasks: false, inquiry_has_tasks: false} %>
+                  <%#= render partial: 'overseers/dashboard/accounts/account_task_list_wrapper', locals:{inq_for_dash: @dashboard.inq_for_dash, show_all_tasks: true, show_inquiry_tasks: false, inquiry_has_tasks: false} %>
                 </div>
               </div>
             <% end %>
@@ -83,4 +83,4 @@
     </div>
   </div>
 
-  <%= render partial: 'email_template' %>
+  <%#= render partial: 'overseers/dashboard/common/email_template' %>
