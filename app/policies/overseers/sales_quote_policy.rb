@@ -28,7 +28,7 @@ class Overseers::SalesQuotePolicy < Overseers::ApplicationPolicy
   def new_sales_order?
     date = Date.new(2020, 01, 15).end_of_day
     if record.inquiry.created_at.beginning_of_day >= date
-      new_revision? && record.inquiry.synced? && record.synced? && record.inquiry.valid_for_new_sales_order? && record.email_messages.present? && record.sales_quote_quantity_not_fulfilled? && (record.inquiry.last_synced_quote_id.present? && (record.inquiry.final_sales_quote.id == record.inquiry.last_synced_quote_id)) && (record.inquiry.final_sales_quote.id == record.id) && order_dates_presence_check?
+      new_revision? && record.inquiry.synced? && record.synced? && record.inquiry.valid_for_new_sales_order? && record.email_messages.present? && record.sales_quote_quantity_not_fulfilled? && (record.inquiry.last_synced_quote_id.present? && (record.inquiry.final_sales_quote.id == record.inquiry.last_synced_quote_id)) && (record.inquiry.final_sales_quote.id == record.id) &&(record.id == record.inquiry.last_synced_quote_id) && order_dates_presence_check?
     else
       new_revision? && record.inquiry.synced? && record.synced? && record.inquiry.valid_for_new_sales_order? && record.email_messages.present? && record.sales_quote_quantity_not_fulfilled? && (record.inquiry.last_synced_quote_id.present? && (record.inquiry.final_sales_quote.id == record.inquiry.last_synced_quote_id)) && (record.inquiry.final_sales_quote.id == record.id)
     end
