@@ -3,12 +3,22 @@
     <div class="bmro-width100 leftside">
       <div class="bmro-width100 status-height">
         <div class="bmro-dash-box">
-          <% @dashboard.main_statuses.each do |status| %>
-            <div class="bmro-same-box col <%= current_overseer.acl_role.role_name == 'Inside Sales and Logistic Manager' ? 'status-box-sales-manager' : 'status-box' %>" data-status="<%= status %>">
-              <label><%= status %></label>
-              <h5><%= @dashboard.get_status_metrics(status)[:'count'] %></h5>
-              <span><%= format_currency(@dashboard.get_status_metrics(status)[:'value']) %></span>
-            </div>
+          <% if @dashboard.main_statuses.is_a?(Array) %>
+            <% @dashboard.main_statuses.each do |status| %>
+              <div class="bmro-same-box col status-box" data-status="<%= status %>">
+                <label><%= status %></label>
+                <h5><%= @dashboard.get_status_metrics(status)[:'count'] %></h5>
+                <span><%= format_currency(@dashboard.get_status_metrics(status)[:'value']) %></span>
+              </div>
+            <% end %>
+          <% else %>
+            <% @dashboard.main_statuses.each do |box_name, status_names| %>
+              <div class="bmro-same-box col <%= current_overseer.acl_role.role_name == 'Inside Sales and Logistic Manager' ? 'status-box-sales-manager' : 'status-box' %>">
+                <label><%= box_name %></label>
+                <h5><%= @dashboard.get_status_metrics_for_sales_manager(status_names)[:'count'] %></h5>
+                <span><%= format_currency(@dashboard.get_status_metrics_for_sales_manager(status_names)[:'value']) %></span>
+              </div>
+            <% end %>
           <% end %>
         </div>
       </div>

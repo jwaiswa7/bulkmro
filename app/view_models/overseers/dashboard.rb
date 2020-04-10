@@ -8,7 +8,7 @@ class Overseers::Dashboard
   end
 
   def inquiries_for_manager
-    Inquiry.with_includes.where('updated_at > ? OR quotation_followup_date > ?', Date.new(2018, 04, 01), Date.new(2018, 04, 01)).where(status: ['Acknowledgement Mail', 'Preparing Quotation', 'Follow Up on Quotation', 'SO Not Created-Pending Customer PO Revision', 'SO Draft: Pending Accounts Approval']).order(updated_at: :desc).compact
+    Inquiry.with_includes.where('created_at > ? OR quotation_followup_date > ?', Date.new(2018, 04, 01), Date.new(2018, 04, 01)).where(status: ['New Inquiry','Acknowledgement Mail', 'Cross Reference', 'RFQ Sent','PQ Received', 'Preparing Quotation', 'Follow Up on Quotation', 'SO Not Created-Pending Customer PO Revision', 'SO Draft: Pending Accounts Approval', 'SO Not Created-Customer PO Awaited']).order(updated_at: :desc).compact
   end
 
   def invoice_requests
@@ -89,7 +89,13 @@ class Overseers::Dashboard
     elsif self.overseer.acl_role.role_name == 'Accounts'
       ['GRPO Pending', 'Pending AP Invoice', 'AR Invoice requested', 'SO Draft: Pending Accounts Approval']
     elsif self.overseer.acl_role.role_name == 'Inside Sales and Logistic Manager'
-      ['Acknowledgement Mail', 'Preparing Quotation', 'Follow Up on Quotation', 'SO Not Created-Pending Customer PO Revision', 'SO Draft: Pending Accounts Approval']
+      {
+       'Acknowledgement Pending' => ['New Inquiry'],
+       'Preparing Quotation' => ['New Inquiry', 'Acknowledgement Mail','Cross Reference', 'RFQ Sent','PQ Received','Preparing Quotation'],
+       'Follow Up' => ['Follow Up on Quotation'],
+       'Awaited Customer PO' => ['SO Not Created-Customer PO Awaited', 'SO Not Created-Pending Customer PO Revision'],
+       'SO: Pending Accounts Approval' => ['SO Draft: Pending Accounts Approval']
+      }
     end
   end
 
@@ -106,9 +112,6 @@ class Overseers::Dashboard
       else
         value_parameter = get_calculated_ar_invoice_request(ar_invoice_requests)
       end
-    elsif self.overseer.acl_role.role_name == 'Inside Sales and Logistic Manager'
-      count_parameter = inquiries_for_manager.pluck(:status)
-      value_parameter = inquiries_calculated_total(inquiries_for_manager, status)
     end
     {
         count: count_parameter.present? ? count_parameter.count(status) : 0,
@@ -116,8 +119,25 @@ class Overseers::Dashboard
     }
   end
 
+  def get_status_metrics_for_sales_manager(status_arr)
+    total_count = 0
+    count_parameter = inquiries_for_manager.pluck(:status)
+    status_arr.each { |status| total_count += count_parameter.count(status) }
+    value_parameter = inquiries_calculated_total(inquiries_for_manager, status_arr)
+    {
+        count: total_count,
+        value: value_parameter.present? ? value_parameter : 0
+    }
+  end
+
   def inquiries_calculated_total(doc, status)
-    doc.map {  |inquiry| inquiry.calculated_total if inquiry.status == status }.compact.sum
+    total_value = 0
+    if status.is_a?(Array)
+      status.each { |each_status| total_value += doc.map {  |inquiry| inquiry.calculated_total if inquiry.status == each_status }.compact.sum }
+    else
+      total_value = doc.map {  |inquiry| inquiry.calculated_total if inquiry.status == status }.compact.sum
+    end
+    total_value
   end
 
   def get_calculated_invoice_request(invoice_requests_arr, status)
