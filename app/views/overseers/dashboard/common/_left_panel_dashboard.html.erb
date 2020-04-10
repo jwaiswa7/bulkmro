@@ -4,7 +4,7 @@
       <div class="bmro-width100 status-height">
         <div class="bmro-dash-box">
           <% @dashboard.main_statuses.each do |status| %>
-            <div class="bmro-same-box col status-box" data-status="<%= status %>">
+            <div class="bmro-same-box col <%= current_overseer.acl_role.role_name == 'Inside Sales and Logistic Manager' ? 'status-box-sales-manager' : 'status-box' %>" data-status="<%= status %>">
               <label><%= status %></label>
               <h5><%= @dashboard.get_status_metrics(status)[:'count'] %></h5>
               <span><%= format_currency(@dashboard.get_status_metrics(status)[:'value']) %></span>
@@ -16,7 +16,11 @@
         <div class="bmro-dash-inqu h-100">
           <div class="bmro-width100 bmro-inquries-main inquiries-card h-100">
             <div class="inquiry-list-wrapper h-100">
-              <%= render partial: 'overseers/dashboard/common/inquiry_list_wrapper', locals:{inq_for_dash: @dashboard.inq_for_dash} %>
+              <% if current_overseer.acl_role.role_name == 'Inside Sales and Logistic Manager' %>
+                <%= render partial: 'overseers/dashboard/sales_manager/inquiry_list_sales_manager_wrapper', locals:{inq_for_dash: @dashboard.inq_for_dash, inq_for_sales_manager_dash: @dashboard.inq_for_sales_manager_dash } %>
+              <% else %>
+                <%= render partial: 'overseers/dashboard/common/inquiry_list_wrapper', locals:{inq_for_dash: @dashboard.inq_for_dash} %>
+              <% end %>
             </div>
           </div>
 
@@ -44,7 +48,7 @@
               </div>
               <div class="bmro-width100 bmro-mt-collas content-mid-height">
                 <div class="task-list-wrapper h-100">
-                  <%#= render partial: 'overseers/dashboard/sales_executive/task_list_wrapper', locals:{inq_for_dash: @dashboard.inq_for_dash, show_all_tasks: true, show_inquiry_tasks: false, inquiry_has_tasks: false} %>
+                  <%= render partial: 'overseers/dashboard/sales_executive/task_list_wrapper', locals:{inq_for_dash: @dashboard.inq_for_dash, show_all_tasks: true, show_inquiry_tasks: false, inquiry_has_tasks: false} %>
                 </div>
               </div>
             <% elsif current_overseer.acl_role.role_name == 'Accounts' %>

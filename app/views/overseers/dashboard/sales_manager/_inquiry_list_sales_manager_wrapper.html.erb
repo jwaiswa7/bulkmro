@@ -1,0 +1,108 @@
+<div class="bmro-width100 bmro-sales-pedding subhead-height">
+  <span class="bmro-inqu-no"><%= @dashboard.inq_for_dash.count %></span>
+  <p class="bmro-menu bmro-font-size-dash dropdown-toggle" id="My-inquries" data-toggle="dropdown" role="button">
+    My Inquiries
+  </p>
+  <div class="bmro-star-parent bmro-reset-button bmro-inquiry-show-hide bmro-cursol">
+    <label class="bmro-cursol">Reset</label>
+  </div>
+  <div class="bmro-star-parent bmro-reset-button bmro-cursol" onClick="window.location.reload();">
+    <label class="bmro-cursol">Reset All</label>
+  </div>
+</div>
+
+<div class="bmro-width100 bmro-dash-table-mt sales-dash-left">
+  <div class="bmro-width100 bmro-sales-acknow-title">
+    <div class="bmro-all-task-th bmro-acknow-width1">
+      <span class="bmro-task-th">Name</span>
+    </div>
+
+    <div class=" bmro-acknow-width2 bmro-fr bmro-text-right">
+      <span class="bmro-task-th">Acknowledgement Pending</span>
+    </div>
+  </div>
+  <% inq_for_sales_manager_dash.each do |sales_owner_id, inquiries| %>
+    <div id="inquiries-owner-heading-<%= sales_owner_id %>" class="bmro-width100 ">
+    <div class="card">
+      <div class="bmro-width100 card-header bmro-Inquries-task bmro-white-background d-flex ">
+        <div id='acknow-card' class="bmro-acknow-width1 d-flex">
+          <div  class="bmro-fl">
+            <div  class="bmro-drop-icon-head bmro-drop-icon-head-acknow" data-toggle="collapse" data-target="#inquiries-collapse-<%= sales_owner_id %>" aria-haspopup="true" aria-expanded="false" aria-controls="inquiries-collapse-<%= sales_owner_id %>" role="button"></div>
+          </div>
+          <div>
+            <span class="bmro-account-label-one "><%= sales_owner_id %></span>
+          </div>
+        </div>
+        <div class="bmro-acknow-width2 bmro-fr">
+          <span class="bmro-acknow-no"><%= inquiries.count %></span>
+        </div>
+      </div>
+      <div id="inquiries-collapse-<%= sales_owner_id %>" class="collapse" aria-labelledby="#acknow-card" data-parent="#inquiries-owner-heading-<%= sales_owner_id %>">
+        <div class="card-body bmro-grey-background inner-inquiry-table-wrapper">
+          <div class="inner-inquiry-table">
+            <div class="bmro-width100  bmro-inner-Inquries d-flex">
+              <div class=" bmro-Inquries-width1">
+                <span class="bmro-task-th bmro-task-th-p0">Inquiry No</span>
+              </div>
+              <div class=" bmro-inner-Inquries-width2">
+                <span class="bmro-task-th bmro-task-th-p0">Account</span>
+              </div>
+              <div class=" bmro-inner-Inquries-width3 bmro-text-right">
+                <span class="bmro-task-th bmro-task-th-pr0">Pending</span>
+              </div>
+            </div>
+            <% inquiries.each do |inquiry| %>
+              <div class="bmro-width100 bmro-grey-background bmro-inner-Inquries">
+                <div class="bmro-task-no-td bmro-Inquries-width1 bmro-fl bmro-position-relative d-flex">
+                  <span class="bmro-big-heading bmro-fr bmro-td-span bmro-cursol bmro-order-show inquiry"><%= inquiry.inquiry_number %></span>
+                </div>
+                <div class="bmro-task-print bmro-Inquries-width2 bmro-fl">
+                  <span class="bmro-account-label-one"><%= inquiry.company.name %></span>
+                  <span class="bmro-account-label-two"><%= inquiry.subject %></span>
+                  <span class="bmro-status-label bmro-<%= status_color(inquiry.status) %>" data-id="<%= inquiry.inquiry_number %>"><strong><%= inquiry.status %></strong></span>
+                </div>
+                <div class="bmro-Inquries-width3 bmro-fr bmro-text-right">
+                  <span class="bmro-table-order-no">12</span>
+                </div>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <% end %>
+</div>
+
+
+
+<!--<div class="bmro-width100 bmro-dash-table-mt sales-dash-left">-->
+<!--  <div class="bmro-width100 bmro-pl-pr">-->
+<!--    <div class="bmro-all-task-th bmro-fl bmro-Inquries-width1">-->
+<!--      <span class="bmro-task-th bmro-task-th-p0">Inquiry No</span>-->
+<!--    </div>-->
+<!--    <div class="bmro-all-task-th bmro-fl bmro-Inquries-width2">-->
+<!--      <span class="bmro-task-th bmro-task-th-p0 ">Account</span>-->
+<!--    </div>-->
+<!--    <div class="bmro-all-task-th  bmro-fr bmro-Inquries-width3 bmro-text-right">-->
+<!--      <span class="bmro-task-th ">Orders</span>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--  <div class="bmro-width100 sub-content-height">-->
+    <%# inq_for_dash.each do |inquiry| %>
+<!--      <div class="bmro-width100 bmro-Inquries-task">-->
+<!--        <div class="bmro-task-no-td bmro-Inquries-width1 bmro-fl bmro-position-relative">-->
+<!--          <span class="bmro-big-heading bmro-fl  bmro-td-span bmro-cursol bmro-order-show inquiry" data-inquiry="<%#= inquiry.inquiry_number %>"><%#= inquiry.inquiry_number %></span>-->
+<!--        </div>-->
+<!--        <div class="bmro-task-print bmro-Inquries-width2 bmro-fl">-->
+<!--          <span class="bmro-account-label-one"><%#= inquiry.company.name %></span>-->
+<!--          <span class="bmro-account-label-two"><%#= inquiry.subject %></span>-->
+<!--          <span class="bmro-status-label bmro-<%#= status_color(inquiry.status) %>" data-id="<%#= inquiry.inquiry_number %>"><strong><%#= inquiry.status %></strong></span>-->
+<!--        </div>-->
+<!--        <div class="bmro-Inquries-width3 bmro-fl bmro-text-right">-->
+<!--          <span class="bmro-table-order-no"><%#= inquiry.sales_orders.count %></span>-->
+<!--        </div>-->
+<!--      </div>-->
+    <%# end %>
+<!--  </div>-->
+<!--</div>-->
