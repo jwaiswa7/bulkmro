@@ -55,7 +55,7 @@
               <span class="bmro-big-heading bmro-fl  bmro-td-span"><%= invoice_req.purchase_order.po_number %></span>
             </div>
 
-            <div class="bmro-task-print bmro-task-width-new-account bmro-fl" >
+            <div class="bmro-task-print bmro-inner-task-width-new-account bmro-fl" >
               <div class="bmro-commited-data bmro-task-td">
                 Add GRPO SAP number.
               </div>
@@ -65,7 +65,7 @@
               <%= simple_form_for :invoice_request, html: {class: 'sales-form-inline'}, :url => update_invoice_request_overseers_dashboard_path do |f| %>
                 <%= f.hidden_field :inquiry_number, value: inquiry.inquiry_number %>
                 <%= f.hidden_field :invoice_request_id, value: invoice_req.id %>
-                <%= f.input :grpo_number, placeholder: "SAP GRPO No", :as => :string, input_html: {class: "form-control bmro-new-submit-input",:maxlength => 9}, label: false %>
+                <%= f.input :grpo_number, placeholder: "SAP GRPO No", :as => :string, input_html: {class: "form-control bmro-new-submit-input-v2",:maxlength => 9}, label: false %>
                 <%= f.submit :submit, class: "btn bmro-action-button " %>
               <% end %>
             </div>
@@ -87,7 +87,7 @@
               <span class="bmro-big-heading bmro-fl  bmro-td-span"><%= invoice_req.purchase_order.po_number %></span>
             </div>
 
-            <div class="bmro-task-print bmro-task-width-new-account bmro-fl" >
+            <div class="bmro-task-print bmro-inner-task-width-new-account bmro-fl" >
               <div class="bmro-commited-data bmro-task-td">
                 Add AP SAP number.
               </div>
@@ -97,7 +97,7 @@
               <%= simple_form_for :invoice_request, html: {class: 'sales-form-inline'}, :url => update_invoice_request_overseers_dashboard_path do |f| %>
                 <%= f.hidden_field :inquiry_number, value: inquiry.inquiry_number %>
                 <%= f.hidden_field :invoice_request_id, value: invoice_req.id %>
-                <%= f.input :ap_invoice_number, placeholder: "SAP AP No", :as => :string, input_html: {class: "form-control bmro-new-submit-input"}, label: false %>
+                <%= f.input :ap_invoice_number, placeholder: "SAP AP No", :as => :string, input_html: {class: "form-control bmro-new-submit-input-v2"}, label: false %>
                 <%= f.submit :submit, class: "btn bmro-action-button " %>
               <% end %>
             </div>
@@ -121,7 +121,7 @@
               <span class="bmro-big-heading bmro-fl  bmro-td-span">--</span>
             </div>
 
-            <div class="bmro-task-print bmro-task-width-new-account bmro-fl" >
+            <div class="bmro-task-print bmro-inner-task-width-new-account bmro-fl" >
               <div class="bmro-commited-data bmro-task-td">
                 Add AR number.
               </div>
@@ -150,7 +150,7 @@
             <span class="bmro-big-heading bmro-fl bmro-td-span">--</span>
           </div>
 
-          <div class="bmro-task-print bmro-task-width-new-account bmro-fl" >
+          <div class="bmro-task-print bmro-inner-task-width-new-account bmro-fl" >
             <div class="bmro-commited-data bmro-task-td">
               Sales Order
             </div>
