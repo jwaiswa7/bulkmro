@@ -3,7 +3,7 @@ class Overseers::Inquiries::SalesQuotesController < Overseers::Inquiries::BaseCo
 
   def index
     @model_name = 'sales_quotes'
-    @sales_quotes = @inquiry.sales_quotes
+    @sales_quotes = @inquiry.sales_quotes.order(created_at: :desc)
     authorize_acl @sales_quotes
   end
 
