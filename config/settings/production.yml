@@ -92,7 +92,7 @@ sap:
   ATTACHMENT_ENDPOINT: 'https://35.200.244.135:22'
   ATTACHMENT_DIRECTORY: '/usr/sap/SAPBusinessOne/B1_SHF/Attachments'
   ATTACHMENT_API: '35.200.244.135/b1_shf/Attachments'
-  ATTACHMENT_USERNAME: 'pradeep'
+  ATTACHMENT_USERNAME: 'sapuser'
   ATTACHMENT_PASSWORD: ''
 
 accounts:
