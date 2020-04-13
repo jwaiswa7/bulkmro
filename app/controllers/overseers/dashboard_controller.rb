@@ -82,18 +82,27 @@ class Overseers::DashboardController < Overseers::BaseController
 
   def get_filtered_inquiries
     @dashboard = Overseers::Dashboard.new(current_overseer)
-    statuses_for_invoice_req = ['GRPO Pending', 'Pending AP Invoice']
-    if statuses_for_invoice_req.include? params['status']
+    if current_overseer.acl_role.role_name == 'Inside Sales and Logistic Manager'
+      # for role = Inside Sales and Logistic Manager
+      inquiry_as_per_box = Inquiry.with_includes.where('created_at > ? OR quotation_followup_date > ?', Date.new(2018, 04, 01), Date.new(2018, 04, 01)).where(status: @dashboard.main_statuses[params['status']]).order(updated_at: :desc).compact
       respond_to do |format|
-        format.html {render partial: 'overseers/dashboard/common/inquiry_list_wrapper', locals: {inq_for_dash: @dashboard.invoice_requests.map { |inv_req| inv_req.inquiry if inv_req.status == params['status'] }.compact}}
-      end
-    elsif params['status'] == 'AR Invoice requested'
-      respond_to do |format|
-        format.html {render partial: 'overseers/dashboard/common/inquiry_list_wrapper', locals: {inq_for_dash: @dashboard.ar_invoice_requests.map { |inv_req| inv_req.inquiry if inv_req.status == params['status'] }.compact}}
+        format.html {render partial: 'overseers/dashboard/sales_manager/inquiry_list_sales_manager_wrapper', locals: {inq_for_sales_manager_dash: inquiry_as_per_box.group_by(&:inside_sales_owner_id)}}
       end
     else
-      respond_to do |format|
-        format.html {render partial: 'overseers/dashboard/common/inquiry_list_wrapper', locals: {inq_for_dash: @dashboard.inq_for_dash.map { |inquiry| inquiry if inquiry.status == params['status'] }.compact}}
+      # for role = accounts, sales_executives
+      statuses_for_invoice_req = ['GRPO Pending', 'Pending AP Invoice']
+      if statuses_for_invoice_req.include? params['status']
+        respond_to do |format|
+          format.html {render partial: 'overseers/dashboard/common/inquiry_list_wrapper', locals: {inq_for_dash: @dashboard.invoice_requests.map { |inv_req| inv_req.inquiry if inv_req.status == params['status'] }.compact}}
+        end
+      elsif params['status'] == 'AR Invoice requested'
+        respond_to do |format|
+          format.html {render partial: 'overseers/dashboard/common/inquiry_list_wrapper', locals: {inq_for_dash: @dashboard.ar_invoice_requests.map { |inv_req| inv_req.inquiry if inv_req.status == params['status'] }.compact}}
+        end
+      else
+        respond_to do |format|
+          format.html {render partial: 'overseers/dashboard/common/inquiry_list_wrapper', locals: {inq_for_dash: @dashboard.inq_for_dash.map { |inquiry| inquiry if inquiry.status == params['status'] }.compact}}
+        end
       end
     end
   end
