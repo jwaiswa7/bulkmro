@@ -35,7 +35,7 @@ const newAccountsConfirmation = () => {
 let checkCheckboxStatus = () => {
     if ($('.new_accounts_confirmation input[type="checkbox"]').not(':checked').length == 0) {
         $('.account-approval').prop('disabled', false);
-        if (!$('.account-rejection').hasClass('collapsed')){
+        if ($('.account-rejection').hasClass('collapsed')){
             $('.account-rejection').click();
         }
         $('.account-rejection').addClass('disabled');
