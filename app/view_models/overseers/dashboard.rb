@@ -40,6 +40,10 @@ class Overseers::Dashboard
     inquiries_for_manager.group_by(&:inside_sales_owner_id)
   end
 
+  def inq_for_sales_manager_dash_by_name
+    inq_for_sales_manager_dash.map { |id,inquiries| [Overseer.find_by_id(id).name,inquiries] }.to_h
+  end
+
   def inq_for_dash
     if self.overseer.inside_sales_executive?
       Inquiry.with_includes.where(inside_sales_owner_id: overseer.id).where('updated_at > ? OR quotation_followup_date > ?', Date.new(2018, 04, 01), Date.new(2018, 04, 01)).where.not(status: ['Order Won', 'Order Lost', 'Regret', 'Rejected by Accounts']).order(updated_at: :desc)

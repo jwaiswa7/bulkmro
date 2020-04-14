@@ -27,7 +27,7 @@
           <div class="bmro-width100 bmro-inquries-main inquiries-card h-100">
             <div class="inquiry-list-wrapper h-100">
               <% if current_overseer.acl_role.role_name == 'Inside Sales and Logistic Manager' %>
-                <%= render partial: 'overseers/dashboard/sales_manager/inquiry_list_sales_manager_wrapper', locals:{inq_for_dash: @dashboard.inq_for_dash, inq_for_sales_manager_dash: @dashboard.inq_for_sales_manager_dash } %>
+                <%= render partial: 'overseers/dashboard/sales_manager/inquiry_list_sales_manager_wrapper', locals:{inq_for_dash: @dashboard.inq_for_dash, inq_for_sales_manager_dash: @dashboard.inq_for_sales_manager_dash_by_name } %>
               <% else %>
                 <%= render partial: 'overseers/dashboard/common/inquiry_list_wrapper', locals:{inq_for_dash: @dashboard.inq_for_dash} %>
               <% end %>

@@ -22,23 +22,23 @@
     </div>
   </div>
   <div class="bmro-width100 sub-content-sales-height">
-  <% inq_for_sales_manager_dash.each do |sales_owner_id, inquiries| %>
-    <div id="inquiries-owner-heading-<%= sales_owner_id %>" class="bmro-width100 ">
+  <% inq_for_sales_manager_dash.each do |sales_owner, inquiries| %>
+    <div id="inquiries-owner-heading-<%= sales_owner.delete(' ') %>" class="bmro-width100 ">
     <div class="card">
       <div class="bmro-width100 card-header bmro-Inquries-task bmro-white-background d-flex ">
         <div id='acknow-card' class="bmro-acknow-width1 d-flex">
           <div  class="bmro-fl">
-            <div  class="bmro-drop-icon-head bmro-drop-icon-head-acknow" data-toggle="collapse" data-target="#inquiries-collapse-<%= sales_owner_id %>" aria-haspopup="true" aria-expanded="false" aria-controls="inquiries-collapse-<%= sales_owner_id %>" role="button"></div>
+            <div  class="bmro-drop-icon-head bmro-drop-icon-head-acknow" data-toggle="collapse" data-target="#inquiries-collapse-<%= sales_owner.delete(' ') %>" aria-haspopup="true" aria-expanded="false" aria-controls="inquiries-collapse-<%= sales_owner.delete(' ') %>" role="button"></div>
           </div>
           <div>
-            <span class="bmro-account-label-one "><%= sales_owner_id %></span>
+            <span class="bmro-account-label-one "><%= sales_owner %></span>
           </div>
         </div>
         <div class="bmro-acknow-width2 bmro-fr">
           <span class="bmro-acknow-no"><%= inquiries.count %></span>
         </div>
       </div>
-      <div id="inquiries-collapse-<%= sales_owner_id %>" class="collapse" aria-labelledby="#acknow-card" data-parent="#inquiries-owner-heading-<%= sales_owner_id %>">
+      <div id="inquiries-collapse-<%= sales_owner.delete(' ') %>" class="collapse" aria-labelledby="#acknow-card" data-parent="#inquiries-owner-heading-<%= sales_owner.delete(' ') %>">
         <div class="card-body bmro-grey-background inner-inquiry-table-wrapper">
           <div class="inner-inquiry-table">
             <div class="bmro-width100  bmro-inner-Inquries d-flex">
