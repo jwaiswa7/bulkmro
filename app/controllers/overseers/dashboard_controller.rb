@@ -134,6 +134,19 @@ class Overseers::DashboardController < Overseers::BaseController
       respond_to do |format|
         format.html {render partial: 'overseers/dashboard/accounts/account_task_list_wrapper', locals: {inq_for_dash: inquiry, show_all_tasks: false, show_inquiry_tasks: true, inquiry_has_tasks: true}}
       end
+
+    elsif current_overseer.acl_role.role_name == 'Inside Sales and Logistic Manager'
+      inquiry = []
+      @dashboard.inq_for_dash.each do |inq|
+        if inq.inquiry_number == params['inquiry_number'].to_i
+          inquiry.push inq
+          break
+        end
+      end
+
+      respond_to do |format|
+        format.html {render partial: 'overseers/dashboard/sales_executive/task_list_wrapper', locals: {inq_for_dash: inquiry, show_all_tasks: false, show_inquiry_tasks: true, inquiry_has_tasks: true}}
+      end
     end
   end
 
