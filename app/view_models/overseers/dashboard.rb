@@ -84,6 +84,9 @@ class Overseers::Dashboard
     elsif self.overseer.acl_role.role_name == 'Accounts'
       invoice_request_ids = invoice_requests.pluck(:id)
       InvoiceRequestComment.where(invoice_request_id: invoice_request_ids).order(created_at: :desc).limit(8).group_by { |c| c.created_at.to_date }
+    elsif self.overseer.acl_role.role_name == 'Inside Sales and Logistic Manager'
+      inquiries_for_manager_ids = inquiries_for_manager.pluck(:id)
+      InquiryComment.where(inquiry_id: inquiries_for_manager_ids).order(created_at: :desc).limit(10).group_by { |c| c.created_at.to_date }
     end
   end
 
