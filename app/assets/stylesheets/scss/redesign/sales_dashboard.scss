@@ -736,7 +736,8 @@ p.bmro-menu{
   line-height: 16px;
   float: left;
   width: 100%;
-  margin-top: 6px;
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
 .bmro-today-mt-mb{
   margin-top: 24px;
@@ -766,6 +767,20 @@ p.bmro-menu{
   left: 5px;
   cursor: pointer;
 }
+.bmro-new-today-button{
+  border: 0.6px solid #DADFE7;
+  border-radius: 2px;
+  color: #2E435C;
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: -0.2px;
+  line-height: 11px;
+  padding: 4px 8px;
+  position: relative;
+  bottom: 3px;
+  left: 5px;
+}
+
 .bmro-today-posted{
   color: #999FA7;
   font-size: 11px;
