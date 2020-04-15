@@ -36,6 +36,9 @@
             <thead>
             <tr>
               <th class="text-uppercase">
+                <strong><span data-toggle="tooltip" title="Serial Number">#</span></strong>
+              </th>
+              <th class="text-uppercase">
                 <strong><span data-toggle="tooltip" title="Serial Number">Sr.</span></strong>
               </th>
               <th class="text-uppercase">
@@ -47,14 +50,19 @@
             </tr>
             </thead>
             <tbody>
-            <%= f.simple_fields_for :inquiry_products, f.object.inquiry_products.select { |ip| ip.approved?; } do |inquiry_product, i| %>
-              <tr class="product_wrapper col-md-12">
+            <%= f.simple_fields_for :inquiry_products, f.object.inquiry_products.order(sr_no: :asc).select { |ip| ip.approved?; } do |inquiry_product, i| %>
+              <tr class="product_wrappecol-md-12">
                 <td>
                   <%= inquiry_product.hidden_field :id %>
                   <span class="custom-control custom-checkbox">
                     <%= check_box_tag 'inquiry_product_ids[]', inquiry_product.object.id, false, id: "inquiry_product_id_#{inquiry_product.object.id}", class: 'custom-control-input' %>
                     <label class="custom-control-label" for="<%= "inquiry_product_id_#{inquiry_product.object.id}" %>"></label>
                   </span>
+                </td>
+                <td>
+                  <div class="col-md-1">
+                    <%= inquiry_product.object.sr_no %>
+                  </div>
                 </td>
                 <td>
                   <div class="row mb-1">
