@@ -8,13 +8,14 @@ import getInquiryTasks from './getInquiryTasks';
 
 const newdashboardload= function() {
 
-notificationsPanel()
-navigationMenu();
-clickOnCompose();
-statusBox();
-
+    notificationsPanel()
+    navigationMenu();
+    clickOnCompose();
+    statusBox();
     getStatusRecords();
     getInquiryTasks();
+
+    $(".bmro-")
 
     $(".bmro-sales-back").click(function () {
         // $('.bmro-same-box').removeClass('bmro-same-box-active');
