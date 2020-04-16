@@ -23,6 +23,8 @@
           <%= po_request.hidden_field :approved_by_id %>
           <%= po_request.hidden_field :reason_to_stock %>
           <%= po_request.hidden_field :estimated_date_to_unstock %>
+          <%= po_request.hidden_field :delivery_type %>
+          <%= po_request.hidden_field :transport_mode %>
 
           <strong class="d-block text-uppercase">
             <span class="lead text-black-50 text-small mt-1 mr-1">#<%= (po_request.index + 1) || 0 %></span>
