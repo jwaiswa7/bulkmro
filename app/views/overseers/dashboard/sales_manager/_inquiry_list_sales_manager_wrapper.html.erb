@@ -48,9 +48,6 @@
               <div class=" bmro-inner-Inquries-width2">
                 <span class="bmro-task-th bmro-task-th-p0">Account</span>
               </div>
-              <div class=" bmro-inner-Inquries-width3 bmro-text-right">
-                <span class="bmro-task-th bmro-task-th-pr0">Pending</span>
-              </div>
             </div>
             <% inquiries.each do |inquiry| %>
               <div class="bmro-width100 bmro-grey-background bmro-inner-Inquries">
@@ -61,9 +58,6 @@
                   <span class="bmro-account-label-one"><%= inquiry.company.name %></span>
                   <span class="bmro-account-label-two"><%= inquiry.subject %></span>
                   <span class="bmro-status-label bmro-<%= status_color(inquiry.status) %>" data-id="<%= inquiry.inquiry_number %>"><strong><%= inquiry.status %></strong></span>
-                </div>
-                <div class="bmro-Inquries-width3 bmro-fr bmro-text-right">
-                  <span class="bmro-table-order-no">12</span>
                 </div>
               </div>
             <% end %>
