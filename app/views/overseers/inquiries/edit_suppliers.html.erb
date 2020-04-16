@@ -51,7 +51,7 @@
             </thead>
             <tbody>
             <%= f.simple_fields_for :inquiry_products, f.object.inquiry_products.order(sr_no: :asc).select { |ip| ip.approved?; } do |inquiry_product, i| %>
-              <tr class="product_wrappecol-md-12">
+              <tr class="product_wrapper col-md-12">
                 <td>
                   <%= inquiry_product.hidden_field :id %>
                   <span class="custom-control custom-checkbox">
