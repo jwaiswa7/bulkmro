@@ -59,7 +59,7 @@
     <% end %>
     <% if stock %>
       <div class="col-12 col-md-4">
-        <%= f.association :contact, collection: selected_option_or_nil(f, :contact), input_html: {class: 'select2-ajax', :'data-source' => autocomplete_overseers_contacts_path}, label_method: :to_s %>
+        <%= f.association :contact, collection: selected_option_or_nil(f, :contact), input_html: {class: 'select2-ajax', :'data-source' => autocomplete_overseers_contacts_path}, label_method: :to_s, required: true %>
       </div>
     <% else %>
       <div class="col-12 col-md-4">
@@ -68,10 +68,10 @@
       </div>
     <% end %>
     <div class="col-12 col-md-3">
-      <%= f.input :contact_email, input_html: { class: 'bmro-form-input' }, label: 'Contact Email', placeholder: 'Contact email', required: !stock %>
+      <%= f.input :contact_email, input_html: { class: 'bmro-form-input' }, label: 'Contact Email', placeholder: 'Contact email', required: true %>
     </div>
     <div class="col-12 col-md-4">
-      <%= f.input :contact_phone, input_html: { class: 'bmro-form-input' }, label: 'Contact Phone', placeholder: 'Contact phone', required: !stock %>
+      <%= f.input :contact_phone, input_html: { class: 'bmro-form-input' }, label: 'Contact Phone', placeholder: 'Contact phone', required: true %>
     </div>
 
     <!--  <div class="col-12 col-md-4">-->
