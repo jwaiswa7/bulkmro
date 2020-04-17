@@ -1,0 +1,61 @@
+<div class="bmro-dash-rightside">
+<div class="bmro-width100 h-100">
+  <div class="bmro-width100">
+    <div class="bmro-dash-right-menu">
+
+      <span class="bmro-all-notification bmro-notification-action" role="button" id="notifications" >Notification</span>
+      <span class="bmro-all-notification bmro-Comments-action active-menu" role="button" id="comments">Comments</span>
+    </div>
+  </div>
+  <div class="bmro-width100 bmro-notification-sec bmro-hide" id="notification-rows">
+    <% @dashboard.notifications.each do |date, notifications| %>
+      <div class="bmro-today-list bmro-today-mt-mb">
+        <div class="bmro-width100 bmro-today-line-parent">
+          <div class="bmro-today-parent">
+            <% if date.today? %>
+              <span class="bmro-big-heading bmro-fl">Today</span>
+            <% else %>
+              <span class="bmro-big-heading bmro-fl"><%= date.strftime("%d/%m/%Y") %></span>
+            <% end %>
+          </div>
+          <span class="bmro-today-line"></span>
+        </div>
+      </div>
+      <% notifications.each do |notification| %>
+        <div class="bmro-today-list bmro-today-list-bm">
+          <h5 class="bmro-big-heading bmro-hash-mt">#<%= notification.id %> <span class="bmro-new-today-button">Notification</span></h5>
+          <span class="bmro-today-span"><%= notification.message %></span>
+          <span class="bmro-today-posted">Posted on: <%= notification.created_at.strftime("%d/%m/%Y %I:%M %P") %></span>
+
+        </div>
+      <%end %>
+    <%end %>
+  </div>
+  <div class="bmro-width100 bmro-comments-sec" id="comment-rows">
+
+    <% @dashboard.comments.each do |date, comments| %>
+      <div class="bmro-today-list bmro-today-list-bm bmro-today-mt-mb">
+        <div class="bmro-width100 bmro-today-line-parent">
+          <div class="bmro-today-parent">
+            <% if date.today? %>
+              <span class="bmro-big-heading bmro-fl">Today</span>
+            <% else %>
+              <span class="bmro-big-heading bmro-fl"><%= date.strftime("%d/%m/%Y") %></span>
+            <% end %>
+          </div>
+          <span class="bmro-today-line"></span>
+        </div>
+      </div>
+      <% comments.each do |comment| %>
+        <div class="bmro-today-list">
+          <h5 class="bmro-big-heading bmro-hash-mt">#<%= comment.id %> <span class="bmro-new-today-button">Comment</span></h5>
+          <span class="bmro-today-span"><%= comment.message.html_safe %></span>
+          <h5 class="bmro-big-heading bmro-hash-mt"><%= comment.created_by.to_s %> <span class="bmro-new-today-button"><%= comment.created_by.role %></span></h5>
+          <span class="bmro-today-posted">Posted on: <%= comment.created_at.strftime("%d/%m/%Y %I:%M %P") %></span>
+        </div>
+      <%end %>
+    <%end %>
+  </div>
+</div>
+  <%= render partial:'inquiry_tracker_slider_modal' %>
+</div>
