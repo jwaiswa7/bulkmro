@@ -59,6 +59,9 @@ body{
 .bmro-mp-0 .mt-3{
     margin-top: 0px!important;
 }
+.bmro-mp-1{
+  margin-top: 1%!important;
+}
 .bmro-bradecrumb-edit{
     float: left!important;
     color: #2C4159!important;
@@ -4361,8 +4364,6 @@ td .media.chat-item{
   background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAOCAYAAAAfSC3RAAAAAXNSR0IArs4c6QAAAVtJREFUKBWNUrFKxEAQnZlkzRdcoYWVCEJs1FIPYqOFNlqIwfpqba41lYWNFlZXyiFaiIWNzSGctlrkREFszkILK+3CHTvO5kjYFQIGZjPz3pu8zexikiR02X1dRMA5zfqIkPYQ4Q2shxmmCo6BHzfr0/cYRvE5AG9Zun+keEEIsAGAB0ReXVwfzDsY8ybssDmjNT2+WCtp6Ked9p1YLVTYfRbcbBTP5D1htM2A+I4MXxVNDswINWCe9A2KwH1ZXxxFRSFacYRRIzC2e7dnrQqtA8tWGzLMJXJQqwiX42sTBpLJf0i+b9GQb9UGitwjOClyIGwS43NZS+I0zq/sjGdDqj11TlNfK+sSeKlS2hmes9VsoBughzfmyxkMjk3kLoLlXF6MFscxUNQSxytDBaB2Sx35q4HvOqL89LcIunKO+SBKcUUi57guVN1H5CYzHsptWKvQ/oHxx/T8ApOwcv0J5NuxAAAAAElFTkSuQmCC);
 }
 
-
-
 .notification-count{
   font-size: 15px;
 }
@@ -4377,4 +4378,33 @@ td .media.chat-item{
 
 .border-left-status-warning{
   border-left: 3px solid #ffc107;
+}
+
+.bmro-task-td-width-new-account{
+  width:13%;
+}
+
+.bmro-task-width-new-account{
+  width: 34%;
+}
+
+.no-data-dash-alignment{
+  text-align: center;
+}
+
+.no-data-dash-alignment span {
+  float: none;
+  margin-left: 0px;
+}
+
+.bmro-padding-task-new-account{
+  padding-top: 9px;
+  padding-bottom: 9px;
+  border-bottom: 1px solid #EDEDED;
+  border-left: 4px solid transparent;
+  padding-left: 23px;
+  padding-right: 7px;
+}
+.bmro-action-width-new-account{
+  width:100%;
 }

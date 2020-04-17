@@ -49,6 +49,8 @@ class Inquiry < ApplicationRecord
   has_many :sales_quotes, dependent: :destroy
   has_many :purchase_orders
   has_many :po_requests
+  has_many :invoice_requests
+  has_many :ar_invoice_requests
   accepts_nested_attributes_for :po_requests, allow_destroy: true
   has_many :sales_quote_rows, through: :sales_quotes
   has_one :final_sales_quote, -> {where.not(sent_at: nil).latest}, class_name: 'SalesQuote'
@@ -440,7 +442,7 @@ class Inquiry < ApplicationRecord
     when 'Quotation Sent', 'Follow-Up on Quotation', 'Expected Order', 'SO Not Created-Customer PO Awaited', 'SO Not Created-Pending Customer PO Revision'
       self.final_sales_quote.present? ? self.final_sales_quote&.try(:calculated_total) : self.last_synced_quote&.try(:calculated_total)
     when 'Order Won'
-      self.sales_orders.present? ? self.sales_orders.approved.map(&:calculated_total).sum :  self.final_sales_quote&.try(:calculated_total)
+      self.sales_orders.present? ? self.sales_orders.approved.map(&:calculated_total).sum : self.final_sales_quote&.try(:calculated_total)
     when 'Draft SO For Approval by Sales Manager', 'SO Draft: Pending Accounts Approval', 'SO Rejected by Sales Manager', 'Rejected by Accounts'
       self.sales_orders.map(&:calculated_total).compact.sum || self.final_sales_quote&.try(:calculated_total)
     when 'Order Lost'
