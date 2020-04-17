@@ -11,6 +11,10 @@ class Overseers::Dashboard
     Inquiry.with_includes.where('created_at > ? OR quotation_followup_date > ?', Date.new(2018, 04, 01), Date.new(2018, 04, 01)).where(status: ['New Inquiry','Acknowledgement Mail', 'Cross Reference', 'RFQ Sent','PQ Received', 'Preparing Quotation', 'Follow Up on Quotation', 'SO Not Created-Pending Customer PO Revision', 'SO Draft: Pending Accounts Approval', 'SO Not Created-Customer PO Awaited']).order(updated_at: :desc).compact
   end
 
+  def inquiries_to_calculate_potential_amount
+    Inquiry.with_includes.where('created_at > ? OR quotation_followup_date > ?', Date.new(2018, 04, 01), Date.new(2018, 04, 01)).where(status: ['New Inquiry','Acknowledgement Mail', 'Cross Reference', 'RFQ Sent','PQ Received', 'Preparing Quotation']).order(updated_at: :desc).compact
+  end
+
   def invoice_requests
     InvoiceRequest.where('created_at > ?', Date.new(2019, 01, 01)).where(status: ['GRPO Pending', 'Pending AP Invoice']).order(updated_at: :desc).compact
   end
@@ -137,10 +141,22 @@ class Overseers::Dashboard
     }
   end
 
+  def inquiries_potential_total(doc, status)
+    potential_value
+    doc.map {  |inquiry| inquiry.calculated_total if inquiry.status == status }.compact.sum
+  end
+
   def inquiries_calculated_total(doc, status)
     total_value = 0
     if status.is_a?(Array)
-      status.each { |each_status| total_value += doc.map {  |inquiry| inquiry.calculated_total if inquiry.status == each_status }.compact.sum }
+      status_wo_sales_quote_arr = ['New Inquiry','Acknowledgement Mail','Cross Reference', 'RFQ Sent','PQ Received','Preparing Quotation']
+      status.each do |each_status|
+        if status_wo_sales_quote_arr.include? each_status
+          total_value += doc.map {  |inquiry| inquiry.potential_value(each_status) if inquiry.status == each_status }.compact.sum
+        else
+          total_value += doc.map {  |inquiry| inquiry.calculated_total if inquiry.status == each_status }.compact.sum
+        end
+      end
     else
       total_value = doc.map {  |inquiry| inquiry.calculated_total if inquiry.status == status }.compact.sum
     end

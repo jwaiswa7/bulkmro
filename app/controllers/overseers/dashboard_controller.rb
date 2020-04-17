@@ -84,9 +84,10 @@ class Overseers::DashboardController < Overseers::BaseController
     @dashboard = Overseers::Dashboard.new(current_overseer)
     if current_overseer.acl_role.role_name == 'Inside Sales and Logistic Manager'
       # for role = Inside Sales and Logistic Manager
-      inquiry_as_per_box = Inquiry.with_includes.where('created_at > ? OR quotation_followup_date > ?', Date.new(2018, 04, 01), Date.new(2018, 04, 01)).where(status: @dashboard.main_statuses[params['status']]).order(updated_at: :desc).compact
+      inquiry_as_per_box = Inquiry.with_includes.where('created_at > ? OR quotation_followup_date > ?', Date.new(2018, 04, 01), Date.new(2018, 04, 01)).where(status: @dashboard.main_statuses[params['status']]).order(updated_at: :desc).compact.group_by(&:inside_sales_owner_id)
+      inquiry_as_per_box = inquiry_as_per_box.map { |id,inquiries| [Overseer.find_by_id(id).name,inquiries] }.to_h
       respond_to do |format|
-        format.html {render partial: 'overseers/dashboard/sales_manager/inquiry_list_sales_manager_wrapper', locals: {inq_for_sales_manager_dash: inquiry_as_per_box.group_by(&:inside_sales_owner_id)}}
+        format.html {render partial: 'overseers/dashboard/sales_manager/inquiry_list_sales_manager_wrapper', locals: {inq_for_sales_manager_dash: inquiry_as_per_box}}
       end
     else
       # for role = accounts, sales_executives
