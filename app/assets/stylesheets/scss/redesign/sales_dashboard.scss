@@ -205,7 +205,7 @@ p.bmro-menu{
   max-height: 45rem;
 }
 .task-ht{
-  height: 3%;
+  height: 4%;
 }
 .content-mid-height{
   height: 90%;
@@ -593,15 +593,18 @@ p.bmro-menu{
   margin: 0px 0px 9px 25px;
 }
 .bmro-action-button{
+  display:flex;
+  align-items: center;
+  height: 27px !important;
   color: #2C4159;
   font-size: 10px;
-  font-weight: 600;
   letter-spacing: -0.39px;
   line-height: 12px;
   background: linear-gradient(180deg, #F8F9FA 0%, #EEF0F2 100%);
   outline: none;
   padding: 5px 8px 4px 8px;
-  border: 1px solid #E0E2E7;
+  border: 0.6px solid #889EB7;
+  border-radius: 2px;
 }
 .bmro-task-subdata{
   width: 450px;
@@ -733,7 +736,8 @@ p.bmro-menu{
   line-height: 16px;
   float: left;
   width: 100%;
-  margin-top: 6px;
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
 .bmro-today-mt-mb{
   margin-top: 24px;
@@ -763,6 +767,20 @@ p.bmro-menu{
   left: 5px;
   cursor: pointer;
 }
+.bmro-new-today-button{
+  border: 0.6px solid #DADFE7;
+  border-radius: 2px;
+  color: #2E435C;
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: -0.2px;
+  line-height: 11px;
+  padding: 4px 8px;
+  position: relative;
+  bottom: 3px;
+  left: 5px;
+}
+
 .bmro-today-posted{
   color: #999FA7;
   font-size: 11px;
@@ -1082,7 +1100,7 @@ p.bmro-menu{
   display: block;
 }
 .bmro-all-task-th{
-  float: left;
+  float:left;
   background-color: #FAFAFA;
 }
 .bmro-task-td-width{
@@ -1252,8 +1270,16 @@ p.bmro-menu{
 .bmro-head-mt-6{
   margin-top: 6px;
 }
+.bmro-head-mb-10{
+  margin-bottom: 10px;
+}
 .bmro-position-set{
-  margin-bottom: 0px;
+  position: relative;
+  width: 100%;
+  float: left;
+}
+.bmro-position-set-date{
+
   position: relative;
   width: 100%;
   float: left;
@@ -1268,6 +1294,13 @@ p.bmro-menu{
   float: right;
   position: sticky;
 }
+.bmro-close-right-slide{
+  width: 15px;
+  top: 0px;
+  right: 15px;
+  float: right;
+}
+
 .bmro-item-list{
   color: #2C4159;
   font-size: 10px;
@@ -2354,7 +2387,7 @@ canvas {
   font-size: 10px;
   padding-left: 7px;
   padding-bottom: 7px;
-  margin-top: 4px;
+  margin-top: 0px;
   font-weight: 600;
   box-shadow: none;
   border-radius: 2px;
@@ -2451,4 +2484,32 @@ canvas {
 }
 .bmro-email-form-group{
   overflow: auto !important;
+}
+.bmro-task-td-inquiry-width{
+  width:11%;
+}
+.bmro-task-td-action-width{
+  width:26%;
+}
+.bmro-margin-small-rem{
+  margin-right:0.2rem;
+}
+.bmro-right-pad4{
+  padding-right: 4%;
+}
+
+.bmro-inner-task-width-new-account
+{    width: 25%;
+  padding-top: 0.1rem;
+}
+
+.bmro-new-submit-input-v2 {
+  height: 27px !important;
+  font-size: 10px;
+  padding-left: 7px;
+  padding-bottom: 7px;
+  margin-top: 0;
+  font-weight: 600;
+  box-shadow: none;
+  border-radius: 2px;
 }

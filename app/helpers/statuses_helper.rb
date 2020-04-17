@@ -5,6 +5,8 @@ module StatusesHelper
     case status.to_sym
     when :'Processing'
       'status-color-yellow'
+    when :'Accounts Approval Pending'
+      'status-color-yellow'
     when :'Material Ready For Dispatch'
       'status-color-green'
     when :'Partially Shipped'
@@ -206,6 +208,8 @@ module StatusesHelper
     when :'Supplier PO: Not Sent to Supplier'
       'status-color-red'
     when :'Stock Supplier PO Created'
+      'status-color-green'
+    when :'Supplier PO Created'
       'status-color-green'
     when :'Stock Requested'
       'status-color-green'

@@ -108,9 +108,9 @@ class SalesOrder < ApplicationRecord
   }, _prefix: true
 
   enum main_summary_status: {
-      'Supplier PO: Pending': 17,
-      'Material Ready for Dispatch': 33,
-      'Invoiced': 25
+      'Accounts Approval Pending': 20,
+      'Approved': 60,
+      'Cancelled': 50
   }, _suffix: true
 
   enum remote_status: {
@@ -148,6 +148,19 @@ class SalesOrder < ApplicationRecord
       "Wrong Tax Rates": 'Wrong Tax Rates',
       "Wrong Tax Types": 'Wrong Tax Types',
       "Wrong Order Values": 'Wrong Order Values'
+  }
+
+  enum cancellation_reason: {
+      'Change in BM/ Item': 1,
+      'Customer PO Amend': 2,
+      'Change in Supplier': 3,
+      'Change in Unit Price': 4,
+      'Customer Requirement Canceled': 5,
+      'Change in Bill and Ship Address': 6,
+      'Change in Tax Rate': 7,
+      'Change in HSN': 8,
+      'Change in Inquiry': 9,
+      'Sync Issue': 10,
   }
 
   scope :with_includes, -> { includes(:created_by, :updated_by, :inquiry) }

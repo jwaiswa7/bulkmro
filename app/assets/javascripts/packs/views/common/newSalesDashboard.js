@@ -5,14 +5,15 @@ import notificationsPanel from "./notificationsPanel";
 import getStatusRecords from './getStatusRecords';
 import statusBox from './statusBox'
 import getInquiryTasks from './getInquiryTasks';
+import grpoNumbervalidator from './checkGrpoNumbervalidity';
 
 const newdashboardload= function() {
 
-notificationsPanel()
-navigationMenu();
-clickOnCompose();
-statusBox();
-
+    notificationsPanel()
+    navigationMenu();
+    clickOnCompose();
+    statusBox();
+    grpoNumbervalidator();
     getStatusRecords();
     getInquiryTasks();
 

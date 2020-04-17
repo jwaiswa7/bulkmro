@@ -16,7 +16,7 @@
 </div>
 <div class="bmro-width100 bmro-dotted-line-order bmro-mt-today">
   <% inquiry_status_records.each do |date, records| %>
-    <div class="bmro-position-set">
+    <div class="bmro-position-set-date ">
       <div class="bmro-circle-order"></div>
       <div class="bmro-position-h5">
         <h5 class="bmro-big-heading-two bmro-fl"><%= date.strftime('%d/%m/%Y') %></h5>
@@ -31,7 +31,7 @@
         <span class="bmro-today-data"><%= record.subject_type %></span>
         <span class="bmro-today-subdata bmro-head-ml-6"><%= record.status %></span>
       </div>
-      <div class="bmro-position-set bmro-head-mt-6">
+      <div class="bmro-position-set bmro-head-mb-10">
         <span class="bmro-today-data bmro-wdith-auto bmro-fl">at <%= record.created_at.strftime("%I:%M %P") %></span>
         <% if current_overseer.to_s == inquiry.inside_sales_owner.to_s %>
           <span class="bmro-today-subdata bmro-head-ml-6 bmro-you-posi"><span class="bmro-dote"></span>YOU</span>

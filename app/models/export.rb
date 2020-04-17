@@ -29,7 +29,8 @@ class Export < ApplicationRecord
     customer_products: 95,
     material_readiness: 96,
     amat_customer_portal: 97,
-    sales_orders_bible_format: 100
+    sales_orders_bible_format: 100,
+    isp_reports: 105
   }
   enum status: {
       'Enqueued': 1,
