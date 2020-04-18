@@ -135,7 +135,7 @@
         <% end %>
       <% end %>
 
-      <% if inquiry.status == 'SO Draft: Pending Accounts Approval' %>
+      <% if inquiry.status == 'SO Draft: Pending Accounts Approval' && inquiry.sales_orders.last.status == 'Accounts Approval Pending' %>
 
         <div class="bmro-width100 bmro-padding-task">
           <div class="bmro-task-no-td bmro-task-td-inquiry-width bmro-fl bmro-position-relative" >
