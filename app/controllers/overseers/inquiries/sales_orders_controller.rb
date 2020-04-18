@@ -135,6 +135,14 @@ class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseCo
   end
 
   def new_accounts_confirmation
+    date = Date.today
+    year = date.year
+    year = year - 1 if date.month < 4
+    series_name = @sales_order.sales_quote.bill_from.series_code + ' ' + year.to_s
+    @series = Series.where(document_type: 'Sales Order', series_name: series_name)
+    if !@series.present?
+      @warehouse = @sales_order.sales_quote.bill_from.name
+    end
     authorize_acl @sales_order
   end
 

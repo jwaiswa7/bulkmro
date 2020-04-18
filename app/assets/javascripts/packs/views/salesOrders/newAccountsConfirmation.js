@@ -37,6 +37,7 @@ let checkCheckboxStatus = () => {
         $('.account-approval').prop('disabled', false);
         if (!$('.account-approval').hasClass('disabled')){
             $('#internal-comments').removeClass('show')
+            $('#salesOrderApproverMessage').modal('show')
         }
         $('.account-rejection').addClass('disabled');
         $('#sales_order_custom_fields_reject_reasons').removeAttr('required');
