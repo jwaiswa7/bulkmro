@@ -9,6 +9,10 @@ const getInquiryTasks = function () {
         $(this).parent().parent().addClass('bmro-active-white', 1000);
         $('.bmro-show-star').addClass('bmro-inquiry-show-hide');
         $('.bmro-reset-button').removeClass('bmro-inquiry-show-hide');
+        $('.inquiry-tasks').empty();
+        let loader=`<div class="sales-loader"><div class="sprint-loader-wrapper"><i class="sprint-loader"></i></div></div>`;
+        $('.inquiry-tasks').append(loader);
+        $('.sales-loader').show();
         $.ajax({
             url: Routes.get_inquiry_tasks_overseers_dashboard_path({format: "html"}),
             type: "GET",
