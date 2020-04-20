@@ -28,7 +28,8 @@ class Overseers::Dashboard
   end
 
   def inquiries_with_so_approval_pending
-    Inquiry.where('created_at > ?', Date.new(2019, 01, 01)).where(status: 'SO Draft: Pending Accounts Approval').order(updated_at: :desc).compact
+    # Inquiry.where('created_at > ?', Date.new(2019, 01, 01)).where(status: 'SO Draft: Pending Accounts Approval').order(updated_at: :desc).compact
+    Inquiry.joins(:sales_orders).where(sales_orders: {status: 'Accounts Approval Pending'}).where('sales_orders.created_at > ?', Date.new(2019, 06, 01)).compact
   end
 
   def inquiries_with_followup

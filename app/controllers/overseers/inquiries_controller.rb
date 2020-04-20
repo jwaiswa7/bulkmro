@@ -532,7 +532,7 @@ class Overseers::InquiriesController < Overseers::BaseController
     export_service = Services::Overseers::Exporters::PipelineReportsExporter.new([], current_overseer, indexed_pipeline_report, date_range)
     export_service.call
 
-    redirect_to url_for(Export.pipeline_report.not_filtered.last.report)
+    redirect_to url_for(Export.pipeline_reports.not_filtered.last.report)
   end
 
   def bulk_update

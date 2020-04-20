@@ -21,13 +21,12 @@ const getStatusRecords = function () {
 
 
             $(".bmro-close-order-slide").click(function () {
-                $('.bmro-slide-on-inquries').removeClass('bmro-inquries-po');
+               $('.bmro-slide-on-inquries').removeClass('bmro-inquries-po');
                 $('.bmro-slide-order-no').removeClass('bmro-slide-order-show');
                 $('.bmro-slide-on-inquries-2').removeClass('bmro-slide-on-inquries-2-show');
                 $('.bmro-slide-on-inquries').removeClass('bmro-inquries-po');
 
             });
-
     };
 
 
