@@ -6,9 +6,15 @@ class Services::Overseers::Notifications::Notify < Services::Shared::Notificatio
   def send_po_request_update(tos, action, notifiable, url, *msg)
     @action = action; @notifiable = notifiable; @url = url
     @message = "Po Request ##{msg[0]}: #{msg[1]}"
-    tos.uniq.each do | to |
-      @to = Overseer.find_by_email(to)
+    receivers = Overseer.where(email: tos)
+    receivers.uniq.each do | overseer |
+      @to = overseer
       send
+    end
+    inquiry = notifiable.inquiry
+    if inquiry.inside_sales_owner.parent.present?
+      @message = "Po Request ##{msg[0]}: #{msg[1]} - exec: #{inquiry.inside_sales_owner.to_s}"
+      @to = inquiry.inside_sales_owner.parent
     end
   end
 
