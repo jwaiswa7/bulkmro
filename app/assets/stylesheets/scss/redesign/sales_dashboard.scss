@@ -3025,7 +3025,7 @@ canvas {
 
 .bmro-sales-table-outer-box{
   box-sizing: border-box;
-  width: 87rem;
+  width: 100%;
   border: 1px solid #FFFFFF;
   background-color: #FFFFFF;
   margin-top:2%;
@@ -3050,7 +3050,7 @@ canvas {
 
 .my-team-table{
   margin-top:2%;
-  width: 87rem;
+  width: 100%;
   border: 1px solid #F1F3F6;
   color: #354960;
   font-family: "Inter UI";
@@ -3250,4 +3250,30 @@ canvas {
 .myteam-div-hidden{
 
   background-color: transparent;
+}
+
+.dropdown-div-row-wrapper{
+  display: flex;
+  flex-direction: column;
+}
+
+.my-team-inquiry-box-wrapper{
+  display:flex;
+  flex-wrap:wrap;
+  height:auto;
+}
+
+.my-team-inquiry-box{
+  border: 1px solid #D3D6DF;
+  border-radius: 2px;
+  background-color: #DFE2E7;
+  margin-right:1%;
+  margin-bottom:1%;
+  padding: 0px 1%;
+
+}
+
+.my-team-user{
+  margin-left:3%;
+  text-align:left;
 }
