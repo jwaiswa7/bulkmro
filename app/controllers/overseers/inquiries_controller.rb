@@ -775,6 +775,8 @@ class Overseers::InquiriesController < Overseers::BaseController
                 :address_id,
                 :contact_id,
                 :payment_option_id,
+                :delivery_type,
+                :transport_mode,
                 :stock_status,
                 :supplier_committed_date,
                 :blobs,
