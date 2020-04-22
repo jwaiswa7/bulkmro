@@ -21,6 +21,22 @@ class Services::Overseers::Notifications::Notify < Services::Shared::Notificatio
     end
   end
 
+  def po_created(action, notifiable, url, *msg)
+    @action = action; @notifiable = notifiable; @url = url
+    if msg[0].inside_sales_owner.parent.present?
+      #msg sent to inside sales owner
+      msg_substring = "PO##{notifiable.po_number} for Inquiry##{msg[0].inquiry_number}"
+      @message = "#{msg_substring} has been created - exec: #{msg[0].inside_sales_owner.to_s}"
+      @to = msg[0].inside_sales_owner.parent
+      send
+    end
+    #msg sent to inside sales owners manager
+    @message = "#{msg_substring} has been created"
+    @to = msg[0].inside_sales_owner
+    send
+
+  end
+
   def send_ar_invoice_request_update(tos, action, notifiable, url, *msg)
     @action = action; @notifiable = notifiable; @url = url
     @message = msg[0]

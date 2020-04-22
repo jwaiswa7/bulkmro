@@ -728,7 +728,7 @@ p.bmro-menu{
   float: left;
   clear: both;
 }
-.bmro-today-span{
+.bmro-today-span, .bmro-today-by{
   color: #999FA7;
   font-size: 12px;
   font-weight: 500;
@@ -737,8 +737,12 @@ p.bmro-menu{
   float: left;
   width: 100%;
   margin-top: 10px;
-  margin-bottom: 10px;
 }
+
+.bmro-today-by {
+  margin-top: 0px;
+}
+
 .bmro-today-mt-mb{
   margin-top: 24px;
 }

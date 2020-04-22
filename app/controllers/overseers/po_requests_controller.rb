@@ -1,6 +1,6 @@
 class Overseers::PoRequestsController < Overseers::BaseController
   before_action :set_po_request, only: [:show, :edit, :update, :cancel_porequest, :render_cancellation_form, :render_comment_form, :render_modal_form, :add_comment, :new_purchase_order, :create_purchase_order, :manager_amended, :reject_purchase_order_modal]
-  before_action :set_notification, only: [:update, :cancel_porequest]
+  before_action :set_notification, only: [:update, :cancel_porequest, :create_purchase_order]
   before_action :set_product, only: [:product_resync_inventory]
   def pending_and_rejected
     @po_requests = filter_by_status(:pending_and_rejected)
@@ -242,7 +242,8 @@ class Overseers::PoRequestsController < Overseers::BaseController
 
   def create_purchase_order
     authorize_acl @po_request
-    service = Services::Overseers::PurchaseOrders::CreatePurchaseOrder.new(@po_request, params.merge(overseer: current_overseer))
+    service = Services::Overseers::PurchaseOrders::CreatePurchaseOrder.new(@po_request, params.merge(overseer:
+                                                                                                         current_overseer),@notification)
     purchase_order = service.create
     if purchase_order.present?
       redirect_to overseers_inquiry_purchase_order_path(purchase_order.inquiry.to_param, purchase_order.to_param)
