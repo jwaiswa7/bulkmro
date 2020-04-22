@@ -71,5 +71,8 @@ class Services::Overseers::Inquiries::UpdateStatus < Services::Shared::BaseServi
       Inquiry.statuses[status]
     end
 
+    def send_notification
+
+    end
     attr_accessor :subject, :inquiry, :status, :action_performed, :should_update_status
 end
