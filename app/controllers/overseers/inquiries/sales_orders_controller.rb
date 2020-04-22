@@ -125,7 +125,7 @@ class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseCo
   def create_account_confirmation
     authorize_acl @sales_order
 
-    Services::Overseers::SalesOrders::CreateSalesOrderInSap.new(@sales_order, params.merge(overseer: current_overseer)).call
+    Services::Overseers::SalesOrders::CreateSalesOrderInSap.new(@sales_order, params.merge(overseer: current_overseer), @notification).call
 
     redirect_to overseers_inquiry_sales_orders_path(@inquiry), notice: flash_message(@inquiry, action_name)
   end

@@ -82,6 +82,18 @@ class Services::Overseers::Notifications::Notify < Services::Shared::Notificatio
     send
   end
 
+  def send_product_comment_to_manager(to, action, notifiable, url, *msg)
+    @to = to; @action = action; @notifiable = notifiable; @url = url
+
+    if msg[0].present?
+      @message = "Product #{msg[1]} has been #{msg[0]} - #{msg[3]}"
+    else
+      @message = "New reply for Product #{msg[1]} - #{msg[3]}"
+    end
+    @message = "#{@message}: #{msg[2]}" if msg[2].present?
+    send
+  end
+
   def send_order_confirmation(to, action, notifiable, url, *msg)
     @action = action; @notifiable = notifiable; @url = url
     @message = "New Order for inquiry ##{msg[0]} awaiting approval"
@@ -116,4 +128,24 @@ class Services::Overseers::Notifications::Notify < Services::Shared::Notificatio
       send
     end
   end
+
+
+  def send_so_approved_by_account(sales_order, action, notifiable, url, *msg)
+    @action = action; @notifiable = notifiable; @url = url
+    inquiry = sales_order.inquiry
+    if sales_order.order_number.present?
+      msg_substring = 'Order##{sales_order.order_number} '
+    else
+      msg_substring = 'Order '
+    end
+    @message = "#{msg_substring}for Inquiry##{inquiry.inquiry_number} has been #{msg[0]} - exec: #{inquiry.inside_sales_owner.to_s}."
+    @to = inquiry.sales_manager
+    send
+    @to = inquiry.inside_sales_owner.parent
+    send
+    @message = "{msg_substring}for Inquiry##{inquiry.inquiry_number} has been #{msg[0]}."
+    @to = inquiry.inside_sales_owner
+    send
+  end
+
 end
