@@ -1,5 +1,5 @@
 
-  <div class="bmro-dash-leftside">
+  <div class="<%= current_overseer.acl_role.role_name == 'Inside Sales and Logistic Manager' ? 'bmro-sales-dash-leftside' : 'bmro-dash-leftside' %>">
     <div class="bmro-width100 leftside">
       <div class="bmro-width100 status-height">
         <div class="bmro-dash-box">
@@ -22,8 +22,9 @@
           <% end %>
         </div>
       </div>
-      <div class="bmro-width100 bmro-main-pedding main-pedding">
-        <div class="bmro-dash-inqu h-100">
+
+      <div class="bmro-width100 bmro-main-pedding  <%= current_overseer.acl_role.role_name == 'Inside Sales and Logistic Manager' ? 'main-sales-pedding' : 'main-pedding' %>">
+        <div class="<%= current_overseer.acl_role.role_name == 'Inside Sales and Logistic Manager' ? 'bmro-sales-dash-inqu' : 'bmro-dash-inqu' %> h-100">
           <div class="bmro-width100 bmro-inquries-main inquiries-card h-100">
             <div class="inquiry-list-wrapper h-100">
               <% if current_overseer.acl_role.role_name == 'Inside Sales and Logistic Manager' %>

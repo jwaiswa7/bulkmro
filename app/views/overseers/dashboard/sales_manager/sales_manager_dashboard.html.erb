@@ -1,6 +1,20 @@
 <% provide :container_fluid, true %>
-
-<div class="bmro-width100">
+<div id="actionDashboardViewer" class="bmro-width100">
   <%= render partial: "overseers/dashboard/common/left_panel_dashboard" %>
-  <%= render partial: "overseers/dashboard/common/side_notification_panel" %>
 </div>
+
+<div id="performanceDashboardViewer" class="bmro-width100">
+  <%= render partial: "overseers/dashboard/sales_manager/performance_table"%>
+</div>
+
+<div id="myTeamViewer" class="bmro-width100">
+  <%= render partial: "overseers/dashboard/sales_manager/my_team_sales_manager_dashboard"%>
+</div>
+
+
+
+
+<!--<div class="bmro-width100">-->
+<%#= render partial: "overseers/dashboard/common/left_panel_dashboard" %>
+<%#= render partial: "overseers/dashboard/common/side_notification_panel" %>
+<!--</div>-->
