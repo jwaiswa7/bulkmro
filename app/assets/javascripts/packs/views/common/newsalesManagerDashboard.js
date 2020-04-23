@@ -1,9 +1,9 @@
 import salesNavigationPanel from '../common/salesNavigationPanel';
-
+import myteamDropdown from '../common/myteamDropdown';
 const newsalesManagerDashboard= function() {
 
     salesNavigationPanel();
-
+    myteamDropdown();
     //$('.bmro-dash-leftside').addClass('bmro-sales-dash-leftside').removeClass('bmro-dash-leftside');
     //$('.main-pedding').addClass('main-sales-pedding').removeClass('main-pedding');
     //$('.bmro-dash-inqu').addClass('bmro-sales-dash-inqu').removeClass('bmro-dash-inqu');

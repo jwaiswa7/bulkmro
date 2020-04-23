@@ -23,7 +23,7 @@ const salesNavigationPanel=function(){
         })
     }
     function dashboardViewer(viewId){
-        if( viewId ==='actionDashboard'){
+        if( viewId ==='actionDashboard'){ 
             $('#actionDashboardViewer').show();
             $('#performanceDashboardViewer').hide();
             $('#myTeamViewer').hide();
