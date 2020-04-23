@@ -262,7 +262,7 @@ p.bmro-menu{
   float: left;
   position: relative;
   display: flex;
-  padding-right: 13px;
+  padding-right: 2%;
 }
 .bmro-same-box label{
   color: #2C4159;
@@ -2473,11 +2473,11 @@ canvas {
   padding-right: 0px;
 }
 .bmro-acknow-width1{
-  width:78%;
+  width:73%;
 }
 
 .bmro-acknow-width2{
-  width:22%;
+  width:27%;
 }
 .bmro-sales-acknow-title{
   padding:13px 7px 5px 10px;
@@ -2583,12 +2583,13 @@ canvas {
 .bmro-padd-col{
   width: 83%;
 }
-.bmro-dasboard-switcher {
+.bmro-dashboard-switcher {
   box-sizing: border-box;
   display:flex;
   align-items:center;
+  width: 28rem;
 }
-.bmro-dasboard-switcher-wrapper{
+.bmro-dashboard-switcher-wrapper{
   padding-left: 5%;
   width:50%;
   float:left;
@@ -2617,7 +2618,7 @@ canvas {
 
 .bmro-radio-switcher-wrapper {
   padding-left:1%;
-  padding-right: 2%;
+  padding-right: 1%;
   float: right;
   padding-top: 1%;
 }
@@ -2626,6 +2627,7 @@ canvas {
   box-sizing: border-box;
   display:flex;
   align-items:center;
+  width:19rem;
 }
 
 .bmro-sales-actions{
@@ -2689,7 +2691,7 @@ canvas {
 
 .bmro-sales-table-outer-box{
   box-sizing: border-box;
-  width: 100%;
+  width: 98%;
   border: 1px solid #FFFFFF;
   background-color: #FFFFFF;
   margin-top:2%;
@@ -2713,7 +2715,7 @@ canvas {
 
 .my-team-table{
   margin-top:2%;
-  width: 100%;
+  width: 98%;
   border: 1px solid #F1F3F6;
   color: #354960;
   font-size: 14px;
@@ -2745,14 +2747,14 @@ canvas {
 .my-team-oval-rate {
   box-sizing: border-box;
   height: 29px;
-  width: 29.04px;
+  width: 33.04px;
   border-radius: 50%;
   margin-left: 50%;
 }
 
 .bmro-sales-progress {
-  height: 29px;
-  width: 29.04px;
+  height: 30px;
+  width: 30.04px;
   background: none;
   position: relative;
 }
