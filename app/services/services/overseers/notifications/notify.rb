@@ -170,4 +170,15 @@ class Services::Overseers::Notifications::Notify < Services::Shared::Notificatio
     send
   end
 
+  def send_inquiry_status_changed(to, action, notificable, url, *msg)
+    @action = action; @notifiable = notificable; @url = url
+    @message = "Inquiry ##{notificable.inquiry_number} - status updated to #{msg[0]} "
+    @to = to
+    send
+    if to.parent.present?
+      @message = "Inquiry ##{notificable.inquiry_number} - status updated to #{msg[0]} - exec: #{to}"
+      @to = to
+    end
+  end
+
 end

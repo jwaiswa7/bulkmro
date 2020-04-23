@@ -60,7 +60,7 @@ class Services::Overseers::Inquiries::UpdateStatus < Services::Shared::BaseServi
       if should_update_status
         inquiry.update_attributes(status: status)
       end
-
+      send_notification(status)
       inquiry_status_record = InquiryStatusRecord.where(status: status, inquiry: inquiry, subject_type: subject.class.name, subject_id: subject.try(:id)).first_or_create
       previous_status = inquiry_status_record.fetch_previous_status_record if status != 'New Inquiry'
       minutes = previous_status.present? ? inquiry_status_record.calculate_turn_around_time(previous_status) : ''
@@ -71,8 +71,17 @@ class Services::Overseers::Inquiries::UpdateStatus < Services::Shared::BaseServi
       Inquiry.statuses[status]
     end
 
-    def send_notification
-
+    def send_notification(status)
+      if status != 'New Inquiry'
+        @notification = Services::Overseers::Notifications::Notify.new(Overseer.system_overseer, 'System')
+        @notification.send_inquiry_status_changed(
+            inquiry.inside_sales_owner,
+            'update',
+            inquiry,
+            Rails.application.routes.url_helpers.overseers_inquiry_path(inquiry),
+            status
+        )
+      end
     end
     attr_accessor :subject, :inquiry, :status, :action_performed, :should_update_status
 end

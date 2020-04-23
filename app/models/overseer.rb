@@ -95,6 +95,18 @@ class Overseer < ApplicationRecord
     overseer
   end
 
+  def self.system_overseer
+    overseer = Overseer.where(email: 'system@bulkmro.com').first_or_create do |overseer|
+      overseer.first_name = 'system'
+      overseer.last_name = ' '
+      overseer.password = 123456
+      overseer.password_confirmation = 123456
+    end
+
+    overseer.save!
+    overseer
+  end
+
   def self.all_roles
     AclRole.all
   end
