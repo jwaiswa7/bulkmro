@@ -256,7 +256,7 @@
                 <span><%= row.tax_code.try(:code) %></span>
               </td>
               <td>
-                <span><%= row.tax_code.tax_percentage.to_f %>%</span>
+                <span><%= row.tax_rate.tax_percentage.to_f %>%</span>
               </td>
               <td>
                 <span><%= format_currency(row.converted_total_selling_price_with_tax.to_f) %></span>

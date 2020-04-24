@@ -18,7 +18,9 @@ class Services::Overseers::SalesOrders::CreateSalesOrderInSap < Services::Shared
         series.first.increment_last_number
         doc_id = ::Resources::Order.create(sales_order)
         order = ::Resources::Order.find(doc_id)
-        sales_order.update_attributes(remote_uid: order['DocEntry'])
+        if order.present?
+          sales_order.update_attributes(remote_uid: order['DocEntry'])
+        end
         Services::Overseers::Inquiries::UpdateStatus.new(sales_order, :order_won).call
         comment = sales_order.inquiry.comments.create!(message: 'SAP Approved', overseer: overseer, sales_order: sales_order)
         if sales_order.approval.blank?
