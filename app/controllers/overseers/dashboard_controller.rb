@@ -7,15 +7,19 @@ class Overseers::DashboardController < Overseers::BaseController
     # if Rails.env.development?
     #   render 'default_dashboard'
     # else
-    if current_overseer.inside_sales_executive?
+    if current_overseer.sales?
       @dashboard = Overseers::Dashboard.new(current_overseer)
-      render template: 'overseers/dashboard/sales_executive/new_sales_dashboard'
+      if current_overseer.descendant_ids.present?
+        render template: 'overseers/dashboard/sales_manager/sales_manager_dashboard'
+      else
+        render template: 'overseers/dashboard/sales_executive/new_sales_dashboard'
+      end
     elsif current_overseer.acl_role.role_name == 'Accounts'
       @dashboard = Overseers::Dashboard.new(current_overseer)
       render template: 'overseers/dashboard/accounts/accounts_dashboard'
-    elsif current_overseer.acl_role.role_name == 'Inside Sales and Logistic Manager'
-      @dashboard = Overseers::Dashboard.new(current_overseer)
-      render template: 'overseers/dashboard/sales_manager/sales_manager_dashboard'
+    # elsif current_overseer.acl_role.role_name == 'Inside Sales and Logistic Manager'
+    #   @dashboard = Overseers::Dashboard.new(current_overseer)
+    #   render template: 'overseers/dashboard/sales_manager/sales_manager_dashboard'
     elsif current_overseer.admin?
       # @dashboard = Rails.cache.fetch('admin_dashboard_data') do
       #   service = Services::Overseers::Dashboards::Admin.new
@@ -83,9 +87,9 @@ class Overseers::DashboardController < Overseers::BaseController
   def get_filtered_inquiries
     Rails.cache.fetch([self, 'get_filtered_inquiries'], expires_in: 1.hours) do
       @dashboard = Overseers::Dashboard.new(current_overseer)
-      if current_overseer.acl_role.role_name == 'Inside Sales and Logistic Manager'
+      if current_overseer.sales? && current_overseer.descendant_ids.present?
         # for role = Inside Sales and Logistic Manager
-        inquiry_as_per_box = Inquiry.with_includes.where('created_at > ? OR quotation_followup_date > ?', Date.new(2018, 04, 01), Date.new(2018, 04, 01)).where(status: @dashboard.main_statuses[params['status']]).order(updated_at: :desc).compact.group_by(&:inside_sales_owner_id)
+        inquiry_as_per_box = Inquiry.with_includes.where('created_at > ? OR quotation_followup_date > ?', Date.new(2018, 04, 01), Date.new(2018, 04, 01)).where(status: @dashboard.main_statuses[params['status']],inside_sales_owner_id: current_overseer.self_and_descendant_ids).order(updated_at: :desc).compact.group_by(&:inside_sales_owner_id)
         inquiry_as_per_box = inquiry_as_per_box.map { |id,inquiries| [Overseer.find_by_id(id).name,inquiries] }.to_h
         respond_to do |format|
           format.html {render partial: 'overseers/dashboard/sales_manager/inquiry_list_sales_manager_wrapper', locals: {inq_for_sales_manager_dash: inquiry_as_per_box}}
@@ -113,8 +117,18 @@ class Overseers::DashboardController < Overseers::BaseController
   def get_inquiry_tasks
     Rails.cache.fetch([self, 'get_filtered_inquiries'], expires_in: 1.hours) do
       @dashboard = Overseers::Dashboard.new(current_overseer)
-      if current_overseer.inside_sales_executive?
-        inquiry = @dashboard.inq_for_dash.where(inquiry_number: params['inquiry_number'].to_i)
+      if current_overseer.sales?
+        if current_overseer.descendant_ids.present?
+          inquiry = []
+          @dashboard.inq_for_dash.each do |inq|
+            if inq.inquiry_number == params['inquiry_number'].to_i
+              inquiry.push inq
+              break
+            end
+          end
+        else
+          inquiry = @dashboard.inq_for_dash.where(inquiry_number: params['inquiry_number'].to_i)
+        end
 
         if inquiry.last.customer_po_number.blank? || inquiry.last.customer_order_date.blank? || (inquiry.last.approvals.any? && inquiry.last.inquiry_product_suppliers.any? && inquiry.last.sales_quotes.persisted.blank?) || (inquiry.last.final_sales_quote.present? && policy(inquiry.last.final_sales_quote).new_sales_order?)
           inquiry_has_tasks = true
@@ -137,19 +151,6 @@ class Overseers::DashboardController < Overseers::BaseController
 
         respond_to do |format|
           format.html {render partial: 'overseers/dashboard/accounts/account_task_list_wrapper', locals: {inq_for_dash: inquiry, show_all_tasks: false, show_inquiry_tasks: true, inquiry_has_tasks: true}}
-        end
-
-      elsif current_overseer.acl_role.role_name == 'Inside Sales and Logistic Manager'
-        inquiry = []
-        @dashboard.inq_for_dash.each do |inq|
-          if inq.inquiry_number == params['inquiry_number'].to_i
-            inquiry.push inq
-            break
-          end
-        end
-
-        respond_to do |format|
-          format.html {render partial: 'overseers/dashboard/sales_executive/task_list_wrapper', locals: {inq_for_dash: inquiry, show_all_tasks: false, show_inquiry_tasks: true, inquiry_has_tasks: true}}
         end
       end
     end
