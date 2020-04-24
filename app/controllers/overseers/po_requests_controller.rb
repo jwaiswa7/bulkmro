@@ -237,6 +237,20 @@ class Overseers::PoRequestsController < Overseers::BaseController
   end
 
   def new_purchase_order
+    @warehouse = @po_request.bill_to.name
+    @modal_show = false
+    if @po_request.bill_to.series_code.present?
+      date = Date.today
+      year = date.year
+      year = year - 1 if date.month < 4
+      series_name = @po_request.bill_to.series_code + ' ' + year.to_s
+      @series = Series.where(document_type: 'Purchase Order', series_name: series_name)
+      if !@series.present?
+        @modal_show = true
+      end
+    else
+      @modal_show = true
+    end
     authorize_acl @po_request
   end
 
