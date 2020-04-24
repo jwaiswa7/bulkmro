@@ -1,5 +1,5 @@
 
-  <div class="<%= current_overseer.acl_role.role_name == 'Inside Sales and Logistic Manager' ? 'bmro-sales-dash-leftside' : 'bmro-dash-leftside' %>">
+  <div class="<%= (current_overseer.sales? && current_overseer.descendant_ids.present?) ? 'bmro-sales-dash-leftside' : 'bmro-dash-leftside' %>">
     <div class="bmro-width100 leftside">
       <div class="bmro-width100 status-height">
         <div class="bmro-dash-box">
