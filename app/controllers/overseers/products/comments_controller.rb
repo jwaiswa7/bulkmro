@@ -23,7 +23,7 @@ class Overseers::Products::CommentsController < Overseers::Products::BaseControl
             overseers_product_comments_path(@product),
             callback_method, @product.to_s, @comment.message
         )
-        if ['approve', 'reject'].include? callback_method && app_send_by.parent.present?
+        if (['approve', 'reject'].include? callback_method) && app_send_by.parent.present?
           @notification.send_product_comment_to_manager(
               app_send_by.parent,
               action_name.to_sym,
