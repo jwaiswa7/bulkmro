@@ -72,7 +72,7 @@ class Services::Overseers::Inquiries::UpdateStatus < Services::Shared::BaseServi
     end
 
     def send_notification(status)
-      if status != 'New Inquiry'
+      if inquiry.saved_change_to_status && status != 'New Inquiry'
         @notification = Services::Overseers::Notifications::Notify.new(Overseer.system_overseer, 'System')
         @notification.send_inquiry_status_changed(
             inquiry.inside_sales_owner,
