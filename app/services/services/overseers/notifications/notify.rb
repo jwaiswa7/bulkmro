@@ -156,7 +156,7 @@ class Services::Overseers::Notifications::Notify < Services::Shared::Notificatio
     @action = action; @notifiable = notifiable; @url = url
     inquiry = sales_order.inquiry
     if sales_order.order_number.present?
-      msg_substring = 'Order##{sales_order.order_number} '
+      msg_substring = "Order ##{sales_order.order_number} "
     else
       msg_substring = 'Order '
     end
@@ -165,7 +165,7 @@ class Services::Overseers::Notifications::Notify < Services::Shared::Notificatio
     send
     @to = inquiry.inside_sales_owner.parent
     send
-    @message = "{msg_substring}for Inquiry##{inquiry.inquiry_number} has been #{msg[0]}."
+    @message = "#{msg_substring}for Inquiry##{inquiry.inquiry_number} has been #{msg[0]}."
     @to = inquiry.inside_sales_owner
     send
   end
