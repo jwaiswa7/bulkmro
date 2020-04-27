@@ -131,11 +131,19 @@ class Services::Overseers::Notifications::Notify < Services::Shared::Notificatio
   def send_order_comment(to, action, notifiable, url, *msg)
     @to = to; @action = action; @notifiable = notifiable; @url = url
     if msg[0].present?
-      @message = "Order for Inquiry ##{msg[1]} has been #{msg[0]}"
+      if  msg[0] == 'approve'
+        @message = "Order for Inquiry ##{msg[1]} has been approved."
+      elsif msg[0].present? && msg[0] == 'reject'
+        @message = "Order for Inquiry ##{msg[1]} has been rejected."
+        @message = "#{@message}: #{msg[2]}" if msg[2].present?
+      else
+        @message = "Order for Inquiry ##{msg[1]} has been #{msg[0]}"
+        @message = "#{@message}: #{msg[2]}" if msg[2].present?
+      end
     else
       @message = "New reply for order of Inquiry ##{msg[1]}"
+      @message = "#{@message}: #{msg[2]}" if msg[2].present?
     end
-    @message = "#{@message}: #{msg[2]}" if msg[2].present?
     send
   end
 
@@ -152,7 +160,7 @@ class Services::Overseers::Notifications::Notify < Services::Shared::Notificatio
   end
 
 
-  def send_so_approved_by_account(sales_order, action, notifiable, url, *msg)
+  def   send_so_approved_by_account(sales_order, action, notifiable, url, *msg)
     @action = action; @notifiable = notifiable; @url = url
     inquiry = sales_order.inquiry
     if sales_order.order_number.present?
