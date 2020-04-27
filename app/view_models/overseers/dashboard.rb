@@ -54,12 +54,12 @@ class Overseers::Dashboard
     inq_for_sales_manager_dash.map { |id,inquiries| [Overseer.find_by_id(id).name,inquiries] }.to_h
   end
 
-  def inq_for_dash
+  def inq_for_dash(executivelink=nil)
     if self.overseer.sales?
-      if self.overseer.descendant_ids.present?
+      if self.overseer.descendant_ids.present? && !executivelink
         inquiries_for_manager
       else
-        Inquiry.with_includes.where(inside_sales_owner_id: overseer.id).where('updated_at > ? OR quotation_followup_date > ?', Date.new(2018, 04, 01), Date.new(2018, 04, 01)).where.not(status: ['Order Won', 'Order Lost', 'Regret', 'Rejected by Accounts']).order(updated_at: :desc)
+        recent_inquiries
       end
     elsif self.overseer.acl_role.role_name == 'Accounts'
       inq_for_account_dash
@@ -104,9 +104,9 @@ class Overseers::Dashboard
     end
   end
 
-  def main_statuses
+  def main_statuses(executivelink=nil)
     if self.overseer.sales?
-      if self.overseer.descendant_ids.present?
+      if self.overseer.descendant_ids.present? && !executivelink
         {
             'Acknowledgement Pending' => ['New Inquiry'],
             'Preparing Quotation' => ['New Inquiry', 'Acknowledgement Mail','Cross Reference', 'RFQ Sent','PQ Received','Preparing Quotation'],

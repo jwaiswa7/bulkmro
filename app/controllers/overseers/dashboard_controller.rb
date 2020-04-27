@@ -33,6 +33,11 @@ class Overseers::DashboardController < Overseers::BaseController
     # end
   end
 
+  def sales_executive_dashboard
+    @dashboard = Overseers::Dashboard.new(current_overseer)
+    render template: 'overseers/dashboard/sales_executive/new_sales_dashboard', locals: {executivelink: true}
+  end
+
   def follow_up_dashboard
     if current_overseer.inside_sales_executive?
       @dashboard = Overseers::Dashboard.new(current_overseer)
