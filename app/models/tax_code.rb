@@ -6,8 +6,7 @@ class TaxCode < ApplicationRecord
   has_many :products
 
   validates_presence_of :code, :remote_uid, :tax_percentage, :description
-  validates :code, length: { minimum: 8, maximum: 8 }, if: :hsn_code_validatiion
-  validates :code, length: { minimum: 6, maximum: 6 }, if: :sac_code_validation
+  validate :code_validation
   scope :with_includes, -> { includes(:products) }
   after_initialize :set_defaults, if: :new_record?
   def set_defaults
@@ -18,14 +17,14 @@ class TaxCode < ApplicationRecord
   def self.default
     first
   end
-  def sac_code_validation
-    is_service.present? && is_service == true
-  end
 
-  def hsn_code_validatiion
-    !is_service.present? && is_service == false
+  def code_validation
+    if is_service.present? && is_service && (code.length < 6 || code.length > 6)
+      errors.add(:code, "must be 6 digit")
+    elsif !is_service.present? && !is_service && (code.length < 8 || code.length > 8)
+      errors.add(:code, "must be 8 digit")
+    end
   end
-
 
   def to_s
     "#{self.code}"
