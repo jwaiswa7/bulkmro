@@ -20,9 +20,9 @@ class TaxCode < ApplicationRecord
 
   def code_validation
     if is_service.present? && is_service && (code.length < 6 || code.length > 6)
-      errors.add(:code, "must be 6 digit")
+      errors.add(:code, 'must be 6 digit')
     elsif !is_service.present? && !is_service && (code.length < 8 || code.length > 8)
-      errors.add(:code, "must be 8 digit")
+      errors.add(:code, 'must be 8 digit')
     end
   end
 
