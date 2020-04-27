@@ -33,7 +33,7 @@
 
     <%= navigation if local_assigns[:navigation].present? %>
     <div <% unless current_overseer.nil? %> class="layout layout-nav-top layout-body-wrapper" <% else %> class="layout layout-nav-top layout-body-wrapper-portal" <% end %>>
-      <div class="main-container"><% if current_overseer.sales? && current_overseer.descendant_ids.present? && request.path_info.exclude?("/dashboard/sales_executive_dashboard") %>
+      <div class="main-container"><% if current_overseer.sales? && current_overseer.descendant_ids.present? && (request.path_info.include?("/dashboard") && request.path_info.exclude?("/dashboard/sales_executive_dashboard")) %>
           <%= render partial:'overseers/dashboard/sales_manager/sales_manager_navigation_panel' %>
           <%= render partial: 'overseers/dashboard/common/side_notification_panel'%>
         <% end %>
