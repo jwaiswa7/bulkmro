@@ -12,105 +12,104 @@
     </tr>
     </thead>
     <tbody>
-    <tr>
-      <td>
-        <div  class="bmro-drop-icon-head bmro-drop-icon-head-fl " aria-haspopup="true" aria-expanded="false" role="button"></div>
-        <div class="my-team-oval-rate">
-          <div class="bmro-sales-progress mx-auto" data-value='3.5'>
-            <span class="bmro-sales-progress-left">
-                          <span class="bmro-sales-progress-bar border-primary"></span>
-            </span>
-            <span class="bmro-sales-progress-right">
-                          <span class="bmro-sales-progress-bar border-primary"></span>
-            </span>
-            <span class="progress-value w-100 h-100 rounded-circle d-flex align-items-center justify-content-center">
-              <div>3.5</div>
-            </span>
+    <% @bucket_records.each do |record| %>
+      <tr>
+        <td>
+          <div  class="bmro-drop-icon-head bmro-drop-icon-head-fl " aria-haspopup="true" aria-expanded="false" role="button"></div>
+          <div class="my-team-oval-rate">
+            <div class="bmro-sales-progress mx-auto" data-value='3.5'>
+              <span class="bmro-sales-progress-left">
+                            <span class="bmro-sales-progress-bar border-primary"></span>
+              </span>
+              <span class="bmro-sales-progress-right">
+                            <span class="bmro-sales-progress-bar border-primary"></span>
+              </span>
+              <span class="progress-value w-100 h-100 rounded-circle d-flex align-items-center justify-content-center">
+                <div>3.5</div>
+              </span>
+            </div>
           </div>
-        </div>
-      </td>
-      <td>Krishna Murthy</td>
-      <% @bucket_records.each do |record| %>
+        </td>
         <td><%= record[:name] %></td>
-      <% end %>
+        <td><%= record[:acknowledgement_pending].present? ? record[:acknowledgement_pending] : "-" %></td>
+        <td><%= record[:preparing_quotation].present? ? record[:preparing_quotation] : "-" %></td>
+        <td><%= record[:follow_up].present? ? record[:follow_up] : "-" %></td>
+        <td><%= record[:awaited_customer_po].present? ? record[:awaited_customer_po] : "-" %></td>
+        <td><%= record[:pending_account_approval].present? ? record[:pending_account_approval] : "-" %></td>
+      </tr>
+    <% end %>
+<!--    <tr>-->
+<!--      <td>-->
+<!--        <div  class="bmro-drop-icon-head bmro-drop-icon-head-fl " aria-haspopup="true" aria-expanded="false" role="button"></div>-->
+<!--        <div class="my-team-oval-rate">-->
+<!--          <div class="bmro-sales-progress mx-auto" data-value='6.5'>-->
+<!--            <span class="bmro-sales-progress-left">-->
+<!--                          <span class="bmro-sales-progress-bar border-primary"></span>-->
+<!--            </span>-->
+<!--            <span class="bmro-sales-progress-right">-->
+<!--                          <span class="bmro-sales-progress-bar border-primary"></span>-->
+<!--            </span>-->
+<!--            <span class="progress-value w-100 h-100 rounded-circle d-flex align-items-center justify-content-center">-->
+<!--              <div>6.5</div>-->
+<!--            </span>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </td>-->
+<!--      <td>Krishna Murthy</td>-->
 <!--      <td>02</td>-->
-      <td>01</td>
-      <td>12</td>
-      <td>04</td>
-      <td>02</td>
-    </tr>
-    <tr>
-      <td>
-        <div  class="bmro-drop-icon-head bmro-drop-icon-head-fl " aria-haspopup="true" aria-expanded="false" role="button"></div>
-        <div class="my-team-oval-rate">
-          <div class="bmro-sales-progress mx-auto" data-value='6.5'>
-            <span class="bmro-sales-progress-left">
-                          <span class="bmro-sales-progress-bar border-primary"></span>
-            </span>
-            <span class="bmro-sales-progress-right">
-                          <span class="bmro-sales-progress-bar border-primary"></span>
-            </span>
-            <span class="progress-value w-100 h-100 rounded-circle d-flex align-items-center justify-content-center">
-              <div>6.5</div>
-            </span>
-          </div>
-        </div>
-      </td>
-      <td>Krishna Murthy</td>
-      <td>02</td>
-      <td>01</td>
-      <td>12</td>
-      <td>04</td>
-      <td>02</td>
-    </tr>
-    <tr>
-      <td>
-        <div  class="bmro-drop-icon-head bmro-drop-icon-head-fl " aria-haspopup="true" aria-expanded="false" role="button"></div>
-        <div class="my-team-oval-rate">
-          <div class="bmro-sales-progress mx-auto" data-value='8.5'>
-            <span class="bmro-sales-progress-left">
-                          <span class="bmro-sales-progress-bar border-primary"></span>
-            </span>
-            <span class="bmro-sales-progress-right">
-                          <span class="bmro-sales-progress-bar border-primary"></span>
-            </span>
-            <span class="progress-value w-100 h-100 rounded-circle d-flex align-items-center justify-content-center">
-              <div>8.5</div>
-            </span>
-          </div>
-        </div>
-      </td>
-      <td>Krishna Murthy</td>
-      <td>02</td>
-      <td>01</td>
-      <td>12</td>
-      <td>04</td>
-      <td>02</td>
-    </tr>
-    <tr>
-      <td>
-        <div  class="bmro-drop-icon-head bmro-drop-icon-head-fl " aria-haspopup="true" aria-expanded="false" role="button"></div>
-        <div class="my-team-oval-rate">
-          <div class="bmro-sales-progress mx-auto" data-value='1.5'>
-            <span class="bmro-sales-progress-left">
-                          <span class="bmro-sales-progress-bar border-primary"></span>
-            </span>
-            <span class="bmro-sales-progress-right">
-                          <span class="bmro-sales-progress-bar border-primary"></span>
-            </span>
-            <span class="progress-value w-100 h-100 rounded-circle d-flex align-items-center justify-content-center">
-              <div>1.5</div>
-            </span>
-          </div>
-        </div>
-      </td>
-      <td>Krishna Murthy</td>
-      <td>02</td>
-      <td>01</td>
-      <td>12</td>
-      <td>04</td>
-      <td>02</td>
-    </tr>
-    </tbody>
+<!--      <td>01</td>-->
+<!--      <td>12</td>-->
+<!--      <td>04</td>-->
+<!--      <td>02</td>-->
+<!--    </tr>-->
+<!--    <tr>-->
+<!--      <td>-->
+<!--        <div  class="bmro-drop-icon-head bmro-drop-icon-head-fl " aria-haspopup="true" aria-expanded="false" role="button"></div>-->
+<!--        <div class="my-team-oval-rate">-->
+<!--          <div class="bmro-sales-progress mx-auto" data-value='8.5'>-->
+<!--            <span class="bmro-sales-progress-left">-->
+<!--                          <span class="bmro-sales-progress-bar border-primary"></span>-->
+<!--            </span>-->
+<!--            <span class="bmro-sales-progress-right">-->
+<!--                          <span class="bmro-sales-progress-bar border-primary"></span>-->
+<!--            </span>-->
+<!--            <span class="progress-value w-100 h-100 rounded-circle d-flex align-items-center justify-content-center">-->
+<!--              <div>8.5</div>-->
+<!--            </span>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </td>-->
+<!--      <td>Krishna Murthy</td>-->
+<!--      <td>02</td>-->
+<!--      <td>01</td>-->
+<!--      <td>12</td>-->
+<!--      <td>04</td>-->
+<!--      <td>02</td>-->
+<!--    </tr>-->
+<!--    <tr>-->
+<!--      <td>-->
+<!--        <div  class="bmro-drop-icon-head bmro-drop-icon-head-fl " aria-haspopup="true" aria-expanded="false" role="button"></div>-->
+<!--        <div class="my-team-oval-rate">-->
+<!--          <div class="bmro-sales-progress mx-auto" data-value='1.5'>-->
+<!--            <span class="bmro-sales-progress-left">-->
+<!--                          <span class="bmro-sales-progress-bar border-primary"></span>-->
+<!--            </span>-->
+<!--            <span class="bmro-sales-progress-right">-->
+<!--                          <span class="bmro-sales-progress-bar border-primary"></span>-->
+<!--            </span>-->
+<!--            <span class="progress-value w-100 h-100 rounded-circle d-flex align-items-center justify-content-center">-->
+<!--              <div>1.5</div>-->
+<!--            </span>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </td>-->
+<!--      <td>Krishna Murthy</td>-->
+<!--      <td>02</td>-->
+<!--      <td>01</td>-->
+<!--      <td>12</td>-->
+<!--      <td>04</td>-->
+<!--      <td>02</td>-->
+<!--    </tr>-->
+<!--    </tbody>-->
   </table>
 </div>
