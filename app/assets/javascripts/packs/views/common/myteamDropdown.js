@@ -4,7 +4,6 @@
 
 const myteamDropdown=function(){
 $('.bmro-drop-icon-head-fl').click((e)=>{
-    debugger
         let current =e.currentTarget.parentElement.parentElement;
         console.log(current)
         if(e.currentTarget.classList.contains('bmro-drop-icon-head-rotated-up'))
