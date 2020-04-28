@@ -30,7 +30,10 @@
         </div>
       </td>
       <td>Krishna Murthy</td>
-      <td>02</td>
+      <% @bucket_records.each do |record| %>
+        <td><%= record[:name] %></td>
+      <% end %>
+<!--      <td>02</td>-->
       <td>01</td>
       <td>12</td>
       <td>04</td>

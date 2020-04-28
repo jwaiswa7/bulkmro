@@ -1,3 +1,6 @@
+import getInquiryTasks from "./getInquiryTasks";
+import getStatusRecords from "./getStatusRecords";
+
 const salesNavigationPanel=function(){
 
         $(".bmro-sales-actions").each((i,element)=> {
@@ -37,6 +40,15 @@ const salesNavigationPanel=function(){
             $('#myTeamViewer').show();
             $('#actionDashboardViewer').hide();
             $('#performanceDashboardViewer').hide();
+            // $.ajax({
+            //     url: Routes.my_team_overseers_dashboard_path({format: "html"}),
+            //     type: "GET",
+            //     success: function (data) {
+            //         debugger
+            //         $('#myTeamViewer')[0].innerHTML = data.html;
+            //         $('#myTeamViewer').show();
+            //     }
+            // });
         }
     }
     $(".bmro-sales-actions").click(function (event) {

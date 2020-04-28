@@ -15,6 +15,7 @@ class Overseers::DashboardController < Overseers::BaseController
       render template: 'overseers/dashboard/accounts/accounts_dashboard'
     elsif current_overseer.acl_role.role_name == 'Inside Sales and Logistic Manager'
       @dashboard = Overseers::Dashboard.new(current_overseer)
+      my_team
       render template: 'overseers/dashboard/sales_manager/sales_manager_dashboard'
     elsif current_overseer.admin?
       # @dashboard = Rails.cache.fetch('admin_dashboard_data') do
@@ -198,6 +199,16 @@ class Overseers::DashboardController < Overseers::BaseController
     authorize_acl :dashboard
     Services::Shared::Migrations::Migrations.new.call
     render json: {}, status: :ok
+  end
+
+  def my_team
+    service = Services::Overseers::Finders::MyTeam.new(params, current_overseer)
+    service.call
+    records = service.records
+    @overseers = Overseer.where(parent_id: current_overseer.id)
+    report_bucket_service = Services::Overseers::Dashboards::MyTeamBuckets.new(records, @overseers, params)
+    @bucket_records = report_bucket_service.call
+    # render json: { html: render_to_string(partial: 'overseers/dashboard/sales_manager/my_team_sales_manager_dashboard', locals: { records: bucket_records }) }
   end
 
   private
