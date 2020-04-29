@@ -123,7 +123,7 @@ class Overseers::DashboardController < Overseers::BaseController
     Rails.cache.fetch([self, 'get_filtered_inquiries'], expires_in: 1.hours) do
       @dashboard = Overseers::Dashboard.new(current_overseer)
       if current_overseer.sales?
-        if current_overseer.descendant_ids.present?
+        # if current_overseer.descendant_ids.present?
           inquiry = []
           @dashboard.inq_for_dash.each do |inq|
             if inq.inquiry_number == params['inquiry_number'].to_i
@@ -131,9 +131,10 @@ class Overseers::DashboardController < Overseers::BaseController
               break
             end
           end
-        else
-          inquiry = @dashboard.inq_for_dash.where(inquiry_number: params['inquiry_number'].to_i)
-        end
+        # else
+        #   binding.pry
+        #   inquiry = @dashboard.inq_for_dash.where(inquiry_number: params['inquiry_number'].to_i)
+        # end
 
         if inquiry.last.customer_po_number.blank? || inquiry.last.customer_order_date.blank? || (inquiry.last.approvals.any? && inquiry.last.inquiry_product_suppliers.any? && inquiry.last.sales_quotes.persisted.blank?) || (inquiry.last.final_sales_quote.present? && policy(inquiry.last.final_sales_quote).new_sales_order?)
           inquiry_has_tasks = true
