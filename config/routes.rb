@@ -76,6 +76,7 @@ Rails.application.routes.draw do
       get 'get_inquiry_tasks'
       get 'follow_up_dashboard'
       get 'my_team'
+      get 'get_recent_inquiries'
     end
 
     resources :remote_requests do

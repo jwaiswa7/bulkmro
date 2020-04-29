@@ -1,0 +1,14 @@
+<tr class="bmro-back-color-ackwo">
+  <td colspan="7">
+    <div class="dropdown-div-row-wrapper">
+      <div>
+        <div class="my-team-user"><%= name %>'s Inquiries</div>
+      </div>
+      <div class='my-team-inquiry-box-wrapper my-team-user'>
+        <% inquiries.each do |inquiry| %>
+          <div class='my-team-inquiry-box'><a href="<%= edit_overseers_inquiry_path(inquiry[0]) %>" target="_blank"><%= inquiry[1] %></a></div>
+        <% end %>
+      </div>
+    </div>
+  </td>
+</tr>

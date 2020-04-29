@@ -211,6 +211,14 @@ class Overseers::DashboardController < Overseers::BaseController
     # render json: { html: render_to_string(partial: 'overseers/dashboard/sales_manager/my_team_sales_manager_dashboard', locals: { records: bucket_records }) }
   end
 
+  def get_recent_inquiries
+    overseer = Overseer.find(params['overseer_id'])
+    @inquiries = Inquiry.where(inside_sales_owner_id: overseer.id).or(Inquiry.where(outside_sales_owner_id: overseer.id)).order('created_at DESC').first(10).pluck(:id, :inquiry_number)
+    respond_to do |format|
+      format.html { render partial: '/overseers/dashboard/sales_manager/inquiries_dropdown_my_team', locals: {inquiries: @inquiries, name: overseer.first_name} }
+    end
+  end
+
   private
 
     def inquiry_params
