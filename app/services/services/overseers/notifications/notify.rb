@@ -119,7 +119,11 @@ class Services::Overseers::Notifications::Notify < Services::Shared::Notificatio
   def send_order_confirmation(to, action, notifiable, url, *msg)
     @action = action; @notifiable = notifiable; @url = url
     @message = "New Order for inquiry ##{msg[0]} awaiting approval"
-    @to = to.sales_manager
+    tos = Services::Overseers::Notifications::Recipients.ar_invoice_request_notifiers
+    tos.uniq.each do | to |
+      @to = Overseer.find_by_email(to)
+      send
+    end
     send
     @message = "Order for inquiry ##{msg[0]} sent for approval"
     @to = to.outside_sales_owner

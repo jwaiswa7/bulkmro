@@ -9,7 +9,7 @@ class Services::Overseers::Notifications::Recipients
     end
 
     def ar_invoice_request_notifiers
-      %w(pravin.ganekar@bulkmro.com ajay.kondal@bulkmro.com shweta.jadhav@bulkmro.com)
+      %w(pravin.ganekar@bulkmro.com ajay.kondal@bulkmro.com charudatt.mhatre@bulkmro.com vijay.manjrekar@bulkmro.com)
     end
   end
 end
