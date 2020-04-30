@@ -96,11 +96,19 @@ class Services::Overseers::Notifications::Notify < Services::Shared::Notificatio
     @to = to; @action = action; @notifiable = notifiable; @url = url
 
     if msg[0].present?
-      @message = "Product #{msg[1]} has been #{msg[0]}"
+      if msg[0] == 'approve'
+        @message = "Product #{msg[1]} has been approved"
+      elsif msg[0] == 'reject'
+        @message = "Product #{msg[1]} has been rejected"
+      else
+        @message = "Product #{msg[1]} has been #{msg[0]}"
+        @message = "#{@message}: #{msg[2]}" if msg[2].present?
+      end
     else
       @message = "New reply for Product #{msg[1]}"
+      @message = "#{@message}: #{msg[2]}" if msg[2].present?
     end
-    @message = "#{@message}: #{msg[2]}" if msg[2].present?
+
     send
   end
 
@@ -108,11 +116,18 @@ class Services::Overseers::Notifications::Notify < Services::Shared::Notificatio
     @to = to; @action = action; @notifiable = notifiable; @url = url
 
     if msg[0].present?
-      @message = "Product #{msg[1]} has been #{msg[0]} - #{msg[3]}"
+      if msg[0] == 'approve'
+        @message = "Product #{msg[1]} has been approved - exec: #{msg[3]}"
+      elsif msg[0] == 'reject'
+        @message = "Product #{msg[1]} has been rejected - exec: #{msg[3]}"
+      else
+        @message = "Product #{msg[1]} has been #{msg[0]} - exec: #{msg[3]}"
+        @message = "#{@message}: #{msg[2]}" if msg[2].present?
+      end
     else
-      @message = "New reply for Product #{msg[1]} - #{msg[3]}"
+      @message = "New reply for Product #{msg[1]} - exec: #{msg[3]}"
+      @message = "#{@message}: #{msg[2]}" if msg[2].present?
     end
-    @message = "#{@message}: #{msg[2]}" if msg[2].present?
     send
   end
 
@@ -133,9 +148,8 @@ class Services::Overseers::Notifications::Notify < Services::Shared::Notificatio
     if msg[0].present?
       if  msg[0] == 'approve'
         @message = "Order for Inquiry ##{msg[1]} has been approved."
-      elsif msg[0].present? && msg[0] == 'reject'
+      elsif msg[0] == 'reject'
         @message = "Order for Inquiry ##{msg[1]} has been rejected."
-        @message = "#{@message}: #{msg[2]}" if msg[2].present?
       else
         @message = "Order for Inquiry ##{msg[1]} has been #{msg[0]}"
         @message = "#{@message}: #{msg[2]}" if msg[2].present?
