@@ -28,10 +28,6 @@ every(1.hour, 'adjust_dynos') do
   Services::Shared::Heroku::DynoAdjuster.new
 end if Rails.env.production?
 
-# every(3.hour, 'update_admin_dashboard_cache') do
-#   UpdateAdminDashboardCacheJob.perform_later
-# end if Rails.env.production?
-
 every(1.day, 'set_overseer_monthly_target', at: '00:10') do
   puts 'For setting Monthly Targets'
   service = Services::Overseers::Targets::SetMonthlyTarget.new
@@ -68,10 +64,6 @@ every(1.day, 'product_inventory_update_for_henkel', at: ['07:30', '11:30', '15:3
   service.call
 end if Rails.env.production?
 
-every(1.day, 'send_inventory_status_to_saint_gobain_customer', at: '19:30') do
-  InventoryStatusMailer.send_inventory_status_to_customer.deliver_now
-end if Rails.env.production?
-
 every(1.day, 'log_currency_rates', at: '20:00') do
   service = Services::Overseers::Currencies::LogCurrencyRates.new
   service.call
@@ -94,6 +86,14 @@ every(1.day, 'gcloud_run_backups', at: '21:30') do
   service.call
 end if Rails.env.production?
 
+every(1.day, 'generate_exports_daily', at: '22:00') do
+  # to-do check for memory leaks on heroku
+  Chewy.strategy(:atomic) do
+    service = Services::Overseers::Exporters::GenerateExportsDaily.new
+    service.call
+  end
+end
+
 every(2.day, 'gcloud_run_backups_alt', at: '22:30') do
   service = Services::Shared::Gcloud::RunBackups.new(send_chat_message: false)
   service.call
@@ -105,6 +105,14 @@ every(4.day, 'set_slack_ids', at: '23:00') do
     service.call
   end
 end
+
+# every(1.day, 'send_inventory_status_to_saint_gobain_customer', at: '19:30') do
+#   InventoryStatusMailer.send_inventory_status_to_customer.deliver_now
+# end if Rails.env.production?
+
+# every(3.hour, 'update_admin_dashboard_cache') do
+#   UpdateAdminDashboardCacheJob.perform_later
+# end if Rails.env.production?
 
 # every(4.hour, 'generate_exports_hourly') do
 #   Chewy.strategy(:atomic) do
@@ -126,14 +134,6 @@ end
 #     end
 #   end
 # end
-
-every(1.day, 'generate_exports_daily', at: '22:00') do
-  # to-do check for memory leaks on heroku
-  Chewy.strategy(:atomic) do
-    service = Services::Overseers::Exporters::GenerateExportsDaily.new
-    service.call
-  end
-end
 
 # every(1.day, 'resync_failed_requests', at: '07:00') do
 #   service = Services::Overseers::FailedRemoteRequests::Resync.new
