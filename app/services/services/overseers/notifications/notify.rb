@@ -186,6 +186,7 @@ class Services::Overseers::Notifications::Notify < Services::Shared::Notificatio
     if to.parent.present?
       @message = "Inquiry ##{notificable.inquiry_number} - status updated to #{msg[0]} - exec: #{to}"
       @to = to.parent
+      send
     end
   end
 
