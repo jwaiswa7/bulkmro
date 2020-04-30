@@ -4,6 +4,7 @@ import getInquiryTasks from "./getInquiryTasks";
 const statusBox = function () {
     $(".status-box").click(function (e) {
         let inquiry_status = $(this).data('status');
+        let executive_link = typeof $(".status-box").data('executive-link')  !== 'undefined'
         $('.bmro-same-box').removeClass('bmro-same-box-active');
         $(this).addClass('bmro-same-box-active', 1000);
         e.preventDefault();
@@ -15,7 +16,8 @@ const statusBox = function () {
             url: Routes.get_filtered_inquiries_overseers_dashboard_path({format: "html"}),
             type: "GET",
             data: {
-                status: inquiry_status
+                status: inquiry_status,
+                executive_link: executive_link
             },
             success: function (data) {
                 $('.inquiries-card').empty();

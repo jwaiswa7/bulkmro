@@ -20,6 +20,8 @@
 <div id="collapseOne" class="collapse show bmro-width100">
   <% if show_all_tasks || (show_inquiry_tasks && inquiry_has_tasks) %>
     <% inq_for_dash.each do |inquiry| %>
+
+<!--      Acknowledgement Email not sent.-->
       <% if inquiry.status == 'New Inquiry' %>
         <div class="bmro-width100 bmro-padding-task">
           <div class="bmro-task-no-td bmro-task-td-width bmro-fl bmro-position-relative">
@@ -36,6 +38,8 @@
           </div>
         </div>
       <% end %>
+
+<!--      Add Product-->
       <% if !inquiry.inquiry_products.present? %>
         <div class="bmro-width100 bmro-padding-task">
           <div class="bmro-task-no-td bmro-task-td-width bmro-fl bmro-position-relative">
@@ -52,7 +56,8 @@
           </div>
         </div>
       <% end %>
-      <!--         New sales quote button-->
+
+<!--      Create new sales quote-->
       <% if is_authorized(inquiry, 'new_sales_quote') && policy(inquiry).new_sales_quote? %>
         <div class="bmro-width100 bmro-padding-task">
           <div class="bmro-task-no-td bmro-task-td-width bmro-fl bmro-position-relative">
@@ -71,7 +76,7 @@
         </div>
       <% end %>
 
-      <!--        add suppliers-->
+<!--      Add Suppliers-->
       <% if inquiry.inquiry_products.present? && !inquiry.suppliers.present?%>
         <div class="bmro-width100 bmro-padding-task">
           <div class="bmro-task-no-td bmro-task-td-width bmro-fl bmro-position-relative">
@@ -89,7 +94,28 @@
           </div>
         </div>
       <% end %>
-      <!--        add to order button-->
+
+
+<!--      Email SQ to Customer-->
+      <% if inquiry.sales_quotes.present? %>
+        <div class="bmro-width100 bmro-padding-task">
+          <div class="bmro-task-no-td bmro-task-td-width bmro-fl bmro-position-relative">
+            <span class="bmro-big-heading bmro-fl bmro-no-mrl bmro-td-span"><%= inquiry.inquiry_number %></span>
+          </div>
+          <div class="bmro-task-print bmro-task-width bmro-fl">
+            <div class="bmro-commited-data bmro-task-td">
+              Email SQ to Customer
+            </div>
+          </div>
+          <div class="bmro-action-button-parent bmro-action-width bmro-fl text-right">
+              <a href="<%= overseers_inquiry_sales_quotes_path(inquiry) %>" class="btn bmro-button btn-dashboard" role="button" data-id="<%= inquiry.inquiry_number %>"> Email SQ to Customer
+            </a>
+          </div>
+        </div>
+      <% end %>
+
+
+<!--      Create new sales order-->
       <% if inquiry.final_sales_quote.present? && is_authorized(inquiry.final_sales_quote, 'new_sales_order') && policy(inquiry.final_sales_quote).new_sales_order? %>
         <div class="bmro-width100 bmro-padding-task">
           <div class="bmro-task-no-td bmro-task-td-width bmro-fl bmro-position-relative">
@@ -106,8 +132,8 @@
           </div>
         </div>
       <% end %>
-      <!--         add product-->
 
+<!--      Add Customer PO number.-->
       <% if inquiry.customer_po_number.blank? %>
         <div class="bmro-width100 bmro-padding-task">
           <div class="bmro-task-no-td bmro-task-td-width bmro-fl bmro-position-relative">
@@ -128,6 +154,7 @@
         </div>
       <% end %>
 
+<!--      Add Customer Order date.-->
       <% if inquiry.customer_order_date.blank? %>
         <div class="bmro-width100 bmro-padding-task">
           <div class="bmro-task-no-td bmro-task-td-width bmro-fl bmro-position-relative">
@@ -147,6 +174,8 @@
           </div>
         </div>
       <% end %>
+
+
     <% end %>
   <% else %>
     <div class="bmro-width100 bmro-padding-task">

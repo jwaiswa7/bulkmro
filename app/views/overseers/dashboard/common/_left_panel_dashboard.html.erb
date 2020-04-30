@@ -5,7 +5,7 @@
         <div class="bmro-dash-box">
           <% if @dashboard.main_statuses(executivelink).is_a?(Array) %>
             <% @dashboard.main_statuses(executivelink).each do |status| %>
-              <div class="bmro-same-box col status-box" data-status="<%= status %>">
+              <div class="bmro-same-box col status-box" data-status="<%= status %>" data-executive-link="<%= executivelink %>">
                 <label><%= status %></label>
                 <h5><%= @dashboard.get_status_metrics(status)[:'count'] %></h5>
                 <span><%= format_currency(@dashboard.get_status_metrics(status)[:'value']) %></span>
@@ -30,7 +30,7 @@
               <% if current_overseer.sales? && current_overseer.descendant_ids.present? && !executivelink %>
                 <%= render partial: 'overseers/dashboard/sales_manager/inquiry_list_sales_manager_wrapper', locals:{inq_for_dash: @dashboard.inq_for_dash, inq_for_sales_manager_dash: @dashboard.inq_for_sales_manager_dash_by_name } %>
               <% else %>
-                <%= render partial: 'overseers/dashboard/common/inquiry_list_wrapper', locals:{inq_for_dash: @dashboard.inq_for_dash(executivelink)} %>
+                <%= render partial: 'overseers/dashboard/common/inquiry_list_wrapper', locals:{inq_for_dash: @dashboard.inq_for_dash(executivelink), executivelink:executivelink} %>
               <% end %>
             </div>
           </div>
