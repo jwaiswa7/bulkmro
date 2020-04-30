@@ -1,6 +1,7 @@
 class PackingSlipRow < ApplicationRecord
   belongs_to :packing_slip, default: false
   belongs_to :ar_invoice_request_row, default: false
+  belongs_to :sales_invoice_row, default: false
   validates_numericality_of :delivery_quantity, greater_than: 0, allow_nil: true
   validate :check_delivery_quantity?
 

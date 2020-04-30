@@ -34,13 +34,13 @@
           <div class="col-6 col-md-3 mb-2">
             <strong class="d-block bmro-summary-heading">Customer Name</strong>
             <div class="bmro-summary-data">
-              <%= @outward_dispatch.ar_invoice_request.inquiry.company.to_s %>
+              <%= @outward_dispatch.sales_invoice.inquiry.company.to_s %>
              </div> 
           </div>
           <div class="col-6 col-md-3 mb-2">
             <strong class="d-block bmro-summary-heading">Inquiry #</strong>
             <div class="bmro-summary-data">
-              <%= @outward_dispatch.ar_invoice_request.inquiry.inquiry_number %>
+              <%= @outward_dispatch.sales_invoice.inquiry.inquiry_number %>
             </div> 
           </div>
           <div class="col-6 col-md-3 mb-2">
@@ -52,7 +52,7 @@
           <div class="col-6 col-md-3 mb-2">
             <strong class="d-block bmro-summary-heading">AR Invoice #</strong>
             <div class="bmro-summary-data">
-              <%= @outward_dispatch.ar_invoice_request.ar_invoice_number %>
+              <%= @outward_dispatch.sales_invoice.invoice_number %>
             </div>  
           </div>
         </div>

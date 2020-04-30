@@ -7,7 +7,6 @@ class ArInvoiceRequest < ApplicationRecord
 
   belongs_to :sales_order
   belongs_to :inquiry
-  has_many :outward_dispatches
   belongs_to :sales_invoice, required: false
   validate :presence_of_reason
   after_save :send_notification_on_status_changed, :update_inward_dispatch_index

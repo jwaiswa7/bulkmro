@@ -9,6 +9,7 @@ class SalesInvoice < ApplicationRecord
   pg_search_scope :locate, against: [:id, :invoice_number], associated_against: {company: [:name], account: [:name], inside_sales_owner: [:first_name, :last_name], outside_sales_owner: [:first_name, :last_name]}, using: {tsearch: {prefix: true}}
 
   belongs_to :sales_order
+  has_many :outward_dispatches
   belongs_to :billing_address, class_name: 'Address', required: false
   belongs_to :shipping_address, class_name: 'Address', required: false
 
