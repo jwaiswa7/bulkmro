@@ -124,7 +124,6 @@ class Services::Overseers::Notifications::Notify < Services::Shared::Notificatio
       @to = Overseer.find_by_email(to)
       send
     end
-    send
     @message = "Order for inquiry ##{msg[0]} sent for approval"
     @to = to.outside_sales_owner
     send
@@ -180,6 +179,11 @@ class Services::Overseers::Notifications::Notify < Services::Shared::Notificatio
     @message = "#{msg_substring}for Inquiry##{inquiry.inquiry_number} has been #{msg[0]}."
     @to = inquiry.inside_sales_owner
     send
+    tos = Services::Overseers::Notifications::Recipients.ar_invoice_request_notifiers
+    tos.uniq.each do | to |
+      @to = Overseer.find_by_email(to)
+      send
+    end
   end
 
   def send_inquiry_status_changed(to, action, notificable, url, *msg)
