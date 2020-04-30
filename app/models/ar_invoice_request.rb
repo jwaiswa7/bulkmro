@@ -75,18 +75,16 @@ class ArInvoiceRequest < ApplicationRecord
 
   def send_notification_on_status_changed
     if self.saved_change_to_status?
+      tos = Services::Overseers::Notifications::Recipients.ar_invoice_request_notifiers
+      sender = [self.created_by.email]
       if self.status == 'AR Invoice requested'
-        tos = Services::Overseers::Notifications::Recipients.ar_invoice_request_notifiers
-        comment = "AR invoice requested for #{self.sales_order.order_number}"
-      else
-        tos = [self.created_by.email]
-        if status == 'AR Invoice Request Rejected'
-          comment = "AR invoice rejected for #{self.sales_order.order_number}. Reason: " + self.show_display_reason[:text]
-        elsif status == 'Cancelled AR Invoice'
-          comment = "AR invoice cancelled for #{self.sales_order.order_number}. Reason: " + self.show_display_reason[:text]
-        elsif self.status == 'Completed AR Invoice Request'
-          comment = "AR invoice number ##{self.ar_invoice_number} completed for #{self.sales_order.order_number}"
-        end
+        comment = "AR invoice for SO ##{self.sales_order.order_number} Inquiry# #{self.inquiry.inquiry_number} has been requested"
+      elsif status == 'AR Invoice Request Rejected'
+        comment = "AR ##{self.ar_invoice_number if self.ar_invoice_number.present?} for SO ##{self.sales_order.order_number} has been Rejected. Reason: " + self.show_display_reason[:text]
+      elsif status == 'Cancelled AR Invoice'
+        comment = "AR ##{self.self.ar_invoice_number if self.ar_invoice_number.present?} for SO ##{self.sales_order.order_number} has been Cancelled. Reason: " + self.show_display_reason[:text]
+      elsif self.status == 'Completed AR Invoice Request'
+        comment = "AR ##{self.ar_invoice_number} for SO ##{self.sales_order.order_number} has been Approved"
       end
       action_name = ''
       if self.saved_change_to_id?
@@ -98,7 +96,8 @@ class ArInvoiceRequest < ApplicationRecord
       end
       @notification = Services::Overseers::Notifications::Notify.new(overseer, self.class.parent)
       @notification.send_ar_invoice_request_update(
-          tos ,
+          tos,
+          sender,
           action_name.to_sym,
           self,
           "/overseers/ar_invoice_requests/#{self.hashid}",
