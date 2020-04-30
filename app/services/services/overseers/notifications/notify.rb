@@ -119,9 +119,12 @@ class Services::Overseers::Notifications::Notify < Services::Shared::Notificatio
   def send_order_confirmation(to, action, notifiable, url, *msg)
     @action = action; @notifiable = notifiable; @url = url
     @message = "New Order for inquiry ##{msg[0]} awaiting approval"
-    tos = Services::Overseers::Notifications::Recipients.ar_invoice_request_notifiers
-    tos.uniq.each do | to |
-      @to = Overseer.find_by_email(to)
+    @to = to.sales_manager
+    send
+    tos = Services::Overseers::Notifications::Recipients.so_approval_rejection_notifiers
+    receivers = Overseer.where(email: tos)
+    receivers.uniq.each do | overseer |
+      @to = overseer
       send
     end
     @message = "Order for inquiry ##{msg[0]} sent for approval"
@@ -163,7 +166,7 @@ class Services::Overseers::Notifications::Notify < Services::Shared::Notificatio
   end
 
 
-  def   send_so_approved_by_account(sales_order, action, notifiable, url, *msg)
+  def send_so_approved_by_account(sales_order, action, notifiable, url, *msg)
     @action = action; @notifiable = notifiable; @url = url
     inquiry = sales_order.inquiry
     if sales_order.order_number.present?
@@ -179,9 +182,10 @@ class Services::Overseers::Notifications::Notify < Services::Shared::Notificatio
     @message = "#{msg_substring}for Inquiry##{inquiry.inquiry_number} has been #{msg[0]}."
     @to = inquiry.inside_sales_owner
     send
-    tos = Services::Overseers::Notifications::Recipients.ar_invoice_request_notifiers
-    tos.uniq.each do | to |
-      @to = Overseer.find_by_email(to)
+    tos = Services::Overseers::Notifications::Recipients.so_approval_rejection_notifiers
+    receivers = Overseer.where(email: tos)
+    receivers.uniq.each do | overseer |
+      @to = overseer
       send
     end
   end

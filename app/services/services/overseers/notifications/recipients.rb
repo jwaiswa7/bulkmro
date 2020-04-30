@@ -9,6 +9,10 @@ class Services::Overseers::Notifications::Recipients
     end
 
     def ar_invoice_request_notifiers
+      %w(pravin.ganekar@bulkmro.com ajay.kondal@bulkmro.com vijay.manjrekar@bulkmro.com)
+    end
+
+    def so_approval_rejection_notifiers
       %w(pravin.ganekar@bulkmro.com ajay.kondal@bulkmro.com charudatt.mhatre@bulkmro.com vijay.manjrekar@bulkmro.com)
     end
   end
