@@ -9,7 +9,8 @@ class Overseers::Dashboard
 
   def inquiries_for_manager
     Rails.cache.fetch([self, 'inquiries_for_manager'], expires_in: 1.hours) do
-      Inquiry.with_includes.where('created_at > ? OR quotation_followup_date > ?', Date.new(2018, 04, 01), Date.new(2018, 04, 01)).where(status: ['New Inquiry','Acknowledgement Mail', 'Cross Reference', 'RFQ Sent','PQ Received', 'Preparing Quotation', 'Follow Up on Quotation', 'SO Not Created-Pending Customer PO Revision', 'SO Draft: Pending Accounts Approval', 'SO Not Created-Customer PO Awaited']).order(updated_at: :desc).compact
+      # Inquiry.with_includes.where('created_at > ? OR quotation_followup_date > ?', Date.new(2018, 04, 01), Date.new(2018, 04, 01)).where(status: ['New Inquiry','Acknowledgement Mail', 'Cross Reference', 'RFQ Sent','PQ Received', 'Preparing Quotation', 'Follow Up on Quotation', 'SO Not Created-Pending Customer PO Revision', 'SO Draft: Pending Accounts Approval', 'SO Not Created-Customer PO Awaited']).order(updated_at: :desc).compact
+      Inquiry.with_includes.where('created_at > ? OR quotation_followup_date > ?', Date.new(2018, 04, 01), Date.new(2018, 04, 01)).where(status: ['New Inquiry','Acknowledgement Mail', 'Cross Reference', 'RFQ Sent','PQ Received', 'Preparing Quotation', 'Follow Up on Quotation', 'SO Not Created-Pending Customer PO Revision', 'SO Draft: Pending Accounts Approval', 'SO Not Created-Customer PO Awaited'], inside_sales_owner_id: overseer.self_and_descendant_ids).order(updated_at: :desc).compact
     end
   end
 
@@ -53,13 +54,15 @@ class Overseers::Dashboard
     inq_for_sales_manager_dash.map { |id,inquiries| [Overseer.find_by_id(id).name,inquiries] }.to_h
   end
 
-  def inq_for_dash
-    if self.overseer.inside_sales_executive?
-      Inquiry.with_includes.where(inside_sales_owner_id: overseer.id).where('updated_at > ? OR quotation_followup_date > ?', Date.new(2018, 04, 01), Date.new(2018, 04, 01)).where.not(status: ['Order Won', 'Order Lost', 'Regret', 'Rejected by Accounts']).order(updated_at: :desc)
+  def inq_for_dash(executivelink=nil)
+    if self.overseer.sales?
+      if self.overseer.descendant_ids.present? && !executivelink
+        inquiries_for_manager
+      else
+        recent_inquiries
+      end
     elsif self.overseer.acl_role.role_name == 'Accounts'
       inq_for_account_dash
-    elsif self.overseer.acl_role.role_name == 'Inside Sales and Logistic Manager'
-      inquiries_for_manager
     end
   end
 
@@ -87,36 +90,40 @@ class Overseers::Dashboard
   end
 
   def comments
-    if self.overseer.inside_sales_executive?
-      recent_inquiry_ids = recent_inquiries.pluck(:id)
-      InquiryComment.where(inquiry_id: recent_inquiry_ids).order(created_at: :desc).limit(10).group_by { |c| c.created_at.to_date }
+    if self.overseer.sales?
+      if self.overseer.descendant_ids.present?
+        inquiries_for_manager_ids = inquiries_for_manager.pluck(:id)
+        InquiryComment.where(inquiry_id: inquiries_for_manager_ids).order(created_at: :desc).limit(10).group_by { |c| c.created_at.to_date }
+      else
+        recent_inquiry_ids = recent_inquiries.pluck(:id)
+        InquiryComment.where(inquiry_id: recent_inquiry_ids).order(created_at: :desc).limit(10).group_by { |c| c.created_at.to_date }
+      end
     elsif self.overseer.acl_role.role_name == 'Accounts'
       invoice_request_ids = invoice_requests.pluck(:id)
       InvoiceRequestComment.where(invoice_request_id: invoice_request_ids).order(created_at: :desc).limit(8).group_by { |c| c.created_at.to_date }
-    elsif self.overseer.acl_role.role_name == 'Inside Sales and Logistic Manager'
-      inquiries_for_manager_ids = inquiries_for_manager.pluck(:id)
-      InquiryComment.where(inquiry_id: inquiries_for_manager_ids).order(created_at: :desc).limit(10).group_by { |c| c.created_at.to_date }
     end
   end
 
-  def main_statuses
-    if self.overseer.inside_sales_executive?
-      ['New Inquiry', 'Preparing Quotation', 'Quotation Sent', 'Follow Up on Quotation', 'Expected Order']
+  def main_statuses(executivelink=nil)
+    if self.overseer.sales?
+      if self.overseer.descendant_ids.present? && !executivelink
+        {
+            'Acknowledgement Pending' => ['New Inquiry'],
+            'Preparing Quotation' => ['New Inquiry', 'Acknowledgement Mail','Cross Reference', 'RFQ Sent','PQ Received','Preparing Quotation'],
+            'Follow Up' => ['Follow Up on Quotation'],
+            'Awaited Customer PO' => ['SO Not Created-Customer PO Awaited', 'SO Not Created-Pending Customer PO Revision'],
+            'SO: Pending Accounts Approval' => ['SO Draft: Pending Accounts Approval']
+        }
+      else
+        ['New Inquiry', 'Preparing Quotation', 'Quotation Sent', 'Follow Up on Quotation', 'Expected Order']
+      end
     elsif self.overseer.acl_role.role_name == 'Accounts'
       ['GRPO Pending', 'Pending AP Invoice', 'AR Invoice requested', 'SO Draft: Pending Accounts Approval']
-    elsif self.overseer.acl_role.role_name == 'Inside Sales and Logistic Manager'
-      {
-       'Acknowledgement Pending' => ['New Inquiry'],
-       'Preparing Quotation' => ['New Inquiry', 'Acknowledgement Mail','Cross Reference', 'RFQ Sent','PQ Received','Preparing Quotation'],
-       'Follow Up' => ['Follow Up on Quotation'],
-       'Awaited Customer PO' => ['SO Not Created-Customer PO Awaited', 'SO Not Created-Pending Customer PO Revision'],
-       'SO: Pending Accounts Approval' => ['SO Draft: Pending Accounts Approval']
-      }
     end
   end
 
   def get_status_metrics(status)
-    if self.overseer.inside_sales_executive?
+    if self.overseer.sales?
       count_parameter = recent_inquiries.pluck(:status)
       value_parameter = inquiries_calculated_total(recent_inquiries, status)
     elsif self.overseer.acl_role.role_name == 'Accounts'

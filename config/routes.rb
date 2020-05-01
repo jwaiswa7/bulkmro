@@ -77,6 +77,7 @@ Rails.application.routes.draw do
       get 'follow_up_dashboard'
       get 'my_team'
       get 'get_recent_inquiries'
+      get 'sales_executive_dashboard'
     end
 
     resources :remote_requests do
