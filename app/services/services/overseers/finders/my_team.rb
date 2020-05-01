@@ -10,7 +10,8 @@ class Services::Overseers::Finders::MyTeam < Services::Overseers::Finders::BaseF
 
   def all_records
     inquiry_indexed_records = InquiriesIndex.all
-    inquiry_indexed_records.order(sort_definition).aggregations(aggregate_by_isp_with_status)
+    inquiry_indexed_records.order(sort_definition).filter(filter_by_owner(current_overseer.self_and_descendant_ids))
+    inquiry_indexed_records.aggregations(aggregate_by_isp_with_status)
   end
 
   def model_klass

@@ -205,7 +205,7 @@ class Overseers::DashboardController < Overseers::BaseController
     service = Services::Overseers::Finders::MyTeam.new(params, current_overseer)
     service.call
     records = service.records
-    @overseers = Overseer.where(parent_id: current_overseer.id)
+    @overseers = current_overseer.self_and_descendants
     report_bucket_service = Services::Overseers::Dashboards::MyTeamBuckets.new(records, @overseers, params)
     @bucket_records = report_bucket_service.call
     # render json: { html: render_to_string(partial: 'overseers/dashboard/sales_manager/my_team_sales_manager_dashboard', locals: { records: bucket_records }) }
