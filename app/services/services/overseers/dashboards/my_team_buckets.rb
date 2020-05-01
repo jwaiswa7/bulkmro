@@ -7,9 +7,6 @@ class Services::Overseers::Dashboards::MyTeamBuckets < Services::Shared::BaseSer
   def call
     @inquiry_records = format_array_to_hash(@inquiry_records)
     inside_sales_owners = @overseers
-    if @inside_sales_owner_id.present?
-      inside_sales_owners = inside_sales_owners.where(id: @inside_sales_owner_id)
-    end
     records = []
     inside_sales_owners.each do |is_owner|
       records << {

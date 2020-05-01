@@ -10,6 +10,7 @@ class Overseers::DashboardController < Overseers::BaseController
     if current_overseer.sales?
       @dashboard = Overseers::Dashboard.new(current_overseer)
       if current_overseer.descendant_ids.present?
+        my_team
         render template: 'overseers/dashboard/sales_manager/sales_manager_dashboard'
       else
         render template: 'overseers/dashboard/sales_executive/new_sales_dashboard'
@@ -220,7 +221,7 @@ class Overseers::DashboardController < Overseers::BaseController
 
   def get_recent_inquiries
     overseer = Overseer.find(params['overseer_id'])
-    @inquiries = Inquiry.where(inside_sales_owner_id: overseer.id).or(Inquiry.where(outside_sales_owner_id: overseer.id)).order('created_at DESC').first(10).pluck(:id, :inquiry_number)
+    @inquiries = Inquiry.where(inside_sales_owner_id: overseer.id).or(Inquiry.where(outside_sales_owner_id: overseer.id)).order('created_at DESC').first(10)
     respond_to do |format|
       format.html { render partial: '/overseers/dashboard/sales_manager/inquiries_dropdown_my_team', locals: {inquiries: @inquiries, name: overseer.first_name} }
     end

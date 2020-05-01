@@ -6,7 +6,7 @@
       </div>
       <div class='my-team-inquiry-box-wrapper my-team-user'>
         <% inquiries.each do |inquiry| %>
-          <div class='my-team-inquiry-box'><a href="<%= edit_overseers_inquiry_path(inquiry[0]) %>" target="_blank"><%= inquiry[1] %></a></div>
+          <div class='my-team-inquiry-box'><a href="<%= edit_overseers_inquiry_path(inquiry) %>" target="_blank"><%= inquiry.inquiry_number %></a></div>
         <% end %>
       </div>
     </div>
