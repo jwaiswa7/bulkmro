@@ -13,7 +13,7 @@ class Services::Overseers::Notifications::Notify < Services::Shared::Notificatio
     end
     inquiry = notifiable.inquiry
     if inquiry.inside_sales_owner.parent.present?
-      @message = "Po Request ##{msg[0]}: #{msg[1]} - exec: #{inquiry.inside_sales_owner.to_s}"
+      @message = "Po Request ##{msg[0]}: #{msg[1]} - exec: #{inquiry.inside_sales_owner}"
       @to = inquiry.inside_sales_owner.parent
     end
   end
@@ -30,17 +30,16 @@ class Services::Overseers::Notifications::Notify < Services::Shared::Notificatio
   def po_created(action, notifiable, url, *msg)
     @action = action; @notifiable = notifiable; @url = url
     if msg[0].inside_sales_owner.parent.present?
-      #msg sent to inside sales owner
+      # msg sent to inside sales owner
       msg_substring = "PO##{notifiable.po_number} for Inquiry##{msg[0].inquiry_number}"
-      @message = "#{msg_substring} has been created - exec: #{msg[0].inside_sales_owner.to_s}"
+      @message = "#{msg_substring} has been created - exec: #{msg[0].inside_sales_owner}"
       @to = msg[0].inside_sales_owner.parent
       send
     end
-    #msg sent to inside sales owners manager
+    # msg sent to inside sales owners manager
     @message = "#{msg_substring} has been created"
     @to = msg[0].inside_sales_owner
     send
-
   end
 
   def send_ar_invoice_request_update(tos, action, notifiable, url, *msg)
@@ -182,7 +181,7 @@ class Services::Overseers::Notifications::Notify < Services::Shared::Notificatio
     else
       msg_substring = 'Order '
     end
-    @message = "#{msg_substring}for Inquiry##{inquiry.inquiry_number} has been #{msg[0]} - exec: #{inquiry.inside_sales_owner.to_s}."
+    @message = "#{msg_substring}for Inquiry##{inquiry.inquiry_number} has been #{msg[0]} - exec: #{inquiry.inside_sales_owner}."
     @to = inquiry.sales_manager
     send
     @to = inquiry.inside_sales_owner.parent
@@ -203,5 +202,4 @@ class Services::Overseers::Notifications::Notify < Services::Shared::Notificatio
       send
     end
   end
-
 end
