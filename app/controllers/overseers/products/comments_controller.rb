@@ -17,7 +17,7 @@ class Overseers::Products::CommentsController < Overseers::Products::BaseControl
       app_send_by = @product.inquiry_import_row.present? ? (InquiryImport.find(@product.inquiry_import_row.inquiry_import_id).created_by) : @product.created_by
       if app_send_by.present?
         @notification.send_product_comment(
-            app_send_by,
+          app_send_by,
             action_name.to_sym,
             @product,
             overseers_product_comments_path(@product),
@@ -25,11 +25,11 @@ class Overseers::Products::CommentsController < Overseers::Products::BaseControl
         )
         if (['approve', 'reject'].include? callback_method) && app_send_by.parent.present?
           @notification.send_product_comment_to_manager(
-              app_send_by.parent,
+            app_send_by.parent,
               action_name.to_sym,
               @product,
               overseers_product_comments_path(@product),
-              callback_method, @product.to_s, @comment.message,app_send_by
+              callback_method, @product.to_s, @comment.message, app_send_by
           )
         end
       end

@@ -75,7 +75,7 @@ class Services::Overseers::Inquiries::UpdateStatus < Services::Shared::BaseServi
       if inquiry.saved_change_to_status && status != 'New Inquiry'
         @notification = Services::Overseers::Notifications::Notify.new(Overseer.system_overseer, 'System')
         @notification.send_inquiry_status_changed(
-            inquiry.inside_sales_owner,
+          inquiry.inside_sales_owner,
             'update',
             inquiry,
             Rails.application.routes.url_helpers.overseers_inquiry_path(inquiry),

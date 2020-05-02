@@ -1,5 +1,5 @@
 class Services::Overseers::SalesOrders::CreateSalesOrderInSap < Services::Shared::BaseService
-  def initialize(sales_order, params,notification)
+  def initialize(sales_order, params, notification)
     @sales_order = sales_order
     @params = params
     @overseer = params[:overseer]
@@ -29,7 +29,7 @@ class Services::Overseers::SalesOrders::CreateSalesOrderInSap < Services::Shared
         end
         # trigger notification to sales manager and sales executives
         @notification.send_so_approved_by_account(
-            sales_order,
+          sales_order,
             params[:action],
             sales_order,
             Rails.application.routes.url_helpers.overseers_inquiry_sales_order_path(sales_order.inquiry, sales_order),
@@ -54,7 +54,7 @@ class Services::Overseers::SalesOrders::CreateSalesOrderInSap < Services::Shared
       sales_order.update_index
       # trigger notification to sales manager and sales executives
       @notification.send_so_approved_by_account(
-          sales_order,
+        sales_order,
           params[:action],
           sales_order,
           Rails.application.routes.url_helpers.overseers_inquiry_sales_order_path(sales_order.inquiry, sales_order),
