@@ -1,5 +1,6 @@
 import callAjaxFunction from '../common/callAjaxFunction';
 const newPurchaseOrder = () => {
+    $('#canNotCreatePO').modal('show')
     $('form').on('change', 'select#rejection-purchase-order-dropdown', function (e) {
         if ($("#"+e.target.id+" option:selected").html() == "Others") {
             $('#purchase-order-rejection-textbox').prop("disabled", false);

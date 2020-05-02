@@ -414,7 +414,7 @@
     </div>
   <% end %>
 </div>
-<% if !@series.present? %>
+<% if @modal_show %>
   <div class="modal fade" id="salesOrderApproverMessage">
     <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
@@ -425,7 +425,8 @@
           <div class="error bg-danger text-white mb-3 px-1 rounded"></div>
           <div class="modal-body" style="padding: 0px 1.5rem;">
             <div class="mb-2 form-group">
-              You not able to approve this sales order because document series is not generated for <strong>'<%= @warehouse%>'</strong>, either create series or ask to change bill from address.
+              You not able to approve this sales order because document series is not generated for <strong>'<%=
+              @warehouse%>'</strong>, create series for this wearhouse.
             </div>
           </div>
         </div>
