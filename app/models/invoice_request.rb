@@ -16,6 +16,8 @@ class InvoiceRequest < ApplicationRecord
   belongs_to :sales_invoice, required: false
   ratyrate_rateable 'CompanyReview'
 
+  after_save :send_notification_on_status_changed
+
   enum status: {
       'GRPO Pending': 10,
       'Pending AP Invoice': 20,
@@ -243,4 +245,38 @@ class InvoiceRequest < ApplicationRecord
       else
       end
     end
+  def send_notification_on_status_changed
+    if self.saved_change_to_status?
+      tos = Services::Overseers::Notifications::Recipients.invoice_request_notifiers
+      sender = [self.created_by.email]
+      if self.status == 'GRPO Pending'
+        comment = "GRPO ##{self.id} for  PO ##{self.purchase_order.po_number} Inquiry# #{self.inquiry.inquiry_number} has been requested"
+      elsif status == 'Pending AP Invoice'
+        comment = "AP ##{self.id} for  PO ##{self.purchase_order.po_number} Inquiry# #{self.inquiry.inquiry_number} status changed to #{self.status}"
+      elsif status == 'Cancelled GRPO'
+        comment = "GRPO ##{self.id} for  PO ##{self.purchase_order.po_number} Inquiry# #{self.inquiry.inquiry_number} has been Cancelled. Reason: " + self.show_display_reason[:text]
+      elsif status == 'GRPO Request Rejected'
+        comment = "GRPO ##{self.id} for  PO ##{self.purchase_order.po_number} Inquiry# #{self.inquiry.inquiry_number} has been Rejected. Reason: " + self.show_display_reason[:text]
+      elsif self.status == 'Inward Completed'
+        comment = "GRPO ##{self.id} for  PO ##{self.purchase_order.po_number} Inquiry# #{self.inquiry.inquiry_number} has been Approved"
+      end
+      action_name = ''
+      if self.saved_change_to_id?
+        action_name = 'create'
+        overseer = self.created_by
+      else
+        action_name = 'update'
+        overseer = self.updated_by
+      end
+      @notification = Services::Overseers::Notifications::Notify.new(overseer, self.class.parent)
+      @notification.send_invoice_request_update(
+          tos,
+          sender,
+          action_name.to_sym,
+          self,
+          "/overseers/ar_invoice_requests/#{self.hashid}",
+          comment,
+          )
+    end
+  end
 end

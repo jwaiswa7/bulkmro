@@ -46,10 +46,8 @@ class Services::Overseers::Notifications::Notify < Services::Shared::Notificatio
   def send_ar_invoice_request_update(tos, sender, action, notifiable, url, *msg)
     @action = action; @notifiable = notifiable; @url = url
     @message = msg[0]
-    sender.uniq.each do | to |
-      @to = Overseer.find_by_email(to)
+      @to = Overseer.find_by_email(sender)
       send
-    end
     tos = Services::Overseers::Notifications::Recipients.so_approval_rejection_notifiers
     receivers = Overseer.where(email: tos)
     receivers.uniq.each do | overseer |
@@ -204,6 +202,18 @@ class Services::Overseers::Notifications::Notify < Services::Shared::Notificatio
     if to.parent.present?
       @message = "Inquiry ##{notificable.inquiry_number} - status updated to #{msg[0]} - exec: #{to}"
       @to = to.parent
+    end
+  end
+
+  def send_invoice_request_update(tos, sender, action, notifiable, url, *msg)
+    @action = action; @notifiable = notifiable; @url = url
+    @message = msg[0]
+    @to = Overseer.find_by_email(sender)
+    send
+    receivers = Overseer.where(email: tos)
+    receivers.uniq.each do | overseer |
+      @to = overseer
+      send
     end
   end
 
