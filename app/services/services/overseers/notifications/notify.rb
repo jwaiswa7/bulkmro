@@ -13,7 +13,7 @@ class Services::Overseers::Notifications::Notify < Services::Shared::Notificatio
     end
     inquiry = notifiable.inquiry
     if inquiry.inside_sales_owner.parent.present?
-      @message = "Po Request ##{msg[0]}: #{msg[1]} - exec: #{inquiry.inside_sales_owner.to_s}"
+      @message = "Po Request ##{msg[0]}: #{msg[1]} - exec: #{inquiry.inside_sales_owner}"
       @to = inquiry.inside_sales_owner.parent
     end
   end
@@ -30,17 +30,16 @@ class Services::Overseers::Notifications::Notify < Services::Shared::Notificatio
   def po_created(action, notifiable, url, *msg)
     @action = action; @notifiable = notifiable; @url = url
     if msg[0].inside_sales_owner.parent.present?
-      #msg sent to inside sales owner
+      # msg sent to inside sales owner
       msg_substring = "PO##{notifiable.po_number} for Inquiry##{msg[0].inquiry_number}"
-      @message = "#{msg_substring} has been created - exec: #{msg[0].inside_sales_owner.to_s}"
+      @message = "#{msg_substring} has been created - exec: #{msg[0].inside_sales_owner}"
       @to = msg[0].inside_sales_owner.parent
       send
     end
-    #msg sent to inside sales owners manager
+    # msg sent to inside sales owners manager
     @message = "#{msg_substring} has been created"
     @to = msg[0].inside_sales_owner
     send
-
   end
 
   def send_ar_invoice_request_update(tos, sender, action, notifiable, url, *msg)
@@ -100,11 +99,19 @@ class Services::Overseers::Notifications::Notify < Services::Shared::Notificatio
     @to = to; @action = action; @notifiable = notifiable; @url = url
 
     if msg[0].present?
-      @message = "Product #{msg[1]} has been #{msg[0]}"
+      if msg[0] == 'approve'
+        @message = "Product #{msg[1]} has been approved"
+      elsif msg[0] == 'reject'
+        @message = "Product #{msg[1]} has been rejected"
+      else
+        @message = "Product #{msg[1]} has been #{msg[0]}"
+        @message = "#{@message}: #{msg[2]}" if msg[2].present?
+      end
     else
       @message = "New reply for Product #{msg[1]}"
+      @message = "#{@message}: #{msg[2]}" if msg[2].present?
     end
-    @message = "#{@message}: #{msg[2]}" if msg[2].present?
+
     send
   end
 
@@ -112,11 +119,18 @@ class Services::Overseers::Notifications::Notify < Services::Shared::Notificatio
     @to = to; @action = action; @notifiable = notifiable; @url = url
 
     if msg[0].present?
-      @message = "Product #{msg[1]} has been #{msg[0]} - #{msg[3]}"
+      if msg[0] == 'approve'
+        @message = "Product #{msg[1]} has been approved - exec: #{msg[3]}"
+      elsif msg[0] == 'reject'
+        @message = "Product #{msg[1]} has been rejected - exec: #{msg[3]}"
+      else
+        @message = "Product #{msg[1]} has been #{msg[0]} - exec: #{msg[3]}"
+        @message = "#{@message}: #{msg[2]}" if msg[2].present?
+      end
     else
-      @message = "New reply for Product #{msg[1]} - #{msg[3]}"
+      @message = "New reply for Product #{msg[1]} - exec: #{msg[3]}"
+      @message = "#{@message}: #{msg[2]}" if msg[2].present?
     end
-    @message = "#{@message}: #{msg[2]}" if msg[2].present?
     send
   end
 
@@ -143,9 +157,8 @@ class Services::Overseers::Notifications::Notify < Services::Shared::Notificatio
     if msg[0].present?
       if  msg[0] == 'approve'
         @message = "Order for Inquiry ##{msg[1]} has been approved."
-      elsif msg[0].present? && msg[0] == 'reject'
+      elsif msg[0] == 'reject'
         @message = "Order for Inquiry ##{msg[1]} has been rejected."
-        @message = "#{@message}: #{msg[2]}" if msg[2].present?
       else
         @message = "Order for Inquiry ##{msg[1]} has been #{msg[0]}"
         @message = "#{@message}: #{msg[2]}" if msg[2].present?
@@ -178,7 +191,7 @@ class Services::Overseers::Notifications::Notify < Services::Shared::Notificatio
     else
       msg_substring = 'Order '
     end
-    @message = "#{msg_substring}for Inquiry##{inquiry.inquiry_number} has been #{msg[0]} - exec: #{inquiry.inside_sales_owner.to_s}."
+    @message = "#{msg_substring}for Inquiry##{inquiry.inquiry_number} has been #{msg[0]} - exec: #{inquiry.inside_sales_owner}."
     @to = inquiry.sales_manager
     send
     @to = inquiry.inside_sales_owner.parent
@@ -202,6 +215,7 @@ class Services::Overseers::Notifications::Notify < Services::Shared::Notificatio
     if to.parent.present?
       @message = "Inquiry ##{notificable.inquiry_number} - status updated to #{msg[0]} - exec: #{to}"
       @to = to.parent
+      send
     end
   end
 

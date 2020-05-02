@@ -257,7 +257,7 @@ class Overseers::PoRequestsController < Overseers::BaseController
   def create_purchase_order
     authorize_acl @po_request
     service = Services::Overseers::PurchaseOrders::CreatePurchaseOrder.new(@po_request, params.merge(overseer:
-                                                                                                         current_overseer),@notification)
+                                                                                                         current_overseer), @notification)
     purchase_order = service.create
     if purchase_order.present?
       redirect_to overseers_inquiry_purchase_order_path(purchase_order.inquiry.to_param, purchase_order.to_param)
