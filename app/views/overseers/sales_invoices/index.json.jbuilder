@@ -44,7 +44,13 @@ json.data (@sales_invoices) do |sales_invoice|
                       end,
                       if is_authorized(sales_invoice, 'resync_sap_status')
                         row_action_button(resync_sap_status_overseers_sales_invoice_path(sales_invoice.to_param), 'retweet-alt', 'Invoice Status Resync', 'danger')
-                      end
+                      end,
+                      if is_authorized(sales_invoice, 'can_create_outward_dispatch') && policy(sales_invoice).
+                          can_create_outward_dispatch?
+                        row_action_button(new_overseers_outward_dispatch_path(sales_invoice_id:
+                                                                                             sales_invoice),
+                                                     'retweet-alt', 'Add outward dispatch', 'info', :_blank)
+                      end,
                   ].join(' '),
                   conditional_link(sales_invoice.invoice_number, overseers_inquiry_sales_invoice_path(sales_invoice.inquiry, sales_invoice), is_authorized(sales_invoice, 'show')),
                   sales_invoice.inquiry.present? ?  conditional_link(sales_invoice.inquiry.inquiry_number, edit_overseers_inquiry_path(sales_invoice.inquiry), is_authorized(sales_invoice.inquiry, 'edit')) : '-',
@@ -62,6 +68,7 @@ json.data (@sales_invoices) do |sales_invoice|
                   format_boolean_with_badge(sales_invoice.pod_status),
                   ((sales_invoice.inquiry.opportunity_type != 'route_through' ? 'regular' : 'route_through') if sales_invoice.inquiry.present?),
                   format_succinct_date(sales_invoice.mis_date),
+                  sales_invoice.outward_dispatches.map { |outward_dispatch| link_to(outward_dispatch.id, overseers_outward_dispatch_path(outward_dispatch), target: '_blank') }.compact.join(' '),
                   format_succinct_date(sales_invoice.created_at)
               ]
 end
@@ -83,6 +90,7 @@ json.columnFilters [
                        [],
                        [{"label": 'True', "value": 1}, {"label": 'False', "value": 0}],
                        Inquiry.opportunity_types.slice('regular', 'route_through').map { |k, v| { "label": k, "value": v.to_s } }.as_json,
+                       [],
                        [],
                        [],
                    ]

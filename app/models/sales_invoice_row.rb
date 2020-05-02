@@ -1,5 +1,6 @@
 class SalesInvoiceRow < ApplicationRecord
   belongs_to :sales_invoice
+  has_many :packing_slip_rows
 
   def sku
     self.metadata['sku']
@@ -7,6 +8,10 @@ class SalesInvoiceRow < ApplicationRecord
 
   def quantity
     self.metadata['qty']
+  end
+
+  def get_remaining_quantity
+    self.metadata['qty'] - self.packing_slip_rows.sum(&:delivery_quantity)
   end
 
 

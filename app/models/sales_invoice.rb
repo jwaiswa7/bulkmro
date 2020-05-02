@@ -145,6 +145,14 @@ class SalesInvoice < ApplicationRecord
     (self.pod_rows.present? && self.pod_rows.order(:delivery_date).last.attachments.attached? && self.delivery_completed) || self.is_manual_closed
   end
 
+  def total_quantity_delivered
+    self.rows.sum(:quantity)
+  end
+
+  def outward_dispatched_quantity
+    self.outward_dispatches.sum(&:quantity_in_payment_slips)
+  end
+
   def pod_status
     if is_manual_closed
       'complete'

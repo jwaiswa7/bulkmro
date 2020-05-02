@@ -29,6 +29,7 @@
     <th class="no-sort desktop" width="25px" data-name="is_pod">POD</th>
     <th class="no-sort desktop text-left" width="65px" data-name="pod_type">POD Type</th>
     <th class="sort desktop text-right" width="61px" data-name="mis_date">Invoice Date</th>
+    <th class="sort desktop text-right" width="61px">Outward Dispatches</th>
     <th class="sort desktop text-right" width="52px" data-name="created_at">Created At</th>
   <% end %>
   <% content_for :filter_row do %>
@@ -49,6 +50,7 @@
     <td data-filter="dropdown"></td>
     <td data-filter="dropdown"></td>
     <td data-filter="daterange"></td>
+    <td data-filter="false"></td>
     <td data-filter="daterange"></td>
   <% end %>
 

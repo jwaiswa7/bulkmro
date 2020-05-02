@@ -40,10 +40,11 @@ class Overseers::OutwardDispatchesController < Overseers::BaseController
 
   # GET /outward_dispatches/new
   def new
-    @ar_invoice = ArInvoiceRequest.find(params[:ar_invoice_request_id])
-    @sales_order = @ar_invoice.sales_order
-    @outward_dispatch = OutwardDispatch.new(overseer: current_overseer, sales_order: @sales_order, ar_invoice_request: @ar_invoice)
-    @packing_slips_row = @ar_invoice.rows.sum(&:get_remaining_quantity)
+    @sales_invoice = SalesInvoice.find(params[:sales_invoice_id])
+    @sales_order = @sales_invoice.sales_order
+    @outward_dispatch = OutwardDispatch.new(overseer: current_overseer, sales_order: @sales_order,
+                                            sales_invoice: @sales_invoice)
+    @packing_slips_row = @sales_invoice.rows.sum(&:get_remaining_quantity)
     @can_show_box = @packing_slips_row == 1
     if @can_show_box
       @outward_dispatch.packing_slips.build(overseer: current_overseer)
@@ -54,7 +55,7 @@ class Overseers::OutwardDispatchesController < Overseers::BaseController
 
   # GET /outward_dispatches/1/edit
   def edit
-    @packing_slips_row = @outward_dispatch.ar_invoice_request.rows.sum(&:get_remaining_quantity)
+    @packing_slips_row = @outward_dispatch.sales_invoice.rows.sum(&:get_remaining_quantity)
     @can_show_box = @packing_slips_row == 0 || @packing_slips_row == 1
     authorize_acl @outward_dispatch
   end
@@ -71,7 +72,7 @@ class Overseers::OutwardDispatchesController < Overseers::BaseController
         else
           url = overseers_outward_dispatch_path(@outward_dispatch)
         end
-        inward_dispatches = InwardDispatch.where(id: @outward_dispatch.ar_invoice_request.inward_dispatch_ids)
+        inward_dispatches = InwardDispatch.where(id: @outward_dispatch.sales_invoice.inward_dispatch_ids)
         inward_dispatches.map {|inward_dispatch| inward_dispatch.set_outward_status}
         format.html { redirect_to url, notice: 'Outward dispatch was successfully created.' }
         format.json { render :add_packing, status: :created, location: @outward_dispatch }
@@ -83,9 +84,10 @@ class Overseers::OutwardDispatchesController < Overseers::BaseController
   end
 
   def create_with_packing_slip
-    @ar_invoice = ArInvoiceRequest.find(params[:ar_invoice_request_id])
-    @sales_order = @ar_invoice.sales_order
-    @outward_dispatch = OutwardDispatch.new(overseer: current_overseer, sales_order: @sales_order, ar_invoice_request: @ar_invoice)
+    @sales_invoice = ArInvoiceRequest.find(params[:sales_invoice_id])
+    @sales_order = @sales_invoice.sales_order
+    @outward_dispatch = OutwardDispatch.new(overseer: current_overseer, sales_order: @sales_order,
+                                            sales_invoice: @sales_invoice)
     authorize_acl @outward_dispatch
 
     respond_to do |format|
@@ -105,7 +107,7 @@ class Overseers::OutwardDispatchesController < Overseers::BaseController
     authorize_acl @outward_dispatch
     respond_to do |format|
       if @outward_dispatch.update(outward_dispatch_params.merge(overseer: current_overseer))
-        inward_dispatches = InwardDispatch.where(id: @outward_dispatch.ar_invoice_request.inward_dispatch_ids)
+        inward_dispatches = InwardDispatch.where(id: @outward_dispatch.sales_invoice.inward_dispatch_ids)
         inward_dispatches.map {|inward_dispatch| inward_dispatch.set_outward_status}
         format.html { redirect_to overseers_outward_dispatch_path (@outward_dispatch), notice: 'Outward dispatch was successfully updated.' }
         format.json { render :show, status: :ok, location: @outward_dispatch }
@@ -163,7 +165,7 @@ class Overseers::OutwardDispatchesController < Overseers::BaseController
     # Never trust parameters from the scary internet, only allow the white list through.
     def outward_dispatch_params
       params.require(:outward_dispatch).except(:action_name).permit(
-        :ar_invoice_request_id,
+        :sales_invoice_id,
         :sales_order_id,
         :material_dispatch_date,
         :expected_date_of_delivery,
