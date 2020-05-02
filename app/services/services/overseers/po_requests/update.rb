@@ -41,15 +41,17 @@ class Services::Overseers::PoRequests::Update < Services::Shared::BaseService
         @po_request.save!
         @po_request_comment.save!
       end
-      tos = (Services::Overseers::Notifications::Recipients.logistics_owners.include? current_overseer.email) ? [@po_request.created_by.email, @po_request.inquiry.inside_sales_owner.email] : Services::Overseers::Notifications::Recipients.logistics_owners
-      @notification.send_po_request_update(
-        tos - [current_overseer.email],
+      tos = [@po_request.created_by.email, @po_request.inquiry.inside_sales_owner.email] - [current_overseer.email]
+      if tos.present?
+        @notification.send_po_request_update(
+          tos - [current_overseer.email],
           @action_name.to_sym,
           @po_request,
           @notification_url,
           @po_request.id,
           @po_request.last_comment.message,
           )
+      end
     end
     @po_request_comment
   end

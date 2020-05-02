@@ -275,7 +275,8 @@
           Reject Supplier PO</a>
         </div>
         <div class="col-6">
-          <%= button_tag(type: "submit", name: "update_sent_at_field", class: "bmro-button btn btn-success btn-block") do %>
+          <%= button_tag(type: "submit", name: "update_sent_at_field", class: "bmro-button btn btn-success
+          btn-block", disabled: @modal_show) do %>
             <i class="far fa-check mr-1"></i> Create Supplier PO
           <% end %>
         </div>
@@ -284,3 +285,29 @@
     <div class="rejection-purchase-order"></div>
   <% end %>
 </div>
+
+<% if @modal_show%>
+  <div class="modal fade" id="canNotCreatePO">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">New PO Creation Failed</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="error bg-danger text-white mb-3 px-1 rounded"></div>
+          <div class="modal-body" style="padding: 0px 1.5rem;">
+            <div class="mb-2 form-group">
+              You not able to create this purchase order because document series is not generated for <strong>'<%=
+              @warehouse%>'</strong>,ask appropriate person to create series for this warehouse.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+<%end %>
+
+
