@@ -22,7 +22,7 @@ $('.bmro-drop-icon-head-fl').click((e)=>{
                     e.currentTarget.classList.add('bmro-drop-icon-head-rotated-up');
                     e.currentTarget.classList.remove('bmro-drop-icon-head');
                     let addElement = $(result);
-                    addElement.insertAfter(current);
+                    addElement.insertAfter(current).hide().show('slow');
                 }
             })
         }

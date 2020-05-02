@@ -223,7 +223,7 @@ class Overseers::DashboardController < Overseers::BaseController
     overseer = Overseer.find(params['overseer_id'])
     @inquiries = Inquiry.where(inside_sales_owner_id: overseer.id).or(Inquiry.where(outside_sales_owner_id: overseer.id)).order('created_at DESC').first(10)
     respond_to do |format|
-      format.html { render partial: '/overseers/dashboard/sales_manager/inquiries_dropdown_my_team', locals: {inquiries: @inquiries, name: overseer.first_name} }
+      format.html { render partial: '/overseers/dashboard/sales_manager/inquiries_dropdown_my_team', locals: {inquiries: @inquiries, name: overseer.first_name, id: overseer.id} }
     end
   end
 

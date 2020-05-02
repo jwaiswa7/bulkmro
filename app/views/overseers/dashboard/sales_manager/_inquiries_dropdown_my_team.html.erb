@@ -5,8 +5,13 @@
         <div class="my-team-user"><%= name %>'s Inquiries</div>
       </div>
       <div class='my-team-inquiry-box-wrapper my-team-user'>
-        <% inquiries.each do |inquiry| %>
-          <div class='my-team-inquiry-box'><a href="<%= edit_overseers_inquiry_path(inquiry) %>" target="_blank"><%= inquiry.inquiry_number %></a></div>
+        <% if inquiries.present? %>
+          <% inquiries.each do |inquiry| %>
+            <div class='my-team-inquiry-box'><a href="<%= edit_overseers_inquiry_path(inquiry) %>" target="_blank"><%= inquiry.inquiry_number %></a></div>
+          <% end %>
+          <span class="my-team-view-all"><%= link_to('View All', filtered_path(overseers_inquiries_path, [filter_by_value('Inside Sales', nil, id)]), target: '_blank') %></span>
+        <% else %>
+          <div><h5>No Inquiries to display</h5></div>
         <% end %>
       </div>
     </div>
