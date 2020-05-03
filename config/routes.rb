@@ -75,7 +75,9 @@ Rails.application.routes.draw do
       get 'get_filtered_inquiries'
       get 'get_inquiry_tasks'
       get 'follow_up_dashboard'
-      get 'sales_executive_dashboard'
+      get 'sales_manager'
+      get 'accounts'
+      get 'sales_executive'
     end
 
     resources :remote_requests do

@@ -32,7 +32,7 @@
   </div>
   <div class="bmro-width100 bmro-comments-sec" id="comment-rows">
 
-    <% @dashboard.comments.each do |date, comments| %>
+    <% @dashboard.comments(executivelink).each do |date, comments| %>
       <div class="bmro-today-list bmro-today-list-bm bmro-today-mt-mb">
         <div class="bmro-width100 bmro-today-line-parent">
           <div class="bmro-today-parent">

@@ -183,9 +183,6 @@ const loadViews = () => {
     } else if (controller in loader && controllerAction + 'Action' in loader[controller]) {
         loader[controller][controllerAction + 'Action']();
         console.log("loader[" + controller + "][" + controllerAction + "]")
-    }else if (controller in loader && controller == "dashboard") {
-        console.log("loader[" + controller + "]")
-        loader[controller]["show"]();
     }
 
 };

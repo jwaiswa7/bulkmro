@@ -89,16 +89,16 @@ class Overseers::Dashboard
     Notification.where(recipient: overseer).order(created_at: :desc).limit(10).group_by { |c| c.created_at.to_date }
   end
 
-  def comments
+  def comments(executivelink=nil)
     if self.overseer.sales?
-      if self.overseer.descendant_ids.present?
+      if self.overseer.descendant_ids.present? && !executivelink
         inquiries_for_manager_ids = inquiries_for_manager.pluck(:id)
         InquiryComment.where(inquiry_id: inquiries_for_manager_ids).order(created_at: :desc).limit(10).group_by { |c| c.created_at.to_date }
       else
         recent_inquiry_ids = recent_inquiries.pluck(:id)
         InquiryComment.where(inquiry_id: recent_inquiry_ids).order(created_at: :desc).limit(10).group_by { |c| c.created_at.to_date }
       end
-    elsif self.overseer.acl_role.role_name == 'Accounts'
+    elsif executivelink.nil? && self.overseer.acl_role.role_name == 'Accounts'
       invoice_request_ids = invoice_requests.pluck(:id)
       InvoiceRequestComment.where(invoice_request_id: invoice_request_ids).order(created_at: :desc).limit(8).group_by { |c| c.created_at.to_date }
     end
@@ -117,7 +117,7 @@ class Overseers::Dashboard
       else
         ['New Inquiry', 'Preparing Quotation', 'Quotation Sent', 'Follow Up on Quotation', 'Expected Order']
       end
-    elsif self.overseer.acl_role.role_name == 'Accounts'
+    elsif executivelink.nil? && self.overseer.acl_role.role_name == 'Accounts'
       ['GRPO Pending', 'Pending AP Invoice', 'AR Invoice requested', 'SO Draft: Pending Accounts Approval']
     end
   end
