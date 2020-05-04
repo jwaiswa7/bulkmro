@@ -10,7 +10,6 @@ class Overseers::DashboardController < Overseers::BaseController
     if current_overseer.sales?
       @dashboard = Overseers::Dashboard.new(current_overseer)
       if current_overseer.descendant_ids.present?
-        my_team
         render template: 'overseers/dashboard/sales_manager/sales_manager_dashboard'
       else
         render template: 'overseers/dashboard/sales_executive/new_sales_dashboard'
@@ -213,10 +212,10 @@ class Overseers::DashboardController < Overseers::BaseController
     service = Services::Overseers::Finders::MyTeam.new(params, current_overseer)
     service.call
     records = service.records
-    @overseers = current_overseer.self_and_descendants
-    report_bucket_service = Services::Overseers::Dashboards::MyTeamBuckets.new(records, @overseers, params)
+    overseers = current_overseer.self_and_descendants
+    report_bucket_service = Services::Overseers::Dashboards::MyTeamBuckets.new(records, overseers, params)
     @bucket_records = report_bucket_service.call
-    # render json: { html: render_to_string(partial: 'overseers/dashboard/sales_manager/my_team_sales_manager_dashboard', locals: { records: bucket_records }) }
+    render json: { html: render_to_string(partial: 'overseers/dashboard/sales_manager/my_team_sales_manager_dashboard', locals: { records: @bucket_records }) }
   end
 
   def get_recent_inquiries

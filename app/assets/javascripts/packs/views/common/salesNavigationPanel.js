@@ -1,5 +1,6 @@
 import getInquiryTasks from "./getInquiryTasks";
 import getStatusRecords from "./getStatusRecords";
+import myteamDropdown from '../common/myteamDropdown';
 
 const salesNavigationPanel=function(){
 
@@ -37,18 +38,29 @@ const salesNavigationPanel=function(){
             $('#myTeamViewer').hide();
         }
         else if(viewId ==='myTeam'){
-            $('#myTeamViewer').show();
-            $('#actionDashboardViewer').hide();
-            $('#performanceDashboardViewer').hide();
-            // $.ajax({
-            //     url: Routes.my_team_overseers_dashboard_path({format: "html"}),
-            //     type: "GET",
-            //     success: function (data) {
-            //         debugger
-            //         $('#myTeamViewer')[0].innerHTML = data.html;
-            //         $('#myTeamViewer').show();
-            //     }
-            // });
+            let myTeamDiv = $('#myTeamViewer');
+            let loader=`<div class="sales-loader"><div class="sprint-loader-wrapper"><i class="sprint-loader"></i></div></div>`;
+            $.ajax({
+                url: Routes.my_team_overseers_dashboard_path({format: "html"}),
+                type: "GET",
+                beforeSend: function () {
+                    myTeamDiv.empty();
+                    myTeamDiv.append(loader);
+                    $('.sales-loader').show();
+                    myTeamDiv.show();
+                    $('#actionDashboardViewer').hide();
+                    $('#performanceDashboardViewer').hide();
+                },
+                success: function (data) {
+                    myTeamDiv.empty();
+                    myTeamDiv[0].innerHTML = data.html;
+                    myTeamDiv.show();
+                    myteamDropdown();
+                },
+                complete: function () {
+                    $('.sales-loader').hide();
+                }
+            });
         }
     }
     $(".bmro-sales-actions").click(function (event) {
