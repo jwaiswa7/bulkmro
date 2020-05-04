@@ -25,6 +25,9 @@
         <div class="bmro-today-list bmro-today-list-bm">
           <h5 class="bmro-big-heading bmro-hash-mt">#<%= notification.id %> <span class="bmro-new-today-button">Notification</span></h5>
           <span class="bmro-today-span"><%= notification.message %></span>
+          <% if current_overseer != notification.sender %>
+            <span class="bmro-today-by">By: <%= notification.sender.name %></span>
+          <% end %>
           <span class="bmro-today-posted">Posted on: <%= notification.created_at.strftime("%d/%m/%Y %I:%M %P") %></span>
 
         </div>
