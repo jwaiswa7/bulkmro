@@ -33,9 +33,19 @@ class Overseers::DashboardController < Overseers::BaseController
     # end
   end
 
-  def sales_executive_dashboard
+  def sales_manager
     @dashboard = Overseers::Dashboard.new(current_overseer)
-    render template: 'overseers/dashboard/sales_executive/new_sales_dashboard', locals: {executivelink: true}
+    render template: 'overseers/dashboard/sales_manager/sales_manager_dashboard'
+  end
+
+  def sales_executive
+    @dashboard = Overseers::Dashboard.new(current_overseer)
+    render template: 'overseers/dashboard/sales_executive/new_sales_dashboard'
+  end
+
+  def accounts
+    @dashboard = Overseers::Dashboard.new(current_overseer)
+    render template: 'overseers/dashboard/accounts/accounts_dashboard'
   end
 
   def follow_up_dashboard
@@ -105,15 +115,15 @@ class Overseers::DashboardController < Overseers::BaseController
         statuses_for_invoice_req = ['GRPO Pending', 'Pending AP Invoice']
         if statuses_for_invoice_req.include? params['status']
           respond_to do |format|
-            format.html {render partial: 'overseers/dashboard/common/inquiry_list_wrapper', locals: {inq_for_dash: @dashboard.invoice_requests.map { |inv_req| inv_req.inquiry if inv_req.status == params['status'] }.compact}}
+            format.html {render partial: 'overseers/dashboard/common/inquiry_list_wrapper', locals: {inq_for_dash: @dashboard.invoice_requests.map { |inv_req| inv_req.inquiry if inv_req.status == params['status'] }.compact, executivelink: executive_link }}
           end
         elsif params['status'] == 'AR Invoice requested'
           respond_to do |format|
-            format.html {render partial: 'overseers/dashboard/common/inquiry_list_wrapper', locals: {inq_for_dash: @dashboard.ar_invoice_requests.map { |inv_req| inv_req.inquiry if inv_req.status == params['status'] }.compact}}
+            format.html {render partial: 'overseers/dashboard/common/inquiry_list_wrapper', locals: {inq_for_dash: @dashboard.ar_invoice_requests.map { |inv_req| inv_req.inquiry if inv_req.status == params['status'] }.compact, executivelink: executive_link}}
           end
         else
           respond_to do |format|
-            format.html {render partial: 'overseers/dashboard/common/inquiry_list_wrapper', locals: {inq_for_dash: @dashboard.inq_for_dash(executive_link).map { |inquiry| inquiry if inquiry.status == params['status'] }.compact, executivelink: executive_link}}
+            format.html {render partial: 'overseers/dashboard/common/inquiry_list_wrapper', locals: {inq_for_dash: @dashboard.inq_for_dash(executive_link).map { |inquiry| inquiry if inquiry.status == params['status'] }.compact, executivelink: executive_link }}
           end
         end
       end
