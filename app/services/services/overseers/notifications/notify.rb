@@ -47,10 +47,16 @@ class Services::Overseers::Notifications::Notify < Services::Shared::Notificatio
     @message = msg[0]
       @to = Overseer.find_by_email(sender)
       send
-    tos = Services::Overseers::Notifications::Recipients.so_approval_rejection_notifiers
+    tos = Services::Overseers::Notifications::Recipients.ar_invoice_request_notifiers
+    manager = []
     receivers = Overseer.where(email: tos)
     receivers.uniq.each do | overseer |
+      manager << overseer.parent
       @to = overseer
+      send
+    end
+    manager.uniq.each do |parent|
+      @to = parent
       send
     end
   end
@@ -140,9 +146,15 @@ class Services::Overseers::Notifications::Notify < Services::Shared::Notificatio
     @to = to.sales_manager
     send
     tos = Services::Overseers::Notifications::Recipients.so_approval_rejection_notifiers
+    manager = []
     receivers = Overseer.where(email: tos)
     receivers.uniq.each do | overseer |
+      manager << overseer.parent
       @to = overseer
+      send
+    end
+    manager.uniq.each do |parent|
+      @to = parent
       send
     end
     @message = "Order for inquiry ##{msg[0]} sent for approval"
@@ -200,9 +212,15 @@ class Services::Overseers::Notifications::Notify < Services::Shared::Notificatio
     @to = inquiry.inside_sales_owner
     send
     tos = Services::Overseers::Notifications::Recipients.so_approval_rejection_notifiers
+    manager = []
     receivers = Overseer.where(email: tos)
-    receivers.uniq.each do | overseer |
+    receivers.uniq.each do |overseer|
+      manager << overseer.parent
       @to = overseer
+      send
+    end
+    manager.uniq.each do |parent|
+      @to = parent
       send
     end
   end
@@ -224,9 +242,15 @@ class Services::Overseers::Notifications::Notify < Services::Shared::Notificatio
     @message = msg[0]
     @to = Overseer.find_by_email(sender)
     send
+    manager = []
     receivers = Overseer.where(email: tos)
-    receivers.uniq.each do | overseer |
+    receivers.uniq.each do |overseer|
+      manager << overseer.parent
       @to = overseer
+      send
+    end
+    manager.uniq.each do |parent|
+      @to = parent
       send
     end
   end
