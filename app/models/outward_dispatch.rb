@@ -4,7 +4,7 @@ class OutwardDispatch < ApplicationRecord
   include Mixins::CanBeStamped
   include Mixins::HasComments
 
-  belongs_to :ar_invoice_request, default: false
+  belongs_to :ar_invoice_request, optional: true
   belongs_to :sales_invoice, default: false
   belongs_to :sales_order, default: false
   has_many :packing_slips

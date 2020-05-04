@@ -22,7 +22,8 @@
                 <td align="left" style="width:25%; padding-left: 10px;padding-bottom: 5px;" valign="top">
                   <b><span>Quotation #</span></b></td>
                 <td align="left" style="width:25%;padding-left: 10px;padding-bottom: 5px;" valign="top">
-                  <span><%= locals[:packing_slip].outward_dispatch.ar_invoice_request.sales_order.sales_quote.id %></span></td>
+                  <span><%= locals[:packing_slip].outward_dispatch.sales_invoice.sales_order.sales_quote.id
+                  %></span></td>
                 <td align="left" style="width:25%;padding-left: 10px;padding-bottom: 5px;" valign="top">
                   <b><span>Customer Inquiry Reference</span></b></td>
                 <td align="left" style="width:25%; padding-left: 10px;padding-bottom: 5px;" valign="top">
@@ -36,20 +37,22 @@
                   <b><span>Sales Order #</span></b>
                   </td>
                 <td align="left" style="border-top: 1px solid #3c3c3c;padding-left: 10px;padding-bottom: 5px;" valign="top">
-                  <span> <%= locals[:packing_slip].outward_dispatch.ar_invoice_request.sales_order.order_number %></span>
+                  <span> <%= locals[:packing_slip].outward_dispatch.sales_invoice.sales_order.order_number %></span>
                 </td>
                 <td align="left" style="border-top: 1px solid #3c3c3c;padding-left: 10px;padding-bottom: 5px;" valign="top">
                   <b><span>Sales Order Date</span></b>
                   </td>
                 <td align="left" style="border-top: 1px solid #3c3c3c;padding-left: 10px;padding-bottom: 5px;" valign="top">
-                  <span><%= format_succinct_date(locals[:packing_slip].outward_dispatch.ar_invoice_request.sales_order.created_at) %></span></td>
+                  <span><%= format_succinct_date(locals[:packing_slip].outward_dispatch.sales_invoice.sales_order.created_at)
+                  %></span></td>
               </tr>
               <tr>
                 <td align="left" style="border-top: 1px solid #3c3c3c;padding-left: 10px;padding-bottom: 5px;" valign="top">
                   <b><span>Packing Slip #</span></b>
                   </td>
                 <td align="left" style="border-top: 1px solid #3c3c3c;padding-left: 10px;padding-bottom: 5px;" valign="top">
-                  <span> <%= "#{locals[:packing_slip].outward_dispatch.ar_invoice_request.inquiry.inquiry_number}-#{locals[:packing_slip].id}" %></span>
+                  <span> <%= "#{locals[:packing_slip].outward_dispatch.sales_invoice.inquiry
+                      .inquiry_number}-#{locals[:packing_slip].id}" %></span>
                 </td>
                 <td align="left" style="border-top: 1px solid #3c3c3c;padding-left: 10px;padding-bottom: 5px;" valign="top">
                   <b><span>Packing Slip Date</span></b>
@@ -172,15 +175,15 @@
                     <td align="center" valign="top">
                       <span><%= index + 1 %></span></td>
                     <td align="center" valign="top">
-                      <span><%= item.ar_invoice_request_row.product.sku %></span></td>
+                      <span><%= item.sales_invoice_row.sku %></span></td>
                     <td align="center" valign="top">
-                      <span><%= item.ar_invoice_request_row.product.mpn.present? ? item.ar_invoice_request_row.product.mpn : '-' %></span></td>
+                      <span><%= item.sales_invoice_row.mpn.present? ? item.sales_invoice_row.mpn : '-' %></span></td>
                     <td align="center" valign="top">
-                      <span><%= item.ar_invoice_request_row.product.name %></span></td>
+                      <span><%= item.sales_invoice_row.to_s %></span></td>
                     <td align="center" valign="top">
-                      <span><%= item.ar_invoice_request_row.sales_order_row.best_tax_code.to_s[0..3] %></span></td>
+                      <span><%= item.sales_invoice_row.sales_order_row.best_tax_code.to_s[0..3] %></span></td>
                     <td align="center" valign="top">
-                      <span><%= item.ar_invoice_request_row.sales_order_row.measurement_unit %></span></td>
+                      <span><%= item.sales_invoice_row.sales_order_row.measurement_unit %></span></td>
                     <td align="center" valign="top">
                       <span><%= item.delivery_quantity %></span></td>
                   </tr>

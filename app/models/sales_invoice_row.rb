@@ -31,6 +31,13 @@ class SalesInvoiceRow < ApplicationRecord
     get_product.try(:measurement_unit).try(:name) || get_product.try(:product).try(:measurement_unit).try(:name) || MeasurementUnit.default
   end
 
+  def sales_order_row
+    product = Product.where(sku: self.sku).last
+    if product.present?
+      sales_invoice.sales_order.rows.where(product_id: product.id).last
+    end
+  end
+
   def brand
     get_product.try(:product).try(:brand).try(:name) || get_product.try(:brand).try(:name)
   end
