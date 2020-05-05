@@ -8,18 +8,13 @@ class Overseers::DashboardController < Overseers::BaseController
     #   render 'default_dashboard'
     # else
     if current_overseer.sales?
-      @dashboard = Overseers::Dashboard.new(current_overseer)
       if current_overseer.descendant_ids.present?
-        render template: 'overseers/dashboard/sales_manager/sales_manager_dashboard'
+        redirect_to sales_manager_overseers_dashboard_path
       else
-        render template: 'overseers/dashboard/sales_executive/new_sales_dashboard'
+        redirect_to sales_executive_overseers_dashboard_path
       end
     elsif current_overseer.acl_role.role_name == 'Accounts'
-      @dashboard = Overseers::Dashboard.new(current_overseer)
-      render template: 'overseers/dashboard/accounts/accounts_dashboard'
-    # elsif current_overseer.acl_role.role_name == 'Inside Sales and Logistic Manager'
-    #   @dashboard = Overseers::Dashboard.new(current_overseer)
-    #   render template: 'overseers/dashboard/sales_manager/sales_manager_dashboard'
+      redirect_to accounts_overseers_dashboard_path
     elsif current_overseer.admin?
       # @dashboard = Rails.cache.fetch('admin_dashboard_data') do
       #   service = Services::Overseers::Dashboards::Admin.new
