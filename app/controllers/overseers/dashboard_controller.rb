@@ -218,6 +218,24 @@ class Overseers::DashboardController < Overseers::BaseController
     render json: {}, status: :ok
   end
 
+  def my_team
+    service = Services::Overseers::Finders::MyTeam.new(params, current_overseer)
+    service.call
+    records = service.records
+    overseers = current_overseer.self_and_descendants
+    report_bucket_service = Services::Overseers::Dashboards::MyTeamBuckets.new(records, overseers, params)
+    @bucket_records = report_bucket_service.call
+    render json: { html: render_to_string(partial: 'overseers/dashboard/sales_manager/my_team_sales_manager_dashboard', locals: { records: @bucket_records }) }
+  end
+
+  def get_recent_inquiries
+    overseer = Overseer.find(params['overseer_id'])
+    @inquiries = Inquiry.where(inside_sales_owner_id: overseer.id).or(Inquiry.where(outside_sales_owner_id: overseer.id)).order('created_at DESC').first(10)
+    respond_to do |format|
+      format.html { render partial: '/overseers/dashboard/sales_manager/inquiries_dropdown_my_team', locals: {inquiries: @inquiries, name: overseer.first_name, id: overseer.id} }
+    end
+  end
+
   private
 
     def inquiry_params

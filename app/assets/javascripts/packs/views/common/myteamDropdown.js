@@ -13,15 +13,18 @@ $('.bmro-drop-icon-head-fl').click((e)=>{
             current.nextElementSibling.remove()
         }
         else {
-            e.currentTarget.classList.add('bmro-drop-icon-head-rotated-up');
-            e.currentTarget.classList.remove('bmro-drop-icon-head');
-            let addElement= $(`<tr class="bmro-back-color-ackwo"><td colspan="7"><div class="dropdown-div-row-wrapper"><div>` +
-                `<div class="my-team-user">Krishna Murthy</div>` +
-                `</div><div class='my-team-inquiry-box-wrapper my-team-user'><div class='my-team-inquiry-box'>54312</div>
-<div class='my-team-inquiry-box'>34214</div>
-<div class='my-team-inquiry-box'>12236</div>
-<div class='my-team-inquiry-box'>54212</div></div></div></td></tr>`);
-            addElement.insertAfter(current);
+            let url = '/overseers/dashboard/get_recent_inquiries'
+            $.ajax({
+                type: "GET",
+                url: url,
+                data: {overseer_id: e.currentTarget.id},
+                success: function (result) {
+                    e.currentTarget.classList.add('bmro-drop-icon-head-rotated-up');
+                    e.currentTarget.classList.remove('bmro-drop-icon-head');
+                    let addElement = $(result);
+                    addElement.insertAfter(current).hide().show('slow');
+                }
+            })
         }
     });
 }

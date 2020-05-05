@@ -78,6 +78,8 @@ Rails.application.routes.draw do
       get 'sales_manager'
       get 'accounts'
       get 'sales_executive'
+      get 'my_team'
+      get 'get_recent_inquiries'
     end
 
     resources :remote_requests do
