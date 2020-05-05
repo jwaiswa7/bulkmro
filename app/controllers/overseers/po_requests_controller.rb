@@ -1,6 +1,6 @@
 class Overseers::PoRequestsController < Overseers::BaseController
   before_action :set_po_request, only: [:show, :edit, :update, :cancel_porequest, :render_cancellation_form, :render_comment_form, :render_modal_form, :add_comment, :new_purchase_order, :create_purchase_order, :manager_amended, :reject_purchase_order_modal]
-  before_action :set_notification, only: [:update, :cancel_porequest]
+  before_action :set_notification, only: [:update, :cancel_porequest, :create_purchase_order, :manager_amended]
   before_action :set_product, only: [:product_resync_inventory]
   def pending_and_rejected
     @po_requests = filter_by_status(:pending_and_rejected)
@@ -237,12 +237,27 @@ class Overseers::PoRequestsController < Overseers::BaseController
   end
 
   def new_purchase_order
+    @warehouse = @po_request.bill_to.name
+    @modal_show = false
+    if @po_request.bill_to.series_code.present?
+      date = Date.today
+      year = date.year
+      year = year - 1 if date.month < 4
+      series_name = @po_request.bill_to.series_code + ' ' + year.to_s
+      @series = Series.where(document_type: 'Purchase Order', series_name: series_name)
+      if !@series.present?
+        @modal_show = true
+      end
+    else
+      @modal_show = true
+    end
     authorize_acl @po_request
   end
 
   def create_purchase_order
     authorize_acl @po_request
-    service = Services::Overseers::PurchaseOrders::CreatePurchaseOrder.new(@po_request, params.merge(overseer: current_overseer))
+    service = Services::Overseers::PurchaseOrders::CreatePurchaseOrder.new(@po_request, params.merge(overseer:
+                                                                                                         current_overseer), @notification)
     purchase_order = service.create
     if purchase_order.present?
       redirect_to overseers_inquiry_purchase_order_path(purchase_order.inquiry.to_param, purchase_order.to_param)
@@ -271,7 +286,7 @@ class Overseers::PoRequestsController < Overseers::BaseController
   end
 
   def manager_amended
-    Services::Overseers::PurchaseOrders::CreatePurchaseOrder.new(@po_request, params.merge(overseer: current_overseer)).update
+    Services::Overseers::PurchaseOrders::CreatePurchaseOrder.new(@po_request, params.merge(overseer: current_overseer), @notification).update
     redirect_to overseers_inquiry_purchase_order_path(@po_request.inquiry.to_param, @po_request.purchase_order.to_param)
     authorize_acl @po_request
   end

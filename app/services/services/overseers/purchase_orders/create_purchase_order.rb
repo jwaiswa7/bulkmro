@@ -1,8 +1,9 @@
 class Services::Overseers::PurchaseOrders::CreatePurchaseOrder < Services::Shared::BaseService
-  def initialize(po_request, params)
+  def initialize(po_request, params, notification)
     @po_request = po_request
     @params = params
     @is_stock = params['is_stock'].present? ? params['is_stock'] : 'no'
+    @notification = notification
   end
 
   def create
@@ -41,16 +42,23 @@ class Services::Overseers::PurchaseOrders::CreatePurchaseOrder < Services::Share
           end
         end
       end
-      if @purchase_order.save_and_sync(po_request)
-        comments = po_request.comments.build(created_by_id: params[:overseer].id, updated_by_id: params[:overseer].id)
-        comments.message = "Purchase Order ##{@purchase_order.po_number} Approved by #{params[:overseer]}"
-        comments.save!
-        series.increment_last_number
-      end
       po_request.update_attributes(
         status: 'Supplier PO: Created Not Sent',
         purchase_order: @purchase_order
       )
+      if @purchase_order.save_and_sync(po_request)
+        comments = po_request.comments.build(created_by_id: params[:overseer].id, updated_by_id: params[:overseer].id)
+        comments.message = "Purchase Order ##{@purchase_order.po_number} Approved by #{params[:overseer]}"
+        comments.save!
+        inquiry = po_request.inquiry
+        @notification.po_created(
+          'create',
+            @purchase_order,
+            Rails.application.routes.url_helpers.overseers_inquiry_purchase_order_path(inquiry, @purchase_order),
+            inquiry
+        )
+        series.increment_last_number
+      end
     end
     @purchase_order
   end

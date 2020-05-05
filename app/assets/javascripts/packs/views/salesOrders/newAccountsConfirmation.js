@@ -34,13 +34,16 @@ const newAccountsConfirmation = () => {
 
 let checkCheckboxStatus = () => {
     if ($('.new_accounts_confirmation input[type="checkbox"]').not(':checked').length == 0) {
-        $('.account-approval').prop('disabled', false);
-        if (!$('.account-approval').hasClass('disabled')){
-            $('#internal-comments').removeClass('show')
-            $('#salesOrderApproverMessage').modal('show')
+        $('#salesOrderApproverMessage').modal('show')
+        if ($('#salesOrderApproverMessage').length == 0){
+            $('.account-approval').prop('disabled', false);
+            if (!$('.account-approval').hasClass('disabled')){
+                $('#internal-comments').removeClass('show')
+            }
+            $('.account-rejection').addClass('disabled');
+            $('#sales_order_custom_fields_reject_reasons').removeAttr('required');
         }
-        $('.account-rejection').addClass('disabled');
-        $('#sales_order_custom_fields_reject_reasons').removeAttr('required');
+
     }else if ($('.new_accounts_confirmation input[type="checkbox"]').not(':checked').length == 1 && $('.account-rejection').hasClass('collapsed')){
         $('.account-rejection').click();
         $('.account-rejection').removeClass('disabled');

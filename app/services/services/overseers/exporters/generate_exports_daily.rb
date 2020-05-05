@@ -10,6 +10,7 @@ class Services::Overseers::Exporters::GenerateExportsDaily < Services::Overseers
         'activities': 'ActivitiesExporter',
         'suppliers': 'SuppliersExporter',
         'sales_orders': 'SalesOrdersExporter',
+        'material_readiness': 'MaterialReadinessExporter'
     }
   end
 
@@ -18,7 +19,7 @@ class Services::Overseers::Exporters::GenerateExportsDaily < Services::Overseers
       last_export = Export.where(export_type: key).last
       if last_export.status == 'Completed' || (Export.where(export_type: key).last.status.in?(['Enqueued', 'Processing']) && !last_export.report.attachment.present?)
         ['Services', 'Overseers', 'Exporters', value].join('::').constantize.new.call
-        sleep 1800
+        sleep 1800 if key != @export_hash.keys.last
       end
     end
   end
