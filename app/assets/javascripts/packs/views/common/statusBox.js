@@ -1,5 +1,7 @@
 import getStatusRecords from "./getStatusRecords";
 import getInquiryTasks from "./getInquiryTasks";
+import resetButton from "./resetButton";
+import dropdownInquiryArrow from "./inquiryDropdown";
 
 const statusBox = function () {
     $(".status-box").click(function (e) {
@@ -24,6 +26,8 @@ const statusBox = function () {
                 $('.inquiries-card').append(data);
                 getInquiryTasks();
                 getStatusRecords();
+                resetButton();
+                dropdownInquiryArrow();
             },
         });
     });
