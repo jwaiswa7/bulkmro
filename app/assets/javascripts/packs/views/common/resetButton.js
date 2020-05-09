@@ -11,9 +11,9 @@ const resetButton=function() {
         $('.bmro-reset-button').addClass('bmro-inquiry-show-hide');
 
       $('.collapse').each((e,obj)=>{
-          console.log(obj.id);
+          //console.log(obj.id);
         //let collapseId = $('.collapse').attr('id');
-        $(`#${obj.id}`).removeClass('show');
+       $(`#${obj.id}`).removeClass('show');
     })
         $('.bmro-same-box').removeClass('bmro-same-box-active');
 
