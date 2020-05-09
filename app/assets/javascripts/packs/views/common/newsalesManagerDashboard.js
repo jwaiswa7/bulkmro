@@ -1,25 +1,12 @@
 import salesNavigationPanel from '../common/salesNavigationPanel';
+import dropdownInquiryArrow from "./inquiryDropdown";
 const newsalesManagerDashboard= function() {
 
     salesNavigationPanel();
     //$('.bmro-dash-leftside').addClass('bmro-sales-dash-leftside').removeClass('bmro-dash-leftside');
     //$('.main-pedding').addClass('main-sales-pedding').removeClass('main-pedding');
     //$('.bmro-dash-inqu').addClass('bmro-sales-dash-inqu').removeClass('bmro-dash-inqu');
-
-
-    $('.bmro-drop-icon-head-acknow').click((e)=>{
-        //let current =e.currentTarget.parentElement.parentElement;
-        //console.log('hdcal');
-        if(e.currentTarget.classList.contains('bmro-drop-icon-head-rotated-up'))
-        {
-            e.currentTarget.classList.remove('bmro-drop-icon-head-rotated-up');
-            e.currentTarget.classList.add('bmro-drop-icon-head');
-        }
-        else {
-            e.currentTarget.classList.add('bmro-drop-icon-head-rotated-up');
-            e.currentTarget.classList.remove('bmro-drop-icon-head');
-        }
-    })
+    dropdownInquiryArrow();
 
     $(".bmro-sales-progress").each(function() {
         var value = $(this).attr('data-value')* 10;
