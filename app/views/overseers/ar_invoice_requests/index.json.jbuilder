@@ -1,4 +1,5 @@
 json.data (@ar_invoice_requests) do |ar_invoice|
+  sales_invoice = ar_invoice.sales_invoice
   json.array! [
                   [
                       if is_authorized(ar_invoice, 'show')
@@ -18,6 +19,9 @@ json.data (@ar_invoice_requests) do |ar_invoice|
                           concat content_tag(:span, '')
                           concat content_tag :i, nil, class: ['bmro-icon-table bmro-ban-new-icon'].join
                         end
+                      end,
+                      if sales_invoice.present? && is_authorized(sales_invoice, 'can_create_outward_dispatch') && policy(sales_invoice).can_create_outward_dispatch?
+                        row_action_button_without_fa(new_overseers_outward_dispatch_path(sales_invoice_id: sales_invoice), 'bmro-icon-table bmro-relationship', 'Add outward dispatch', 'info', :_blank)
                       end,
                       if is_authorized(ar_invoice, 'index') && policy(ar_invoice).index?
                         link_to('', class: ['icon-title btn btn-sm btn-success comment-ar-invoice-request'], 'data-model-id': ar_invoice.id, title: 'Comment', 'data-title': 'Comment', remote: true) do
