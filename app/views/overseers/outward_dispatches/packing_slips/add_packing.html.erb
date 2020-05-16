@@ -46,8 +46,8 @@
           </div>
         </div>
         <% @packing_rows.each_with_index do |row, index| %>
-          <%= hidden_field_tag "product_id[#{index}]", row.metadata['product_id'] %>
-          <%= hidden_field_tag "row[#{index}][product_id]",  row.metadata['product_id']%>
+          <%= hidden_field_tag "product_id[#{index}]", row[:product_id] || row.metadata['product_id']  %>
+          <%= hidden_field_tag "row[#{index}][product_id]",  row[:product_id] || row.metadata['product_id']%>
           <%= hidden_field_tag "row[#{index}][sales_invoice_row_id]", row[:id] || row.id %>
           <div class="flex-grow-1">
             <div class="form-row flex-row align-items-start mb-1">

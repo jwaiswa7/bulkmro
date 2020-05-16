@@ -82,15 +82,15 @@ class Overseers::OutwardDispatches::PackingSlipsController < Overseers::BaseCont
     authorize_acl :packing_slip
     @box_display = @outward_dispatch.packing_slips
     packing_slip_ids = @outward_dispatch.packing_slips.pluck(:id)
-    packin_slip_rows = PackingSlipRow.where(packing_slip_id: packing_slip_ids).group_by(&:ar_invoice_request_row_id)
+    packin_slip_rows = PackingSlipRow.where(packing_slip_id: packing_slip_ids).group_by(&:sales_invoice_row_id)
     @packing_rows = []
     packin_slip_rows.each do |key, value|
       data_obj = {}
       data_obj[:id] = key
-      ar_invoice_request_row = ArInvoiceRequestRow.where(id: key)
-      data_obj[:product_id] = ar_invoice_request_row.last.product.id
-      data_obj[:product_name] = ar_invoice_request_row.last.product.to_s
-      data_obj[:get_remaining_quantity] = ar_invoice_request_row.last.get_remaining_quantity.to_f + value.sum(&:delivery_quantity).to_f
+      sales_invoice_row = SalesInvoiceRow.where(id: key)
+      data_obj[:product_id] = sales_invoice_row.last.get_product_details.id
+      data_obj[:product_name] = sales_invoice_row.last.to_s
+      data_obj[:get_remaining_quantity] = sales_invoice_row.last.get_remaining_quantity.to_f + value.sum(&:delivery_quantity).to_f
       data_obj[:quantities] = value.pluck(:delivery_quantity).map(&:to_i).join(',')
       data_obj[:box_number] = PackingSlip.where(id: value.pluck(:packing_slip_id)).pluck(:box_number).join(', ')
       @packing_rows << data_obj
