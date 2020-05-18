@@ -9,6 +9,8 @@ class Overseers::SessionsController < Devise::SessionsController
         sales_executive_overseers_dashboard_path
       elsif resource.acl_role.role_name == 'Accounts'
         accounts_overseers_dashboard_path
+      else
+        overseers_inquiries_path
       end
     end
     def after_sign_out_path_for(resource_or_scope)
