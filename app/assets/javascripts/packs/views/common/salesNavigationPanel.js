@@ -28,12 +28,12 @@ const salesNavigationPanel=function(){
     }
     function dashboardViewer(viewId){
         if( viewId ==='actionDashboard'){ 
-            $('#actionDashboardViewer').show();
+            $('#actionDashboardViewer').fadeIn();
             $('#performanceDashboardViewer').hide();
             $('#myTeamViewer').hide();
         }
         else if(viewId ==='performanceDashboard'){
-            $('#performanceDashboardViewer').show();
+            $('#performanceDashboardViewer').fadeIn();
             $('#actionDashboardViewer').hide();
             $('#myTeamViewer').hide();
         }
@@ -47,7 +47,7 @@ const salesNavigationPanel=function(){
                     myTeamDiv.empty();
                     myTeamDiv.append(loader);
                     $('.sales-loader').show();
-                    myTeamDiv.show();
+                    myTeamDiv.fadeIn();
                     $('#actionDashboardViewer').hide();
                     $('#performanceDashboardViewer').hide();
                 },
