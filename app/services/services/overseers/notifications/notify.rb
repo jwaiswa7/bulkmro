@@ -47,7 +47,6 @@ class Services::Overseers::Notifications::Notify < Services::Shared::Notificatio
     @message = msg[0]
       @to = Overseer.find_by_email(sender)
       send
-    tos = Services::Overseers::Notifications::Recipients.ar_invoice_request_notifiers
     manager = []
     receivers = Overseer.where(email: tos)
     receivers.uniq.each do | overseer |

@@ -59,7 +59,7 @@ class InvoiceRequest < ApplicationRecord
   scope :ar_invoice_pending, -> { where(status: :'Pending AR Invoice') }
   scope :ar_invoice_generated, -> { where(status: :'Completed AR Invoice Request') }
 
-  validates_presence_of :sales_order, :if => Proc.new { |invoice_request| invoice_request.purchase_order.po_request.po_request_type != 'Stock'}
+  validates_presence_of :sales_order, :if => Proc.new { |invoice_request| invoice_request.purchase_order.po_request.po_request_type != 'Stock' if invoice_request.purchase_order.po_request.present? }
   validates_presence_of :inquiry
   validates_numericality_of :ap_invoice_number, allow_blank: true
   validate :has_attachments?
@@ -250,15 +250,17 @@ class InvoiceRequest < ApplicationRecord
       tos = Services::Overseers::Notifications::Recipients.invoice_request_notifiers
       sender = [self.created_by.email]
       if self.status == 'GRPO Pending'
-        comment = "GRPO ##{self.id} for  PO ##{self.purchase_order.po_number} Inquiry# #{self.inquiry.inquiry_number} has been requested"
+        comment = "GRPO ID ##{self.id} for  PO ##{self.purchase_order.po_number} Inquiry# #{self.inquiry.inquiry_number} has been requested"
       elsif status == 'Pending AP Invoice'
-        comment = "AP ##{self.id} for  PO ##{self.purchase_order.po_number} Inquiry# #{self.inquiry.inquiry_number} status changed to #{self.status}"
+        comment = "GRPO  ##{self.grpo_number} for  PO ##{self.purchase_order.po_number} Inquiry# #{self.inquiry.inquiry_number} status changed to #{self.status}"
       elsif status == 'Cancelled GRPO'
-        comment = "GRPO ##{self.id} for  PO ##{self.purchase_order.po_number} Inquiry# #{self.inquiry.inquiry_number} has been Cancelled. Reason: " + self.show_display_reason[:text]
+        comment = "GRPO ID ##{self.id} for  PO ##{self.purchase_order.po_number} Inquiry# #{self.inquiry.inquiry_number} has been Cancelled. Reason: " + self.show_display_reason[:text]
       elsif status == 'GRPO Request Rejected'
-        comment = "GRPO ##{self.id} for  PO ##{self.purchase_order.po_number} Inquiry# #{self.inquiry.inquiry_number} has been Rejected. Reason: " + self.show_display_reason[:text]
+        comment = "GRPO ID ##{self.id} for  PO ##{self.purchase_order.po_number} Inquiry# #{self.inquiry.inquiry_number} has been Rejected. Reason: " + self.show_display_reason[:text]
+      elsif status == 'Cancelled AP Invoice'
+        comment = "AP ##{self.id} for  PO ##{self.purchase_order.po_number} Inquiry# #{self.inquiry.inquiry_number} has been Cancelled. Reason: " + self.show_display_reason[:text]
       elsif self.status == 'Inward Completed'
-        comment = "GRPO ##{self.id} for  PO ##{self.purchase_order.po_number} Inquiry# #{self.inquiry.inquiry_number} has been Approved"
+        comment = "AP ##{self.ap_invoice_number} for  PO ##{self.purchase_order.po_number} Inquiry# #{self.inquiry.inquiry_number} has been Approved"
       end
       action_name = ''
       if self.saved_change_to_id?

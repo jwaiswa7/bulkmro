@@ -82,7 +82,7 @@ class ArInvoiceRequest < ApplicationRecord
       elsif status == 'AR Invoice Request Rejected'
         comment = "AR ##{self.ar_invoice_number if self.ar_invoice_number.present?} for SO ##{self.sales_order.order_number} has been Rejected. Reason: " + self.show_display_reason[:text]
       elsif status == 'Cancelled AR Invoice'
-        comment = "AR ##{self.self.ar_invoice_number if self.ar_invoice_number.present?} for SO ##{self.sales_order.order_number} has been Cancelled. Reason: " + self.show_display_reason[:text]
+        comment = "AR ##{self.ar_invoice_number if self.ar_invoice_number.present?} for SO ##{self.sales_order.order_number} has been Cancelled. Reason: " + self.show_display_reason[:text]
       elsif self.status == 'Completed AR Invoice Request'
         comment = "AR ##{self.ar_invoice_number} for SO ##{self.sales_order.order_number} has been Approved"
       end
