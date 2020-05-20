@@ -13,13 +13,6 @@ class Overseers::DashboardController < Overseers::BaseController
     elsif current_overseer.acl_role.role_name == 'Accounts'
       @dashboard = Overseers::Dashboard.new(current_overseer)
       render 'accounts_dashboard'
-    elsif current_overseer.admin?
-      # @dashboard = Rails.cache.fetch('admin_dashboard_data') do
-      #   service = Services::Overseers::Dashboards::Admin.new
-      #   @dashboard = service.call
-      # end
-      # render 'admin_dashboard'
-      redirect_to controller: 'inquiries', action: 'index'
     else
       render 'default_dashboard'
     end
@@ -47,9 +40,9 @@ class Overseers::DashboardController < Overseers::BaseController
     inquiry = Inquiry.find_by_inquiry_number(params['inquiry_number'])
     email_message = inquiry.email_messages.build(overseer: current_overseer, contact: inquiry.contact, inquiry: inquiry)
     email_message.assign_attributes(
-      subject: inquiry.subject,
-      body: InquiryMailer.acknowledgement(email_message).body.raw_source,
-        )
+        subject: inquiry.subject,
+        body: InquiryMailer.acknowledgement(email_message).body.raw_source,
+    )
     respond_to do |format|
       format.html { render partial: 'overseers/dashboard/email_message', locals: {inquiry: inquiry, email_message: email_message} }
     end
@@ -66,7 +59,7 @@ class Overseers::DashboardController < Overseers::BaseController
   end
 
 
-  def  update_invoice_request
+  def update_invoice_request
     invoice_request = InvoiceRequest.find_by_id(params['invoice_request']['invoice_request_id'])
     if params['invoice_request']['grpo_number'].present?
       invoice_request.update_attribute('grpo_number', params['invoice_request']['grpo_number'].to_i)
@@ -82,15 +75,15 @@ class Overseers::DashboardController < Overseers::BaseController
     statuses_for_invoice_req = ['GRPO Pending', 'Pending AP Invoice']
     if statuses_for_invoice_req.include? params['status']
       respond_to do |format|
-        format.html {render partial: 'inquiry_list_wrapper', locals: {inq_for_dash: @dashboard.invoice_requests.map { |inv_req| inv_req.inquiry if inv_req.status == params['status'] }.compact}}
+        format.html { render partial: 'inquiry_list_wrapper', locals: {inq_for_dash: @dashboard.invoice_requests.map { |inv_req| inv_req.inquiry if inv_req.status == params['status'] }.compact} }
       end
     elsif params['status'] == 'AR Invoice requested'
       respond_to do |format|
-        format.html {render partial: 'inquiry_list_wrapper', locals: {inq_for_dash: @dashboard.ar_invoice_requests.map { |inv_req| inv_req.inquiry if inv_req.status == params['status'] }.compact}}
+        format.html { render partial: 'inquiry_list_wrapper', locals: {inq_for_dash: @dashboard.ar_invoice_requests.map { |inv_req| inv_req.inquiry if inv_req.status == params['status'] }.compact} }
       end
     else
       respond_to do |format|
-        format.html {render partial: 'inquiry_list_wrapper', locals: {inq_for_dash: @dashboard.inq_for_dash.map { |inquiry| inquiry if inquiry.status == params['status'] }.compact}}
+        format.html { render partial: 'inquiry_list_wrapper', locals: {inq_for_dash: @dashboard.inq_for_dash.map { |inquiry| inquiry if inquiry.status == params['status'] }.compact} }
       end
     end
   end
@@ -107,7 +100,7 @@ class Overseers::DashboardController < Overseers::BaseController
       end
 
       respond_to do |format|
-        format.html {render partial: 'task_list_wrapper', locals: {inq_for_dash: inquiry, show_all_tasks: false, show_inquiry_tasks: true, inquiry_has_tasks: inquiry_has_tasks}}
+        format.html { render partial: 'task_list_wrapper', locals: {inq_for_dash: inquiry, show_all_tasks: false, show_inquiry_tasks: true, inquiry_has_tasks: inquiry_has_tasks} }
       end
 
     elsif current_overseer.acl_role.role_name == 'Accounts'
@@ -120,7 +113,7 @@ class Overseers::DashboardController < Overseers::BaseController
       end
 
       respond_to do |format|
-        format.html {render partial: 'account_task_list_wrapper', locals: {inq_for_dash: inquiry, show_all_tasks: false, show_inquiry_tasks: true, inquiry_has_tasks: true}}
+        format.html { render partial: 'account_task_list_wrapper', locals: {inq_for_dash: inquiry, show_all_tasks: false, show_inquiry_tasks: true, inquiry_has_tasks: true} }
       end
     end
   end
@@ -172,11 +165,11 @@ class Overseers::DashboardController < Overseers::BaseController
 
   private
 
-    def inquiry_params
-      params.require(:inquiry).permit(
+  def inquiry_params
+    params.require(:inquiry).permit(
         :inquiry_number,
-          :customer_po_number,
-          :customer_order_date
-      )
-    end
+        :customer_po_number,
+        :customer_order_date
+    )
+  end
 end
