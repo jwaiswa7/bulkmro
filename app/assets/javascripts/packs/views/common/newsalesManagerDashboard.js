@@ -31,7 +31,7 @@ const newsalesManagerDashboard= function() {
         $('#performanceOverviewTable').show();
     })
     $('.bmro-back-arrow').click(()=>{
-        $('#salesPerformanceTables').show();
+        $('#salesPerformanceTables').fadeIn();
         $('#performanceOverviewTable').hide();
     })
 
