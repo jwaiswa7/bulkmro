@@ -50,7 +50,7 @@ class Services::Overseers::Notifications::Notify < Services::Shared::Notificatio
     manager = []
     receivers = Overseer.where(email: tos)
     receivers.uniq.each do | overseer |
-      manager << overseer.parent
+      manager << overseer.parent if overseer.parent.present?
       @to = overseer
       send
     end
@@ -148,7 +148,7 @@ class Services::Overseers::Notifications::Notify < Services::Shared::Notificatio
     manager = []
     receivers = Overseer.where(email: tos)
     receivers.uniq.each do | overseer |
-      manager << overseer.parent
+      manager << overseer.parent if overseer.parent.present?
       @to = overseer
       send
     end
@@ -214,7 +214,7 @@ class Services::Overseers::Notifications::Notify < Services::Shared::Notificatio
     manager = []
     receivers = Overseer.where(email: tos)
     receivers.uniq.each do |overseer|
-      manager << overseer.parent
+      manager << overseer.parent if overseer.parent.present?
       @to = overseer
       send
     end
@@ -244,7 +244,7 @@ class Services::Overseers::Notifications::Notify < Services::Shared::Notificatio
     manager = []
     receivers = Overseer.where(email: tos)
     receivers.uniq.each do |overseer|
-      manager << overseer.parent
+      manager << overseer.parent if overseer.parent.present?
       @to = overseer
       send
     end
