@@ -50,7 +50,9 @@ module Mixins::HasRole
     LOGISTICS_ROLES = ['Logistics', 'Admin-Leadership Team', 'Admin', 'Inside Sales and Logistic Manager']
     CATALOG_ROLES = ['Admin', 'Cataloging']
     ACCOUNT_ROLES = ['Accounts', 'Admin']
-    COMMON_OVERSEERS = ['rn.prasad@bulkmro.com', 'tejaswi.patil@bulkmro.com', 'swati.bhosale@bulkmro.com', 'mithun.trisule@bulkmro.com', 'srikant.desai@bulkmro.com', 'atul.thakur@bulkmro.com', 'rajesh.sharma@bulkmro.com', 'lalit.dhingra@bulkmro.com', 'vivek.syal@bulkmro.com', 'ashish.pareek@bulkmro.com']
+    COMMON_OVERSEERS = ['rn.prasad@bulkmro.com', 'tejaswi.patil@bulkmro.com', 'swati.bhosale@bulkmro.com', 'mithun
+.trisule@bulkmro.com', 'srikant.desai@bulkmro.com', 'atul.thakur@bulkmro.com', 'rajesh.sharma@bulkmro.com', 'lalit
+.dhingra@bulkmro.com', 'vivek.syal@bulkmro.com', 'ashish.pareek@bulkmro.com', 'nutan.bala@bulkmro.com']
 
     def sales?
       role.in? SALES_ROLES
