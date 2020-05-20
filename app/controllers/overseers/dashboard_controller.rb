@@ -13,6 +13,12 @@ class Overseers::DashboardController < Overseers::BaseController
     elsif current_overseer.acl_role.role_name == 'Accounts'
       @dashboard = Overseers::Dashboard.new(current_overseer)
       render 'accounts_dashboard'
+    elsif current_overseer.admin?
+      @dashboard = Rails.cache.fetch('admin_dashboard_data') do
+        service = Services::Overseers::Dashboards::Admin.new
+        @dashboard = service.call
+      end
+      render 'admin_dashboard'
     else
       render 'default_dashboard'
     end
@@ -40,8 +46,8 @@ class Overseers::DashboardController < Overseers::BaseController
     inquiry = Inquiry.find_by_inquiry_number(params['inquiry_number'])
     email_message = inquiry.email_messages.build(overseer: current_overseer, contact: inquiry.contact, inquiry: inquiry)
     email_message.assign_attributes(
-      subject: inquiry.subject,
-      body: InquiryMailer.acknowledgement(email_message).body.raw_source,
+        subject: inquiry.subject,
+        body: InquiryMailer.acknowledgement(email_message).body.raw_source,
     )
     respond_to do |format|
       format.html { render partial: 'overseers/dashboard/email_message', locals: {inquiry: inquiry, email_message: email_message} }
@@ -165,11 +171,11 @@ class Overseers::DashboardController < Overseers::BaseController
 
   private
 
-    def inquiry_params
-      params.require(:inquiry).permit(
+  def inquiry_params
+    params.require(:inquiry).permit(
         :inquiry_number,
-          :customer_po_number,
-          :customer_order_date
-      )
-    end
+        :customer_po_number,
+        :customer_order_date
+    )
+  end
 end
