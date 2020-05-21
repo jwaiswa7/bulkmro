@@ -33,7 +33,7 @@
             </div>
           </div>
           <div class="bmro-action-button-parent bmro-action-width bmro-fl text-right">
-            <a href="#" class=" btn bmro-button btn-dashboard compose-email" data-toggle="modal" data-target="#emailModal" role="button" data-id="<%= inquiry.inquiry_number %>">Compose Email
+            <a href="#" class=" btn bmro-button btn-dashboard compose-email" data-toggle="modal" data-target="#emailModal" role="button" data-id="<%= inquiry.inquiry_number %>" target="_blank">Compose Email
             </a>
           </div>
         </div>
@@ -51,7 +51,7 @@
             </div>
           </div>
           <div class="bmro-action-button-parent bmro-action-width bmro-fl text-right">
-            <a href="<%= edit_overseers_inquiry_path(inquiry) %>" class="btn bmro-button btn-dashboard" role="button" data-id="<%= inquiry.inquiry_number %>"> Add Product
+            <a href="<%= edit_overseers_inquiry_path(inquiry) %>" class="btn bmro-button btn-dashboard" role="button" data-id="<%= inquiry.inquiry_number %>" target="_blank"> Add Product
             </a>
           </div>
         </div>
@@ -69,7 +69,7 @@
             </div>
           </div>
           <div class="bmro-action-button-parent bmro-action-width bmro-fl text-right">
-            <a href="<%= new_overseers_inquiry_sales_quote_path(inquiry) %>" class="btn bmro-button btn-dashboard" role="button" data-id="<%= inquiry.inquiry_number %>">Compose
+            <a href="<%= new_overseers_inquiry_sales_quote_path(inquiry) %>" class="btn bmro-button btn-dashboard" role="button" data-id="<%= inquiry.inquiry_number %>" target="_blank">Compose
               create
             </a>
           </div>
@@ -88,7 +88,7 @@
             </div>
           </div>
           <div class="bmro-action-button-parent bmro-action-width bmro-fl text-right">
-            <a href="<%= edit_suppliers_overseers_inquiry_path(inquiry) %>" class="btn bmro-button btn-dashboard" role="button" data-id="<%= inquiry.inquiry_number %>">Compose
+            <a href="<%= edit_suppliers_overseers_inquiry_path(inquiry) %>" class="btn bmro-button btn-dashboard" role="button" data-id="<%= inquiry.inquiry_number %>" target="_blank">Compose
               create
             </a>
           </div>
@@ -126,7 +126,7 @@
             </div>
           </div>
           <div class="bmro-action-button-parent bmro-action-width bmro-fl text-right">
-            <a href="<%= new_overseers_inquiry_sales_order_path(inquiry, sales_quote_id: inquiry.final_sales_quote.to_param) %>" class="btn bmro-button btn-dashboard" role="button" data-id="<%= inquiry.inquiry_number %>">Add to Order
+            <a href="<%= new_overseers_inquiry_sales_order_path(inquiry, sales_quote_id: inquiry.final_sales_quote.to_param) %>" class="btn bmro-button btn-dashboard" role="button" data-id="<%= inquiry.inquiry_number %>" target="_blank">Add to Order
             </a>
           </div>
         </div>
