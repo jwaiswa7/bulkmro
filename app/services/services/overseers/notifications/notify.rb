@@ -42,11 +42,20 @@ class Services::Overseers::Notifications::Notify < Services::Shared::Notificatio
     send
   end
 
-  def send_ar_invoice_request_update(tos, action, notifiable, url, *msg)
+  def send_ar_invoice_request_update(tos, sender, action, notifiable, url, *msg)
     @action = action; @notifiable = notifiable; @url = url
     @message = msg[0]
-    tos.uniq.each do | to |
-      @to = Overseer.find_by_email(to)
+    @to = Overseer.find_by_email(sender)
+    send
+    manager = []
+    receivers = Overseer.where(email: tos)
+    receivers.uniq.each do | overseer |
+      manager << overseer.parent if overseer.parent.present?
+      @to = overseer
+      send
+    end
+    manager.uniq.each do |parent|
+      @to = parent
       send
     end
   end
@@ -135,6 +144,18 @@ class Services::Overseers::Notifications::Notify < Services::Shared::Notificatio
     @message = "New Order for inquiry ##{msg[0]} awaiting approval"
     @to = to.sales_manager
     send
+    tos = Services::Overseers::Notifications::Recipients.so_approval_rejection_notifiers
+    manager = []
+    receivers = Overseer.where(email: tos)
+    receivers.uniq.each do | overseer |
+      manager << overseer.parent if overseer.parent.present?
+      @to = overseer
+      send
+    end
+    manager.uniq.each do |parent|
+      @to = parent
+      send
+    end
     @message = "Order for inquiry ##{msg[0]} sent for approval"
     @to = to.outside_sales_owner
     send
@@ -173,7 +194,7 @@ class Services::Overseers::Notifications::Notify < Services::Shared::Notificatio
   end
 
 
-  def   send_so_approved_by_account(sales_order, action, notifiable, url, *msg)
+  def send_so_approved_by_account(sales_order, action, notifiable, url, *msg)
     @action = action; @notifiable = notifiable; @url = url
     inquiry = sales_order.inquiry
     if sales_order.order_number.present?
@@ -189,6 +210,18 @@ class Services::Overseers::Notifications::Notify < Services::Shared::Notificatio
     @message = "#{msg_substring}for Inquiry##{inquiry.inquiry_number} has been #{msg[0]}."
     @to = inquiry.inside_sales_owner
     send
+    tos = Services::Overseers::Notifications::Recipients.so_approval_rejection_notifiers
+    manager = []
+    receivers = Overseer.where(email: tos)
+    receivers.uniq.each do |overseer|
+      manager << overseer.parent if overseer.parent.present?
+      @to = overseer
+      send
+    end
+    manager.uniq.each do |parent|
+      @to = parent
+      send
+    end
   end
 
   def send_inquiry_status_changed(to, action, notificable, url, *msg)
@@ -199,6 +232,24 @@ class Services::Overseers::Notifications::Notify < Services::Shared::Notificatio
     if to.parent.present?
       @message = "Inquiry ##{notificable.inquiry_number} - status updated to #{msg[0]} - exec: #{to}"
       @to = to.parent
+      send
+    end
+  end
+
+  def send_invoice_request_update(tos, sender, action, notifiable, url, *msg)
+    @action = action; @notifiable = notifiable; @url = url
+    @message = msg[0]
+    @to = Overseer.find_by_email(sender)
+    send
+    manager = []
+    receivers = Overseer.where(email: tos)
+    receivers.uniq.each do |overseer|
+      manager << overseer.parent if overseer.parent.present?
+      @to = overseer
+      send
+    end
+    manager.uniq.each do |parent|
+      @to = parent
       send
     end
   end
