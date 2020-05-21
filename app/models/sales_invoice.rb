@@ -146,7 +146,7 @@ class SalesInvoice < ApplicationRecord
   end
 
   def total_quantity_delivered
-    self.rows.sum(:quantity)
+    self.rows.sum(&:quantity)
   end
 
   def outward_dispatched_quantity
