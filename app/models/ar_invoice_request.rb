@@ -96,7 +96,7 @@ class ArInvoiceRequest < ApplicationRecord
       end
       @notification = Services::Overseers::Notifications::Notify.new(overseer, self.class.parent)
       @notification.send_ar_invoice_request_update(
-          tos,
+        tos,
           sender,
           action_name.to_sym,
           self,
@@ -109,15 +109,15 @@ class ArInvoiceRequest < ApplicationRecord
   def allow_statuses(overseer)
     if overseer.accounts?
       statuses = ArInvoiceRequest.statuses
-      return {enabled: statuses, disabled: []}
+      {enabled: statuses, disabled: []}
 
     elsif overseer.logistics?
       if self.status == 'AR Invoice Request Rejected'
         statuses = ArInvoiceRequest.statuses.slice('AR Invoice requested')
       end
-      return {enabled: ArInvoiceRequest.statuses, disabled: ArInvoiceRequest.statuses.except('AR Invoice requested').keys}
+      {enabled: ArInvoiceRequest.statuses, disabled: ArInvoiceRequest.statuses.except('AR Invoice requested').keys}
     else
-      return {enabled: ArInvoiceRequest.statuses, disabled: []}
+      {enabled: ArInvoiceRequest.statuses, disabled: []}
     end
   end
 

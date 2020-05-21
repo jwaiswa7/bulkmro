@@ -59,7 +59,7 @@ class InvoiceRequest < ApplicationRecord
   scope :ar_invoice_pending, -> { where(status: :'Pending AR Invoice') }
   scope :ar_invoice_generated, -> { where(status: :'Completed AR Invoice Request') }
 
-  validates_presence_of :sales_order, :if => Proc.new { |invoice_request| invoice_request.purchase_order.po_request.po_request_type != 'Stock' if invoice_request.purchase_order.po_request.present? }
+  validates_presence_of :sales_order, if: Proc.new { |invoice_request| invoice_request.purchase_order.po_request.po_request_type != 'Stock' if invoice_request.purchase_order.po_request.present? }
   validates_presence_of :inquiry
   validates_numericality_of :ap_invoice_number, allow_blank: true
   validate :has_attachments?
@@ -272,7 +272,7 @@ class InvoiceRequest < ApplicationRecord
       end
       @notification = Services::Overseers::Notifications::Notify.new(overseer, self.class.parent)
       @notification.send_invoice_request_update(
-          tos,
+        tos,
           sender,
           action_name.to_sym,
           self,

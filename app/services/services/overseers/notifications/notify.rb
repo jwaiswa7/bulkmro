@@ -45,8 +45,8 @@ class Services::Overseers::Notifications::Notify < Services::Shared::Notificatio
   def send_ar_invoice_request_update(tos, sender, action, notifiable, url, *msg)
     @action = action; @notifiable = notifiable; @url = url
     @message = msg[0]
-      @to = Overseer.find_by_email(sender)
-      send
+    @to = Overseer.find_by_email(sender)
+    send
     manager = []
     receivers = Overseer.where(email: tos)
     receivers.uniq.each do | overseer |
@@ -253,5 +253,4 @@ class Services::Overseers::Notifications::Notify < Services::Shared::Notificatio
       send
     end
   end
-
 end
