@@ -25,7 +25,8 @@ class Overseers::OutwardDispatches::PackingSlipsController < Overseers::BaseCont
   # GET /packing_slips/new
   def new
     @packing_slip = PackingSlip.new(overseer: current_overseer, outward_dispatch: @outward_dispatch)
-    @packing_slip.outward_dispatch.sales_invoice.rows.each do |row|
+    rows_obj = @packing_slip.outward_dispatch.sales_invoice.rows.where.not(sku: Settings.product_specific.freight)
+    rows_obj.each do |row|
       if row.get_remaining_quantity > 0
         @packing_slip.rows.build(delivery_quantity: row.get_remaining_quantity, sales_invoice_row: row, sales_invoice_row_id: row.id)
       end
@@ -36,7 +37,8 @@ class Overseers::OutwardDispatches::PackingSlipsController < Overseers::BaseCont
   def add_packing
     @box_display = @outward_dispatch.packing_slips
     @packing_rows = []
-    @outward_dispatch.sales_invoice.rows.each do |row|
+    rows_obj = @outward_dispatch.sales_invoice.rows.where.not(sku: Settings.product_specific.freight)
+    rows_obj.each do |row|
       if row.get_remaining_quantity > 0
         @packing_rows << row
       end
