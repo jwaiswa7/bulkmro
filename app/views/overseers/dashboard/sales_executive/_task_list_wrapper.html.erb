@@ -33,7 +33,9 @@
             </div>
           </div>
           <div class="bmro-action-button-parent bmro-action-width bmro-fl text-right">
-            <a href="#" class=" btn bmro-button btn-dashboard compose-email" data-toggle="modal" data-target="#emailModal" role="button" data-id="<%= inquiry.inquiry_number %>" target="_blank">Compose Email
+<!--            <a href="#" class=" btn bmro-button btn-dashboard compose-email" data-toggle="modal" data-target="#emailModal" role="button" data-id="<%#= inquiry.inquiry_number %>" target="_blank">Compose Email-->
+<!--            </a>-->
+            <a href="<%= edit_overseers_inquiry_path(inquiry) %>" class="btn bmro-button btn-dashboard" role="button" data-id="<%= inquiry.inquiry_number %>" target="_blank"> Compose Email
             </a>
           </div>
         </div>
