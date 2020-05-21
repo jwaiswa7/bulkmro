@@ -132,7 +132,7 @@ class Overseers::SalesInvoicesController < Overseers::BaseController
 
 
   def dispatch_mail_to_customer
-    @outward_dispatch = @invoice.ar_invoice_request.outward_dispatches.last if @invoice.ar_invoice_request.present?
+    @outward_dispatch = @invoice.outward_dispatches.last
     @email_message = @invoice.email_messages.build(overseer: current_overseer, inquiry: @invoice.inquiry, sales_invoice: @invoice, outward_dispatch: @outward_dispatch)
     subject = "Ref# #{@invoice.inquiry.inquiry_number}- Your Order #{@invoice.inquiry.customer_po_number} - Dispatch Notification"
     @action = 'dispatch_mail_to_customer_notification'
@@ -154,7 +154,7 @@ class Overseers::SalesInvoicesController < Overseers::BaseController
   end
 
   def dispatch_mail_to_customer_notification
-    @outward_dispatch = @invoice.ar_invoice_request.outward_dispatches.last if @invoice.ar_invoice_request.present?
+    @outward_dispatch = @invoice.outward_dispatches.last
     @email_message = @invoice.email_messages.build(overseer: current_overseer, contact: @invoice.inquiry.contact, inquiry: @invoice.inquiry, sales_invoice: @invoice, email_type: 'Material Dispatched to Customer', outward_dispatch: @outward_dispatch)
     @email_message.assign_attributes(email_message_params)
 
