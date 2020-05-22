@@ -19,7 +19,7 @@ class Resources::SalesInvoice < Resources::ApplicationResource
         remote_rows = remote_response['DocumentLines']
 
         ActiveRecord::Base.transaction do
-          sales_invoice.rows.destroy_all
+          # sales_invoice.rows.destroy_all
 
           billing_address = sales_invoice.inquiry.billing_company.addresses.where(remote_uid: remote_response['PayToCode']).first || sales_invoice.inquiry.billing_address
           shipping_address = sales_invoice.inquiry.shipping_company.addresses.where(remote_uid: remote_response['ShipToCode']).first || sales_invoice.inquiry.shipping_address
@@ -35,11 +35,10 @@ class Resources::SalesInvoice < Resources::ApplicationResource
             # sales_order_row = sales_order.rows.joins(:product).where('products.sku = ?', sku).first
             quantity = remote_row['Quantity'].to_f
             tax_amount = remote_row['NetTaxAmountFC'].to_f != 0 ? remote_row['NetTaxAmountFC'].to_f : remote_row['NetTaxAmount'].to_f
-
-            sales_invoice.rows.create!(
-              quantity: quantity,
-              sku: sku,
-              metadata: {
+            sales_invoice_row = sales_invoice.rows.where(sku: sku).first_or_initialize
+            sales_invoice_row.quantity =  quantity
+            sales_invoice_row.sku =  sku
+            sales_invoice_row.metadata =  {
                   qty: quantity,
                   sku: sku,
                   name: remote_row['U_Item_Descr'] != '' ? remote_row['U_Item_Descr'] : remote_row['ItemDescription'],
@@ -72,7 +71,7 @@ class Resources::SalesInvoice < Resources::ApplicationResource
                   base_weee_tax_row_disposition: nil,
                   base_weee_tax_applied_row_amnt: nil
               }
-            )
+            sales_invoice_row.save
             break if is_kit
           end if remote_rows.present?
         end

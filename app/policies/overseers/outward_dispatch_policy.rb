@@ -4,7 +4,8 @@ class Overseers::OutwardDispatchPolicy < Overseers::ApplicationPolicy
   end
 
   def can_create_packing_slip?
-    ((record.sales_invoice.total_quantity_delivered != record.quantity_in_payment_slips))
+    sales_invoice = record.sales_invoice
+    (sales_invoice.total_quantity_delivered != sales_invoice.outward_dispatches.sum(&:quantity_in_payment_slips))
   end
   def index?
     admin? || logistics?
