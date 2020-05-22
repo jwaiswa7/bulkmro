@@ -15,6 +15,7 @@ class PoRequestRow < ApplicationRecord
   belongs_to :tax_code, required: false
   belongs_to :tax_rate, required: false
   belongs_to :measurement_unit, required: false
+  belongs_to :brand, required: false
 
   accepts_nested_attributes_for :product
 
