@@ -60,19 +60,19 @@
           <div class="col-6 col-md-3 mb-2">
             <strong class="d-block bmro-summary-heading">Material Dispatch Date</strong>
             <div class="bmro-summary-data">
-              <%= @outward_dispatch.material_dispatch_date %>
+              <%= format_succinct_date(@outward_dispatch.material_dispatch_date) %>
             </div>  
           </div>
           <div class="col-6 col-md-3 mb-2">
             <strong class="d-block bmro-summary-heading">Expected Date Of Delivery</strong>
             <div class="bmro-summary-data">
-              <%= @outward_dispatch.expected_date_of_delivery %>
+              <%= format_succinct_date(@outward_dispatch.expected_date_of_delivery) %>
             </div>  
           </div>
           <div class="col-6 col-md-3 mb-2">
             <strong class="d-block bmro-summary-heading">Material Delivery Date</strong>
             <div class="bmro-summary-data">
-              <%= @outward_dispatch.material_delivery_date %>
+              <%= format_succinct_date(@outward_dispatch.material_delivery_date) %>
             </div>  
           </div>
           <div class="col-6 col-md-3 mb-2">

@@ -146,7 +146,7 @@ class SalesInvoice < ApplicationRecord
   end
 
   def total_quantity_delivered
-    self.rows.sum(&:quantity)
+    self.rows.where.not(sku: Settings.product_specific.freight).sum(&:quantity)
   end
 
   def outward_dispatched_quantity
