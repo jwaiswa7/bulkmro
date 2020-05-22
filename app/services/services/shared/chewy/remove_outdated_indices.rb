@@ -23,7 +23,7 @@ class Services::Shared::Chewy::RemoveOutdatedIndices < Services::Shared::BaseSer
     indexes.each do |index|
       timestamp = index.split('_').last.to_i
       date = Time.at(timestamp / 1000).to_date
-      if date < Date.today - 5.days
+      if date < Date.today - 5.days && date.year > 2018
         begin
           uri = URI.parse("#{es_url}/#{index}")
           request = Net::HTTP::Delete.new(uri)
