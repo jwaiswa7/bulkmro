@@ -2,10 +2,10 @@ json.data (@outward_dispatches) do |outward_dispatch|
   sales_invoice = outward_dispatch.sales_invoice
   json.array! [
                   [
-                      if is_authorized(outward_dispatch ,'show')
+                      if is_authorized(outward_dispatch, 'show')
                         row_action_button_without_fa(overseers_outward_dispatch_path(outward_dispatch), 'bmro-icon-table bmro-icon-used-view', 'View Outward Dispatch', 'info', :_blank)
                       end,
-                      if is_authorized(outward_dispatch,'edit')
+                      if is_authorized(outward_dispatch, 'edit')
                         row_action_button_without_fa(edit_overseers_outward_dispatch_path(outward_dispatch), 'bmro-icon-table bmro-icon-new-freight', 'Edit Outward Dispatch', 'warning', :_blank)
                       end,
                       if is_authorized(:outward_dispatch, 'can_create_packing_slip') && policy(outward_dispatch).can_create_packing_slip?
@@ -33,7 +33,7 @@ json.data (@outward_dispatches) do |outward_dispatch|
                       end,
 
                   ].join(' '),
-                  outward_dispatch.packing_slips.map.with_index { |packing_slip,i| link_to("#{packing_slip.outward_dispatch.sales_invoice.invoice_number}-#{i + 1}", overseers_outward_dispatch_packing_slip_path(outward_dispatch, packing_slip), target: '_blank') }.compact.join(' '),
+                  outward_dispatch.packing_slips.map.with_index { |packing_slip, i| link_to("#{packing_slip.outward_dispatch.sales_invoice.invoice_number}-#{i + 1}", overseers_outward_dispatch_packing_slip_path(outward_dispatch, packing_slip), target: '_blank') }.compact.join(' '),
                   link_to(sales_invoice.inquiry.inquiry_number, edit_overseers_inquiry_path(sales_invoice.inquiry),
                           target:
                       '_blank'),
@@ -42,7 +42,7 @@ json.data (@outward_dispatches) do |outward_dispatch|
                                                                                      sales_invoice
                                                                                                                 .sales_order),
       target: '_blank'),
-                  link_to((sales_invoice.invoice_number || 'AR Invoice'), overseers_inquiry_sales_invoice_path(sales_invoice.inquiry,sales_invoice), target:
+                  link_to((sales_invoice.invoice_number || 'AR Invoice'), overseers_inquiry_sales_invoice_path(sales_invoice.inquiry, sales_invoice), target:
                       '_blank'),
                   outward_dispatch.logistics_partner,
                   outward_dispatch.tracking_number,

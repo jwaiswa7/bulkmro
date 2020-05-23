@@ -36,9 +36,9 @@ class Resources::SalesInvoice < Resources::ApplicationResource
             quantity = remote_row['Quantity'].to_f
             tax_amount = remote_row['NetTaxAmountFC'].to_f != 0 ? remote_row['NetTaxAmountFC'].to_f : remote_row['NetTaxAmount'].to_f
             sales_invoice_row = sales_invoice.rows.where(sku: sku).first_or_initialize
-            sales_invoice_row.quantity =  quantity
-            sales_invoice_row.sku =  sku
-            sales_invoice_row.metadata =  {
+            sales_invoice_row.quantity = quantity
+            sales_invoice_row.sku = sku
+            sales_invoice_row.metadata = {
                   qty: quantity,
                   sku: sku,
                   name: remote_row['U_Item_Descr'] != '' ? remote_row['U_Item_Descr'] : remote_row['ItemDescription'],
