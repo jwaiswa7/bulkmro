@@ -31,7 +31,7 @@ json.data (@ar_invoice_requests) do |ar_invoice|
                       end,
                   ].join(' '),
                   status_badge(ar_invoice.status),
-                  ar_invoice.ar_invoice_number,
+                  link_to(ar_invoice.invoice_number, overseers_inquiry_sales_invoices_path(inquiry), target: '_blank'),
                   ar_invoice.inquiry.present? ? conditional_link(ar_invoice.inquiry.inquiry_number, edit_overseers_inquiry_path(ar_invoice.inquiry), is_authorized(ar_invoice.inquiry, 'edit')) : '-',
                   ar_invoice.inquiry.company.to_s,
                   ar_invoice.is_owner.present? ? ar_invoice.is_owner : '--',

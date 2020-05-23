@@ -19,7 +19,7 @@ class Resources::SalesInvoice < Resources::ApplicationResource
         remote_rows = remote_response['DocumentLines']
 
         ActiveRecord::Base.transaction do
-          # sales_invoice.rows.destroy_all
+          sales_invoice.rows.where(sku: nil).destroy_all
 
           billing_address = sales_invoice.inquiry.billing_company.addresses.where(remote_uid: remote_response['PayToCode']).first || sales_invoice.inquiry.billing_address
           shipping_address = sales_invoice.inquiry.shipping_company.addresses.where(remote_uid: remote_response['ShipToCode']).first || sales_invoice.inquiry.shipping_address
