@@ -16,7 +16,7 @@
         </div>
       <% end %>
 
-      <% if @po_request.stock_status == 'Supplier Stock PO: Amendment Pending'%>
+      <% if @po_request.stock_status == 'Supplier Stock PO: Amendment Pending' && @po_request.purchase_order.present? %>
         <div class="col-1">
           <a href="<%= manager_amended_overseers_po_request_path(@po_request, is_stock: 'yes') %>" class="btn btn-success btn-rounded bmro-button align-self-center btn-block-sm-down">Amend PO Request</a>
         </div>

@@ -4,7 +4,8 @@ class OutwardDispatch < ApplicationRecord
   include Mixins::CanBeStamped
   include Mixins::HasComments
 
-  belongs_to :ar_invoice_request, default: false
+  belongs_to :ar_invoice_request, optional: true
+  belongs_to :sales_invoice, default: false
   belongs_to :sales_order, default: false
   has_many :packing_slips
   accepts_nested_attributes_for :packing_slips, reject_if: lambda { |attributes| attributes['box_number'].blank? }, allow_destroy: true
@@ -82,16 +83,17 @@ class OutwardDispatch < ApplicationRecord
   end
 
   def is_owner
-    self.ar_invoice_request.inquiry.inside_sales_owner.to_s
+    self.sales_invoice.inquiry.inside_sales_owner.to_s
   end
 
   def logistics_owner
-    self.ar_invoice_request.inquiry.company.logistics_owner.full_name if self.ar_invoice_request.inquiry.present? && self.ar_invoice_request.inquiry.company.present? && self.ar_invoice_request.inquiry.company.logistics_owner.present?
+    self.sales_invoice.inquiry.company.logistics_owner.full_name if self.sales_invoice.inquiry.present? && self.sales_invoice.inquiry.company.present? &&
+        self.sales_invoice.inquiry.company.logistics_owner.present?
   end
 
   def zipped_filename(include_extension: false)
     [
-        ['packing_slips', self.ar_invoice_request.ar_invoice_number].join('_'),
+        ['packing_slips', self.sales_invoice.invoice_number].join('_'),
         ('zip' if include_extension)
     ].compact.join('.')
   end

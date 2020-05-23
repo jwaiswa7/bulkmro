@@ -7,7 +7,6 @@ class ArInvoiceRequest < ApplicationRecord
 
   belongs_to :sales_order
   belongs_to :inquiry
-  has_many :outward_dispatches
   belongs_to :sales_invoice, required: false
   validate :presence_of_reason
   after_save :send_notification_on_status_changed, :update_inward_dispatch_index
@@ -155,14 +154,6 @@ class ArInvoiceRequest < ApplicationRecord
       data[:display] = false
     end
     data
-  end
-
-  def total_quantity_delivered
-    self.rows.sum(:delivered_quantity)
-  end
-
-  def outward_dispatched_quantity
-    self.outward_dispatches.sum(&:quantity_in_payment_slips)
   end
 
   def title
