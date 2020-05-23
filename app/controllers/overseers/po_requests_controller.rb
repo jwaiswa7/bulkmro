@@ -120,7 +120,7 @@ class Overseers::PoRequestsController < Overseers::BaseController
         end
       end
 
-      if po_request_row_ids.present?
+      if @po_request.purchase_order.present? && po_request_row_ids.present?
         @po_request.purchase_order.rows.where(po_request_row_id: po_request_row_ids).update_all(po_request_row_id: nil)
       end
 
