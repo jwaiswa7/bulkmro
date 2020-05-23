@@ -44,11 +44,18 @@ json.data (@sales_invoices) do |sales_invoice|
                       end,
                       if is_authorized(sales_invoice, 'resync_sap_status')
                         row_action_button(resync_sap_status_overseers_sales_invoice_path(sales_invoice.to_param), 'retweet-alt', 'Invoice Status Resync', 'danger')
-                      end
+                      end,
+                      if is_authorized(sales_invoice, 'can_create_outward_dispatch') && policy(sales_invoice).
+                          can_create_outward_dispatch?
+                        row_action_button_without_fa(new_overseers_outward_dispatch_path(sales_invoice_id:
+                                                                                             sales_invoice),
+                                                     'bmro-icon-table bmro-relationship', 'Add outward dispatch', 'info', :_blank)
+                      end,
                   ].join(' '),
                   conditional_link(sales_invoice.invoice_number, overseers_inquiry_sales_invoice_path(sales_invoice.inquiry, sales_invoice), is_authorized(sales_invoice, 'show')),
                   sales_invoice.inquiry.present? ?  conditional_link(sales_invoice.inquiry.inquiry_number, edit_overseers_inquiry_path(sales_invoice.inquiry), is_authorized(sales_invoice.inquiry, 'edit')) : '-',
                   sales_invoice.inquiry.present? ?  conditional_link(sales_invoice.sales_order.order_number, overseers_inquiry_sales_order_path(sales_invoice.inquiry, sales_invoice.sales_order), is_authorized(sales_invoice.sales_order, 'show')) : '-',
+                  sales_invoice.outward_dispatches.map { |outward_dispatch| link_to(outward_dispatch.id, overseers_outward_dispatch_path(outward_dispatch), target: '_blank'); }.compact.join(' '),
                   link_to(sales_invoice.inquiry.company.account.to_s, overseers_account_path(sales_invoice.inquiry.company.account), target: '_blank'),
                   link_to(sales_invoice.inquiry.company.name, overseers_company_path(sales_invoice.inquiry.company, sales_invoice), target: '_blank'),
                   inquiry.billing_contact.present? ? sales_invoice.inquiry.billing_contact.try(:name) : '',
@@ -67,6 +74,7 @@ json.data (@sales_invoices) do |sales_invoice|
 end
 
 json.columnFilters [
+                       [],
                        [],
                        [],
                        [],

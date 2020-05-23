@@ -58,10 +58,10 @@
                 #<%= (f.object.rows.index(row.object) || 0) + 1 %>
                 <%= row.hidden_field :id %>
                 <%= row.hidden_field :packing_slip_id %>
-                <%= row.hidden_field :ar_invoice_request_row_id %>
+                <%= row.hidden_field :sales_invoice_row_id %>
               </div>
               <div class="col-9 col-md-9">
-                <%= row.input :ar_invoice_request_row, input_html: { value: row.object.ar_invoice_request_row.to_s }, disabled: row.object.ar_invoice_request_row.present? && row.object.errors.blank?, label: false %>
+                <%= row.input :sales_invoice_row, input_html: { value: row.object.sales_invoice_row.to_s }, disabled: row.object.sales_invoice_row.present? && row.object.errors.blank?, label: false %>
               </div>
               <div class="col-1 col-md-1">
                 <%= row.input :delivery_quantity, input_html: { value: row.object.delivery_quantity, onkeydown: "return event.keyCode !== 69"}, label: false %>

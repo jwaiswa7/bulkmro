@@ -1,5 +1,6 @@
 class SalesInvoiceRow < ApplicationRecord
   belongs_to :sales_invoice
+  has_many :packing_slip_rows
 
   def sku
     self.metadata['sku']
@@ -7,6 +8,10 @@ class SalesInvoiceRow < ApplicationRecord
 
   def quantity
     self.metadata['qty']
+  end
+
+  def get_remaining_quantity
+    self.metadata['qty'] - self.packing_slip_rows.sum(&:delivery_quantity)
   end
 
 
@@ -24,6 +29,13 @@ class SalesInvoiceRow < ApplicationRecord
 
   def uom
     get_product.try(:measurement_unit).try(:name) || get_product.try(:product).try(:measurement_unit).try(:name) || MeasurementUnit.default
+  end
+
+  def sales_order_row
+    product = Product.where(sku: self.sku).last
+    if product.present?
+      sales_invoice.sales_order.rows.where(product_id: product.id).last
+    end
   end
 
   def brand

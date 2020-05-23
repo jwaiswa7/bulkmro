@@ -25,9 +25,10 @@ class Overseers::OutwardDispatches::PackingSlipsController < Overseers::BaseCont
   # GET /packing_slips/new
   def new
     @packing_slip = PackingSlip.new(overseer: current_overseer, outward_dispatch: @outward_dispatch)
-    @packing_slip.outward_dispatch.ar_invoice_request.rows.each do |row|
+    rows_obj = @packing_slip.outward_dispatch.sales_invoice.rows.where.not(sku: Settings.product_specific.freight)
+    rows_obj.each do |row|
       if row.get_remaining_quantity > 0
-        @packing_slip.rows.build(delivery_quantity: row.get_remaining_quantity, ar_invoice_request_row: row, ar_invoice_request_row_id: row.id)
+        @packing_slip.rows.build(delivery_quantity: row.get_remaining_quantity, sales_invoice_row: row, sales_invoice_row_id: row.id)
       end
     end
     authorize_acl @packing_slip
@@ -36,7 +37,8 @@ class Overseers::OutwardDispatches::PackingSlipsController < Overseers::BaseCont
   def add_packing
     @box_display = @outward_dispatch.packing_slips
     @packing_rows = []
-    @outward_dispatch.ar_invoice_request.rows.each do |row|
+    rows_obj = @outward_dispatch.sales_invoice.rows.where.not(sku: Settings.product_specific.freight)
+    rows_obj.each do |row|
       if row.get_remaining_quantity > 0
         @packing_rows << row
       end
@@ -60,7 +62,8 @@ class Overseers::OutwardDispatches::PackingSlipsController < Overseers::BaseCont
       box_numbers = value['box_numbers'].split(',').map { |s| s.to_i }
       quantities = value['quantities'].split(',').map { |s| s.to_i }
       box_numbers.each_with_index do |box, index|
-        packing_slip_row = PackingSlipRow.where(packing_slip_id: packing_slip_object[box], ar_invoice_request_row_id: value['ar_invoice_request_row_id']).first_or_initialize
+        packing_slip_row = PackingSlipRow.where(packing_slip_id: packing_slip_object[box], sales_invoice_row_id:
+            value['sales_invoice_row_id']).first_or_initialize
         packing_slip_row.delivery_quantity = quantities[index]
         if packing_slip_row.valid?
           packing_slip_row.save
@@ -81,15 +84,15 @@ class Overseers::OutwardDispatches::PackingSlipsController < Overseers::BaseCont
     authorize_acl :packing_slip
     @box_display = @outward_dispatch.packing_slips
     packing_slip_ids = @outward_dispatch.packing_slips.pluck(:id)
-    packin_slip_rows = PackingSlipRow.where(packing_slip_id: packing_slip_ids).group_by(&:ar_invoice_request_row_id)
+    packin_slip_rows = PackingSlipRow.where(packing_slip_id: packing_slip_ids).group_by(&:sales_invoice_row_id)
     @packing_rows = []
     packin_slip_rows.each do |key, value|
       data_obj = {}
       data_obj[:id] = key
-      ar_invoice_request_row = ArInvoiceRequestRow.where(id: key)
-      data_obj[:product_id] = ar_invoice_request_row.last.product.id
-      data_obj[:product_name] = ar_invoice_request_row.last.product.to_s
-      data_obj[:get_remaining_quantity] = ar_invoice_request_row.last.get_remaining_quantity.to_f + value.sum(&:delivery_quantity).to_f
+      sales_invoice_row = SalesInvoiceRow.where(id: key)
+      data_obj[:product_id] = sales_invoice_row.last.get_product_details.id
+      data_obj[:product_name] = sales_invoice_row.last.to_s
+      data_obj[:get_remaining_quantity] = sales_invoice_row.last.get_remaining_quantity.to_f + value.sum(&:delivery_quantity).to_f
       data_obj[:quantities] = value.pluck(:delivery_quantity).map(&:to_i).join(',')
       data_obj[:box_number] = PackingSlip.where(id: value.pluck(:packing_slip_id)).pluck(:box_number).join(', ')
       @packing_rows << data_obj
@@ -168,7 +171,7 @@ class Overseers::OutwardDispatches::PackingSlipsController < Overseers::BaseCont
           :outward_dispatch_id,
           :box_number,
           :box_dimension,
-          rows_attributes: [:id, :ar_invoice_request_row_id, :delivery_quantity, :packing_slip_id, :_destroy]
+          rows_attributes: [:id, :sales_invoice_row_id, :delivery_quantity, :packing_slip_id, :_destroy]
       )
     end
 end
