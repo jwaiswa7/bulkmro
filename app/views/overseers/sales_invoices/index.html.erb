@@ -16,6 +16,7 @@
     <th class="sort all text-right" width="55px" data-name="invoice_number">Invoice #</th>
     <th class="sort desktop text-right" width="45px" data-name="inquiry_number">Inquiry #</th>
     <th class="no-sort desktop text-right" width="55px" data-name="order_number">Order #</th>
+    <th class="no-sort desktop text-right-wrap" width="152px" >Outward Dispatches</th>
     <th class="no-sort desktop text-left" width="70px" data-name="account_id">Account</th>
     <th class="no-sort desktop text-left" width="152px" data-name="company_id">Company</th>
     <th class="no-sort desktop text-left" width="152px" data-name="billing_contact">Billing Contact</th>
@@ -32,6 +33,7 @@
     <th class="sort desktop text-right" width="52px" data-name="created_at">Created At</th>
   <% end %>
   <% content_for :filter_row do %>
+    <td data-filter="false"></td>
     <td data-filter="false"></td>
     <td data-filter="false"></td>
     <td data-filter="false"></td>
