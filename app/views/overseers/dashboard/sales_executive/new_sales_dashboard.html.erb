@@ -1,8 +1,8 @@
 <% provide :container_fluid, true %>
 
 <div class="bmro-width100">
-  <%= render partial: "left_panel_dashboard"%>
-  <%= render partial: "side_notification_panel"%>
+  <%= render partial: "overseers/dashboard/common/left_panel_dashboard", locals: { executivelink: true } %>
+  <%= render partial: "overseers/dashboard/common/side_notification_panel", locals: { executivelink: true } %>
 </div>
 
 <div class="row">

@@ -33,13 +33,17 @@
 
     <%= navigation if local_assigns[:navigation].present? %>
     <div <% unless current_overseer.nil? %> class="layout layout-nav-top layout-body-wrapper" <% else %> class="layout layout-nav-top layout-body-wrapper-portal" <% end %>>
-      <div class="main-container">
+      <div class="main-container"><% if (request.path_info.include?("/dashboard") && request.path_info.exclude?("/dashboard/sales_executive")) && current_overseer.sales? && current_overseer.descendant_ids.present? %>
+          <%= render partial:'overseers/dashboard/sales_manager/sales_manager_navigation_panel' %>
+          <%= render partial: 'overseers/dashboard/common/side_notification_panel', locals: { executivelink: false } %>
+        <% end %>
         <!-- <%#= render 'shared/layouts/components/breadcrumbs' if local_assigns[:navigation].present? %> -->
 
         <div class="container bmro-container bmro-container-fluid <% if content_for?(:container_fluid) %>-fluid<% end %>">
           <%= render 'shared/layouts/components/breadcrumbs' if (local_assigns[:navigation].present? &&  !params[:controller].include?('dashboard')) %>
 
-          <div <% unless current_overseer.nil? %>class="<% if !(controller_name == "dashboard" && current_overseer.inside_sales_executive?) %>row<% end %> justify-content-center bmro-padd-col" <% else %> class="justify-content-center bmro-padd-col" <% end %>>
+          <div <% unless current_overseer.nil? %><% if current_overseer.sales? && current_overseer.descendant_ids.present? && request.path_info.exclude?("/dashboard/sales_executive") %>class="justify-content-center bmro-padd-col"<%end %>
+            <% if !(controller_name == "dashboard" && current_overseer.inside_sales_executive?) %>class="row justify-content-center bmro-width-100"<% end %><% else %> class="justify-content-center bmro-width-100" <% end %>>
             <%= yield %>
             <% flash.each do |message_type, message| %>
               <div class="alert alert-warning alert-dismissible fade show" role="alert">
