@@ -138,7 +138,6 @@ class Overseers::DashboardController < Overseers::BaseController
           end
         end
         # else
-        #   binding.pry
         #   inquiry = @dashboard.inq_for_dash.where(inquiry_number: params['inquiry_number'].to_i)
         # end
 
