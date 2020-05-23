@@ -63,8 +63,8 @@ class Overseers::DashboardController < Overseers::BaseController
     inquiry = Inquiry.find_by_inquiry_number(params['inquiry_number'])
     email_message = inquiry.email_messages.build(overseer: current_overseer, contact: inquiry.contact, inquiry: inquiry)
     email_message.assign_attributes(
-        subject: inquiry.subject,
-        body: InquiryMailer.acknowledgement(email_message).body.raw_source,
+      subject: inquiry.subject,
+      body: InquiryMailer.acknowledgement(email_message).body.raw_source,
     )
     respond_to do |format|
       format.html { render partial: 'overseers/dashboard/common/email_message', locals: {inquiry: inquiry, email_message: email_message} }
@@ -96,11 +96,11 @@ class Overseers::DashboardController < Overseers::BaseController
   def get_filtered_inquiries
     Rails.cache.fetch([self, 'get_filtered_inquiries'], expires_in: 1.hours) do
       @dashboard = Overseers::Dashboard.new(current_overseer)
-      executive_link = params['executive_link'].to_s.downcase == "true" if params.key?("executive_link")
+      executive_link = params['executive_link'].to_s.downcase == 'true' if params.key?('executive_link')
       if current_overseer.sales? && current_overseer.descendant_ids.present? && !executive_link
         # for role = Inside Sales and Logistic Manager
-        inquiry_as_per_box = Inquiry.with_includes.where('created_at > ? OR quotation_followup_date > ?', Date.new(2018, 04, 01), Date.new(2018, 04, 01)).where(status: @dashboard.main_statuses[params['status']],inside_sales_owner_id: current_overseer.self_and_descendant_ids).order(updated_at: :desc).compact.group_by(&:inside_sales_owner_id)
-        inquiry_as_per_box = inquiry_as_per_box.map { |id,inquiries| [Overseer.find_by_id(id).name,inquiries] }.to_h
+        inquiry_as_per_box = Inquiry.with_includes.where('created_at > ? OR quotation_followup_date > ?', Date.new(2018, 04, 01), Date.new(2018, 04, 01)).where(status: @dashboard.main_statuses[params['status']], inside_sales_owner_id: current_overseer.self_and_descendant_ids).order(updated_at: :desc).compact.group_by(&:inside_sales_owner_id)
+        inquiry_as_per_box = inquiry_as_per_box.map { |id, inquiries| [Overseer.find_by_id(id).name, inquiries] }.to_h
         respond_to do |format|
           format.html {render partial: 'overseers/dashboard/sales_manager/inquiry_list_sales_manager_wrapper', locals: {inq_for_sales_manager_dash: inquiry_as_per_box}}
         end
@@ -127,23 +127,23 @@ class Overseers::DashboardController < Overseers::BaseController
   def get_inquiry_tasks
     Rails.cache.fetch([self, 'get_filtered_inquiries'], expires_in: 1.hours) do
       @dashboard = Overseers::Dashboard.new(current_overseer)
-      executive_link = params['executive_link'].to_s.downcase == "true" if params.key?("executive_link")
+      executive_link = params['executive_link'].to_s.downcase == 'true' if params.key?('executive_link')
       if current_overseer.sales?
         # if current_overseer.descendant_ids.present?
-          inquiry = []
-          @dashboard.inq_for_dash(executive_link).each do |inq|
-            if inq.inquiry_number == params['inquiry_number'].to_i
-              inquiry.push inq
-              break
-            end
+        inquiry = []
+        @dashboard.inq_for_dash(executive_link).each do |inq|
+          if inq.inquiry_number == params['inquiry_number'].to_i
+            inquiry.push inq
+            break
           end
+        end
         # else
         #   binding.pry
         #   inquiry = @dashboard.inq_for_dash.where(inquiry_number: params['inquiry_number'].to_i)
         # end
 
         # if inquiry.last.customer_po_number.blank? || inquiry.last.customer_order_date.blank? || (inquiry.last.approvals.any? && inquiry.last.inquiry_product_suppliers.any? && inquiry.last.sales_quotes.persisted.blank?) || (inquiry.last.final_sales_quote.present? && policy(inquiry.last.final_sales_quote).new_sales_order?)
-          inquiry_has_tasks = true
+        inquiry_has_tasks = true
         # else
         #   inquiry_has_tasks = false
         # end
@@ -232,11 +232,11 @@ class Overseers::DashboardController < Overseers::BaseController
 
   private
 
-  def inquiry_params
-    params.require(:inquiry).permit(
+    def inquiry_params
+      params.require(:inquiry).permit(
         :inquiry_number,
-        :customer_po_number,
-        :customer_order_date
-    )
-  end
+          :customer_po_number,
+          :customer_order_date
+      )
+    end
 end

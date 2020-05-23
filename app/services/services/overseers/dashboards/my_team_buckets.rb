@@ -30,25 +30,25 @@ class Services::Overseers::Dashboards::MyTeamBuckets < Services::Shared::BaseSer
 
   private
 
-  def acknowledgement_pending(records, is_owner_id)
-    records[is_owner_id].present? ? records[is_owner_id].reduce({}, :merge).values_at(*[0]).reduce(:+) : nil
-  end
+    def acknowledgement_pending(records, is_owner_id)
+      records[is_owner_id].present? ? records[is_owner_id].reduce({}, :merge).values_at(*[0]).reduce(:+) : nil
+    end
 
-  def preparing_quotation(records, is_owner_id)
-    records[is_owner_id].present? ? records[is_owner_id].reduce({}, :merge).values_at(*[0, 2, 3, 12, 16, 4]).compact.reduce(:+) : nil
-  end
+    def preparing_quotation(records, is_owner_id)
+      records[is_owner_id].present? ? records[is_owner_id].reduce({}, :merge).values_at(*[0, 2, 3, 12, 16, 4]).compact.reduce(:+) : nil
+    end
 
-  def follow_up(records, is_owner_id)
-    records[is_owner_id].present? ? records[is_owner_id].reduce({}, :merge).values_at(*[6]).reduce(:+) : nil
-  end
+    def follow_up(records, is_owner_id)
+      records[is_owner_id].present? ? records[is_owner_id].reduce({}, :merge).values_at(*[6]).reduce(:+) : nil
+    end
 
-  def awaited_customer_po(records, is_owner_id)
-    records[is_owner_id].present? ? records[is_owner_id].reduce({}, :merge).values_at(*[13, 14]).compact.reduce(:+) : nil
-  end
+    def awaited_customer_po(records, is_owner_id)
+      records[is_owner_id].present? ? records[is_owner_id].reduce({}, :merge).values_at(*[13, 14]).compact.reduce(:+) : nil
+    end
 
-  def pending_account_approval(records, is_owner_id)
-    records[is_owner_id].present? ? records[is_owner_id].reduce({}, :merge).values_at(*[8]).reduce(:+) : nil
-  end
+    def pending_account_approval(records, is_owner_id)
+      records[is_owner_id].present? ? records[is_owner_id].reduce({}, :merge).values_at(*[8]).reduce(:+) : nil
+    end
 
-  attr_accessor :all_indexed_records, :inside_sales_owner_id, :overseers
+    attr_accessor :all_indexed_records, :inside_sales_owner_id, :overseers
 end

@@ -10,13 +10,13 @@ class Overseers::Dashboard
   def inquiries_for_manager
     Rails.cache.fetch([self, 'inquiries_for_manager'], expires_in: 1.hours) do
       # Inquiry.with_includes.where('created_at > ? OR quotation_followup_date > ?', Date.new(2018, 04, 01), Date.new(2018, 04, 01)).where(status: ['New Inquiry','Acknowledgement Mail', 'Cross Reference', 'RFQ Sent','PQ Received', 'Preparing Quotation', 'Follow Up on Quotation', 'SO Not Created-Pending Customer PO Revision', 'SO Draft: Pending Accounts Approval', 'SO Not Created-Customer PO Awaited']).order(updated_at: :desc).compact
-      Inquiry.with_includes.where('created_at > ? OR quotation_followup_date > ?', Date.new(2018, 04, 01), Date.new(2018, 04, 01)).where(status: ['New Inquiry','Acknowledgement Mail', 'Cross Reference', 'RFQ Sent','PQ Received', 'Preparing Quotation', 'Follow Up on Quotation', 'SO Not Created-Pending Customer PO Revision', 'SO Draft: Pending Accounts Approval', 'SO Not Created-Customer PO Awaited'], inside_sales_owner_id: overseer.self_and_descendant_ids).order(updated_at: :desc).compact
+      Inquiry.with_includes.where('created_at > ? OR quotation_followup_date > ?', Date.new(2018, 04, 01), Date.new(2018, 04, 01)).where(status: ['New Inquiry', 'Acknowledgement Mail', 'Cross Reference', 'RFQ Sent', 'PQ Received', 'Preparing Quotation', 'Follow Up on Quotation', 'SO Not Created-Pending Customer PO Revision', 'SO Draft: Pending Accounts Approval', 'SO Not Created-Customer PO Awaited'], inside_sales_owner_id: overseer.self_and_descendant_ids).order(updated_at: :desc).compact
     end
   end
 
   def inquiries_to_calculate_potential_amount
     Rails.cache.fetch([self, 'inquiries_to_calculate_potential_amount'], expires_in: 1.hours) do
-      Inquiry.with_includes.where('created_at > ? OR quotation_followup_date > ?', Date.new(2018, 04, 01), Date.new(2018, 04, 01)).where(status: ['New Inquiry','Acknowledgement Mail', 'Cross Reference', 'RFQ Sent','PQ Received', 'Preparing Quotation']).order(updated_at: :desc).compact
+      Inquiry.with_includes.where('created_at > ? OR quotation_followup_date > ?', Date.new(2018, 04, 01), Date.new(2018, 04, 01)).where(status: ['New Inquiry', 'Acknowledgement Mail', 'Cross Reference', 'RFQ Sent', 'PQ Received', 'Preparing Quotation']).order(updated_at: :desc).compact
     end
   end
 
@@ -51,10 +51,10 @@ class Overseers::Dashboard
   end
 
   def inq_for_sales_manager_dash_by_name
-    inq_for_sales_manager_dash.map { |id,inquiries| [Overseer.find_by_id(id).name,inquiries] }.to_h
+    inq_for_sales_manager_dash.map { |id, inquiries| [Overseer.find_by_id(id).name, inquiries] }.to_h
   end
 
-  def inq_for_dash(executivelink=nil)
+  def inq_for_dash(executivelink = nil)
     if self.overseer.sales?
       if self.overseer.descendant_ids.present? && !executivelink
         inquiries_for_manager
@@ -89,7 +89,7 @@ class Overseers::Dashboard
     Notification.where(recipient: overseer).order(created_at: :desc).limit(10).group_by { |c| c.created_at.to_date }
   end
 
-  def comments(executivelink=nil)
+  def comments(executivelink = nil)
     if self.overseer.sales?
       if self.overseer.descendant_ids.present? && !executivelink
         inquiries_for_manager_ids = inquiries_for_manager.pluck(:id)
@@ -104,12 +104,12 @@ class Overseers::Dashboard
     end
   end
 
-  def main_statuses(executivelink=nil)
+  def main_statuses(executivelink = nil)
     if self.overseer.sales?
       if self.overseer.descendant_ids.present? && !executivelink
         {
             'Acknowledgement Pending' => ['New Inquiry'],
-            'Preparing Quotation' => ['New Inquiry', 'Acknowledgement Mail','Cross Reference', 'RFQ Sent','PQ Received','Preparing Quotation'],
+            'Preparing Quotation' => ['New Inquiry', 'Acknowledgement Mail', 'Cross Reference', 'RFQ Sent', 'PQ Received', 'Preparing Quotation'],
             'Follow Up' => ['Follow Up on Quotation'],
             'Awaited Customer PO' => ['SO Not Created-Customer PO Awaited', 'SO Not Created-Pending Customer PO Revision'],
             'SO: Pending Accounts Approval' => ['SO Draft: Pending Accounts Approval']
@@ -161,7 +161,7 @@ class Overseers::Dashboard
   def inquiries_calculated_total(doc, status)
     total_value = 0
     if status.is_a?(Array)
-      status_wo_sales_quote_arr = ['New Inquiry','Acknowledgement Mail','Cross Reference', 'RFQ Sent','PQ Received','Preparing Quotation']
+      status_wo_sales_quote_arr = ['New Inquiry', 'Acknowledgement Mail', 'Cross Reference', 'RFQ Sent', 'PQ Received', 'Preparing Quotation']
       status.each do |each_status|
         if status_wo_sales_quote_arr.include? each_status
           total_value += doc.map {  |inquiry| inquiry.potential_value(each_status) if inquiry.status == each_status }.compact.sum
