@@ -159,7 +159,7 @@
         </div>
       </div>
       <div class="card-footer">
-        <% if policy(@rfq).edit_supplier_rfqs? %>
+        <% if policy(@rfq).edit_rfq? %>
           <%= button_tag(type: "submit", class: "btn bmro-button btn-block") do %>
             <i class="fal fa-pen"></i> Update All
           <% end %>
