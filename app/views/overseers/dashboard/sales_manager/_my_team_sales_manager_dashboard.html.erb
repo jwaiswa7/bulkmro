@@ -1,0 +1,43 @@
+<div>
+  <table id="my-team-sales-table" class="my-team-table" data-sort="false" data-fixed-header="false">
+    <thead>
+    <tr>
+<!--      <td>Score</td>-->
+      <td></td>
+      <td>Name</td>
+      <td>Acknowledgement Pending</td>
+      <td>Quotations Not Sent</td>
+      <td>Follow Ups</td>
+      <td>Awaited Customer P.O</td>
+      <td>Sales Order Approval Pending</td>
+    </tr>
+    </thead>
+    <tbody>
+    <% @bucket_records.each do |record| %>
+      <tr>
+        <td>
+          <div class="bmro-drop-icon-head bmro-drop-icon-head-fl " aria-haspopup="true" aria-expanded="false" role="button" id=<%= record[:id]%>></div>
+<!--          <div class="my-team-oval-rate">-->
+<!--            <div class="bmro-sales-progress mx-auto" data-value='3.5'>-->
+<!--              <span class="bmro-sales-progress-left">-->
+<!--                            <span class="bmro-sales-progress-bar border-primary"></span>-->
+<!--              </span>-->
+<!--              <span class="bmro-sales-progress-right">-->
+<!--                            <span class="bmro-sales-progress-bar border-primary"></span>-->
+<!--              </span>-->
+<!--              <span class="progress-value w-100 h-100 rounded-circle d-flex align-items-center justify-content-center">-->
+<!--                <div>3.5</div>-->
+<!--              </span>-->
+<!--            </div>-->
+<!--          </div>-->
+        </td>
+        <td><%= record[:name] %></td>
+        <td><%= record[:acknowledgement_pending].present? ? record[:acknowledgement_pending] : "-" %></td>
+        <td><%= record[:preparing_quotation].present? ? record[:preparing_quotation] : "-" %></td>
+        <td><%= record[:follow_up].present? ? record[:follow_up] : "-" %></td>
+        <td><%= record[:awaited_customer_po].present? ? record[:awaited_customer_po] : "-" %></td>
+        <td><%= record[:pending_account_approval].present? ? record[:pending_account_approval] : "-" %></td>
+      </tr>
+    <% end %>
+  </table>
+</div>

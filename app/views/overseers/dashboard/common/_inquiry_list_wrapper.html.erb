@@ -1,10 +1,10 @@
 <div class="bmro-width100 bmro-sales-pedding subhead-height">
-  <span class="bmro-inqu-no"><%= @dashboard.inq_for_dash.count %></span>
+  <span class="bmro-inqu-no"><%= @dashboard.inq_for_dash(executivelink).count %></span>
   <p class="bmro-menu bmro-font-size-dash dropdown-toggle" id="My-inquries" data-toggle="dropdown" role="button">
     My Inquiries
   </p>
   <div class="bmro-star-parent bmro-reset-button bmro-inquiry-show-hide bmro-cursol">
-    <label class="bmro-cursol">Reset</label>
+    <label class="bmro-cursol">Undo</label>
   </div>
   <div class="bmro-star-parent bmro-reset-button bmro-cursol" onClick="window.location.reload();">
     <label class="bmro-cursol">Reset All</label>
@@ -27,7 +27,7 @@
       <div class="bmro-width100 bmro-Inquries-task">
         <div class="bmro-task-no-td bmro-Inquries-width1 bmro-fl bmro-position-relative">
           <!-- <span class="bmro-dash-star"></span>-->
-          <span class="bmro-big-heading bmro-fl  bmro-td-span bmro-cursol bmro-order-show inquiry" data-inquiry="<%= inquiry.inquiry_number %>"><%= inquiry.inquiry_number %></span>
+          <span class="bmro-big-heading bmro-fl  bmro-td-span bmro-cursol bmro-order-show inquiry" data-inquiry="<%= inquiry.inquiry_number %>" data-executive-link="<%= executivelink %>"><%= inquiry.inquiry_number %></span>
         </div>
         <div class="bmro-task-print bmro-Inquries-width2 bmro-fl">
           <span class="bmro-account-label-one"><%= inquiry.company.name %></span>

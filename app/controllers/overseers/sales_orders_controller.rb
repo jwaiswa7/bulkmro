@@ -63,7 +63,7 @@ class Overseers::SalesOrdersController < Overseers::BaseController
 
   def export_all
     authorize_acl :sales_order
-    service = Services::Overseers::Exporters::SalesOrdersExporter.new
+    service = Services::Overseers::Exporters::SalesOrdersExporter.new([], current_overseer, [])
     service.call
 
     redirect_to url_for(Export.sales_orders.not_filtered.completed.last.report)
@@ -71,7 +71,7 @@ class Overseers::SalesOrdersController < Overseers::BaseController
 
   def export_rows
     authorize_acl :sales_order
-    service = Services::Overseers::Exporters::SalesOrderRowsExporter.new
+    service = Services::Overseers::Exporters::SalesOrderRowsExporter.new([], current_overseer, [])
     service.call
 
     redirect_to url_for(Export.sales_order_rows.last.report)
@@ -80,7 +80,7 @@ class Overseers::SalesOrdersController < Overseers::BaseController
   def export_rows_in_bible_format
     authorize_acl :sales_order
 
-    service = Services::Overseers::Exporters::SalesOrdersBibleFormatExporter.new
+    service = Services::Overseers::Exporters::SalesOrdersBibleFormatExporter.new([], current_overseer, [])
     service.call
 
     if Export.sales_orders_bible_format.last.present?
@@ -92,18 +92,18 @@ class Overseers::SalesOrdersController < Overseers::BaseController
 
   def export_for_logistics
     authorize_acl :sales_order
-    service = Services::Overseers::Exporters::SalesOrdersLogisticsExporter.new
+    service = Services::Overseers::Exporters::SalesOrdersLogisticsExporter.new([], current_overseer, [])
     service.call
 
-    redirect_to url_for(Export.sales_order_logistics.last.report)
+    redirect_to url_for(Export.sales_orders_logistics.last.report)
   end
 
   def export_for_sap
     authorize_acl :sales_order
-    service = Services::Overseers::Exporters::SalesOrdersSapExporter.new
+    service = Services::Overseers::Exporters::SalesOrdersSapExporter.new([], current_overseer, [])
     service.call
 
-    redirect_to url_for(Export.sales_order_sap.last.report)
+    redirect_to url_for(Export.sales_orders_sap.last.report)
   end
 
   def export_for_reco
