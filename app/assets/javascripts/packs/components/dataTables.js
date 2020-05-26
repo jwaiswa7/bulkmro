@@ -168,6 +168,9 @@ let setup = () => {
                 "targets": 'checkbox',
                 "class": 'no-dispay-checkbox'
             },{
+                "targets": 'text-right-wrap',
+                "class": 'text-right'
+            },{
                 "targets": 'text-right',
                 "class": 'text-right text-nowrap'
             },{

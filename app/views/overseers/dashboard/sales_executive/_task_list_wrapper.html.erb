@@ -1,0 +1,146 @@
+<% if show_inquiry_tasks %>
+  <div class="bmro-width100 bmro-pl-pr">
+    <div class="bmro-task-header">
+      <span class="bmro-small-heading bmro-width100 bmro-small-heading-mb">Inquiry No</span>
+      <h5 class="bmro-big-heading bmro-fl">
+        <%= inq_for_dash[0].inquiry_number %> - Tasks
+      </h5>
+    </div>
+    <div class="bmro-task-header bmr-text-right">
+      <span class="bmro-small-heading bmro-width100 bmro-small-heading-mb">Company</span>
+      <h5 class="bmro-big-heading">
+        <%= inq_for_dash[0].company.name %>
+      </h5>
+    </div>
+  </div>
+  <div class="bmro-width100 bmro-pl-pr bmro-order-border-top">
+  </div>
+<% end %>
+
+<div id="collapseOne" class="collapse show bmro-width100">
+  <% if show_all_tasks || (show_inquiry_tasks && inquiry_has_tasks) %>
+    <% inq_for_dash.each do |inquiry| %>
+
+<!--      Acknowledgement Email not sent.-->
+      <% if inquiry.status == 'New Inquiry' %>
+        <div class="bmro-width100 bmro-padding-task">
+          <div class="bmro-task-no-td bmro-task-td-width bmro-fl bmro-position-relative">
+            <span class="bmro-big-heading bmro-fl bmro-no-mrl bmro-td-span"><%= inquiry.inquiry_number %></span>
+          </div>
+          <div class="bmro-task-print bmro-task-width bmro-fl">
+            <div class="bmro-commited-data bmro-task-td">
+              Acknowledgement Email not sent.
+            </div>
+          </div>
+          <div class="bmro-action-button-parent bmro-action-width bmro-fl text-right">
+<!--            <a href="#" class=" btn bmro-button btn-dashboard compose-email" data-toggle="modal" data-target="#emailModal" role="button" data-id="<%#= inquiry.inquiry_number %>" target="_blank">Compose Email-->
+<!--            </a>-->
+            <a href="<%= edit_overseers_inquiry_path(inquiry) %>" class="btn bmro-button btn-dashboard" role="button" data-id="<%= inquiry.inquiry_number %>" target="_blank"> Compose Email
+            </a>
+          </div>
+        </div>
+      <% end %>
+
+<!--      Add Product-->
+      <% if !inquiry.inquiry_products.present? %>
+        <div class="bmro-width100 bmro-padding-task">
+          <div class="bmro-task-no-td bmro-task-td-width bmro-fl bmro-position-relative">
+            <span class="bmro-big-heading bmro-fl bmro-no-mrl bmro-td-span"><%= inquiry.inquiry_number %></span>
+          </div>
+          <div class="bmro-task-print bmro-task-width bmro-fl">
+            <div class="bmro-commited-data bmro-task-td">
+              Add Product
+            </div>
+          </div>
+          <div class="bmro-action-button-parent bmro-action-width bmro-fl text-right">
+            <a href="<%= edit_overseers_inquiry_path(inquiry) %>" class="btn bmro-button btn-dashboard" role="button" data-id="<%= inquiry.inquiry_number %>" target="_blank"> Add Product
+            </a>
+          </div>
+        </div>
+      <% end %>
+
+<!--      Create new sales quote-->
+      <% if is_authorized(inquiry, 'new_sales_quote') && policy(inquiry).new_sales_quote? %>
+        <div class="bmro-width100 bmro-padding-task">
+          <div class="bmro-task-no-td bmro-task-td-width bmro-fl bmro-position-relative">
+            <span class="bmro-big-heading bmro-fl bmro-no-mrl bmro-td-span"><%= inquiry.inquiry_number %></span>
+          </div>
+          <div class="bmro-task-print bmro-task-width bmro-fl">
+            <div class="bmro-commited-data bmro-task-td">
+              Create new sales quote
+            </div>
+          </div>
+          <div class="bmro-action-button-parent bmro-action-width bmro-fl text-right">
+            <a href="<%= new_overseers_inquiry_sales_quote_path(inquiry) %>" class="btn bmro-button btn-dashboard" role="button" data-id="<%= inquiry.inquiry_number %>" target="_blank">Create Sales Quote
+            </a>
+          </div>
+        </div>
+      <% end %>
+
+<!--      Add Suppliers-->
+      <% if inquiry.inquiry_products.present? && !inquiry.suppliers.present?%>
+        <div class="bmro-width100 bmro-padding-task">
+          <div class="bmro-task-no-td bmro-task-td-width bmro-fl bmro-position-relative">
+            <span class="bmro-big-heading bmro-fl bmro-no-mrl bmro-td-span"><%= inquiry.inquiry_number %></span>
+          </div>
+          <div class="bmro-task-print bmro-task-width bmro-fl">
+            <div class="bmro-commited-data bmro-task-td">
+              Add Suppliers
+            </div>
+          </div>
+          <div class="bmro-action-button-parent bmro-action-width bmro-fl text-right">
+            <a href="<%= edit_suppliers_overseers_inquiry_path(inquiry) %>" class="btn bmro-button btn-dashboard" role="button" data-id="<%= inquiry.inquiry_number %>" target="_blank">Add Suppliers
+            </a>
+          </div>
+        </div>
+      <% end %>
+
+
+<!--      Email SQ to Customer-->
+      <% if inquiry.sales_quotes.present? %>
+        <div class="bmro-width100 bmro-padding-task">
+          <div class="bmro-task-no-td bmro-task-td-width bmro-fl bmro-position-relative">
+            <span class="bmro-big-heading bmro-fl bmro-no-mrl bmro-td-span"><%= inquiry.inquiry_number %></span>
+          </div>
+          <div class="bmro-task-print bmro-task-width bmro-fl">
+            <div class="bmro-commited-data bmro-task-td">
+              Email SQ to Customer
+            </div>
+          </div>
+          <div class="bmro-action-button-parent bmro-action-width bmro-fl text-right">
+              <a href="<%= overseers_inquiry_sales_quotes_path(inquiry) %>" class="btn bmro-button btn-dashboard" role="button" target="_blank" data-id="<%= inquiry.inquiry_number %>"> Email SQ to Customer
+            </a>
+          </div>
+        </div>
+      <% end %>
+
+<!--      Create new sales order-->
+      <% if inquiry.final_sales_quote.present? && is_authorized(inquiry.final_sales_quote, 'new_sales_order') && policy(inquiry.final_sales_quote).new_sales_order? %>
+        <div class="bmro-width100 bmro-padding-task">
+          <div class="bmro-task-no-td bmro-task-td-width bmro-fl bmro-position-relative">
+            <span class="bmro-big-heading bmro-fl bmro-no-mrl bmro-td-span"><%= inquiry.inquiry_number %></span>
+          </div>
+          <div class="bmro-task-print bmro-task-width bmro-fl">
+            <div class="bmro-commited-data bmro-task-td">
+              Create new sales order
+            </div>
+          </div>
+          <div class="bmro-action-button-parent bmro-action-width bmro-fl text-right">
+            <a href="<%= new_overseers_inquiry_sales_order_path(inquiry, sales_quote_id: inquiry.final_sales_quote.to_param) %>" class="btn bmro-button btn-dashboard" role="button" data-id="<%= inquiry.inquiry_number %>" target="_blank">Add to Order
+            </a>
+          </div>
+        </div>
+      <% end %>
+
+      <%= render partial: 'overseers/dashboard/sales_executive/task_list_for_order_details_from_inquiry_page', locals:{inquiry: inquiry} %>
+
+    <% end %>
+  <% else %>
+    <div class="bmro-width100 bmro-padding-task">
+      <div class="bmro-task-print text-center">
+        No tasks available
+      </div>
+    </div>
+  <% end %>
+</div>
+<!--</div>-->

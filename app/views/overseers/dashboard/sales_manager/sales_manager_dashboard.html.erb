@@ -1,0 +1,29 @@
+<% provide :container_fluid, true %>
+<div id="actionDashboardViewer" class="bmro-width100">
+  <%= render partial: "overseers/dashboard/common/left_panel_dashboard", locals: { executivelink: false } %>
+</div>
+
+<div id="performanceDashboardViewer" class="bmro-width100">
+  <%#= render partial: "overseers/dashboard/sales_manager/performance_table"%>
+  <div class="bmro-sales-table-outer-box">
+    <div class="bmro-text-center coming-soon-div">
+      <p class="font-weight-bolder font-size-48">..... COMING SOON .....</p>
+      <br/>
+      <p class="font-weight-bolder gj-font-size-16">Please be patient we are working on it</p>
+      </div>
+  </div>
+</div>
+
+<div id="myTeamViewer" class="bmro-width100"></div>
+
+<div class="row">
+  <%= link_to('Your Sales Executive Dashboard >>', sales_executive_overseers_dashboard_path, target: '_blank', class: 'bmro-button mt-2') %>
+</div>
+
+
+
+
+<!--<div class="bmro-width100">-->
+<%#= render partial: "overseers/dashboard/common/left_panel_dashboard" %>
+<%#= render partial: "overseers/dashboard/common/side_notification_panel" %>
+<!--</div>-->

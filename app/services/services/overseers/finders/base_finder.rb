@@ -284,6 +284,25 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
     }
   end
 
+  def aggregate_by_isp_with_status(size=500)
+    {
+        "inside_sales_owners": {
+            terms: {
+                field: 'inside_sales_owner_id',
+                size: size
+            },
+            aggs: {
+                statuses: {
+                    terms: {
+                        field: 'status_key',
+                        size: size
+                    }
+                }
+            }
+        }
+    }
+  end
+
   def aggregate_by_status(key = 'statuses', aggregation_field = 'potential_value', size = 50, status_field)
     {
         "#{key}": {

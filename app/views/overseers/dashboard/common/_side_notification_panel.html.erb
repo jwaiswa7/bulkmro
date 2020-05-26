@@ -2,7 +2,6 @@
 <div class="bmro-width100 h-100">
   <div class="bmro-width100">
     <div class="bmro-dash-right-menu">
-
       <span class="bmro-all-notification bmro-notification-action" role="button" id="notifications" >Notification</span>
       <span class="bmro-all-notification bmro-Comments-action active-menu" role="button" id="comments">Comments</span>
     </div>
@@ -36,7 +35,7 @@
   </div>
   <div class="bmro-width100 bmro-comments-sec" id="comment-rows">
 
-    <% @dashboard.comments.each do |date, comments| %>
+    <% @dashboard.comments(executivelink).each do |date, comments| %>
       <div class="bmro-today-list bmro-today-list-bm bmro-today-mt-mb">
         <div class="bmro-width100 bmro-today-line-parent">
           <div class="bmro-today-parent">
@@ -60,5 +59,5 @@
     <%end %>
   </div>
 </div>
-  <%= render partial:'inquiry_tracker_slider_modal' %>
+  <%= render partial:'overseers/dashboard/common/inquiry_tracker_slider_modal' %>
 </div>

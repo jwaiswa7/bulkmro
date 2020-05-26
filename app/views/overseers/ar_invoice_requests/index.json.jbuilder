@@ -1,4 +1,5 @@
 json.data (@ar_invoice_requests) do |ar_invoice|
+  sales_invoice = ar_invoice.sales_invoice
   json.array! [
                   [
                       if is_authorized(ar_invoice, 'show')
@@ -19,8 +20,8 @@ json.data (@ar_invoice_requests) do |ar_invoice|
                           concat content_tag :i, nil, class: ['bmro-icon-table bmro-ban-new-icon'].join
                         end
                       end,
-                      if is_authorized(ar_invoice, 'can_create_outward_dispatch') && ar_invoice.status == 'Completed AR Invoice Request' && policy(ar_invoice).can_create_outward_dispatch?
-                        row_action_button_without_fa(new_overseers_outward_dispatch_path(ar_invoice_request_id: ar_invoice), 'bmro-icon-table bmro-relationship', 'Add outward dispatch', 'info', :_blank)
+                      if sales_invoice.present? && is_authorized(sales_invoice, 'can_create_outward_dispatch') && policy(sales_invoice).can_create_outward_dispatch?
+                        row_action_button_without_fa(new_overseers_outward_dispatch_path(sales_invoice_id: sales_invoice), 'bmro-icon-table bmro-relationship', 'Add outward dispatch', 'info', :_blank)
                       end,
                       if is_authorized(ar_invoice, 'index') && policy(ar_invoice).index?
                         link_to('', class: ['icon-title btn btn-sm btn-success comment-ar-invoice-request'], 'data-model-id': ar_invoice.id, title: 'Comment', 'data-title': 'Comment', remote: true) do
@@ -30,13 +31,13 @@ json.data (@ar_invoice_requests) do |ar_invoice|
                       end,
                   ].join(' '),
                   status_badge(ar_invoice.status),
-                  ar_invoice.ar_invoice_number,
+                  link_to(ar_invoice.ar_invoice_number, overseers_inquiry_sales_invoices_path(ar_invoice.inquiry),
+                          target: '_blank'),
                   ar_invoice.inquiry.present? ? conditional_link(ar_invoice.inquiry.inquiry_number, edit_overseers_inquiry_path(ar_invoice.inquiry), is_authorized(ar_invoice.inquiry, 'edit')) : '-',
                   ar_invoice.inquiry.company.to_s,
                   ar_invoice.is_owner.present? ? ar_invoice.is_owner : '--',
                   ar_invoice.logistics_owner.present? ? ar_invoice.logistics_owner : 'Unassigned',
                   ar_invoice.sales_order.order_number,
-                  ar_invoice.outward_dispatches.map { |outward_dispatch| link_to(outward_dispatch.id, overseers_outward_dispatch_path(outward_dispatch), target: '_blank') }.compact.join(' '),
                   format_succinct_date(ar_invoice.created_at)
               ]
 end
@@ -49,7 +50,6 @@ json.columnFilters [
                        [],
                        Overseer.inside.alphabetical.map {|s| {"label": s.full_name, "value": s.id.to_s}}.as_json,
                        Overseer.where(role: 'logistics').alphabetical.map {|s| {"label": s.full_name, "value": s.id.to_s}}.reject { |h| h[:label] == 'Logistics Team'}.as_json,
-                       [],
                        [],
                        []
                    ]

@@ -10,7 +10,7 @@ class Services::Overseers::ArInvoiceRequests::Update < Services::Shared::BaseSer
       @ar_invoice.save
       @ar_invoice_comment.save
       InwardDispatchesIndex::InwardDispatch.import(@ar_invoice.inward_dispatch_ids)
-      if !@ar_invoice.outward_dispatches.present?
+      if !@ar_invoice.sales_invoice.outward_dispatches.present?
         inward_dispatches = InwardDispatch.where(id: @ar_invoice.inward_dispatch_ids)
         inward_dispatches.map{|inward_dispatch| inward_dispatch.set_outward_status}
       end

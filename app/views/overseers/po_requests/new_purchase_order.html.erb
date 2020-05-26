@@ -123,7 +123,7 @@
                 <strong><em>Contact</em></strong>: <%= f.object.supplier.default_contact.phone.present? ? " #{f.object.supplier.default_contact}" : '-' %>
               <% end %>
               <br>
-              <% if f.object.supplier.default_billing_address.gst.present? %>
+              <% if f.object.supplier.default_billing_address.present? && f.object.supplier.default_billing_address.gst.present? %>
                 <strong><em>GST Number</em></strong>: <%= f.object.supplier.default_billing_address.gst %><br>
               <% end %>
             </div>

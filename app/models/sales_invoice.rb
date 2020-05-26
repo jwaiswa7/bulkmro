@@ -9,6 +9,7 @@ class SalesInvoice < ApplicationRecord
   pg_search_scope :locate, against: [:id, :invoice_number], associated_against: {company: [:name], account: [:name], inside_sales_owner: [:first_name, :last_name], outside_sales_owner: [:first_name, :last_name]}, using: {tsearch: {prefix: true}}
 
   belongs_to :sales_order
+  has_many :outward_dispatches
   belongs_to :billing_address, class_name: 'Address', required: false
   belongs_to :shipping_address, class_name: 'Address', required: false
 
@@ -142,6 +143,14 @@ class SalesInvoice < ApplicationRecord
 
   def has_attachment?
     (self.pod_rows.present? && self.pod_rows.order(:delivery_date).last.attachments.attached? && self.delivery_completed) || self.is_manual_closed
+  end
+
+  def total_quantity_delivered
+    self.rows.where.not(sku: Settings.product_specific.freight).sum(&:quantity)
+  end
+
+  def outward_dispatched_quantity
+    self.outward_dispatches.sum(&:quantity_in_payment_slips)
   end
 
   def pod_status

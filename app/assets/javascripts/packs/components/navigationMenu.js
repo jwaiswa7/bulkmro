@@ -48,7 +48,8 @@ const navigationMenu = () => {
         $('.bmro-menu-click').removeClass('bmro-menu-roted');
     });
 
-    $(".bmro-menu-click").click(() => {
+    $(".bmro-menu-click").unbind('click').bind('click', function () {
+        //console.log('kkkkkkkkkkkkkkkkkkkkkkkkk')
         if($('.bmro-dash-main-menu').hasClass("bmro-dash-main-menu-show")) {
             $('.bmro-dash-main-menu').removeClass("bmro-dash-main-menu-show")
             $(this).removeClass('bmro-menu-roted');

@@ -3,7 +3,7 @@
   <%= simple_form_for([:overseers, @outward_dispatch], :html => {:class => 'needs-validation', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
     <%= render 'shared/snippets/form_errors', f: f %>
     <%= f.hidden_field :id %>
-    <%= f.hidden_field :ar_invoice_request_id %>
+    <%= f.hidden_field :sales_invoice_id %>
     <%= f.hidden_field :sales_order_id %>
     <div class="card">
       <div class="card-body">
@@ -22,7 +22,7 @@
             </div>
             <div class="col-6 col-md-4 mb-2">
               <strong class="d-block">AR invoice </strong>
-              #<%= f.object.ar_invoice_request.ar_invoice_number %>
+              #<%= f.object.sales_invoice.invoice_number %>
             </div>
           </div>
           <div class="form-row">
