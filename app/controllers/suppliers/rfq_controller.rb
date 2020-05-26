@@ -16,13 +16,13 @@ class Suppliers::RfqController < Suppliers::BaseController
   end
 
   def edit_rfq
-    authorize :supplier_rfq
     @rfq = SupplierRfq.find(params[:rfq_id])
+    authorize @rfq
   end
 
   def update
-    authorize :supplier_rfq
     if @rfq.present?
+      authorize @rfq
       Services::Suppliers::BuildRevisionHistory.new(@rfq, supplier_rfqs_params).call
       @rfq.assign_attributes(supplier_rfqs_params)
       if @rfq.save
@@ -56,19 +56,21 @@ class Suppliers::RfqController < Suppliers::BaseController
         @rfq.update_attributes(supplier_quote_submitted: true) unless @rfq.supplier_quote_submitted
         redirect_to suppliers_rfq_index_path, notice: "Rfq's updated."
       end
+    else
+      authorize :supplier_rfq
     end
   end
 
   def show
-    authorize :supplier_rfq
     @rfq = SupplierRfq.find(params[:id])
+    authorize @rfq
   end
 
   def edit_supplier_rfqs
-    authorize :supplier_rfq
     @supplier = Company.find(params[:supplier_id])
     @inquiry = Inquiry.find(params[:inquiry_id])
     @supplier_rfqs = SupplierRfq.joins(:inquiry_product_suppliers).where(inquiry_id: @inquiry.id, supplier_id: @supplier.id).uniq
+    authorize @supplier_rfqs
   end
 
   private
