@@ -19,7 +19,7 @@
     <%= stylesheet_link_tag 'shared/application.css', media: 'all', 'data-turbolinks-track': 'reload' %>
   <% end %>
 
-  <% if params[:controller].include?('dashboard') && (current_overseer.manager? || current_overseer.inside?) %>
+  <% if params[:controller].include?('dashboard') && (current_overseer.sales? || current_overseer.manager? || current_overseer.inside?) %>
     <%= stylesheet_link_tag 'scss/redesign/sales_dashboard', media: 'all', 'data-turbolinks-track': 'reload' %>
   <% end %>
 <% else %>

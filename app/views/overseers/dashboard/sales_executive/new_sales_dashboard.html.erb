@@ -5,9 +5,11 @@
   <%= render partial: "overseers/dashboard/common/side_notification_panel", locals: { executivelink: true } %>
 </div>
 
-<div class="row">
-  <%= link_to('Follow up Dashboard >>', follow_up_dashboard_overseers_dashboard_path, target: '_blank', class: 'bmro-button mt-2') %>
-</div>
+<% if current_overseer.inside_sales_executive? %>
+  <div class="row">
+    <%= link_to('Follow up Dashboard >>', follow_up_dashboard_overseers_dashboard_path, target: '_blank', class: 'bmro-button mt-2') %>
+  </div>
+<% end %>
 
 
 
