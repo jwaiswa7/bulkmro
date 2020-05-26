@@ -50,16 +50,16 @@ class Services::Callbacks::SalesInvoices::Create < Services::Callbacks::Shared::
                       base_weee_tax_applied_row_amnt: nil
                   }
                   row.assign_attributes(
-                      quantity: qty_kit,
-                      metadata: kit_meta_data
+                    quantity: qty_kit,
+                    metadata: kit_meta_data
                   )
                 end if sales_order_row.present?
               else
                 params['ItemLine'].each do |remote_row|
                   invoice.rows.where(sku: remote_row['sku']).first_or_initialize do |row|
                     row.assign_attributes(
-                        quantity: remote_row['qty'],
-                        metadata: remote_row
+                      quantity: remote_row['qty'],
+                      metadata: remote_row
                     )
                   end
                 end
