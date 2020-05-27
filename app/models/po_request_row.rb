@@ -20,7 +20,7 @@ class PoRequestRow < ApplicationRecord
   accepts_nested_attributes_for :product
 
   # delegate :measurement_unit, to: :sales_order_row, allow_nil: true
-  attr_accessor :sr, :product_name, :brand, :lead_time_option
+  attr_accessor :sr, :product_name, :lead_time_option
 
   after_initialize :set_defaults, if: :new_record?
 

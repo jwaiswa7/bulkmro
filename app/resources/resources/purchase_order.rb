@@ -172,7 +172,7 @@ class Resources::PurchaseOrder < Resources::ApplicationResource
           WarehouseCode: po_request.ship_to.remote_uid,
           LocationCode: po_request.ship_to.location_uid,
           MeasureUnit: row.measurement_unit.name,
-          U_ProdBrand: row.brand_id.present? ? row.brand.name : row.product.brand.name
+          U_ProdBrand: row.brand_id.present? ? row.brand.try(:name) : row.product.brand.try(:name)
       }
       item_row << json
     end
