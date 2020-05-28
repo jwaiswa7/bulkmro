@@ -106,14 +106,17 @@ class Overseers::DashboardController < Overseers::BaseController
         end
       else
         # for role = accounts, sales_executives
-        statuses_for_invoice_req = ['GRPO Pending', 'Pending AP Invoice']
-        if statuses_for_invoice_req.include? params['status']
+        if params['status'] == 'GRPO Pending'
           respond_to do |format|
-            format.html {render partial: 'overseers/dashboard/common/inquiry_list_wrapper', locals: {inq_for_dash: @dashboard.invoice_requests.map { |inv_req| inv_req.inquiry if inv_req.status == params['status'] }.compact, executivelink: executive_link }}
+            format.html {render partial: 'overseers/dashboard/common/inquiry_list_wrapper', locals: {inq_for_dash: Inquiry.where(id: @dashboard.invoice_requests_grpo_pending.pluck(:inquiry_id)), executivelink: executive_link }}
           end
+        elsif params['status'] == 'Pending AP Invoice'
+          respond_to do |format|
+            format.html {render partial: 'overseers/dashboard/common/inquiry_list_wrapper', locals: {inq_for_dash: Inquiry.where(id: @dashboard.invoice_requests_ap_invoice_pending.pluck(:inquiry_id)), executivelink: executive_link }}
+           end
         elsif params['status'] == 'AR Invoice requested'
           respond_to do |format|
-            format.html {render partial: 'overseers/dashboard/common/inquiry_list_wrapper', locals: {inq_for_dash: @dashboard.ar_invoice_requests.map { |inv_req| inv_req.inquiry if inv_req.status == params['status'] }.compact, executivelink: executive_link}}
+            format.html {render partial: 'overseers/dashboard/common/inquiry_list_wrapper', locals: {inq_for_dash: Inquiry.where(id: @dashboard.ar_invoice_requests.pluck(:inquiry_id)), executivelink: executive_link}}
           end
         else
           respond_to do |format|

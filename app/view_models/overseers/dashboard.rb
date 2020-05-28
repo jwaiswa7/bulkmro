@@ -20,8 +20,12 @@ class Overseers::Dashboard
     end
   end
 
-  def invoice_requests
-    InvoiceRequest.where('created_at > ?', Date.new(2019, 01, 01)).where(status: ['GRPO Pending', 'Pending AP Invoice']).order(updated_at: :desc).compact
+  def invoice_requests_grpo_pending
+    InvoiceRequest.where('created_at > ?', Date.new(2019, 01, 01)).where(status: 'GRPO Pending').order(updated_at: :desc).compact
+  end
+
+  def invoice_requests_ap_invoice_pending
+    InvoiceRequest.where('created_at > ?', Date.new(2019, 01, 01)).where(status: 'Pending AP Invoice').order(updated_at: :desc).compact
   end
 
   def ar_invoice_requests
@@ -41,9 +45,22 @@ class Overseers::Dashboard
   end
 
   def inq_for_account_dash
-    inq_from_invoice_request = Inquiry.where(id: invoice_requests.pluck(:inquiry_id))
-    inq_from_ar_invoice_request = Inquiry.where(id: ar_invoice_requests.pluck(:inquiry_id))
-    inq_from_invoice_request + inq_from_ar_invoice_request + inquiries_with_so_approval_pending
+    account_task_hash = Settings.account_dashboard_task
+    parsed_hash = ActiveSupport::JSON.decode(account_task_hash)
+    account_person = self.overseer.email
+    total_inq = []
+    parsed_hash[account_person].each do |status|
+      if status == "GRPO Pending"
+        total_inq += Inquiry.where(id: invoice_requests_grpo_pending.pluck(:inquiry_id))
+      elsif status == "AR Invoice requested"
+        total_inq += Inquiry.where(id: ar_invoice_requests.pluck(:inquiry_id))
+      elsif status == "Pending AP Invoice"
+        total_inq += Inquiry.where(id: invoice_requests_ap_invoice_pending.pluck(:inquiry_id))
+      elsif status == "SO Draft: Pending Accounts Approval"
+        total_inq += inquiries_with_so_approval_pending
+      end
+    end
+    total_inq
   end
 
   def inq_for_sales_manager_dash
@@ -99,7 +116,7 @@ class Overseers::Dashboard
         InquiryComment.where(inquiry_id: recent_inquiry_ids).order(created_at: :desc).limit(10).group_by { |c| c.created_at.to_date }
       end
     elsif executivelink.nil? && self.overseer.acl_role.role_name == 'Accounts'
-      invoice_request_ids = invoice_requests.pluck(:id)
+      invoice_request_ids = invoice_requests_grpo_pending.pluck(:id) + invoice_requests_ap_invoice_pending.pluck(:id)
       InvoiceRequestComment.where(invoice_request_id: invoice_request_ids).order(created_at: :desc).limit(8).group_by { |c| c.created_at.to_date }
     end
   end
@@ -118,7 +135,12 @@ class Overseers::Dashboard
         ['New Inquiry', 'Preparing Quotation', 'Quotation Sent', 'Follow Up on Quotation', 'Expected Order']
       end
     elsif executivelink.nil? && self.overseer.acl_role.role_name == 'Accounts'
-      ['GRPO Pending', 'Pending AP Invoice', 'AR Invoice requested', 'SO Draft: Pending Accounts Approval']
+      account_task_hash = Settings.account_dashboard_task
+      parsed_hash = ActiveSupport::JSON.decode(account_task_hash)
+      account_person = self.overseer.email
+      if parsed_hash.key? account_person
+        parsed_hash[account_person]
+      end
     end
   end
 
@@ -127,11 +149,11 @@ class Overseers::Dashboard
       count_parameter = recent_inquiries.pluck(:status)
       value_parameter = inquiries_calculated_total(recent_inquiries, status)
     elsif self.overseer.acl_role.role_name == 'Accounts'
-      count_parameter = invoice_requests.pluck(:status) + inq_for_dash.pluck(:status) + ar_invoice_requests.pluck(:status)
+      count_parameter = invoice_requests_grpo_pending.pluck(:status) + invoice_requests_ap_invoice_pending.pluck(:status) + inq_for_account_dash.pluck(:status) + ar_invoice_requests.pluck(:status)
       if inquiry_statuses.include? status
         value_parameter = inquiries_calculated_total(inq_for_dash, status)
       elsif invoice_request_status.include? status
-        value_parameter = get_calculated_invoice_request(invoice_requests, status)
+        value_parameter = get_calculated_invoice_request(invoice_requests_grpo_pending + invoice_requests_ap_invoice_pending, status)
       else
         value_parameter = get_calculated_ar_invoice_request(ar_invoice_requests)
       end
