@@ -495,7 +495,6 @@ class Overseers::InquiriesController < Overseers::BaseController
     @inquiry = Inquiry.find(new_purchase_orders_requests_params[:id])
     service = Services::Overseers::SalesOrders::PreviewPoRequests.new(@inquiry, current_overseer, new_purchase_orders_requests_params[:po_requests_attributes].to_h)
     @po_requests = service.call
-
     Rails.cache.write(:po_requests, @po_requests, expires_in: 25.minutes)
     authorize_acl @inquiry
   end
@@ -795,7 +794,7 @@ class Overseers::InquiriesController < Overseers::BaseController
                     :quantity,
                     :sales_order_row_id,
                     :product_id,
-                    :brand,
+                    :brand_id,
                     :tax_code_id,
                     :tax_rate_id,
                     :measurement_unit_id,

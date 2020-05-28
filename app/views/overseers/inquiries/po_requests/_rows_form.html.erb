@@ -271,6 +271,7 @@
   <%= po_request_row.hidden_field :tax_code_id %>
   <%= po_request_row.hidden_field :tax_rate_id %>
   <%= po_request_row.hidden_field :measurement_unit_id, value: po_request_row.object.measurement_unit_id || MeasurementUnit.default.id %>
+  <%= po_request_row.hidden_field :brand_id %>
   <div class="form-row po-request-row">
     <div class="col-12 col-md-12 mb-1">
 
