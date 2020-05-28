@@ -15,11 +15,12 @@ class PoRequestRow < ApplicationRecord
   belongs_to :tax_code, required: false
   belongs_to :tax_rate, required: false
   belongs_to :measurement_unit, required: false
+  belongs_to :brand, required: false
 
   accepts_nested_attributes_for :product
 
   # delegate :measurement_unit, to: :sales_order_row, allow_nil: true
-  attr_accessor :sr, :product_name, :brand, :lead_time_option
+  attr_accessor :sr, :product_name, :lead_time_option
 
   after_initialize :set_defaults, if: :new_record?
 
