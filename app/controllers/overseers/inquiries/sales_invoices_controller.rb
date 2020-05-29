@@ -9,7 +9,7 @@ class Overseers::Inquiries::SalesInvoicesController < Overseers::Inquiries::Base
 
   def show
     authorize_acl @sales_invoice
-    date = @sales_invoice.created_at
+    date = Date.parse(@sales_invoice.metadata['created_at'])
     year = date.year
     year = year - 1 if date.month < 4
     if @sales_invoice.inquiry.is_sez? || @sales_invoice.serialized_billing_address.country_code != 'IN'
