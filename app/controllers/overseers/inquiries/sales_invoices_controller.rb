@@ -17,8 +17,8 @@ class Overseers::Inquiries::SalesInvoicesController < Overseers::Inquiries::Base
         @arn_date = Date.parse(Settings.accounts.try("arn_date_#{year}"))
         @arn_number = Settings.accounts.try("arn_number_#{year}")
       else
-        @arn_date = Date.parse(Settings.accounts.try("arn_date_2018"))
-        @arn_number = Settings.accounts.try("arn_number_2018")
+        @arn_date = Date.parse(Settings.accounts.try('arn_date_2018'))
+        @arn_number = Settings.accounts.try('arn_number_2018')
       end
     end
     @bill_from_warehouse = @sales_invoice.get_bill_from_warehouse
@@ -95,25 +95,25 @@ class Overseers::Inquiries::SalesInvoicesController < Overseers::Inquiries::Base
 
   private
 
-  def save
-    @sales_invoice.save
-  end
-
-  def set_sales_invoice
-    @sales_invoice = @inquiry.invoices.find(params[:id])
-    @locals = {stamp: false}
-    if params[:stamp].present?
-      @locals = {stamp: true}
+    def save
+      @sales_invoice.save
     end
-  end
 
-  def set_invoice_items
-    Resources::SalesInvoice.set_multiple_items([@sales_invoice.invoice_number])
-  end
+    def set_sales_invoice
+      @sales_invoice = @inquiry.invoices.find(params[:id])
+      @locals = {stamp: false}
+      if params[:stamp].present?
+        @locals = {stamp: true}
+      end
+    end
 
-  def sales_invoice_params
-    params.require(:sales_invoice).permit(:mis_date)
-  end
+    def set_invoice_items
+      Resources::SalesInvoice.set_multiple_items([@sales_invoice.invoice_number])
+    end
 
-  attr_accessor :locals
+    def sales_invoice_params
+      params.require(:sales_invoice).permit(:mis_date)
+    end
+
+    attr_accessor :locals
 end
