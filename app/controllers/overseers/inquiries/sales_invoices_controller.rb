@@ -10,8 +10,17 @@ class Overseers::Inquiries::SalesInvoicesController < Overseers::Inquiries::Base
   def show
     authorize_acl @sales_invoice
     date = @sales_invoice.created_at
-    @year = date.year
-    @year = @year - 1 if date.month < 4
+    year = date.year
+    year = year - 1 if date.month < 4
+    if @sales_invoice.inquiry.is_sez? || @sales_invoice.serialized_billing_address.country_code != 'IN'
+      if @sales_invoice.metadata['created_at'].present? && Settings.accounts.try("arn_date_#{year}").present? && Date.parse(Settings.accounts.try("arn_date_#{year}")) <= Date.parse(@sales_invoice.metadata['created_at'])
+        @arn_date = Date.parse(Settings.accounts.try("arn_date_#{year}"))
+        @arn_number = Settings.accounts.try("arn_number_#{year}")
+      else
+        @arn_date = Date.parse(Settings.accounts.try("arn_date_2018"))
+        @arn_number = Settings.accounts.try("arn_number_2018")
+      end
+    end
     @bill_from_warehouse = @sales_invoice.get_bill_from_warehouse
     respond_to do |format|
       format.html { render 'show' }
@@ -26,7 +35,7 @@ class Overseers::Inquiries::SalesInvoicesController < Overseers::Inquiries::Base
     @metadata = @sales_invoice.metadata.deep_symbolize_keys
     @bill_from_warehouse = @sales_invoice.get_bill_from_warehouse
     respond_to do |format|
-      format.html { }
+      format.html {}
       format.pdf do
         render_pdf_for @sales_invoice, locals.merge!(duplicate: true, pagination: false)
       end
@@ -39,7 +48,7 @@ class Overseers::Inquiries::SalesInvoicesController < Overseers::Inquiries::Base
     @bill_from_warehouse = @sales_invoice.get_bill_from_warehouse
 
     respond_to do |format|
-      format.html { }
+      format.html {}
       format.pdf do
         render_pdf_for @sales_invoice, locals.merge!(triplicate: true, pagination: false)
       end
@@ -86,25 +95,25 @@ class Overseers::Inquiries::SalesInvoicesController < Overseers::Inquiries::Base
 
   private
 
-    def save
-      @sales_invoice.save
-    end
+  def save
+    @sales_invoice.save
+  end
 
-    def set_sales_invoice
-      @sales_invoice = @inquiry.invoices.find(params[:id])
-      @locals = { stamp: false }
-      if params[:stamp].present?
-        @locals = { stamp: true }
-      end
+  def set_sales_invoice
+    @sales_invoice = @inquiry.invoices.find(params[:id])
+    @locals = {stamp: false}
+    if params[:stamp].present?
+      @locals = {stamp: true}
     end
+  end
 
-    def set_invoice_items
-      Resources::SalesInvoice.set_multiple_items([@sales_invoice.invoice_number])
-    end
+  def set_invoice_items
+    Resources::SalesInvoice.set_multiple_items([@sales_invoice.invoice_number])
+  end
 
-    def sales_invoice_params
-      params.require(:sales_invoice).permit(:mis_date)
-    end
+  def sales_invoice_params
+    params.require(:sales_invoice).permit(:mis_date)
+  end
 
-    attr_accessor :locals
+  attr_accessor :locals
 end
