@@ -159,16 +159,11 @@
                         GST No.: <%= bill_from_warehouse.address.gst %><br>
                       <% end %>
                       PAN No.: AAGCB7343G
-                      <% if record.inquiry.is_sez? || record.serialized_billing_address.country_code != 'IN' %>
                         <br>
-                        <% if record.metadata['created_at'].present? && Date.parse(Settings.accounts.try("arn_date_#{@year}")) <= Date.parse(record.metadata['created_at']) %>
-                          ARN # <%= Settings.accounts.try("arn_number_#{@year}") %>,
-                          DOF: <%= Date.parse(Settings.accounts.try("arn_date_#{@year}")) %>
-                        <% else %>
-                          ARN # <%= Settings.accounts.arn_number_2018 %>,
-                          DOF: <%= Date.parse(Settings.accounts.arn_date_2018) %>
+                        <% if @arn_number.present? && @arn_date.present? %>
+                          ARN # <%= @arn_number %>,
+                          DOF: <%=@arn_date %>
                         <% end %>
-                      <% end %>
                     </td>
                     <td style="width: 2%;"></td>
                     <td class="address-wrapper" style="height: auto;width: 49%;">
@@ -180,16 +175,11 @@
                         GST No.: <%= inquiry.ship_from.address.gst %><br>
                       <% end %>
                       PAN No.: AAGCB7343G
-                      <% if record.inquiry.is_sez? || record.serialized_shipping_address.country_code != 'IN' %>
                         <br>
-                        <% if record.metadata['created_at'].present? && Date.parse(Settings.accounts.try("arn_date_#{@year}")) <= Date.parse(record.metadata['created_at']) %>
-                          ARN # <%= Settings.accounts.try("arn_number_#{@year}") %>,
-                          DOF: <%= Date.parse(Settings.accounts.try("arn_date_#{@year}")) %>
-                        <% else %>
-                          ARN # <%= Settings.accounts.arn_number_2018 %>,
-                          DOF: <%= Date.parse(Settings.accounts.arn_date_2018) %>
+                        <% if@arn_number.present? && @arn_date.present? %>
+                          ARN # <%= @arn_number %>,
+                          DOF: <%=@arn_date %>
                         <% end %>
-                      <% end %>
                     </td>
                   </tr>
                   </tbody>
