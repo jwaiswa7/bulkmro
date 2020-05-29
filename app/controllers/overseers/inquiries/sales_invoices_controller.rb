@@ -9,7 +9,9 @@ class Overseers::Inquiries::SalesInvoicesController < Overseers::Inquiries::Base
 
   def show
     authorize_acl @sales_invoice
-
+    date = @sales_invoice.created_at
+    @year = date.year
+    @year = @year - 1 if date.month < 4
     @bill_from_warehouse = @sales_invoice.get_bill_from_warehouse
     respond_to do |format|
       format.html { render 'show' }
