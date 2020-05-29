@@ -161,9 +161,9 @@
                       PAN No.: AAGCB7343G
                       <% if record.inquiry.is_sez? || record.serialized_billing_address.country_code != 'IN' %>
                         <br>
-                        <% if record.metadata['created_at'].present? && Date.parse(Settings.accounts.arn_date_2019) <= Date.parse(record.metadata['created_at']) %>
-                          ARN # <%= Settings.accounts.arn_number_2019 %>,
-                          DOF: <%= Date.parse(Settings.accounts.arn_date_2019) %>
+                        <% if record.metadata['created_at'].present? && Date.parse(Settings.accounts.try("arn_date_#{@year}")) <= Date.parse(record.metadata['created_at']) %>
+                          ARN # <%= Settings.accounts.try("arn_number_#{@year}") %>,
+                          DOF: <%= Date.parse(Settings.accounts.try("arn_date_#{@year}")) %>
                         <% else %>
                           ARN # <%= Settings.accounts.arn_number_2018 %>,
                           DOF: <%= Date.parse(Settings.accounts.arn_date_2018) %>
@@ -182,9 +182,9 @@
                       PAN No.: AAGCB7343G
                       <% if record.inquiry.is_sez? || record.serialized_shipping_address.country_code != 'IN' %>
                         <br>
-                        <% if record.metadata['created_at'].present? && Date.parse(Settings.accounts.arn_date_2019) <= Date.parse(record.metadata['created_at']) %>
-                          ARN # <%= Settings.accounts.arn_number_2019 %>,
-                          DOF: <%= Date.parse(Settings.accounts.arn_date_2019) %>
+                        <% if record.metadata['created_at'].present? && Date.parse(Settings.accounts.try("arn_date_#{@year}")) <= Date.parse(record.metadata['created_at']) %>
+                          ARN # <%= Settings.accounts.try("arn_number_#{@year}") %>,
+                          DOF: <%= Date.parse(Settings.accounts.try("arn_date_#{@year}")) %>
                         <% else %>
                           ARN # <%= Settings.accounts.arn_number_2018 %>,
                           DOF: <%= Date.parse(Settings.accounts.arn_date_2018) %>
