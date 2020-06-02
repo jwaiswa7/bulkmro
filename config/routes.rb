@@ -454,6 +454,7 @@ Rails.application.routes.draw do
         patch 'cancelled_purchase_order'
         get 'resync_po'
         get 'change_material_status'
+        get 'change_po_status'
         get 'render_modal_form'
         patch 'add_comment'
       end

@@ -103,4 +103,7 @@ class Overseers::PurchaseOrderPolicy < Overseers::ApplicationPolicy
   def cancelled_inward_dispatches?
     true
   end
+  def change_po_status?
+    developer?
+  end
 end

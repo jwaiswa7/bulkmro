@@ -1,5 +1,5 @@
 class Overseers::PurchaseOrdersController < Overseers::BaseController
-  before_action :set_purchase_order, only: [:show, :edit_material_followup, :update_material_followup, :resync_po, :cancelled_purchase_modal, :cancelled_purchase_order, :change_material_status, :render_modal_form, :add_comment]
+  before_action :set_purchase_order, only: [:show, :edit_material_followup, :update_material_followup, :resync_po, :cancelled_purchase_modal, :cancelled_purchase_order, :change_material_status, :render_modal_form, :add_comment, :change_po_status]
 
   def index
     authorize_acl :purchase_order
@@ -225,6 +225,12 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
     authorize_acl @purchase_order
     @purchase_order.update_material_status
     redirect_to material_readiness_queue_overseers_purchase_orders_path, notice: flash_message(@purchase_order, action_name)
+  end
+
+  def change_po_status
+    authorize_acl @purchase_order
+    @purchase_order.update_attributes(material_status: 'Manually Closed')
+    redirect_to overseers_purchase_orders_path, notice: flash_message(@purchase_order, action_name)
   end
 
   def update_material_followup

@@ -15,7 +15,10 @@ json.data (@purchase_orders) do |purchase_order|
                           concat content_tag(:span, '')
                           concat content_tag :i, nil, class: ['bmro-icon-table bmro-icon-ban'].join
                         end
-                      end
+                      end,
+                      if is_authorized(purchase_order, 'change_po_status') && policy(purchase_order).change_po_status? && !(purchase_order.material_status == 'Manually Closed')
+                        row_action_button_without_fa(change_po_status_overseers_purchase_order_path(purchase_order), 'bmro-icon-table bmro-icon-peoplemate', 'Change PO Status', 'primary', :_blank)
+                      end,
 =begin
                       if policy(purchase_order).can_request_invoice?
                         row_action_button(new_overseers_invoice_request_path(purchase_order_id: purchase_order.to_param), 'dollar-sign', 'GRPO Request', 'success', :_blank)
