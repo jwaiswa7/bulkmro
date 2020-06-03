@@ -78,7 +78,7 @@ class Overseers::Dashboard
       else
         recent_inquiries
       end
-    elsif self.overseer.acl_role.role_name == 'Accounts'
+    elsif (self.overseer.acl_role.role_name == 'Accounts' ||  self.overseer.acl_role.role_name == 'Account Manager')
       inq_for_account_dash
     end
   end
@@ -115,7 +115,7 @@ class Overseers::Dashboard
         recent_inquiry_ids = recent_inquiries.pluck(:id)
         InquiryComment.where(inquiry_id: recent_inquiry_ids).order(created_at: :desc).limit(10).group_by { |c| c.created_at.to_date }
       end
-    elsif executivelink.nil? && self.overseer.acl_role.role_name == 'Accounts'
+    elsif executivelink.nil? && (self.overseer.acl_role.role_name == 'Accounts' || self.overseer.acl_role.role_name == 'Account Manager')
       invoice_request_ids = invoice_requests_grpo_pending.pluck(:id) + invoice_requests_ap_invoice_pending.pluck(:id)
       InvoiceRequestComment.where(invoice_request_id: invoice_request_ids).order(created_at: :desc).limit(8).group_by { |c| c.created_at.to_date }
     end
@@ -134,7 +134,7 @@ class Overseers::Dashboard
       else
         ['New Inquiry', 'Preparing Quotation', 'Quotation Sent', 'Follow Up on Quotation', 'Expected Order']
       end
-    elsif executivelink.nil? && self.overseer.acl_role.role_name == 'Accounts'
+    elsif executivelink.nil? && (self.overseer.acl_role.role_name == 'Accounts' || self.overseer.acl_role.role_name == 'Account Manager')
       account_task_hash = Settings.account_dashboard_task
       parsed_hash = ActiveSupport::JSON.decode(account_task_hash)
       account_person = self.overseer.email
@@ -144,11 +144,22 @@ class Overseers::Dashboard
     end
   end
 
+  def main_statuses_accounts(account_exe = nil)
+    account_task_hash = Settings.account_dashboard_task
+    parsed_hash = ActiveSupport::JSON.decode(account_task_hash)
+    if account_exe.nil?
+      account_person = self.overseer.email
+    else
+      account_person = account_exe
+    end
+    parsed_hash[account_person]
+  end
+
   def get_status_metrics(status)
     if self.overseer.sales?
       count_parameter = recent_inquiries.pluck(:status)
       value_parameter = inquiries_calculated_total(recent_inquiries, status)
-    elsif self.overseer.acl_role.role_name == 'Accounts'
+    elsif (self.overseer.acl_role.role_name == 'Accounts' || self.overseer.acl_role.role_name == 'Account Manager')
       count_parameter = invoice_requests_grpo_pending.pluck(:status) + invoice_requests_ap_invoice_pending.pluck(:status) + inq_for_account_dash.pluck(:status) + ar_invoice_requests.pluck(:status)
       if inquiry_statuses.include? status
         value_parameter = inquiries_calculated_total(inq_for_dash, status)

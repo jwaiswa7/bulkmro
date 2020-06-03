@@ -1,37 +1,23 @@
 
-  <div class="<%= (current_overseer.sales? && current_overseer.descendant_ids.present? && !executivelink) ? 'bmro-sales-dash-leftside' : 'bmro-dash-leftside' %>">
+  <div class="bmro-dash-leftside">
     <div class="bmro-width100 leftside">
       <div class="bmro-width100 status-height">
         <div class="bmro-dash-box">
-          <% if @dashboard.main_statuses(executivelink).is_a?(Array) %>
-            <% @dashboard.main_statuses(executivelink).each do |status| %>
-              <div class="bmro-same-box col status-box" data-status="<%= status %>" data-executive-link="<%= executivelink %>">
+            <% main_statuses.each do |status| %>
+              <div class="bmro-same-box col status-box" data-status="<%= status %>">
                 <label><%= status %></label>
                 <h5><%= @dashboard.get_status_metrics(status)[:'count'] %></h5>
                 <span><%= format_currency(@dashboard.get_status_metrics(status)[:'value']) %></span>
               </div>
             <% end %>
-          <% else %>
-            <% @dashboard.main_statuses.each do |box_name, status_names| %>
-              <div class="bmro-same-box col status-box" data-status="<%= box_name %>">
-                <label><%= box_name %></label>
-                <h5><%= @dashboard.get_status_metrics_for_sales_manager(status_names)[:'count'] %></h5>
-                <span><%= format_currency(@dashboard.get_status_metrics_for_sales_manager(status_names)[:'value']) %></span>
-              </div>
-            <% end %>
-          <% end %>
         </div>
       </div>
 
-      <div class="bmro-width100 bmro-main-pedding  <%= (current_overseer.sales? && current_overseer.descendant_ids.present?) ? 'main-sales-pedding' : 'main-pedding' %>">
-        <div class="<%= (current_overseer.sales? && current_overseer.descendant_ids.present?) ? 'bmro-sales-dash-inqu' : 'bmro-dash-inqu' %> h-100">
+      <div class="bmro-width100 bmro-main-pedding main-pedding">
+        <div class="bmro-dash-inqu h-100">
           <div class="bmro-width100 bmro-inquries-main inquiries-card h-100">
             <div class="inquiry-list-wrapper h-100">
-              <% if current_overseer.sales? && current_overseer.descendant_ids.present? && !executivelink %>
-                <%= render partial: 'overseers/dashboard/sales_manager/inquiry_list_sales_manager_wrapper', locals:{inq_for_dash: @dashboard.inq_for_dash, inq_for_sales_manager_dash: @dashboard.inq_for_sales_manager_dash_by_name } %>
-              <% else %>
                 <%= render partial: 'overseers/dashboard/common/inquiry_list_wrapper', locals:{inq_for_dash: @dashboard.inq_for_dash(executivelink), executivelink:executivelink } %>
-              <% end %>
             </div>
           </div>
 
@@ -42,27 +28,6 @@
               <p class="bmro-big-heading bmro-fl bmro-cursol bmro-font-size-dash dropdown-toggle"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" role="button">
                 All Tasks
             </div>
-
-            <% if current_overseer.sales? %>
-              <div class="bmro-width100 bmro-mt-collas subhead-height">
-                <div class="bmro-width100 bmro-pl-pr">
-                  <div class="bmro-all-task-th bmro-task-td-width">
-                    <span class="bmro-task-th">Inquiry</span>
-                  </div>
-                  <div class="bmro-all-task-th bmro-task-width">
-                    <span class="bmro-task-th bmro-task-th-p0">Task</span>
-                  </div>
-                  <div class="bmro-all-task-th bmro-action-width bmro-text-left">
-                    <span class="bmro-task-th d-flex justify-content-end">Actions</span>
-                  </div>
-                </div>
-              </div>
-              <div class="bmro-width100 bmro-mt-collas content-mid-height">
-                <div class="task-list-wrapper h-100">
-                  <%= render partial: 'overseers/dashboard/sales_executive/task_list_wrapper', locals:{inq_for_dash: @dashboard.inq_for_dash(executivelink), show_all_tasks: true, show_inquiry_tasks: false, inquiry_has_tasks: false} %>
-                </div>
-              </div>
-            <% elsif current_overseer.acl_role.role_name == 'Accounts' || current_overseer.acl_role.role_name == 'Account Manager' %>
               <div class="bmro-width100 bmro-mt-collas subhead-height">
                 <div class="bmro-width100 bmro-pl-pr">
                   <div class="bmro-all-task-th bmro-fl bmro-task-td-inquiry-width">
@@ -87,7 +52,6 @@
                   <%= render partial: 'overseers/dashboard/accounts/account_task_list_wrapper', locals:{inq_for_dash: @dashboard.inq_for_dash, show_all_tasks: true, show_inquiry_tasks: false, inquiry_has_tasks: false} %>
                 </div>
               </div>
-            <% end %>
           </div>
           <div class="bmro-width100 bmro-order-hide bmro-order-action inquiry-tasks">
 
