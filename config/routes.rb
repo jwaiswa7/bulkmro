@@ -22,6 +22,10 @@ Rails.application.routes.draw do
     devise_for :contacts, controllers: {sessions: 'customers/sessions', passwords: 'customers/passwords'}, path: :customers
   end
 
+  namespace :users, path: '/' do
+    devise_for :contacts, controllers: {sessions: 'api/v1/users/sessions'}, path: :users
+  end
+
   namespace 'callbacks' do
     resources :sales_orders do
       member do
