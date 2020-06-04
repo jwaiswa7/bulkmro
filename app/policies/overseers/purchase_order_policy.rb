@@ -104,6 +104,6 @@ class Overseers::PurchaseOrderPolicy < Overseers::ApplicationPolicy
     true
   end
   def manually_close?
-    developer?
+    developer? && !(record.material_status == 'Manually Closed')
   end
 end
