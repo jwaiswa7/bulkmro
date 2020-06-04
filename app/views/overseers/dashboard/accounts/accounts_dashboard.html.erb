@@ -3,18 +3,13 @@
 <div class="bmro-width100" id="account-executive-select-div">
   <% if current_overseer.acl_role.role_name == 'Account Manager' %>
     <div class="bmro-width100">
-      <div class="account-exe-select-label-width"><p class="bmro-menu bmro-font-size-dash dropdown-toggle" id="My-inquries" data-toggle="dropdown" role="button">
+      <div class="account-exe-select-label-width">
+        <p class="bmro-menu bmro-font-size-dash dropdown-toggle" id="My-inquries" data-toggle="dropdown" role="button">
         Select Account Executive:
-      </p></div>
-
+      </p>
+      </div>
       <div class="account-exe-select-width">
-        <select class="select select2-single bmro-form-input bmro-dropdown-icon select_account" name="inquiry[opportunity_type]" id="select_account_exe" tabindex="-1" aria-hidden="true"><option value=""></option>
-          <option value="charudatt.mhatre@bulkmro.com">Charudhatt</option>
-          <option value="ajay.kondal@bulkmro.com">Ajay Kondal</option>
-          <option value="pravin.ganekar@bulkmro.com">Pravin</option>
-          <option value="ruchika.tarve@bulkmro.com">Ruchika</option>
-          <option value="soni.pathre@bulkmro.com">Soni</option>
-        </select>
+        <%= select_tag :select_account_exe, options_for_select(@dashboard.select_accounts_person.collect {|u| [u.name, u.email] }), class: 'select select2-single bmro-form-input bmro-dropdown-icon select_account',include_blank: 'Select Accounts Executive',  id: 'select_account_exe' %>
       </div>
     </div>
   <% end %>

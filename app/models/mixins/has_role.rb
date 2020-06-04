@@ -50,6 +50,7 @@ module Mixins::HasRole
     LOGISTICS_ROLES = ['Logistics', 'Admin-Leadership Team', 'Admin', 'Inside Sales and Logistic Manager']
     CATALOG_ROLES = ['Admin', 'Cataloging']
     ACCOUNT_ROLES = ['Accounts', 'Admin']
+    ACCOUNT_ACL_ROLES = ['Accounts','Account Manager', 'Accounts Leadership']
     COMMON_OVERSEERS = ['rn.prasad@bulkmro.com', 'tejaswi.patil@bulkmro.com', 'swati.bhosale@bulkmro.com', 'mithun
 .trisule@bulkmro.com', 'srikant.desai@bulkmro.com', 'atul.thakur@bulkmro.com', 'rajesh.sharma@bulkmro.com', 'lalit
 .dhingra@bulkmro.com', 'vivek.syal@bulkmro.com', 'ashish.pareek@bulkmro.com', 'nutan.bala@bulkmro.com']
@@ -104,6 +105,10 @@ module Mixins::HasRole
 
     def accounts?
       acl_role.role_name.in? ACCOUNT_ROLES
+    end
+
+    def acl_accounts?
+      acl_role.role_name.in? ACCOUNT_ACL_ROLES
     end
   end
 end
