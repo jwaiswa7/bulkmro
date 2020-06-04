@@ -9,7 +9,6 @@ class Overseers::Dashboard
 
   def inquiries_for_manager
     Rails.cache.fetch([self, 'inquiries_for_manager'], expires_in: 1.hours) do
-      # Inquiry.with_includes.where('created_at > ? OR quotation_followup_date > ?', Date.new(2018, 04, 01), Date.new(2018, 04, 01)).where(status: ['New Inquiry','Acknowledgement Mail', 'Cross Reference', 'RFQ Sent','PQ Received', 'Preparing Quotation', 'Follow Up on Quotation', 'SO Not Created-Pending Customer PO Revision', 'SO Draft: Pending Accounts Approval', 'SO Not Created-Customer PO Awaited']).order(updated_at: :desc).compact
       Inquiry.with_includes.where('created_at > ? OR quotation_followup_date > ?', Date.new(2018, 04, 01), Date.new(2018, 04, 01)).where(status: ['New Inquiry', 'Acknowledgement Mail', 'Cross Reference', 'RFQ Sent', 'PQ Received', 'Preparing Quotation', 'Follow Up on Quotation', 'SO Not Created-Pending Customer PO Revision', 'SO Draft: Pending Accounts Approval', 'SO Not Created-Customer PO Awaited'], inside_sales_owner_id: overseer.self_and_descendant_ids).order(updated_at: :desc).compact
     end
   end
@@ -33,7 +32,6 @@ class Overseers::Dashboard
   end
 
   def inquiries_with_so_approval_pending
-    # Inquiry.where('created_at > ?', Date.new(2019, 01, 01)).where(status: 'SO Draft: Pending Accounts Approval').order(updated_at: :desc).compact
     Inquiry.joins(:sales_orders).where(sales_orders: {status: 'Accounts Approval Pending'}).where('sales_orders.created_at > ?', Date.new(2019, 06, 01)).compact
   end
 
@@ -133,13 +131,6 @@ class Overseers::Dashboard
         }
       else
         ['New Inquiry', 'Preparing Quotation', 'Quotation Sent', 'Follow Up on Quotation', 'Expected Order']
-      end
-    elsif executivelink.nil? && self.overseer.acl_accounts?
-      account_task_hash = Settings.account_dashboard_task
-      parsed_hash = ActiveSupport::JSON.decode(account_task_hash)
-      account_person = self.overseer.email
-      if parsed_hash.key? account_person
-        parsed_hash[account_person]
       end
     end
   end

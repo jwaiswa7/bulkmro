@@ -62,31 +62,6 @@
                   <%= render partial: 'overseers/dashboard/sales_executive/task_list_wrapper', locals:{inq_for_dash: @dashboard.inq_for_dash(executivelink), show_all_tasks: true, show_inquiry_tasks: false, inquiry_has_tasks: false} %>
                 </div>
               </div>
-            <% elsif current_overseer.self.overseer.acl_accounts? %>
-              <div class="bmro-width100 bmro-mt-collas subhead-height">
-                <div class="bmro-width100 bmro-pl-pr">
-                  <div class="bmro-all-task-th bmro-fl bmro-task-td-inquiry-width">
-                    <span class="bmro-task-th bmro-task-th-p0">Inquiry</span>
-                  </div>
-                  <div class="bmro-all-task-th bmro-fl bmro-task-td-width-new-account">
-                    <span class="bmro-task-th bmro-task-th-p0">SO</span>
-                  </div>
-                  <div class="bmro-all-task-th bmro-fl bmro-task-td-width-new-account">
-                    <span class="bmro-task-th bmro-task-th-p0">PO</span>
-                  </div>
-                  <div class="bmro-all-task-th bmro-fl bmro-task-width-new-account">
-                    <span class="bmro-task-th bmro-task-th-p0">Task</span>
-                  </div>
-                  <div class="bmro-all-task-th bmro-fr bmro-task-td-action-width">
-                    <span class="bmro-task-th d-flex justify-content-end bmro-right-pad4">Action</span>
-                  </div>
-                </div>
-              </div>
-              <div class="bmro-width100 bmro-mt-collas content-mid-height">
-                <div class="task-list-wrapper h-100">
-                  <%= render partial: 'overseers/dashboard/accounts/account_task_list_wrapper', locals:{inq_for_dash: @dashboard.inq_for_dash, show_all_tasks: true, show_inquiry_tasks: false, inquiry_has_tasks: false} %>
-                </div>
-              </div>
             <% end %>
           </div>
           <div class="bmro-width100 bmro-order-hide bmro-order-action inquiry-tasks">
