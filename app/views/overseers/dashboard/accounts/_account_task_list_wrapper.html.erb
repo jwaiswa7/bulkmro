@@ -135,32 +135,34 @@
         <% end %>
       <% end %>
 
-      <% if inquiry.status == 'SO Draft: Pending Accounts Approval' && inquiry.sales_orders.last.status == 'Accounts Approval Pending' %>
+      <% inquiry.sales_orders.each do |so| %>
+        <% if so.status == 'Accounts Approval Pending' %>
 
-        <div class="bmro-width100 bmro-padding-task">
-          <div class="bmro-task-no-td bmro-task-td-inquiry-width bmro-fl bmro-position-relative" >
-            <span class="bmro-big-heading bmro-fl  bmro-td-span"><%= inquiry.inquiry_number %></span>
-          </div>
+          <div class="bmro-width100 bmro-padding-task">
+            <div class="bmro-task-no-td bmro-task-td-inquiry-width bmro-fl bmro-position-relative" >
+              <span class="bmro-big-heading bmro-fl  bmro-td-span"><%= inquiry.inquiry_number %></span>
+            </div>
 
-          <div class="bmro-task-no-td bmro-task-td-width-new-account bmro-fl bmro-margin-small-rem">
-            <span class="bmro-big-heading bmro-fl  bmro-td-span"> <%= (inquiry.sales_orders.present? && inquiry.sales_orders.last.order_number != nil) ? inquiry.sales_orders.last.order_number : '--' %> </span>
-          </div>
+            <div class="bmro-task-no-td bmro-task-td-width-new-account bmro-fl bmro-margin-small-rem">
+              <span class="bmro-big-heading bmro-fl  bmro-td-span"> <%= (inquiry.sales_orders.present? && so.order_number != nil) ? so.order_number : '--' %> </span>
+            </div>
 
-          <div class="bmro-task-no-td bmro-task-td-width-new-account bmro-fl  " >
-            <span class="bmro-big-heading bmro-fl bmro-td-span">--</span>
-          </div>
+            <div class="bmro-task-no-td bmro-task-td-width-new-account bmro-fl  " >
+              <span class="bmro-big-heading bmro-fl bmro-td-span">--</span>
+            </div>
 
-          <div class="bmro-task-print bmro-inner-task-width-new-account bmro-fl" >
-            <div class="bmro-commited-data bmro-task-td">
-              Sales Order
+            <div class="bmro-task-print bmro-inner-task-width-new-account bmro-fl" >
+              <div class="bmro-commited-data bmro-task-td">
+                Sales Order
+              </div>
+            </div>
+            <div class="bmro-fr">
+            <div class="bmro-action-button-parent bmro-action-width-new-account">
+              <%= link_to 'Approve / Reject', new_accounts_confirmation_overseers_inquiry_sales_order_path(inquiry_id: inquiry.to_param, id: so.to_param), class: "btn bmro-action-button ", target: "_blank" if inquiry.sales_orders.present? %>
+            </div>
             </div>
           </div>
-          <div class="bmro-fr">
-          <div class="bmro-action-button-parent bmro-action-width-new-account">
-            <%= link_to 'Approve / Reject', new_accounts_confirmation_overseers_inquiry_sales_order_path(inquiry_id: inquiry.to_param, id: inquiry.sales_orders.last.to_param), class: "btn bmro-action-button ", target: "_blank" if inquiry.sales_orders.present? %>
-          </div>
-          </div>
-        </div>
+        <% end %>
       <% end %>
     <% end %>
   <% else %>
