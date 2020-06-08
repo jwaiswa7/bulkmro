@@ -13,7 +13,7 @@ class Services::Shared::Migrations::MeasurementUnitDescriptionMigration < Servic
   end
 
   def missing_update
-    missing_uom_names =   MeasurementUnit.where(description: nil).pluck(:name)
+    missing_uom_names = MeasurementUnit.where(description: nil).pluck(:name)
     missing_uom_names.each do |name|
       bi = MeasurementUnit.where(name: name).last
       bi.description = name
