@@ -3,13 +3,13 @@
     <div class="bmro-width100 leftside">
       <div class="bmro-width100 status-height">
         <div class="bmro-dash-box">
-            <% main_statuses.each do |status| %>
-              <div class="bmro-same-box col status-box" data-status="<%= status %>">
-                <label><%= status %></label>
-                <h5><%= @dashboard.get_status_metrics(status)[:'count'] %></h5>
-                <span><%= format_currency(@dashboard.get_status_metrics(status)[:'value']) %></span>
-              </div>
-            <% end %>
+          <% main_statuses.each do |box_name, status_names| %>
+            <div class="bmro-same-box col status-box" data-status="<%= box_name %>">
+              <label><%= box_name %></label>
+              <h5><%= @dashboard.get_status_metrics_for_accounts(status_names)[:'count'] %></h5>
+              <span><%= format_currency(@dashboard.get_status_metrics_for_accounts(status_names)[:'value']) %></span>
+            </div>
+          <% end %>
         </div>
       </div>
 

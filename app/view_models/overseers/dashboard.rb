@@ -31,6 +31,10 @@ class Overseers::Dashboard
     ArInvoiceRequest.where('created_at > ?', Date.new(2019, 01, 01)).where(status: 'AR Invoice requested').order(updated_at: :desc).compact
   end
 
+  def so_with_so_approval_pending
+    SalesOrder.where(status: 'Accounts Approval Pending').where('created_at > ?', Date.new(2019, 06, 01)).compact
+  end
+
   def inquiries_with_so_approval_pending
     Inquiry.joins(:sales_orders).where(sales_orders: {status: 'Accounts Approval Pending'}).where('sales_orders.created_at > ?', Date.new(2019, 06, 01)).compact
   end
@@ -54,7 +58,7 @@ class Overseers::Dashboard
         total_inq += Inquiry.where(id: ar_invoice_requests.pluck(:inquiry_id))
       elsif status == "Pending AP Invoice"
         total_inq += Inquiry.where(id: invoice_requests_ap_invoice_pending.pluck(:inquiry_id))
-      elsif status == "SO Draft: Pending Accounts Approval"
+      elsif status == "SO: Pending Accounts Approval"
         total_inq += inquiries_with_so_approval_pending
       end
     end
@@ -136,6 +140,12 @@ class Overseers::Dashboard
   end
 
   def main_statuses_accounts(account_exe = nil)
+    account_summary_bucket = {
+        'GRPO Pending' => ['GRPO Pending'],
+        'Pending AP Invoice' => ['Pending AP Invoice'],
+        'AR Invoice requested' => ['AR Invoice requested'],
+        'SO: Pending Accounts Approval' => ['Accounts Approval Pending']
+    }
     account_task_hash = Settings.account_dashboard_task
     parsed_hash = ActiveSupport::JSON.decode(account_task_hash)
     if account_exe.nil?
@@ -143,25 +153,40 @@ class Overseers::Dashboard
     else
       account_person = account_exe
     end
-    parsed_hash[account_person]
+    bucket_hash = Hash.new
+    parsed_hash[account_person].each do |bucket_name|
+      bucket_hash[bucket_name] = account_summary_bucket[bucket_name]
+    end
+    bucket_hash
   end
 
   def get_status_metrics(status)
     if self.overseer.sales?
       count_parameter = recent_inquiries.pluck(:status)
       value_parameter = inquiries_calculated_total(recent_inquiries, status)
-    elsif self.overseer.acl_accounts?
-      count_parameter = invoice_requests_grpo_pending.pluck(:status) + invoice_requests_ap_invoice_pending.pluck(:status) + inq_for_account_dash.pluck(:status) + ar_invoice_requests.pluck(:status)
-      if inquiry_statuses.include? status
-        value_parameter = inquiries_calculated_total(inq_for_dash, status)
-      elsif invoice_request_status.include? status
-        value_parameter = get_calculated_invoice_request(invoice_requests_grpo_pending + invoice_requests_ap_invoice_pending, status)
-      else
-        value_parameter = get_calculated_ar_invoice_request(ar_invoice_requests)
-      end
     end
     {
         count: count_parameter.present? ? count_parameter.count(status) : 0,
+        value: value_parameter.present? ? value_parameter : 0
+    }
+  end
+
+  def get_status_metrics_for_accounts(status_arr)
+    total_count = 0
+    count_parameter = invoice_requests_grpo_pending.pluck(:status) + invoice_requests_ap_invoice_pending.pluck(:status) + so_with_so_approval_pending.pluck(:status) + ar_invoice_requests.pluck(:status)
+    status_arr.each { |status| total_count = total_count + count_parameter.count(status) }
+    # value_parameter = inquiries_calculated_total(inquiries_for_manager, status_arr)
+    if sales_order_statuses.include? status_arr.first
+      value_parameter = get_calculated_sales_order(so_with_so_approval_pending)
+    elsif invoice_request_status.include? status_arr.first
+      value_parameter = get_calculated_invoice_request(invoice_requests_grpo_pending + invoice_requests_ap_invoice_pending, status_arr.first)
+    elsif inquiry_statuses.include? status_arr.first
+      value_parameter = inquiries_calculated_total(inq_for_dash, status_arr.first)
+    else
+      value_parameter = get_calculated_ar_invoice_request(ar_invoice_requests)
+    end
+    {
+        count: total_count,
         value: value_parameter.present? ? value_parameter : 0
     }
   end
@@ -178,7 +203,6 @@ class Overseers::Dashboard
   end
 
   def inquiries_potential_total(doc, status)
-    potential_value
     doc.map {  |inquiry| inquiry.calculated_total if inquiry.status == status }.compact.sum
   end
 
@@ -197,6 +221,14 @@ class Overseers::Dashboard
       total_value = doc.map {  |inquiry| inquiry.calculated_total if inquiry.status == status }.compact.sum
     end
     total_value
+  end
+
+  def get_calculated_sales_order(so_arr)
+    total_price_arr = []
+    so_arr.each do |so|
+      total_price_arr.push so.converted_total_with_tax
+    end
+    total_price_arr.sum
   end
 
   def get_calculated_invoice_request(invoice_requests_arr, status)
@@ -264,6 +296,20 @@ class Overseers::Dashboard
         'Inward Completed',
         'Cancelled AP Invoice',
         'Cancelled GRPO'
+    ]
+  end
+
+  def sales_order_statuses
+    [
+        'Requested',
+        'Accounts Approval Pending',
+        'Rejected',
+        'SAP Rejected',
+        'Cancelled',
+        'Approved',
+        'Order Deleted',
+        'Hold by Finance',
+        'CO'
     ]
   end
 

@@ -98,14 +98,19 @@ class Overseers::DashboardController < Overseers::BaseController
       @dashboard = Overseers::Dashboard.new(current_overseer)
       executive_link = params['executive_link'].to_s.downcase == 'true' if params.key?('executive_link')
       if current_overseer.sales? && current_overseer.descendant_ids.present? && !executive_link
-        # for role = Inside Sales and Logistic Manager
+        # for role = Inside Sales Manager
         inquiry_as_per_box = Inquiry.with_includes.where('created_at > ? OR quotation_followup_date > ?', Date.new(2018, 04, 01), Date.new(2018, 04, 01)).where(status: @dashboard.main_statuses[params['status']], inside_sales_owner_id: current_overseer.self_and_descendant_ids).order(updated_at: :desc).compact.group_by(&:inside_sales_owner_id)
         inquiry_as_per_box = inquiry_as_per_box.map { |id, inquiries| [Overseer.find_by_id(id).name, inquiries] }.to_h
         respond_to do |format|
           format.html {render partial: 'overseers/dashboard/sales_manager/inquiry_list_sales_manager_wrapper', locals: {inq_for_sales_manager_dash: inquiry_as_per_box}}
         end
+      elsif current_overseer.sales? && !current_overseer.descendant_ids.present?
+        # for role = sales_executives
+        respond_to do |format|
+          format.html {render partial: 'overseers/dashboard/common/inquiry_list_wrapper', locals: {inq_for_dash: @dashboard.inq_for_dash(executive_link).map { |inquiry| inquiry if inquiry.status == params['status'] }.compact, executivelink: executive_link }}
+        end
       else
-        # for role = accounts, sales_executives
+        # for role = accounts
         if params['status'] == 'GRPO Pending'
           respond_to do |format|
             format.html {render partial: 'overseers/dashboard/common/inquiry_list_wrapper', locals: {inq_for_dash: Inquiry.where(id: @dashboard.invoice_requests_grpo_pending.pluck(:inquiry_id)), executivelink: executive_link }}
@@ -120,7 +125,7 @@ class Overseers::DashboardController < Overseers::BaseController
           end
         else
           respond_to do |format|
-            format.html {render partial: 'overseers/dashboard/common/inquiry_list_wrapper', locals: {inq_for_dash: @dashboard.inq_for_dash(executive_link).map { |inquiry| inquiry if inquiry.status == params['status'] }.compact, executivelink: executive_link }}
+            format.html {render partial: 'overseers/dashboard/common/inquiry_list_wrapper', locals: {inq_for_dash: @dashboard.inquiries_with_so_approval_pending, executivelink: executive_link }}
           end
         end
       end
