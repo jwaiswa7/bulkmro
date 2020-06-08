@@ -4,6 +4,7 @@
   <%= simple_form_for([:overseers, @measurement_unit], :html => {:class => 'needs-validation', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
   <div class="bmro-card bmro-card-padding">
     <%= f.input :name %>
+    <%= f.input :description, required: true %>
     <div class="bmro-button-parent">
     	<%= action_button(action_name, @measurement_unit) %>
     </div>
