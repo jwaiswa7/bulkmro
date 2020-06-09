@@ -50,7 +50,7 @@ module Mixins::HasRole
     LOGISTICS_ROLES = ['Logistics', 'Admin-Leadership Team', 'Admin', 'Inside Sales and Logistic Manager']
     CATALOG_ROLES = ['Admin', 'Cataloging']
     ACCOUNT_ROLES = ['Accounts', 'Admin']
-    ACCOUNT_ACL_ROLES = ['Accounts','Account Manager', 'Accounts Leadership']
+    ACCOUNT_ACL_ADMIN_ROLES = ['Account Manager', 'Accounts Leadership']
     COMMON_OVERSEERS = ['rn.prasad@bulkmro.com', 'tejaswi.patil@bulkmro.com', 'swati.bhosale@bulkmro.com', 'mithun
 .trisule@bulkmro.com', 'srikant.desai@bulkmro.com', 'atul.thakur@bulkmro.com', 'rajesh.sharma@bulkmro.com', 'lalit
 .dhingra@bulkmro.com', 'vivek.syal@bulkmro.com', 'ashish.pareek@bulkmro.com', 'nutan.bala@bulkmro.com']
@@ -107,8 +107,18 @@ module Mixins::HasRole
       acl_role.role_name.in? ACCOUNT_ROLES
     end
 
-    def acl_accounts?
-      acl_role.role_name.in? ACCOUNT_ACL_ROLES
+    # def acl_accounts?
+    #   acl_role.role_name.in? ACCOUNT_ACL_ROLES
+    # end
+
+    def accounts_role_for_dashboard?
+      if acl_role.role_name.in? ACCOUNT_ACL_ADMIN_ROLES
+        true
+      else
+        account_task_hash = Settings.account_dashboard_task
+        account_persons_arr = ActiveSupport::JSON.decode(account_task_hash).keys
+        email.in? account_persons_arr
+      end
     end
   end
 end

@@ -80,7 +80,7 @@ class Overseers::Dashboard
       else
         recent_inquiries
       end
-    elsif self.overseer.acl_accounts?
+    elsif self.overseer.accounts_role_for_dashboard?
       inq_for_account_dash
     end
   end
@@ -117,7 +117,7 @@ class Overseers::Dashboard
         recent_inquiry_ids = recent_inquiries.pluck(:id)
         InquiryComment.where(inquiry_id: recent_inquiry_ids).order(created_at: :desc).limit(10).group_by { |c| c.created_at.to_date }
       end
-    elsif executivelink.nil? && self.overseer.acl_accounts?
+    elsif executivelink.nil? && self.overseer.accounts_role_for_dashboard?
       invoice_request_ids = invoice_requests_grpo_pending.pluck(:id) + invoice_requests_ap_invoice_pending.pluck(:id)
       InvoiceRequestComment.where(invoice_request_id: invoice_request_ids).order(created_at: :desc).limit(8).group_by { |c| c.created_at.to_date }
     end

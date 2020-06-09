@@ -13,7 +13,7 @@ class Overseers::DashboardController < Overseers::BaseController
       else
         redirect_to sales_executive_overseers_dashboard_path
       end
-    elsif current_overseer.acl_accounts?
+    elsif session['user_role_for_dashboard'] == 'Accounts'
       redirect_to accounts_overseers_dashboard_path
     elsif current_overseer.admin?
       @dashboard = Rails.cache.fetch('admin_dashboard_data') do
@@ -161,7 +161,7 @@ class Overseers::DashboardController < Overseers::BaseController
           format.html {render partial: 'overseers/dashboard/sales_executive/task_list_wrapper', locals: {inq_for_dash: inquiry, show_all_tasks: false, show_inquiry_tasks: true, inquiry_has_tasks: inquiry_has_tasks}}
         end
 
-      elsif current_overseer.acl_accounts?
+      elsif session['user_role_for_dashboard'] == 'Accounts'
         inquiry = []
         @dashboard.inq_for_account_dash.each do |inq|
           if inq.inquiry_number == params['inquiry_number'].to_i
