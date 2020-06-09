@@ -86,11 +86,9 @@ class Overseers::DashboardController < Overseers::BaseController
     invoice_request = InvoiceRequest.find_by_id(params['invoice_request']['invoice_request_id'])
 
     if params['invoice_request']['grpo_number'].present?
-      # invoice_request.update_attribute('grpo_number', params['invoice_request']['grpo_number'].to_i)
       invoice_request.grpo_number = params['invoice_request']['grpo_number'].to_i
     end
     if params['invoice_request']['ap_invoice_number'].present?
-      # invoice_request.update_attribute('ap_invoice_number', params['invoice_request']['ap_invoice_number'].to_i)
       invoice_request.ap_invoice_number = params['invoice_request']['grpo_number'].to_i
     end
     service = Services::Overseers::InvoiceRequests::Update.new(invoice_request, current_overseer)
