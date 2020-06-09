@@ -54,8 +54,8 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
     @purchase_orders = ApplyDatatableParams.to(PurchaseOrder.where(remote_uid: nil, sap_sync: 'Not Sync').order(id: :desc), params)
     authorize_acl @purchase_orders
     respond_to do |format|
-      format.json {render 'pending_sap_sync'}
-      format.html {render 'pending_sap_sync'}
+      format.json { render 'pending_sap_sync' }
+      format.html { render 'pending_sap_sync' }
     end
   end
 
@@ -223,8 +223,13 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
 
   def change_material_status
     authorize_acl @purchase_order
-    @purchase_order.update_material_status
-    redirect_to material_readiness_queue_overseers_purchase_orders_path, notice: flash_message(@purchase_order, action_name)
+    if params[:is_manual].present?
+      @purchase_order.update_attributes(material_status: 'Manually Closed')
+      redirect_to overseers_purchase_orders_path, notice: flash_message(@purchase_order, action_name)
+    else
+      @purchase_order.update_material_status
+      redirect_to material_readiness_queue_overseers_purchase_orders_path, notice: flash_message(@purchase_order, action_name)
+    end
   end
 
   def update_material_followup
@@ -260,7 +265,7 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
     purchase_orders = PurchaseOrder.all
     if params[:inquiry_number].present?
       purchase_orders = PurchaseOrder.joins(:inquiry).where(inquiries: {inquiry_number: params[:inquiry_number]})
-      purchase_orders = purchase_orders.where(id: purchase_orders.reject {|r| r.po_request.present?}.pluck(:id))
+      purchase_orders = purchase_orders.where(id: purchase_orders.reject { |r| r.po_request.present? }.pluck(:id))
     end
     @purchase_orders = ApplyParams.to(purchase_orders, params)
 
@@ -312,7 +317,7 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
   def cancelled_purchase_modal
     authorize_acl @purchase_order
     respond_to do |format|
-      format.html { render partial: 'cancel_purchase_order', locals: { created_by_id: current_overseer.id } }
+      format.html { render partial: 'cancel_purchase_order', locals: {created_by_id: current_overseer.id} }
     end
   end
 
@@ -324,13 +329,14 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
       @purchase_order.save!
       @purchase_order.po_request.save!
     end
-    render json: {sucess: 'Successfully updated ', url: overseers_purchase_orders_path }, status: 200
+    render json: {sucess: 'Successfully updated ', url: overseers_purchase_orders_path}, status: 200
   end
+
   def render_modal_form
     authorize_acl @purchase_order
     respond_to do |format|
       if params[:title] == 'Comment'
-        format.html {render partial: 'shared/layouts/add_comment', locals: {obj: @purchase_order, url: add_comment_overseers_purchase_order_path(@purchase_order), view_more: nil}}
+        format.html { render partial: 'shared/layouts/add_comment', locals: {obj: @purchase_order, url: add_comment_overseers_purchase_order_path(@purchase_order), view_more: nil} }
       end
     end
   end
@@ -362,7 +368,7 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
         return product_supplier if purchase_order.inquiry.suppliers.include?(product_supplier) || purchase_order.is_legacy?
       end
       if purchase_order.inquiry.final_sales_quote.present?
-        product_supplier = purchase_order.inquiry.final_sales_quote.rows.select {|sales_quote_row| sales_quote_row.product.id == product_id || sales_quote_row.product.legacy_id == product_id}.first
+        product_supplier = purchase_order.inquiry.final_sales_quote.rows.select { |sales_quote_row| sales_quote_row.product.id == product_id || sales_quote_row.product.legacy_id == product_id }.first
         product_supplier.supplier if product_supplier.present?
       end
     end
@@ -374,12 +380,12 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
     def purchase_order_params
       params.require(:purchase_order).permit(
         :material_status,
-        :supplier_dispatch_date,
-        :followup_date,
-        :logistics_owner_id,
-        :revised_supplier_delivery_date,
-        comments_attributes: [:id, :message, :created_by_id, :updated_by_id],
-        attachments: []
+          :supplier_dispatch_date,
+          :followup_date,
+          :logistics_owner_id,
+          :revised_supplier_delivery_date,
+          comments_attributes: [:id, :message, :created_by_id, :updated_by_id],
+          attachments: []
       )
     end
 end
