@@ -40,4 +40,8 @@ class Overseers::InvoiceRequestPolicy < Overseers::ApplicationPolicy
   def add_comment?
     index?
   end
+
+  def check_cancelled_status?
+    ['Cancelled AP Invoice', 'Cancelled GRPO', 'Cancelled', 'Cancelled AR Invoice'].exclude?(record.status)
+  end
 end
