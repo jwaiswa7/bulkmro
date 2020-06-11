@@ -124,6 +124,9 @@ itops_mail:
   user_mail: 'itops@bulkmro.com'
   smtp_password: 'dpeloqjmukgkmqim'
 
+account_manager:
+  role_id: 26
+
 account_dashboard_task: '{
   "charudatt.mhatre@bulkmro.com": ["GRPO Pending","AR Invoice requested"],
   "pravin.ganekar@bulkmro.com":["GRPO Pending","AR Invoice requested","Pending AP Invoice","SO: Pending Accounts Approval"],

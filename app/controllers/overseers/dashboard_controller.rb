@@ -168,8 +168,8 @@ class Overseers::DashboardController < Overseers::BaseController
 
 
   def get_account_executive_data
-    current_overseer = Overseer.where(email: params['account_exe']).last
-    @dashboard = Overseers::Dashboard.new(current_overseer)
+    current_account_exe = Overseer.where(email: params['account_exe']).last
+    @dashboard = Overseers::Dashboard.new(current_account_exe)
     respond_to do |format|
       format.html {render partial: 'overseers/dashboard/accounts/left_panel_account_dashboard', locals: { main_statuses: @dashboard.main_statuses_accounts_with_metrics(params['account_exe']), executivelink: nil }}
     end

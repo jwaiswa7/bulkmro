@@ -52,13 +52,13 @@ class Overseers::Dashboard
     account_person = self.overseer.email
     total_inq = []
     parsed_hash[account_person].each do |status|
-      if status == "GRPO Pending"
+      if status == 'GRPO Pending'
         total_inq += invoice_requests_grpo_pending.pluck(:inquiry_id)
-      elsif status == "AR Invoice requested"
+      elsif status == 'AR Invoice requested'
         total_inq += ar_invoice_requests.pluck(:inquiry_id)
-      elsif status == "Pending AP Invoice"
+      elsif status == 'Pending AP Invoice'
         total_inq += invoice_requests_ap_invoice_pending.pluck(:inquiry_id)
-      elsif status == "SO: Pending Accounts Approval"
+      elsif status == 'SO: Pending Accounts Approval'
         total_inq += inquiries_with_so_approval_pending.pluck(:id)
       end
     end
@@ -332,7 +332,7 @@ class Overseers::Dashboard
   def select_accounts_person
     account_task_hash = Settings.account_dashboard_task
     parsed_hash = ActiveSupport::JSON.decode(account_task_hash)
-    filtered_account_list = Overseer.where(email: parsed_hash.keys).where.not(acl_role: 26)
+    filtered_account_list = Overseer.where(email: parsed_hash.keys).where.not(acl_role: Settings.account_manager.role_id)
     filtered_account_list
   end
 
