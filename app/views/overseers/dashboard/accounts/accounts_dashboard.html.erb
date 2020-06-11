@@ -15,7 +15,7 @@
   <% end %>
 
 
-  <%= render partial: "overseers/dashboard/accounts/left_panel_account_dashboard", locals: { main_statuses: @dashboard.main_statuses_accounts(nil) , executivelink: nil } %>
+  <%= render partial: "overseers/dashboard/accounts/left_panel_account_dashboard", locals: { main_statuses: @dashboard.main_statuses_accounts_with_metrics(nil) , executivelink: nil } %>
   <div class="leftside-html">
   </div>
   <%= render partial: "overseers/dashboard/common/side_notification_panel", locals: { executivelink: nil } %>
