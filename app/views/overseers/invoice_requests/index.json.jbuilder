@@ -4,7 +4,7 @@ json.data (@invoice_requests) do |invoice_request|
                       if is_authorized(invoice_request, 'show')
                         row_action_button_without_fa(overseers_invoice_request_path(invoice_request), 'bmro-icon-table bmro-icon-used-view', 'View AP Request','info')
                       end,
-                      if is_authorized(invoice_request, 'edit')
+                      if is_authorized(invoice_request, 'edit') && policy(invoice_request).check_cancelled_status?
                         row_action_button_without_fa(edit_overseers_invoice_request_path(invoice_request), 'bmro-icon-table bmro-icon-pencil', "Edit #{invoice_request.readable_status}", 'warning')
                       end,
                       if !invoice_request.status.downcase.include?('cancel') && is_authorized(invoice_request, 'can_cancel_or_reject') && !(invoice_request.status == 'Inward Completed')
