@@ -52,19 +52,19 @@ class Overseers::Dashboard
     account_person = self.overseer.email
     total_inq = []
     parsed_hash[account_person].each do |status|
-      if status == 'GRPO Pending'
-        total_inq += Inquiry.where(id: invoice_requests_grpo_pending.pluck(:inquiry_id))
-      elsif status == 'AR Invoice requested'
-        total_inq += Inquiry.where(id: ar_invoice_requests.pluck(:inquiry_id))
-      elsif status == 'Pending AP Invoice'
-        total_inq += Inquiry.where(id: invoice_requests_ap_invoice_pending.pluck(:inquiry_id))
-      elsif status == 'SO: Pending Accounts Approval'
-        total_inq += inquiries_with_so_approval_pending
+      if status == "GRPO Pending"
+        total_inq += invoice_requests_grpo_pending.pluck(:inquiry_id)
+      elsif status == "AR Invoice requested"
+        total_inq += ar_invoice_requests.pluck(:inquiry_id)
+      elsif status == "Pending AP Invoice"
+        total_inq += invoice_requests_ap_invoice_pending.pluck(:inquiry_id)
+      elsif status == "SO: Pending Accounts Approval"
+        total_inq += inquiries_with_so_approval_pending.pluck(:id)
       end
     end
+    total_inq = Inquiry.where(id: total_inq)
     total_inq
   end
-
   def inq_for_sales_manager_dash
     inquiries_for_manager.group_by(&:inside_sales_owner_id)
   end
@@ -189,6 +189,18 @@ class Overseers::Dashboard
         count: total_count,
         value: value_parameter.present? ? value_parameter : 0
     }
+  end
+
+  def main_statuses_accounts_with_metrics(account_exe = nil)
+    statuses_bucket_hash = main_statuses_accounts(account_exe)
+    bucket_with_metric_hash = {}
+    statuses_bucket_hash.each do |box_name, status_names|
+      metric_hash = {}
+      metric_hash['count'] = get_status_metrics_for_accounts(status_names)[:'count']
+      metric_hash['value'] = get_status_metrics_for_accounts(status_names)[:'value']
+      bucket_with_metric_hash[box_name] = metric_hash
+    end
+    bucket_with_metric_hash
   end
 
   def get_status_metrics_for_sales_manager(status_arr)

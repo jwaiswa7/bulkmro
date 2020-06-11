@@ -152,24 +152,13 @@ class Overseers::DashboardController < Overseers::BaseController
         #   inquiry = @dashboard.inq_for_dash.where(inquiry_number: params['inquiry_number'].to_i)
         # end
 
-        # if inquiry.last.customer_po_number.blank? || inquiry.last.customer_order_date.blank? || (inquiry.last.approvals.any? && inquiry.last.inquiry_product_suppliers.any? && inquiry.last.sales_quotes.persisted.blank?) || (inquiry.last.final_sales_quote.present? && policy(inquiry.last.final_sales_quote).new_sales_order?)
         inquiry_has_tasks = true
-        # else
-        #   inquiry_has_tasks = false
-        # end
         respond_to do |format|
           format.html {render partial: 'overseers/dashboard/sales_executive/task_list_wrapper', locals: {inq_for_dash: inquiry, show_all_tasks: false, show_inquiry_tasks: true, inquiry_has_tasks: inquiry_has_tasks}}
         end
 
       elsif session['user_role_for_dashboard'] == 'Accounts'
-        inquiry = []
-        @dashboard.inq_for_account_dash.each do |inq|
-          if inq.inquiry_number == params['inquiry_number'].to_i
-            inquiry.push inq
-            break
-          end
-        end
-
+        inquiry = @dashboard.inq_for_account_dash.where(inquiry_number: params['inquiry_number'].to_i)
         respond_to do |format|
           format.html {render partial: 'overseers/dashboard/accounts/account_task_list_wrapper', locals: {inq_for_dash: inquiry, show_all_tasks: false, show_inquiry_tasks: true, inquiry_has_tasks: true}}
         end
@@ -182,7 +171,7 @@ class Overseers::DashboardController < Overseers::BaseController
     current_overseer = Overseer.where(email: params['account_exe']).last
     @dashboard = Overseers::Dashboard.new(current_overseer)
     respond_to do |format|
-      format.html {render partial: 'overseers/dashboard/accounts/left_panel_account_dashboard', locals: { main_statuses: @dashboard.main_statuses_accounts(params['account_exe']), executivelink: nil }}
+      format.html {render partial: 'overseers/dashboard/accounts/left_panel_account_dashboard', locals: { main_statuses: @dashboard.main_statuses_accounts_with_metrics(params['account_exe']), executivelink: nil }}
     end
   end
 
