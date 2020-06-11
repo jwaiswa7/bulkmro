@@ -19,16 +19,16 @@ class Overseers::OmniauthCallbacksController < Devise::OmniauthCallbacksControll
   end
 
   private
-  def after_sign_in_path_for(resource)
-    if resource.sales? && current_overseer.descendant_ids.present?
-      sales_manager_overseers_dashboard_path
-    elsif resource.sales? && !current_overseer.descendant_ids.present?
-      sales_executive_overseers_dashboard_path
-    elsif resource.accounts_role_for_dashboard?
-      session['user_role_for_dashboard'] = 'Accounts'
-      accounts_overseers_dashboard_path
-    else
-      overseers_inquiries_path
+    def after_sign_in_path_for(resource)
+      if resource.sales? && current_overseer.descendant_ids.present?
+        sales_manager_overseers_dashboard_path
+      elsif resource.sales? && !current_overseer.descendant_ids.present?
+        sales_executive_overseers_dashboard_path
+      elsif resource.accounts_role_for_dashboard?
+        session['user_role_for_dashboard'] = 'Accounts'
+        accounts_overseers_dashboard_path
+      else
+        overseers_inquiries_path
+      end
     end
-  end
 end

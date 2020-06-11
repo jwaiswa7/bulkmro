@@ -120,7 +120,7 @@ class Overseers::DashboardController < Overseers::BaseController
           end
         elsif params['status'] == 'Pending AP Invoice'
           respond_to do |format|
-            format.html {render partial: 'overseers/dashboard/common/inquiry_list_wrapper', locals: {inq_for_dash: Inquiry.where(id: @dashboard.invoice_requests_ap_invoice_pending.pluck(:inquiry_id)), executivelink: executive_link }}
+             format.html {render partial: 'overseers/dashboard/common/inquiry_list_wrapper', locals: {inq_for_dash: Inquiry.where(id: @dashboard.invoice_requests_ap_invoice_pending.pluck(:inquiry_id)), executivelink: executive_link }}
            end
         elsif params['status'] == 'AR Invoice requested'
           respond_to do |format|
@@ -182,7 +182,7 @@ class Overseers::DashboardController < Overseers::BaseController
     current_overseer = Overseer.where(email: params['account_exe']).last
     @dashboard = Overseers::Dashboard.new(current_overseer)
     respond_to do |format|
-      format.html {render partial: "overseers/dashboard/accounts/left_panel_account_dashboard", locals: { main_statuses: @dashboard.main_statuses_accounts(params['account_exe']), executivelink: nil }}
+      format.html {render partial: 'overseers/dashboard/accounts/left_panel_account_dashboard', locals: { main_statuses: @dashboard.main_statuses_accounts(params['account_exe']), executivelink: nil }}
     end
   end
 

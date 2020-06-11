@@ -52,13 +52,13 @@ class Overseers::Dashboard
     account_person = self.overseer.email
     total_inq = []
     parsed_hash[account_person].each do |status|
-      if status == "GRPO Pending"
+      if status == 'GRPO Pending'
         total_inq += Inquiry.where(id: invoice_requests_grpo_pending.pluck(:inquiry_id))
-      elsif status == "AR Invoice requested"
+      elsif status == 'AR Invoice requested'
         total_inq += Inquiry.where(id: ar_invoice_requests.pluck(:inquiry_id))
-      elsif status == "Pending AP Invoice"
+      elsif status == 'Pending AP Invoice'
         total_inq += Inquiry.where(id: invoice_requests_ap_invoice_pending.pluck(:inquiry_id))
-      elsif status == "SO: Pending Accounts Approval"
+      elsif status == 'SO: Pending Accounts Approval'
         total_inq += inquiries_with_so_approval_pending
       end
     end

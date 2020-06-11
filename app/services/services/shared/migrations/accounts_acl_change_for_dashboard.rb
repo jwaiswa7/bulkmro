@@ -1,6 +1,5 @@
 
 class Services::Shared::Migrations::AccountsAclChangeForDashboard < Services::Shared::Migrations::Migrations
-
   def set_acl_for_manager_and_leadership
     admin_role_resources = AclRole.where(role_name: 'Admin').last.role_resources
     role = ['Account Manager', 'Accounts Leadership']
