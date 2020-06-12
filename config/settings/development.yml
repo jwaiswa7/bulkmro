@@ -124,6 +124,7 @@ itops_mail:
   user_mail: 'itops@bulkmro.com'
   smtp_password: 'dpeloqjmukgkmqim'
 
+#role id for role = "Account Manager" from AclRole table
 account_manager:
   role_id: 26
 
