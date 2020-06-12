@@ -1,4 +1,5 @@
 import clickOnCompose from "./clickOnCompose";
+import grpoNumbervalidator from './checkGrpoNumbervalidity';
 
 const getInquiryTasks = function () {
     $(".inquiry").click(function (e) {
@@ -26,7 +27,8 @@ const getInquiryTasks = function () {
                 $('.inquiry-tasks').append(data);
                 $('.bmro-order-action').removeClass('bmro-order-hide');
                 $('.bmro-all-task-action').addClass('bmro-order-hide');
-                clickOnCompose()
+                clickOnCompose();
+                grpoNumbervalidator();
             },
         });
     });

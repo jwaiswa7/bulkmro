@@ -13,9 +13,9 @@ const newdashboardload= function() {
     navigationMenu();
     clickOnCompose();
     statusBox();
+    getInquiryTasks();
     grpoNumbervalidator();
     getStatusRecords();
-    getInquiryTasks();
 
     $(".bmro-sales-back").click(function () {
         // $('.bmro-same-box').removeClass('bmro-same-box-active');

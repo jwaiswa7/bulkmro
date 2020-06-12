@@ -135,9 +135,9 @@
         <% end %>
       <% end %>
 
+
       <% inquiry.sales_orders.each do |so| %>
         <% if so.status == 'Accounts Approval Pending' %>
-
           <div class="bmro-width100 bmro-padding-task">
             <div class="bmro-task-no-td bmro-task-td-inquiry-width bmro-fl bmro-position-relative" >
               <span class="bmro-big-heading bmro-fl  bmro-td-span"><%= inquiry.inquiry_number %></span>
