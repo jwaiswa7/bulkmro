@@ -2,6 +2,7 @@ import callAjaxFunction from "../common/callAjaxFunction";
 import disableBackdateOption from "../common/disableBackdateOption";
 import newdashboardload from "../common/newSalesDashboard";
 import newsalesManagerDashboard from "../common/newsalesManagerDashboard";
+import clickOnCompose from "../common/clickOnCompose";
 
 const show = () => {
 
@@ -23,6 +24,26 @@ const show = () => {
             disableBackdateOption($('#inquiry_quotation_followup_date'));
         });
     });
+
+    $(".select_account").change(function (e) {
+        let account_exe = $(this).val();
+        e.preventDefault();
+        $.ajax({
+            url: Routes.get_account_executive_data_overseers_dashboard_path({format: "html"}),
+            type: "GET",
+            data: {
+                account_exe: account_exe
+            },
+            success: function (data) {
+                $('.leftside-html').empty();
+                $('.bmro-dash-leftside').addClass('bmro-order-hide');
+                $('.leftside-html').append(data);
+                clickOnCompose()
+                newdashboardload();
+            },
+        });
+    });
+
 };
 
 export default show

@@ -24,7 +24,8 @@ class Overseers::OmniauthCallbacksController < Devise::OmniauthCallbacksControll
         sales_manager_overseers_dashboard_path
       elsif resource.sales? && !current_overseer.descendant_ids.present?
         sales_executive_overseers_dashboard_path
-      elsif resource.acl_role.role_name == 'Accounts'
+      elsif resource.accounts_role_for_dashboard?
+        session['user_role_for_dashboard'] = 'Accounts'
         accounts_overseers_dashboard_path
       else
         overseers_inquiries_path
