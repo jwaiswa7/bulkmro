@@ -137,3 +137,6 @@ account_dashboard_task: '{
   "vijay.manjrekar@bulkmro.com":["GRPO Pending","AR Invoice requested","Pending AP Invoice","SO: Pending Accounts Approval"],
   "akshay.jindal@bulkmro.com":["GRPO Pending","AR Invoice requested","Pending AP Invoice","SO: Pending Accounts Approval"]
 }'
+# For ACL role = "Inside Sales Manager" to give access create PO
+inside_sales_manager:
+  role_id: 15

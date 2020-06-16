@@ -130,7 +130,7 @@ class Overseers::PoRequestPolicy < Overseers::ApplicationPolicy
   end
 
   def new_purchase_order?
-    logistics? || admin? || Overseer.where(acl_role_id: 15)
+    logistics? || admin? || Overseer.where(acl_role: Settings.inside_sales_manager.role_id)
   end
 
   def reject_purchase_order_modal?
