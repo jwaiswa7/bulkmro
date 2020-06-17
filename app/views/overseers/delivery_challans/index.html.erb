@@ -1,0 +1,63 @@
+<% provide :container_fluid, true %>
+<% provide :can_be_directly_created, policy(:inquiry).new? %>
+<% provide :can_be_ajaxed, true %>
+<% provide :wrap_whitespace, true %>
+
+<% if Settings.reports.show_summary %>
+<!--<div class="col-lg-12">-->
+  <%#= render partial: "shared/layouts/summary", locals: {klass: Inquiry, statuses: Inquiry.statuses, alias_name: ''} %>
+<!--</div>-->
+<% end %>
+
+<div class="col-lg-12">
+  <%= render partial: "overseers/inquiries/update_modal" %>
+</div>
+
+<div class="col-lg-12 bmro-table-layout">
+  <% content_for :header_row do %>
+    <th class="no-sort all" width="98px">Quick Actions</th>
+    <th class="sort all text-right" width="78px" data-name="inquiry_number">Inquiry Number</th>
+    <th class="no-sort text-right" width="88px">Order Number</th>
+    <th class="no-sort desktop" width="88px">Order Qty</th>
+    <th class="no-sort all text-left" width="128px" data-name="status_key">Status</th>
+    <th class="no-sort desktop text-left" width="130px" data-name="account_id">Account</th>
+    <th class="no-sort desktop text-left" width="130px" data-name="company_id">Company</th>
+    <th class="no-sort desktop text-left" width="172px" >PO # - Subject</th>
+    <th class="sort desktop text-left" width="75px" data-name="quotation_followup_date">Follow Up Date</th>
+    <th class="sort desktop text-left" width="82px" data-name="customer_committed_date">Committed Date</th>
+    <th class="no-sort desktop text-left" width="100px" data-name="contact_id">Contact</th>
+    <th class="no-sort desktop text-left" width="96px" data-name="inside_sales_executive">Inside Sales</th>
+    <th class="no-sort desktop text-left" width="96px" data-name="outside_sales_executive">Outside Sales</th>
+    <th class="no-sort desktop" data-name="opportunity_type">Opportunity Type</th>
+    <th class="sort desktop text-right" width="54px" data-name="margin_percentage">Margin (%)</th>
+    <th class="sort desktop text-right" width="102px" data-name="potential_amount">Potential Amount</th>
+    <th class="sort desktop text-right" width="102px" data-name="calculated_total">Quoted Amount</th>
+    <th class="sort desktop text-left" width="75px" data-name="created_at">Date</th>
+  <% end %>
+
+  <% content_for :filter_row do %>
+    <td data-filter="false"></td>
+    <td data-filter="false"></td>
+    <td data-filter="false"></td>
+    <td data-filter="false"></td>
+    <td class="" data-filter="dropdown"></td>
+    <td data-filter="ajax"></td>
+    <td data-filter="ajax"></td>
+    <td data-filter="false"></td>
+    <td data-filter="daterange"></td>
+    <td data-filter="daterange"></td>
+    <td data-filter="ajax"></td>
+    <td data-filter="dropdown"></td>
+    <td data-filter="dropdown"></td>
+    <td data-filter="dropdown"></td>
+    <td data-filter="false"></td>
+    <td data-filter="false"></td>
+    <td data-filter="false"></td>
+    <td data-filter="daterange"></td>
+  <% end %>
+
+
+  <%= render layout: 'shared/layouts/datatable' do %>
+  <% end %>
+</div>
+<div class="open-modal-form"></div>

@@ -72,6 +72,7 @@ class Inquiry < ApplicationRecord
   has_one :customer_order, dependent: :nullify
   has_one :freight_request
   has_many :supplier_rfqs
+  has_many :delivery_challans
 
   has_one_attached :customer_po_sheet
   has_one_attached :copy_of_email
