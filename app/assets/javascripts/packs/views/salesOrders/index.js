@@ -153,10 +153,11 @@ let orderCancelAccount = (class_name) => {
 
 let aggregateSummaryBox = () => {
     let table = $('.datatable').DataTable();
+    let currencyName =  camelize($('body').data().currencyName)
     table.on('xhr', function () {
         let json = table.ajax.json() ? table.ajax.json() : {};
         $('.overall-status-count').html( new Intl.NumberFormat('en-IN').format(json.recordsOverallStatusCount));
-        $('.overall-status-value').html("&#8377;" + new Intl.NumberFormat('en-IN').format(json.recordsOverallStatusValue));
+        $('.overall-status-value').html(currencyName + new Intl.NumberFormat('en-IN').format(json.recordsOverallStatusValue));
     });
 
     $('.order-filter').on('click', function (e) {
