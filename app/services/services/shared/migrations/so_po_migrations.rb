@@ -90,8 +90,8 @@ class Services::Shared::Migrations::SoPoMigrations < Services::Shared::Migration
   def po_delivery_type_mismatch
     PoRequest.where(delivery_type: 100).each do |po_request|
       if po_request.purchase_order.present?
-        if (po_request.delivery_type != po_request.purchase_order.delivery_type) && (po_request.delivery_type != po_request.purchase_order.metadata["PoDeliveryTerms"])
-          po_request.purchase_order.delivery_type =  po_request.delivery_type
+        if ((po_request.delivery_type != po_request.purchase_order.delivery_type) && (po_request.delivery_type != po_request.purchase_order.metadata["PoDeliveryTerms"]))
+          po_request.purchase_order.delivery_type = po_request.delivery_type
           po_request.purchase_order.metadata["PoDeliveryTerms"] = po_request.delivery_type
           po_request.purchase_order.save
         else
