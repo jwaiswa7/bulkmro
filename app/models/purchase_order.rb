@@ -128,9 +128,10 @@ class PurchaseOrder < ApplicationRecord
       'CFR': 40,
       'FOB': 50,
       'DAP': 60,
-      'CIP Mumbai Airport': 60,
+      'CIP Mumbai Airport': 100,
       'CIF Mumbai Airport': 70,
-      'Door Delivery': 80
+      'Door Delivery': 80,
+      'CIP': 90,
   }
   scope :material_readiness_queue, -> {where.not(material_status: [:'Material Delivered'])}
   scope :material_pickup_queue, -> {where(material_status: :'Inward Dispatch')}
