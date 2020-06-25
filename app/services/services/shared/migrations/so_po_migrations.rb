@@ -100,5 +100,4 @@ class Services::Shared::Migrations::SoPoMigrations < Services::Shared::Migration
       end
     end
   end
-
 end
