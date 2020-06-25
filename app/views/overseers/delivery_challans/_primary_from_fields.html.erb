@@ -1,0 +1,64 @@
+<%= simple_form_for([:overseers, @delivery_challan ], :url => "/overseers/delivery_challans/next_inquiry_step",:method => "get", :html => {:class => 'needs-validation mt-3', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
+  <%= f.hidden_field :inquiry_id %>
+  <%= f.hidden_field 'is_new_delivery_challan', value: true %>
+  <%= render 'shared/snippets/form_errors', f: f %>
+
+  <div class="card bmro-card">
+
+    <div class="card-body">
+      <div>
+        <h6 class="text-uppercase bmro-form-heading text-black-50 mb-1">Primary Details</h6>
+        <div class="form-row">
+          <div class="col-6">
+            <% if !params[:inquiry_id].present? && params[:action] == 'new' %>
+              <%= f.input :inquiry_id, as: :select, collection: selected_option_or_nil(f, :inquiry), input_html: {class: 'select2-ajax bmro-form-input bmro-dropdown-icon', :'data-source' => autocomplete_overseers_inquiries_path, label: "Inquiries"}, required: true %>
+            <% else %>
+              <%= f.input :inquiry, as: :string, disabled: true , input_html: {class: 'bmro-form-input'}%>
+            <% end %>
+
+          </div>
+          <div class="col-6">
+            <%= f.input :account, readonly: true, input_html: {class: 'bmro-form-input'} %>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="col-12">
+            <%= f.input :subject, required: true, input_html: {class: 'bmro-form-input'} %>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="col-6 col-md-6">
+          <%= f.input :opportunity_type, collection: enum_to_collection(Inquiry.opportunity_types), required: true, disabled: policy(f.object).restrict_fields_on_completed_orders?, input_html: {class: 'select2-single bmro-form-input bmro-dropdown-icon'} %>
+        </div>
+
+        <div class="col-6 col-md-6">
+          <%= f.input :quote_category, collection: enum_to_collection(Inquiry.quote_categories, all_caps: true), required: true, disabled: policy(f.object).restrict_fields_on_completed_orders?, input_html: {class: 'select2-single bmro-dropdown-icon bmro-form-input'} %>
+        </div>
+      </div>
+
+      <div class="mt-3">
+        <h6 class="text-uppercase bmro-form-heading text-black-50 mb-1">Contact Details</h6>
+        <div class="form-row">
+          <div class="col-12 col-md-6">
+            <%= f.association :contact, collection: selected_option_or_nil(f, :contact), label: "Billing contact", input_html: {class: 'bmro-form-input select2-ajax bmro-dropdown-icon', :'data-source' => autocomplete_overseers_contacts_path, :'data-placeholder' => "Select a billing contact"}, required: true, disabled: true %>
+          </div>
+          <div class="col-12 col-md-6">
+            <%= f.association :shipping_contact, collection: selected_option_or_nil(f, :shipping_contact), label_method: :to_s, include_blank: "Select a shipping contact", input_html: {class: 'select2-ajax bmro-form-input bmro-dropdown-icon', :'data-source' => autocomplete_overseers_contacts_path}, disabled: true %>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-footer bmro-card-footer">
+      <div class="form-row">
+        <div class="mt-1 mt-md-0 <%= policy(@inquiry).new_email_message? ? "col-md-6" : "col-md-12" %>">
+          <%= button_tag(type: "submit", class: "btn bmro-button btn-warning btn-block") do %>
+             Next  <i class="bmro-fa-arrow-right"></i>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>

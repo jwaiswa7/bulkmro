@@ -1,21 +1,18 @@
-json.data (@inquiries) do |inquiry|
+json.data (@delivery_challans) do |delivery_challan|
   columns = [
       [
-          if is_authorized(inquiry, 'relationship_map') && policy(inquiry).relationship_map?
-            row_action_button(relationship_map_overseers_inquiry_path(inquiry.to_param), 'sitemap', 'Relationship Map', 'info', :_blank)
-          end,
-          if is_authorized(inquiry, 'edit') && policy(inquiry).edit?
-            row_action_button(overseers_inquiry_comments_path(inquiry), 'comment-alt-check', inquiry.comments.last ? inquiry.comments.last.try(:message) : 'No comments', inquiry.comments.last ? 'success' : 'dark', :_blank)
-          end,
-          if is_authorized(inquiry, 'new_freight_request') && policy(inquiry).new_freight_request?
-            row_action_button(new_overseers_freight_request_path(inquiry_id: inquiry.to_param), 'external-link', 'New Freight Request', 'warning')
-          end,
-          if is_authorized(inquiry, 'add_comment')
-            link_to('', class: ['icon-title btn btn-sm btn-success comment-inquiry'], 'data-model-id': inquiry.id, title: 'Comment','data-title': 'Comment', remote: true) do
-              concat content_tag(:span, '')
-              concat content_tag :i, nil, class: ['fal fa-comment-lines'].join
-            end
-          end,
+          # if is_authorized(delivery_challan.inquiry, 'relationship_map') && policy(delivery_challan.inquiry).relationship_map?
+          #   row_action_button(relationship_map_overseers_inquiry_path(delivery_challan.inquiry.to_param), 'sitemap', 'Relationship Map', 'info', :_blank)
+          # end,
+          # if is_authorized(delivery_challan.inquiry, 'new_freight_request') && policy(delivery_challan.inquiry).new_freight_request?
+          #   row_action_button(new_overseers_freight_request_path(inquiry_id: delivery_challan.inquiry.to_param), 'external-link', 'New Freight Request', 'warning')
+          # end,
+          # if is_authorized(delivery_challan.inquiry, 'add_comment')
+          #   link_to('', class: ['icon-title btn btn-sm btn-success comment-inquiry'], 'data-model-id': delivery_challan.inquiry.id, title: 'Comment','data-title': 'Comment', remote: true) do
+          #     concat content_tag(:span, '')
+          #     concat content_tag :i, nil, class: ['fal fa-comment-lines'].join
+          #   end
+          # end,
       ].join(' '),
       link_to(inquiry.inquiry_number, edit_overseers_inquiry_path(inquiry), target: '_blank'),
       inquiry.sales_orders.where.not(order_number: nil).map { |sales_order| link_to(sales_order.order_number, overseers_inquiry_sales_order_path(inquiry, sales_order), target: '_blank') }.compact.join(' '),
