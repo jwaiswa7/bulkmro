@@ -92,7 +92,7 @@ class PoRequest < ApplicationRecord
       'Door Delivery': 60,
       'FCA Mumbai': 70,
       'CIP': 80,
-      'CIP Mumbai airport': 100
+      'CIP Mumbai Airport': 100
   }
 
   scope :pending_and_rejected, -> { where(status: [:'Supplier PO: Request Pending', :'Supplier PO Request Rejected', :'Supplier PO: Amendment Pending']) }
