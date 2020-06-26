@@ -121,8 +121,8 @@ company_specific:
   company_id: [5]
 
 itops_mail:
-  user_mail: 'ruta.kambli@bulkmro.com'
-  smtp_password: 'jqogfnjiadgnfhrj'
+  user_mail: 'itops@bulkmro.com'
+  smtp_password: 'qtbhuetxezlcdvqg'
 
 #role id for role = "Account Manager" from AclRole table
 account_manager:
