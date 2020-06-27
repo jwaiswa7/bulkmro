@@ -50,6 +50,7 @@ class SalesOrder < ApplicationRecord
   has_many :ar_invoice_requests
   has_many :ar_invoice_request_rows, through: :ar_invoice_request
   has_many :email_messages
+  has_many :delivery_challans
   belongs_to :billing_address, class_name: 'Address', dependent: :destroy, required: false
   belongs_to :shipping_address, class_name: 'Address', dependent: :destroy, required: false
 

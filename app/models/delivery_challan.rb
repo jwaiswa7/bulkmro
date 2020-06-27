@@ -3,6 +3,7 @@ class DeliveryChallan < ApplicationRecord
 
   belongs_to :inquiry
   belongs_to :sales_order
+  has_many :rows, class_name: 'DcRows'
   
   has_one_attached :customer_request_attachment
 
