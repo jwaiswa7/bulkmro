@@ -1,7 +1,23 @@
 <% provide :container_fluid, true %>
 
-<div class="bmro-width100">
-  <%= render partial: "overseers/dashboard/common/left_panel_dashboard", locals: { executivelink: nil } %>
+<div class="bmro-width100" id="account-executive-select-div">
+  <% if current_overseer.acl_role.role_name == 'Account Manager' %>
+    <div class="bmro-width100">
+      <div class="account-exe-select-label-width">
+        <p class="bmro-menu bmro-font-size-dash dropdown-toggle" id="My-inquries" data-toggle="dropdown" role="button">
+        Select Account Executive:
+      </p>
+      </div>
+      <div class="account-exe-select-width">
+        <%= select_tag :select_account_exe, options_for_select(@dashboard.select_accounts_person.collect {|u| [u.name, u.email] }), class: 'select select2-single bmro-form-input bmro-dropdown-icon select_account',include_blank: 'Select Accounts Executive',  id: 'select_account_exe' %>
+      </div>
+    </div>
+  <% end %>
+
+
+  <%= render partial: "overseers/dashboard/accounts/left_panel_account_dashboard", locals: { main_statuses: @dashboard.main_statuses_accounts_with_metrics(nil) , executivelink: nil } %>
+  <div class="leftside-html">
+  </div>
   <%= render partial: "overseers/dashboard/common/side_notification_panel", locals: { executivelink: nil } %>
 </div>
 

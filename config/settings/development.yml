@@ -122,5 +122,22 @@ company_specific:
 
 itops_mail:
   user_mail: 'itops@bulkmro.com'
-  smtp_password: 'dpeloqjmukgkmqim'
+  smtp_password: 'qtbhuetxezlcdvqg'
 
+#role id for role = "Account Manager" from AclRole table
+account_manager:
+  role_id: 26
+
+account_dashboard_task: '{
+  "charudatt.mhatre@bulkmro.com": ["GRPO Pending","AR Invoice requested"],
+  "pravin.ganekar@bulkmro.com":["GRPO Pending","AR Invoice requested","Pending AP Invoice","SO: Pending Accounts Approval"],
+  "ajay.kondal@bulkmro.com":["GRPO Pending","AR Invoice requested","Pending AP Invoice"],
+  "ruchika.tarve@bulkmro.com":["GRPO Pending","Pending AP Invoice"],
+  "soni.pathre@bulkmro.com":["GRPO Pending","Pending AP Invoice"],
+  "vijay.manjrekar@bulkmro.com":["GRPO Pending","AR Invoice requested","Pending AP Invoice","SO: Pending Accounts Approval"],
+  "akshay.jindal@bulkmro.com":["GRPO Pending","AR Invoice requested","Pending AP Invoice","SO: Pending Accounts Approval"]
+}'
+
+# For ACL role = "Inside Sales Manager" to give access create PO
+inside_sales_manager:
+  role_id: 15

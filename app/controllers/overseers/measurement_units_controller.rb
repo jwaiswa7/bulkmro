@@ -54,7 +54,8 @@ class Overseers::MeasurementUnitsController < Overseers::BaseController
 
     def measurement_unit_params
       params.require(:measurement_unit).permit(
-        :name
+        :name,
+               :description
       )
     end
 end
