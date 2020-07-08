@@ -11,7 +11,7 @@
       <h5 class="mb-0 mt-auto"><%= @sales_orders.size %></h5>
       <hr class="my-2">
       <h5 class="my-0 text-small">
-        <%= Settings.currency.name %>;<%= number_to_currency(@sales_orders.sum(:order_total), precision: 0, unit: '') %>
+        <%= Settings.currency.name %><%= number_to_currency(@sales_orders.sum(:order_total), precision: 0, unit: '') %>
       </h5>
     </div>
   </a>

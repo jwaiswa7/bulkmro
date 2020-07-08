@@ -20,7 +20,7 @@
         </p>
         <h5 class="mb-0 mt-auto bmro-fl bmro-ar-report-data"><%= company.total_open_quotes[:open_quotes] %></h5>
         <h5 class="my-0 text-small bmro-fl bmro-mlsummaryh5 bmro-ar-report-subdata">
-          <%= Settings.currency.name %>;<%= number_to_currency(company.total_open_quotes[:total_value], precision: 0, unit: '') %>
+          <%= Settings.currency.name %><%= number_to_currency(company.total_open_quotes[:total_value], precision: 0, unit: '') %>
           <%# Inquiry.left_outer_joins(:sales_quotes).left_outer_joins(:sales_orders).where('inquiries.company_id = ? AND inquiries.status NOT IN (?,?)', company.id, 9, 10).where(sales_orders: {id: nil}).size %>
         </h5>
       </div>
@@ -35,7 +35,7 @@
         </p>
         <h5 class="mb-0 mt-auto bmro-fl bmro-ar-report-data"><%= company.total_sales_order[:confirmed_orders] %></h5>
         <h5 class="my-0 text-small bmro-fl bmro-mlsummaryh5 bmro-ar-report-subdata">
-          <%= Settings.currency.name %>;<%= number_to_currency(company.total_sales_order[:confirmed_orders_total_value], precision: 0, unit: '') %>
+          <%= Settings.currency.name %><%= number_to_currency(company.total_sales_order[:confirmed_orders_total_value], precision: 0, unit: '') %>
         </h5>
       </div>
     </a>
@@ -49,7 +49,7 @@
         </p>
         <h5 class="mb-0 mt-auto bmro-fl bmro-ar-report-data"><%= company.total_sales_order[:confirmed_invoices] %></h5>
         <h5 class="my-0 text-small bmro-fl bmro-mlsummaryh5 bmro-ar-report-subdata">
-          <%= Settings.currency.name %>;<%= number_to_currency(company.total_sales_order[:confirmed_invoices_total_value], precision: 0, unit: '') %>
+          <%= Settings.currency.name %><%= number_to_currency(company.total_sales_order[:confirmed_invoices_total_value], precision: 0, unit: '') %>
         </h5>
       </div>
     </a>

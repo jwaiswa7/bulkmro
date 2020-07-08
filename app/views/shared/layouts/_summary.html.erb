@@ -68,7 +68,7 @@
                 </p>
                 <h5 class="mb-0 bmro-ar-report-data mt-auto text-<%= status_color(status) %> status-count-<%= status_id %>"></h5>
                 <% if klass != 'Activity'.constantize %>
-                  <h5 class="my-0 bmro-ar-report-subdata text-small text-<%= status_color(status) %> status-value-<%= status_id %>"><%= Settings.currency.name %>;0</h5>
+                  <h5 class="my-0 bmro-ar-report-subdata text-small text-<%= status_color(status) %> status-value-<%= status_id %>"><%= Settings.currency.name %>0</h5>
                 <% end %>
               </div>
             </div>
