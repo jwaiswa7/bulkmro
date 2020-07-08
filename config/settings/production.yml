@@ -142,5 +142,5 @@ account_dashboard_task: '{
 inside_sales_manager:
   role_id: 15
 
-  currency:
-    name: "₹"
+currency:
+  name: "₹"
