@@ -29,7 +29,7 @@
   <!-- End Google Tag Manager -->
 </head>
 
-  <body data-controller="<%= controller_name %>" data-controller-action="<%= action_name %>">
+  <body data-controller="<%= controller_name %>" data-controller-action="<%= action_name %>" data-currency-name="<%= Settings.currency.name %>">
 
     <%= navigation if local_assigns[:navigation].present? %>
     <div <% unless current_overseer.nil? %> class="layout layout-nav-top layout-body-wrapper" <% else %> class="layout layout-nav-top layout-body-wrapper-portal" <% end %>>
