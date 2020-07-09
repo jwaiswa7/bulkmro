@@ -2,6 +2,7 @@
 
 const updateSummaryBox = () => {
     let table = $('.datatable').DataTable();
+    let currencyName =  camelize($('body').data().currencyName)
     table.on('xhr', function () {
         let json = table.ajax.json() ? table.ajax.json() : {};
         if(json.recordsMainSummary){
@@ -20,7 +21,7 @@ const updateSummaryBox = () => {
 
         $.each(json.recordsTotalValue, function (index, total_value) {
             let statusId = ".status-" + index;
-            $(statusId).find('.status-value-' + index).html("&#8377;" + new Intl.NumberFormat('en-US', {maximumFractionDigits: 0}).format(total_value));
+            $(statusId).find('.status-value-' + index).html(currencyName + new Intl.NumberFormat('en-US', {maximumFractionDigits: 0}).format(total_value));
         })
     });
 };

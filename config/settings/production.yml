@@ -141,3 +141,6 @@ account_dashboard_task: '{
 # For ACL role = "Inside Sales Manager" to give access create PO
 inside_sales_manager:
   role_id: 15
+
+currency:
+  name: "₹"
