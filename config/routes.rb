@@ -22,8 +22,14 @@ Rails.application.routes.draw do
     devise_for :contacts, controllers: {sessions: 'customers/sessions', passwords: 'customers/passwords'}, path: :customers
   end
 
-  namespace :users, path: '/' do
-    devise_for :contacts, controllers: {sessions: 'api/v1/users/sessions'}, path: :users
+  namespace :api do
+    namespace :v1 do
+      resources :punchouts do
+        collection do
+          get 'auth'
+        end
+      end
+    end
   end
 
   namespace 'callbacks' do
@@ -891,6 +897,7 @@ Rails.application.routes.draw do
 
     resource :dashboard, controller: :dashboard do
       collection do
+        get 'route'
         get 'export_for_amat_customer'
       end
     end

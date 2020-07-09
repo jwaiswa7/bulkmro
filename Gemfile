@@ -249,5 +249,5 @@ gem 'unparser'
 # Heroku autoscaling add-on
 gem 'rails_autoscale_agent'
 
-
-gem 'devise_token_auth'
+# CXML parser and builder
+gem 'cxml', '~> 0.1.7', git: "https://github.com/cef/cxml.git"

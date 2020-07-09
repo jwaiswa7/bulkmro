@@ -4,10 +4,10 @@ class Customers::BaseController < ApplicationController
 
   layout 'customers/layouts/application'
 
-  before_action :authenticate_customers_contact!
+  before_action :authenticate_customers_contact!, except: [:route]
   before_action :set_paper_trail_whodunnit
-  after_action :verify_authorized
-  before_action :redirect_if_required
+  after_action :verify_authorized, except: [:route]
+  before_action :redirect_if_required, except: [:route]
 
   helper_method :current_cart, :current_company
 
