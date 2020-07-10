@@ -37,9 +37,9 @@
             <% if @product.sku? %>
               <div class="col-6 col-md-3 mb-2">
                 <strong class="d-block bmro-summary-heading">BM Number</strong>
-                <div class="bmro-summary-data">  
+                <div class="bmro-summary-data">
                   <%= @product.sku %>
-                </div>  
+                </div>
               </div>
             <% end %>
 
@@ -47,8 +47,8 @@
               <div class="col-6 col-md-3 mb-2">
                 <strong class="d-block bmro-summary-heading">Category</strong>
                 <div class="bmro-summary-data">
-                <%= @product.category %>
-              </div>
+                  <%= @product.category %>
+                </div>
               </div>
             <% end %>
 
@@ -56,8 +56,8 @@
               <div class="col-6 col-md-3 mb-2">
                 <strong class="d-block bmro-summary-heading">Brand</strong>
                 <div class="bmro-summary-data">
-                <%= @product.brand %>
-              </div>
+                  <%= @product.brand %>
+                </div>
               </div>
             <% end %>
 
@@ -65,8 +65,8 @@
               <div class="col-6 col-md-3 mb-2">
                 <strong class="d-block bmro-summary-heading">Manufacturer Part Number</strong>
                 <div class="bmro-summary-data">
-                <%= @product.mpn %>
-              </div>
+                  <%= @product.mpn %>
+                </div>
               </div>
             <% end %>
             <div class="col-6 col-md-3 mb-2">
@@ -101,8 +101,8 @@
               <div class="col-6 col-md-3 mb-2">
                 <strong class="d-block bmro-summary-heading">Created At</strong>
                 <div class="bmro-summary-data">
-                <%= format_date(@product.created_at) %>
-              </div>
+                  <%= format_date(@product.created_at) %>
+                </div>
               </div>
             <% end %>
           </div>
@@ -114,8 +114,8 @@
               <div class="col-6 col-md-3 mb-2">
                 <strong class="d-block bmro-summary-heading">Tax Code</strong>
                 <div class="bmro-summary-data">
-                <%= @product.tax_code %>
-              </div>
+                  <%= @product.tax_code %>
+                </div>
               </div>
             <% end %>
 
@@ -123,7 +123,7 @@
               <div class="col-6 col-md-3 mb-2">
                 <strong class="d-block bmro-summary-heading">Tax Rate</strong>
                 <div class="bmro-summary-data">
-                <%= @product.tax_rate %>
+                  <%= @product.tax_rate %>
                 </div>
               </div>
             <% end %>
@@ -132,8 +132,8 @@
               <div class="col-6 col-md-3 mb-2">
                 <strong class="d-block bmro-summary-heading">Unit of Measurement</strong>
                 <div class="bmro-summary-data">
-                <%= @product.measurement_unit %>
-              </div>
+                  <%= @product.measurement_unit %>
+                </div>
               </div>
             <% end %>
 
@@ -192,22 +192,19 @@
       History searchable with relevant term/keywords under <strong><%= @product.name %></strong>.
     </p>
 
-    <table class="datatable table table-bordered bmro-datatable-style dt-responsive abc" data-search="Enter search term/keywords" style="width:100%;">
-      <thead>
-      <tr>
-        <th class="no-sort" width="98px">Quick Actions</th>
-        <th class="no-sort">Inquiry #</th>
-        <th class="no-sort">Buyer</th>
-        <th class="no-sort">Seller</th>
-        <th class="no-sort">Rating</th>
-        <th class="no-sort">Buying Price</th>
-        <th class="no-sort">Selling Price</th>
-        <th class="no-sort">Inquiry Date</th>
-        <th class="no-sort">Sales Order Date</th>
-      </tr>
-      </thead>
+    <% content_for :header_row do %>
+      <th class="no-sort" width="98px">Quick Actions</th>
+      <th class="sort">Inquiry #</th>
+      <th class="no-sort">Buyer</th>
+      <th class="no-sort">Seller</th>
+      <th class="no-sort">Rating</th>
+      <th class="no-sort">Buying Price</th>
+      <th class="no-sort">Selling Price</th>
+      <th class="sort">Inquiry Date</th>
+      <th class="sort">Sales Order Date</th>
+    <% end %>
+    <%= render layout: 'shared/layouts/datatable' do %>
       <% @inquiry_products.each do |inquiry_product| %>
-        <tbody>
         <% inquiry_product.inquiry_product_suppliers.each do |inquiry_product_supplier| %>
           <tr>
             <td>
@@ -230,9 +227,8 @@
             <td><%= format_succinct_date(inquiry_product.final_sales_order.try(:sent_at)) %></td>
           </tr>
         <% end %>
-        </tbody>
       <% end %>
-    </table>
+    <% end %>
   <% end %>
 </div>
 
