@@ -21,15 +21,15 @@
         <%= nav_item 'Invoices', customers_invoices_path, true %>
       <% else %>
         <%= nav_item 'Dashboard', customers_dashboard_path, true %>
-        <%= nav_item 'Quotes', customers_quotes_path, true %>
-        <%= nav_item 'Orders', customers_orders_path, true %>
+        <%#= nav_item 'Quotes', customers_quotes_path, true %>
+        <%#= nav_item 'Orders', customers_orders_path, true %>
         <%= nav_item 'Products', customers_products_path, policy(:customer_product).index? %>
-        <%= nav_item 'Invoices', customers_invoices_path, true %>
+        <%#= nav_item 'Invoices', customers_invoices_path, true %>
       <% end %>
       <% if current_company.id == 11420 %>
         <%= nav_item 'Online Orders', customers_customer_orders_path, policy(:customer_order).index? %>
       <% else %>
-        <li class="nav-item dropdown">
+        <li class="nav-item dropdown d-none">
           <a class="nav-link dropdown-toggle" href="#" id="inquiriesDropdown" role="button" data-toggle="dropdown">
             Reports
           </a>
@@ -39,7 +39,7 @@
             <%= nav_dropdown_item 'Stock Reports', stock_reports_customers_reports_path, policy(:report).stock_reports? %>
           </div>
         </li>
-        <li class="nav-item dropdown">
+        <li class="nav-item dropdown d-none">
           <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown">
             Online Orders
           </a>
@@ -79,7 +79,7 @@
         <%= link_to reset_current_company_customers_sign_in_steps_path, method: :post, :class => 'dropdown-item' do %>
           <i class="fal fa-building"></i>&nbsp;Choose Another Company
         <% end if policy(current_customers_contact).reset_current_company? %>
-        <%= link_to edit_customers_profile_path, class: 'dropdown-item' do %>
+        <%= link_to edit_customers_profile_path, class: 'dropdown-item d-none' do %>
           <i class="bmro-profile-icon"></i> Edit Profile
         <% end %>
         <%= link_to destroy_customers_contact_session_path, method: :delete, :class => 'dropdown-item' do %>
