@@ -27,9 +27,11 @@
     <th class="no-sort desktop text-left" data-name="company_id">Company.</th>
     <th class="no-sort desktop text-left" data-name="account_id">Account</th>
     <th class="sort desktop text-left" data-name="order_number">Sales Order #</th>
+    <th class="sort desktop text-left" >Customer Order #</th>
     <% if params['customer_order_status_report'].present? && params['customer_order_status_report']['category'] == 'By BM' %>
       <th class="sort desktop text-left" data-name="invoice_number">Invoice #</th>
       <th class="no-sort desktop text-left" data-name="sku">BM #</th>
+      <th class="no-sort desktop text-left" data-name="name">Product name</th>
       <th class="no-sort desktop text-left">Total Selling Price</th>
     <% else %>
       <th></th>
@@ -64,6 +66,8 @@
     <td data-filter="false"></td>
     <td data-filter="ajax"></td>
     <td data-filter="ajax"></td>
+    <td data-filter="false"></td>
+    <td data-filter="false"></td>
     <td data-filter="false"></td>
     <td data-filter="false"></td>
     <td data-filter="false"></td>
