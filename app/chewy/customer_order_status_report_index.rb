@@ -19,6 +19,7 @@ class CustomerOrderStatusReportIndex < BaseIndex
     field :account, value: -> (record) { record.inquiry.account.to_s if record.inquiry.present? }, analyzer: 'substring'
     field :order_number, value: -> (record) { record.order_number }, type: 'long'
     field :order_number_string, value: -> (record) { record.order_number.to_s }, analyzer: 'substring'
+    field :customer_po_number_string, value: -> (record) { record.inquiry.customer_po_number.to_s if (record.inquiry.present? && record.inquiry.customer_po_number.present?) }, analyzer: 'substring'
     field :created_at, value: -> (record) { record.created_at }, type: 'date'
     field :mis_date, value: -> (record) { record.mis_date if record.mis_date.present? }, type: 'date'
     field :customer_order_date, value: -> (record) { record.inquiry.customer_order_date if record.inquiry.customer_order_date.present? }, type: 'date'
@@ -36,6 +37,7 @@ class CustomerOrderStatusReportIndex < BaseIndex
     field :rows, type: 'nested' do
       field :product_id, value: -> (record) { record.get_product.try(:id) }, type: 'integer'
       field :sku, value: -> (record) { record.get_product.try(:sku) }, analyzer: 'sku_substring'
+      field :name, value: -> (record) { record.get_product.try(:name) }, analyzer: 'substring'
       field :total_selling_price, value: -> (record) { record.converted_total_selling_price}, type: 'integer'
     end
 
