@@ -13,7 +13,7 @@ class Services::Api::Cxml < Services::Shared::BaseService
       parsed_body = CXML.parse(params.body)
       contact_email = parsed_body["Request"]["PunchOutSetupRequest"]["Extrinsic"].select{|hash| hash["name"] == "UserEmail"}.first["content"].downcase
       # landing_url = "http://659e3da6ebea.ngrok.io/customers/dashboard/route?email=#{contact_email}"
-      landing_url = "http://demo-test.bulkmro.com/customers/dashboard/route?email=#{contact_email}"
+      landing_url = "https://demo-test.bulkmro.com/customers/dashboard/route?email=#{contact_email}"
       
       response_data = { 'Status' => { 'code' => "200", 'text' => "OK" },
                         'PunchOutSetupResponse' => { 'StartPage' => { 'URL' => landing_url } } }
