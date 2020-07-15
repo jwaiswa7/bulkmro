@@ -206,7 +206,7 @@ class Overseers::SalesOrderPolicy < Overseers::ApplicationPolicy
   end
 
   def export_customer_order_status_report?
-    developer? || admin? || manager_or_sales?
+    developer? || admin?
   end
 
   def order_cancellation_modal?
