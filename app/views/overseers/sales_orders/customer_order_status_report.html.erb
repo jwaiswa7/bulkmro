@@ -1,7 +1,9 @@
 <% provide :can_be_ajaxed, true %>
 <% provide :wrap_whitespace, true %>
 <% provide :container_fluid, true %>
-<% provide :can_be_directly_downloaded, true %>
+<% if policy(SalesOrder).export_customer_order_status_report? %>
+  <% provide :can_be_directly_downloaded, true %>
+<% end %>
 
 <% content_for :heading do %>
   Customer Order Status Report
@@ -11,7 +13,7 @@
 <% content_for :table_desc do %>
   Customer Order Status Report searchable with relevant term/keywords.
 <% end %>
-<% content_for :controller_is_aliased, false %>
+<% content_for :controller_is_aliased, true %>
 <% content_for :page_title do %>
   Reports
 <% end %>
@@ -27,7 +29,7 @@
     <th class="no-sort desktop text-left" data-name="company_id">Company.</th>
     <th class="no-sort desktop text-left" data-name="account_id">Account</th>
     <th class="sort desktop text-left" data-name="order_number">Sales Order #</th>
-    <th class="sort desktop text-left" >Customer Order #</th>
+    <th class="sort desktop text-left">Customer Order #</th>
     <% if params['customer_order_status_report'].present? && params['customer_order_status_report']['category'] == 'By BM' %>
       <th class="sort desktop text-left" data-name="invoice_number">Invoice #</th>
       <th class="no-sort desktop text-left" data-name="sku">BM #</th>
@@ -44,22 +46,26 @@
     <th class="no-sort desktop" data-name="customer_po_delivery_date">Customer PO Delivery Date</th>
     <th class="no-sort desktop" data-name="customer_po_received_date">Customer PO Received Date</th>
     <th class="sort desktop text-left" data-name="cp_committed_date">Committed Customer<br> Delivery Date</th>
-    <th class="sort desktop text-left" data-name="revised_committed_delivery_date">Revised Customer<br> Delivery Date</th>
+    <th class="sort desktop text-left" data-name="revised_committed_delivery_date">Revised Customer<br> Delivery Date
+    </th>
     <th class="no-sort desktop text-left" data-name="po_number">Supplier PO No.</th>
     <th class="no-sort desktop" data-name="supplier_id">Supplier Name</th>
     <th class="sort desktop text-left" data-name="supplier_po_request_date">PO Request <br>Date</th>
     <th class="sort desktop text-left" data-name="supplier_po_date">PO Date</th>
     <th class="sort desktop text-left" data-name="mis_date">Lead Time</br>Date</th>
     <th class="sort desktop text-left" data-name="po_email_sent">PO Sent to <br>Supplier Date</th>
-<!--    <th class="sort desktop text-left" data-name="payment_request_date">Payment Request<br> Date</th>-->
-<!--    <th class="sort desktop text-left" data-name="payment_date">Payment Date</th>-->
+    <!--    <th class="sort desktop text-left" data-name="payment_request_date">Payment Request<br> Date</th>-->
+    <!--    <th class="sort desktop text-left" data-name="payment_date">Payment Date</th>-->
     <th class="sort desktop text-left" data-name="cp_committed_date">Committed Date of <br>Material Readiness</th>
-    <th class="sort desktop text-left" data-name="actual_material_readiness_date">Actual Date of <br>Material Readiness</th>
+    <th class="sort desktop text-left" data-name="actual_material_readiness_date">Actual Date of <br>Material Readiness
+    </th>
     <th class="sort desktop text-left" data-name="pickup_date">Date of Pickup</th>
     <th class="sort desktop text-left" data-name="inward_date">Date of Inward</th>
     <th class="sort desktop text-left" data-name="outward_date">Date of Outward</th>
     <th class="sort desktop text-left" data-name="customer_delivery_date">Date of Customer Delivery</th>
-    <th class="sort desktop text-left" data-name="on_time_or_delayed_time">On Time / Delayed <br>(viz. customer committed date)</th>
+    <th class="sort desktop text-left" data-name="on_time_or_delayed_time">On Time / Delayed <br>(viz. customer
+      committed date)
+    </th>
   <% end %>
   <% content_for :filter_row do %>
     <td data-filter="false"></td>
@@ -85,8 +91,8 @@
     <td data-filter="false"></td>
     <td data-filter="false"></td>
     <td data-filter="false"></td>
-<!--    <td data-filter="false"></td>-->
-<!--    <td data-filter="false"></td>-->
+    <!--    <td data-filter="false"></td>-->
+    <!--    <td data-filter="false"></td>-->
     <td data-filter="false"></td>
     <td data-filter="false"></td>
     <td data-filter="false"></td>
