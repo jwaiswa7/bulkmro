@@ -131,7 +131,7 @@ class Overseers::ApplicationPolicy
   end
 
   def allowed_user_for_export?
-    developer? || admin? || ['gaurang.shah@bulkmro.com', '	vijay.manjrekar@bulkmro.com', 'hardik.mehta@bulkmro.com', 'nilesh.desai@bulkmro.com'].include?(overseer.email)
+    developer? || admin? || ['gaurang.shah@bulkmro.com', '	vijay.manjrekar@bulkmro.com', 'hardik.mehta@bulkmro.com', 'nilesh.desai@bulkmro.com', 'sid.patel@bulkmro.com'].include?(overseer.email)
   end
 
   def allow_activity_export?
