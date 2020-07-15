@@ -205,7 +205,7 @@ class Overseers::InquiryPolicy < Overseers::ApplicationPolicy
   end
 
   def export_kra_report?
-    manager_or_sales? || admin?
+    allowed_user_for_export?
   end
 
   def bulk_update?
