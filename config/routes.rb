@@ -26,7 +26,7 @@ Rails.application.routes.draw do
     namespace :v1 do
       resources :punchouts do
         collection do
-          get 'auth'
+          post 'auth'
         end
       end
     end
