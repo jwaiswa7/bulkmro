@@ -1,7 +1,9 @@
 <% provide :container_fluid, true %>
 <% provide :can_be_ajaxed, true %>
 <% provide :wrap_whitespace, true %>
+<% if policy(Inquiry).export_kra_report? %>
 <% provide :can_be_directly_downloaded, true %>
+  <% end %>
 
 
 <% content_for :heading do %>
