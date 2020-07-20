@@ -1,5 +1,6 @@
 class Customers::CustomerOrdersController < Customers::BaseController
   before_action :set_customer_order, only: [:show, :order_confirmed]
+  before_action :set_api_request, only: [:create]
 
   def create
     authorize :customer_order
@@ -18,6 +19,7 @@ class Customers::CustomerOrdersController < Customers::BaseController
       special_instructions: current_cart.special_instructions,
       customer_po_sheet: (current_cart.customer_po_sheet.attached?) ? current_cart.customer_po_sheet.blob : nil
     )
+    
     ActiveRecord::Base.transaction do
       @customer_order = current_customers_contact.customer_orders.create(company: current_company)
       @customer_order.assign_attributes(
@@ -44,6 +46,11 @@ class Customers::CustomerOrdersController < Customers::BaseController
           row.tax_rate_id = cart_item.customer_product.best_tax_rate.id
           row.tax_code_id = cart_item.customer_product.best_tax_code.id
         end
+      end
+
+      if is_api_request?
+        service = Services::Api::OrderResponse.new(@customer_order, @api_request)
+        service.call
       end
 
       if payment.present?
@@ -116,5 +123,9 @@ class Customers::CustomerOrdersController < Customers::BaseController
 
     def set_customer_order
       @customer_order = CustomerOrder.find(params[:id])
+    end
+
+    def set_api_request
+      @api_request = ApiRequest.last
     end
 end

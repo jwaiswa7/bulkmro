@@ -5,9 +5,15 @@ class Api::V1::PunchoutsController < Api::V1::BaseController
     service = Services::Api::Cxml.new(request, @api_request)
     response_data = service.parser
 
-    respond_to do |format|
-      format.xml { render :xml => response_data }
+    if response_data
+      respond_to do |format|
+        format.xml { render :xml => response_data }
+      end
     end
+  end
+
+  def route
+       
   end
 
   private

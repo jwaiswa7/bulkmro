@@ -12,13 +12,14 @@ class Services::Api::Cxml < Services::Shared::BaseService
     if params.body.present?
       parsed_body = CXML.parse(params.body)
       contact_email = parsed_body["Request"]["PunchOutSetupRequest"]["Extrinsic"].select{|hash| hash["name"] == "UserEmail"}.first["content"].downcase
+      header = parsed_body["Header"]
       # landing_url = "http://659e3da6ebea.ngrok.io/customers/dashboard/route?email=#{contact_email}"
-      landing_url = "https://demo-test.bulkmro.com/customers/dashboard/route?email=#{contact_email}"
+      landing_url = "http://localhost:3000/customers/dashboard/route?email=#{contact_email}"
       
       response_data = { 'Status' => { 'code' => "200", 'text' => "OK" },
                         'PunchOutSetupResponse' => { 'StartPage' => { 'URL' => landing_url } } }
       response = CXML::Response.new(response_data)
-      api_request_object.update_attributes(payload: parsed_body, contact_email: contact_email)
+      api_request_object.update_attributes(payload: parsed_body, contact_email: contact_email, request_header: header.to_json)
 
       if contact_email.present?
         contact = Contact.find_by(email: contact_email)
@@ -35,6 +36,8 @@ class Services::Api::Cxml < Services::Shared::BaseService
       else
         api_request_object.update_attributes(error_message: "Contact email is not present in the payload".to_json, updated_at: Time.now.iso8601)
       end
+    else
+      api_request_object.update_attributes(error_message: "Request body is empty".to_json, updated_at: Time.now.iso8601)
     end
   end
 

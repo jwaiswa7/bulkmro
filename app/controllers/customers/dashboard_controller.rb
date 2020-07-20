@@ -8,6 +8,7 @@ class Customers::DashboardController < Customers::BaseController
   def route
     contact = Contact.find_by_email(contact_params['email'])
     sign_in(:customers_contact, contact)
+    session[:api_request] = true
     redirect_to customers_dashboard_url(became: true)
   end
 

@@ -9,7 +9,7 @@ class Customers::BaseController < ApplicationController
   after_action :verify_authorized, except: [:route]
   before_action :redirect_if_required, except: [:route]
 
-  helper_method :current_cart, :current_company
+  helper_method :current_cart, :current_company, :is_api_request
 
   private
 
@@ -79,6 +79,14 @@ class Customers::BaseController < ApplicationController
     def current_company
       if session[:current_company_id].present?
         @current_company ||= Company.find(session[:current_company_id])
+      end
+    end
+
+    def is_api_request?
+      if session[:api_request]
+        true
+      else
+        false
       end
     end
 
