@@ -9,8 +9,7 @@ class Services::Api::OrderResponse < Services::Shared::BaseService
   end
 
   def call
-    debugger
-    response = 
+     
   end
 
   private
