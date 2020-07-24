@@ -20,7 +20,7 @@ class Services::Api::Cxml < Services::Shared::BaseService
                         'PunchOutSetupResponse' => { 'StartPage' => { 'URL' => landing_url } } }
       response = CXML::Response.new(response_data)
       api_request_object.update_attributes(payload: parsed_body, contact_email: contact_email, request_header: header.to_json)
-
+      puts response
       if contact_email.present?
         contact = Contact.find_by(email: contact_email)
         if contact.present?
