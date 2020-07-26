@@ -2,15 +2,18 @@ class Api::V1::PunchoutsController < Api::V1::BaseController
   before_action :log_api_request
   
   def auth
-    MyLog.debug request.headers.env.reject { |key| key.to_s.include?('.') }
+    headers = request.headers.env.select do |k, _| 
+      k.downcase.start_with?('http') ||
+      k.in?(ActionDispatch::Http::Headers::CGI_VARIABLES)
+    end
+    MyLog.debug headers
+    MyLog.debug request.format
 
     service = Services::Api::Cxml.new(request, @api_request)
     response_data = service.parser
-
+    
     if response_data
-      respond_to do |format|
-        format.xml { render :xml => response_data }
-      end
+      render xml: response_data
     end
   end
 

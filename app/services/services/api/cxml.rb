@@ -11,6 +11,7 @@ class Services::Api::Cxml < Services::Shared::BaseService
   def parser
     if params.body.present?
       parsed_body = CXML.parse(params.body)
+      p parsed_body
       contact_email = parsed_body["Request"]["PunchOutSetupRequest"]["Extrinsic"].select{|hash| hash["name"] == "UserEmail"}.first["content"].downcase
       header = parsed_body["Header"]
       # landing_url = "http://659e3da6ebea.ngrok.io/customers/dashboard/route?email=#{contact_email}"
@@ -19,8 +20,9 @@ class Services::Api::Cxml < Services::Shared::BaseService
       response_data = { 'Status' => { 'code' => "200", 'text' => "OK" },
                         'PunchOutSetupResponse' => { 'StartPage' => { 'URL' => landing_url } } }
       response = CXML::Response.new(response_data)
+      p response
       api_request_object.update_attributes(payload: parsed_body, contact_email: contact_email, request_header: header.to_json)
-      puts response
+      
       if contact_email.present?
         contact = Contact.find_by(email: contact_email)
         if contact.present?
