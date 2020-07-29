@@ -13,7 +13,9 @@ class Api::V1::PunchoutsController < Api::V1::BaseController
     response_data = service.parser
     
     if response_data
-      render xml: response_data
+      respond_to do |format|
+        format.xml { render xml: response_data.to_xml }
+      end
     end
   end
 
