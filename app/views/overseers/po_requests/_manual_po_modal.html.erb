@@ -8,7 +8,7 @@
         </button>
       </div>
 <!--      Not good way have to change the code-->
-      <%= simple_form_for([:overseers, PoRequest.last], :url => '', :html => {:class => 'needs-validation p-3', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
+      <%= simple_form_for([:overseers, PoRequest.new], :url => '', :html => {:class => 'needs-validation p-3', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
         <%= f.association :inquiry, collection: nil, input_html: {class: 'select2-ajax inquiry_id bmro-form-input bmro-dropdown-icon', :'data-source' => autocomplete_overseers_inquiries_path(encoded: true)}, include_blank: 'Leave blank if no inquiry connected' %>
       <% end %>
 
