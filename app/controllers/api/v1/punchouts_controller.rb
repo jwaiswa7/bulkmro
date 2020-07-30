@@ -14,7 +14,7 @@ class Api::V1::PunchoutsController < Api::V1::BaseController
     
     if response_data
       respond_to do |format|
-        format.xml { render xml: response_data.to_xml }
+        format.html { render xml: response_data.to_xml }
       end
     end
   end
