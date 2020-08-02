@@ -2,6 +2,7 @@ class Api::V1::PunchoutsController < Api::V1::BaseController
   before_action :log_api_request
   
   def auth
+    # for debugging purposes
     headers = request.headers.env.select do |k, _| 
       k.downcase.start_with?('http') ||
       k.in?(ActionDispatch::Http::Headers::CGI_VARIABLES)
@@ -9,6 +10,7 @@ class Api::V1::PunchoutsController < Api::V1::BaseController
     MyLog.debug headers
     MyLog.debug request.format
 
+    # actual service call for parsing request and getting response
     service = Services::Api::Cxml.new(request, @api_request)
     response_data = service.parser
     

@@ -15,12 +15,14 @@ class Services::Api::Cxml < Services::Shared::BaseService
       contact_email = parsed_body["Request"]["PunchOutSetupRequest"]["Extrinsic"].select{|hash| hash["name"] == "UserEmail"}.first["content"].downcase
       header = parsed_body["Header"]
       # landing_url = "http://659e3da6ebea.ngrok.io/customers/dashboard/route?email=#{contact_email}"
-      landing_url = "https://demo-test.bulkmro.com/customers/dashboard/route?email=#{contact_email}"
-      
+      # landing_url = "https://demo-test.bulkmro.com/customers/dashboard/route?email=#{contact_email}"
+      landing_url = "http://localhost:3000/customers/dashboard/route?email=#{contact_email}&request_id=#{api_request_object.hashid}"
+      debugger
       response_data = { 'Status' => { 'code' => "200", 'text' => "OK" },
                         'PunchOutSetupResponse' => { 'StartPage' => { 'URL' => landing_url } } }
       response = CXML::Response.new(response_data)
       p response
+      
       api_request_object.update_attributes(payload: parsed_body, contact_email: contact_email, request_header: header.to_json)
       
       if contact_email.present?

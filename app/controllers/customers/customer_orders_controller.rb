@@ -1,6 +1,5 @@
 class Customers::CustomerOrdersController < Customers::BaseController
   before_action :set_customer_order, only: [:show, :order_confirmed]
-  before_action :set_api_request, only: [:create]
 
   def create
     authorize :customer_order
@@ -49,7 +48,8 @@ class Customers::CustomerOrdersController < Customers::BaseController
       end
 
       if is_api_request?
-        service = Services::Api::OrderResponse.new(@customer_order, @api_request)
+        debugger
+        service = Services::Api::OrderResponse.new(@customer_order, current_api_request)
         service.call
       end
 
@@ -61,13 +61,13 @@ class Customers::CustomerOrdersController < Customers::BaseController
       current_cart.destroy
     end
 
-    email_service = Services::Overseers::EmailMessages::SalesMailer.new(@customer_order, current_overseer)
-    email_service.send_order_confirmation_email
+    # email_service = Services::Overseers::EmailMessages::SalesMailer.new(@customer_order, current_overseer)
+    # email_service.send_order_confirmation_email
 
-    account_managers = @customer_order.company.contacts.where(role: 'account_manager')
-    if account_managers.present?
-      email_service.send_order_approval_email(account_managers)
-    end
+    # account_managers = @customer_order.company.contacts.where(role: 'account_manager')
+    # if account_managers.present?
+    #   email_service.send_order_approval_email(account_managers)
+    # end
 
     redirect_to order_confirmed_customers_customer_order_path(@customer_order)
   end
@@ -123,9 +123,5 @@ class Customers::CustomerOrdersController < Customers::BaseController
 
     def set_customer_order
       @customer_order = CustomerOrder.find(params[:id])
-    end
-
-    def set_api_request
-      @api_request = ApiRequest.last
     end
 end
