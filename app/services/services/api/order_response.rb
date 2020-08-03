@@ -1,23 +1,30 @@
 class Services::Api::OrderResponse < Services::Shared::BaseService
+  include HTTParty
   
   def initialize(customer_order_object, api_request_object)
     @customer_order_object = customer_order_object
     @api_request_object = api_request_object
     @timestamp  = Time.now.utc
     @payload_id = api_request_object.payload['payloadID']
-    @header = CXML::Header.new(api_request_object.payload['Header'])
+    header = api_request_object.payload['Header']
+    header["Sender"]["UserAgent"] = "BulkMRO"
+    @cxml_header = CXML::Header.new(header)
     @buyer_cookie = api_request_object.payload['Request']['PunchOutSetupRequest']['BuyerCookie']
+    # @api_endpoint = api_request_object.payload["Request"]["PunchOutSetupRequest"]["BrowserFormPost"]["URL"]
+    @api_endpoint = 'http://localhost:3000/api/v1/punchouts/route'
   end
 
   def call
     node = CXML.builder
-    debugger
     node.cXML(build_attributes) do |doc|
-      doc.header {|n| header.render(n, true) } if @header
+      doc.header {|n| cxml_header.render(n, true) } if cxml_header
       punchout_order_message(node)
     end
-    debugger
-    node
+
+    # request(
+    #   http_method: :post,
+    #   params: node.to_xml
+    # )
   end
 
   private
@@ -37,6 +44,7 @@ class Services::Api::OrderResponse < Services::Shared::BaseService
         }  
       }
     }
+
     customer_order_object.items.each do |item|
       item_hash = { 'quantity' => item.quantity.to_i,
         'ItemID' => {'SupplierPartID' => item.customer_product.sku, 'SupplierPartAuxillaryID' => item.customer_product.sku }, 
@@ -48,16 +56,28 @@ class Services::Api::OrderResponse < Services::Shared::BaseService
       }
       main_array << item_hash
     end
+
     order_message = CXML::PunchOutOrderMessage.new(header_data)
     main_array.each do |item|
       order_message.add_item(item)
     end
-    debugger
-    test = order_message.render(node)
-    debugger
-    test
+    order_message.render(node)
   end
 
-  attr_accessor :customer_order_object, :header, :timestamp, :payload_id, :api_request_object, :buyer_cookie
+  def client
+    client ||= Faraday.new(api_endpoint) do |client|
+      client.request :url_encoded
+      client.adapter Faraday.default_adapter
+      client.headers['Content-Type'] = 'application/xhtml+xml'
+      client.headers['Accept'] = 'text/html'
+      client.response :logger
+    end
+  end
+
+  def request(http_method:, endpoint: '', params: {})
+    response = client.public_send(http_method, endpoint, params)
+  end
+
+  attr_accessor :customer_order_object, :cxml_header, :timestamp, :payload_id, :api_request_object, :buyer_cookie, :api_endpoint
 
 end

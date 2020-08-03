@@ -27,7 +27,7 @@ Rails.application.routes.draw do
       resources :punchouts do
         collection do
           post 'auth'
-          get 'route'
+          post 'route'
         end
       end
     end

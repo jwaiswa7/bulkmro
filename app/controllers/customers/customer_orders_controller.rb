@@ -48,7 +48,6 @@ class Customers::CustomerOrdersController < Customers::BaseController
       end
 
       if is_api_request?
-        debugger
         service = Services::Api::OrderResponse.new(@customer_order, current_api_request)
         service.call
       end
@@ -70,6 +69,7 @@ class Customers::CustomerOrdersController < Customers::BaseController
     # end
 
     redirect_to order_confirmed_customers_customer_order_path(@customer_order)
+    # sign_out_and_redirect(current_customers_contact) 
   end
 
   def show
@@ -107,6 +107,8 @@ class Customers::CustomerOrdersController < Customers::BaseController
     else
       render template: 'customers/customer_orders/order_confirmed'
     end
+    sleep(10)
+    sign_out_and_redirect(current_customers_contact)
   end
 
   def index

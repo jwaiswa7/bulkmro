@@ -22,7 +22,7 @@ class Api::V1::PunchoutsController < Api::V1::BaseController
   end
 
   def route
-       
+    
   end
 
   private

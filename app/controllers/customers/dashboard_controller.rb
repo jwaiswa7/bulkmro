@@ -1,7 +1,6 @@
 class Customers::DashboardController < Customers::BaseController
 
   def show
-    debugger
     @dashboard = Customers::Dashboard.new(current_customers_contact, current_company, params)
     authorize :dashboard
   end

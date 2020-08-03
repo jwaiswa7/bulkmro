@@ -17,7 +17,7 @@ class Services::Api::Cxml < Services::Shared::BaseService
       # landing_url = "http://659e3da6ebea.ngrok.io/customers/dashboard/route?email=#{contact_email}"
       # landing_url = "https://demo-test.bulkmro.com/customers/dashboard/route?email=#{contact_email}"
       landing_url = "http://localhost:3000/customers/dashboard/route?email=#{contact_email}&request_id=#{api_request_object.hashid}"
-      debugger
+
       response_data = { 'Status' => { 'code' => "200", 'text' => "OK" },
                         'PunchOutSetupResponse' => { 'StartPage' => { 'URL' => landing_url } } }
       response = CXML::Response.new(response_data)
