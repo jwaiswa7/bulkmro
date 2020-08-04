@@ -21,10 +21,6 @@ class Api::V1::PunchoutsController < Api::V1::BaseController
     end
   end
 
-  def route
-    
-  end
-
   private
 
   def log_api_request
