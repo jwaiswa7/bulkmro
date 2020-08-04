@@ -24,7 +24,7 @@ class Services::Api::OrderResponse < Services::Shared::BaseService
     end
     
     send_response(params: node.to_xml)
-
+    p node.to_xml
     cart_response_object.update_attributes(payload: node.to_xml)
   end
 
@@ -69,8 +69,10 @@ class Services::Api::OrderResponse < Services::Shared::BaseService
     response = HTTParty.post(api_endpoint, body: params, headers: {
       'Content-Type': 'application/xhtml+xml',
       'Accept': 'text/html'
-     })
+    })
+    p response
     validated_response = get_validated_response(response)
+    p validated_response
     if validated_response.present?
       cart_response_object.update_attributes(response: validated_response)
     else
