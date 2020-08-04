@@ -10,8 +10,10 @@ class Services::Api::OrderResponse < Services::Shared::BaseService
     header["Sender"]["UserAgent"] = "BulkMRO"
     @cxml_header = CXML::Header.new(header)
     @buyer_cookie = api_request_object.payload['Request']['PunchOutSetupRequest']['BuyerCookie']
-    # @api_endpoint = api_request_object.payload["Request"]["PunchOutSetupRequest"]["BrowserFormPost"]["URL"]
-    @api_endpoint = 'http://localhost:3000/api/v1/punchouts/route'
+    @api_endpoint = api_request_object.payload["Request"]["PunchOutSetupRequest"]["BrowserFormPost"]["URL"]
+    # @api_endpoint = 'http://localhost:3000/api/v1/punchouts/route'
+    # @api_endpoint = 'https://4cc1bfe26cca.ngrok.io/api/v1/punchouts/route'
+    @cart_response_object = ApiCartResponse.create(api_request_id: api_request_object.id, buyer_cookie: buyer_cookie, api_endpoint: api_endpoint)
   end
 
   def call
@@ -20,11 +22,10 @@ class Services::Api::OrderResponse < Services::Shared::BaseService
       doc.header {|n| cxml_header.render(n, true) } if cxml_header
       punchout_order_message(node)
     end
+    
+    send_response(params: node.to_xml)
 
-    # request(
-    #   http_method: :post,
-    #   params: node.to_xml
-    # )
+    cart_response_object.update_attributes(payload: node.to_xml)
   end
 
   private
@@ -64,20 +65,29 @@ class Services::Api::OrderResponse < Services::Shared::BaseService
     order_message.render(node)
   end
 
-  def client
-    client ||= Faraday.new(api_endpoint) do |client|
-      client.request :url_encoded
-      client.adapter Faraday.default_adapter
-      client.headers['Content-Type'] = 'application/xhtml+xml'
-      client.headers['Accept'] = 'text/html'
-      client.response :logger
+  def send_response(params: {})
+    response = HTTParty.post(api_endpoint, body: params, headers: {
+      'Content-Type': 'application/xhtml+xml',
+      'Accept': 'text/html'
+     })
+    validated_response = get_validated_response(response)
+    if validated_response.present?
+      cart_response_object.update_attributes(response: validated_response)
+    else
+      cart_response_object.update_attributes(response: 'No response received')
     end
   end
 
-  def request(http_method:, endpoint: '', params: {})
-    response = client.public_send(http_method, endpoint, params)
+  def get_validated_response(raw_response)
+    if raw_response['success'] == true
+      OpenStruct.new(raw_response.parsed_response.deep_symbolize_keys)
+    elsif raw_response['error']
+      { raw_response: raw_response, error_message: raw_response['error']['message'] }
+    else
+      { raw_response: raw_response, error_message: raw_response.to_s }
+    end
   end
 
-  attr_accessor :customer_order_object, :cxml_header, :timestamp, :payload_id, :api_request_object, :buyer_cookie, :api_endpoint
+  attr_accessor :customer_order_object, :cxml_header, :timestamp, :payload_id, :api_request_object, :buyer_cookie, :api_endpoint, :cart_response_object
 
 end

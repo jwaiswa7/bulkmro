@@ -21,7 +21,6 @@ module CXML
     end
 
     def render(node)
-      debugger
       node.Message do
         node.PunchOutOrderMessage do
           node.BuyerCookie(buyer_cookie) if buyer_cookie

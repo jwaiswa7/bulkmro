@@ -176,7 +176,8 @@
 
               <label class="d-flex justify-content-center align-items-center flex-row">
                     <span class="h-100">
-                      <%= f.radio_button :payment_method, 'Online Payment', :checked => true if current_company.id == 1847 %>
+                      <%# <%= f.radio_button :payment_method, 'Online Payment', :checked => true if current_company.id == 1847 %>
+                      <%= f.radio_button :payment_method, 'Online Payment', disabled: true%>
                     </span>
                 <span class="flex-grow-1 ml-2">
                       <strong class="d-block">Online Payment</strong>

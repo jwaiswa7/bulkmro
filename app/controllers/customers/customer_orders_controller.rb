@@ -107,8 +107,8 @@ class Customers::CustomerOrdersController < Customers::BaseController
     else
       render template: 'customers/customer_orders/order_confirmed'
     end
-    sleep(10)
-    sign_out_and_redirect(current_customers_contact)
+    # sleep(10)
+    # sign_out_and_redirect(current_customers_contact)
   end
 
   def index
