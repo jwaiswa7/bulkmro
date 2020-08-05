@@ -10,9 +10,9 @@ class Services::Api::OrderResponse < Services::Shared::BaseService
     header["Sender"]["UserAgent"] = "BulkMRO"
     @cxml_header = CXML::Header.new(header)
     @buyer_cookie = api_request_object.payload['Request']['PunchOutSetupRequest']['BuyerCookie']
-    @api_endpoint = api_request_object.payload["Request"]["PunchOutSetupRequest"]["BrowserFormPost"]["URL"]
+    # @api_endpoint = api_request_object.payload["Request"]["PunchOutSetupRequest"]["BrowserFormPost"]["URL"]
     # @api_endpoint = 'http://localhost:3000/api/v1/punchouts/route'
-    # @api_endpoint = 'https://4cc1bfe26cca.ngrok.io/api/v1/punchouts/route'
+    @api_endpoint = 'https://c25ec0616428.ngrok.io/api/v1/punchouts/route'
     @cart_response_object = ApiCartResponse.create(api_request_id: api_request_object.id, buyer_cookie: buyer_cookie, api_endpoint: api_endpoint)
   end
 

@@ -21,6 +21,10 @@ class Api::V1::PunchoutsController < Api::V1::BaseController
     end
   end
 
+  def route_test
+    debugger
+  end
+
   private
 
   def log_api_request
