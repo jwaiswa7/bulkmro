@@ -74,9 +74,9 @@ class Services::Api::OrderResponse < Services::Shared::BaseService
     validated_response = get_validated_response(response)
     p validated_response
     if validated_response.present?
-      cart_response_object.update_attributes(response: validated_response)
+      cart_response_object.update_attributes(response_status: validated_response)
     else
-      cart_response_object.update_attributes(response: 'No response received')
+      cart_response_object.update_attributes(response_status: 'No response received')
     end
   end
 
