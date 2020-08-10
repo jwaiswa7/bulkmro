@@ -29,9 +29,9 @@ class Services::Overseers::Notifications::Notify < Services::Shared::Notificatio
 
   def po_created(action, notifiable, url, *msg)
     @action = action; @notifiable = notifiable; @url = url
+    msg_substring = "PO##{notifiable.po_number} for Inquiry##{msg[0].inquiry_number}"
     if msg[0].inside_sales_owner.parent.present?
       # msg sent to inside sales owner
-      msg_substring = "PO##{notifiable.po_number} for Inquiry##{msg[0].inquiry_number}"
       @message = "#{msg_substring} has been created - exec: #{msg[0].inside_sales_owner}"
       @to = msg[0].inside_sales_owner.parent
       send
