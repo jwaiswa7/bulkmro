@@ -3,7 +3,7 @@ class Services::Overseers::Statuses::GetSummaryStatusBuckets < Services::Shared:
     if all_indexed_records.class == 'Array'.constantize && all_indexed_records.length > 1
       @followup_records = all_indexed_records[0]
       @committed_date_records = all_indexed_records[1]
-      @indexed_buckets = @followup_records.aggregations['statuses']['buckets']
+      @indexed_buckets = (@followup_records.count > 0) ? @followup_records.aggregations['statuses']['buckets'] : []
       @indexed_buckets = @indexed_buckets.push(@committed_date_records.aggregations['statuses']['buckets']).flatten
     else
       @all_indexed_records = all_indexed_records
