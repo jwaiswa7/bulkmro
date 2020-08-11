@@ -147,5 +147,7 @@ currency:
 
 aggregator:
   name: 'Bulk MRO Industrial Supply Pvt. Ltd.'
+  alias: 'Bulk MRO'
   website: 'http://www.bulkmro.com/'
   address: ''
+  country: 'India'
