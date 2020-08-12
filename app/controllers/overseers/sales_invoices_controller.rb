@@ -80,7 +80,7 @@ class Overseers::SalesInvoicesController < Overseers::BaseController
     service = Services::Overseers::Exporters::SalesInvoicesLogisticsExporter.new
     service.call
 
-    redirect_to url_for(Export.sales_invoice_logistics.last.report)
+    redirect_to url_for(Export.sales_invoices_logistics.last.report)
   end
 
 
