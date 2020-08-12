@@ -5,6 +5,10 @@ class Customers::CartController < Customers::BaseController
     authorize @cart
   end
 
+  def punchout
+    authorize @cart
+  end
+
   def update
     authorize @cart
 

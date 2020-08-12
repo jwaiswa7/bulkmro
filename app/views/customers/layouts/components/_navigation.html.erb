@@ -65,9 +65,15 @@
     <span class="d-none d-md-inline badge badge-light mr-1"><%= current_company.name %></span>
     <% if policy(:cart).show? %>
       <div class="dropdown d-inline mr-2" id="cart">
-        <a href="<%= customers_cart_path %>" role="button" id="cart-count">
-          <i class="fal fa-shopping-cart mr-1"></i><span class="text-primary cart-items-count"><%= current_cart.items.count %></span>
-        </a>
+        <% if is_api_request? %>
+          <a href="<%= punchout_customers_cart_path %>" role="button" id="cart-count">
+            <i class="fal fa-shopping-cart mr-1"></i><span class="text-primary cart-items-count"><%= current_cart.items.count %></span>
+          </a>
+        <% else %>
+          <a href="<%= customers_cart_path %>" role="button" id="cart-count">
+            <i class="fal fa-shopping-cart mr-1"></i><span class="text-primary cart-items-count"><%= current_cart.items.count %></span>
+          </a>
+        <% end %>
       </div>
     <% end %>
     <div class="dropdown d-inline">

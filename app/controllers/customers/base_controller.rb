@@ -9,7 +9,7 @@ class Customers::BaseController < ApplicationController
   after_action :verify_authorized, except: [:route]
   before_action :redirect_if_required, except: [:route]
 
-  helper_method :current_cart, :current_company, :is_api_request, :current_api_request
+  helper_method :current_cart, :current_company, :is_api_request?, :current_api_request
 
   private
 
