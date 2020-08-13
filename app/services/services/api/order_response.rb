@@ -1,8 +1,8 @@
 class Services::Api::OrderResponse < Services::Shared::BaseService
   include HTTParty
   
-  def initialize(customer_order_object, api_request_object)
-    @customer_order_object = customer_order_object
+  def initialize(cart_object, api_request_object)
+    @cart_object = cart_object
     @api_request_object = api_request_object
     @timestamp  = Time.now.utc
     @payload_id = api_request_object.payload['payloadID']
@@ -22,10 +22,10 @@ class Services::Api::OrderResponse < Services::Shared::BaseService
       doc.header {|n| cxml_header.render(n, true) } if cxml_header
       punchout_order_message(node)
     end
-    
-    send_response(params: node.to_xml)
+
     p node.to_xml
     cart_response_object.update_attributes(payload: node.to_xml)
+    node.to_xml
   end
 
   private
@@ -41,12 +41,12 @@ class Services::Api::OrderResponse < Services::Shared::BaseService
     header_data = {'BuyerCookie' => buyer_cookie, 
       'PunchOutOrderMessageHeader' => {
         'Total' => {
-          'Money' => {'currency' => 'INR', 'content' => customer_order_object.calculated_total.to_i}
+          'Money' => {'currency' => 'INR', 'content' => cart_object.calculated_total.to_i}
         }  
       }
     }
 
-    customer_order_object.items.each do |item|
+    cart_object.items.each do |item|
       item_hash = { 'quantity' => item.quantity.to_i,
         'ItemID' => {'SupplierPartID' => item.customer_product.sku, 'SupplierPartAuxillaryID' => item.customer_product.sku }, 
         'ItemDetail' => { 'Description' => item.customer_product.name, 
@@ -65,31 +65,31 @@ class Services::Api::OrderResponse < Services::Shared::BaseService
     order_message.render(node)
   end
 
-  def send_response(params: {})
-    response = HTTParty.post(api_endpoint, body: params, headers: {
-      'Content-Type': 'application/xhtml+xml',
-      'Accept': 'text/html'
-    })
-    p response
-    validated_response = get_validated_response(response)
-    p validated_response
-    if validated_response.present?
-      cart_response_object.update_attributes(response_status: validated_response)
-    else
-      cart_response_object.update_attributes(response_status: 'No response received')
-    end
-  end
+  # def send_response(params: {})
+  #   response = HTTParty.post(api_endpoint, body: params, headers: {
+  #     'Content-Type': 'application/xhtml+xml',
+  #     'Accept': 'text/html'
+  #   })
+  #   p response
+  #   validated_response = get_validated_response(response)
+  #   p validated_response
+  #   if validated_response.present?
+  #     cart_response_object.update_attributes(response_status: validated_response)
+  #   else
+  #     cart_response_object.update_attributes(response_status: 'No response received')
+  #   end
+  # end
 
-  def get_validated_response(raw_response)
-    if raw_response['success'] == true
-      OpenStruct.new(raw_response.parsed_response.deep_symbolize_keys)
-    elsif raw_response['error']
-      { raw_response: raw_response, error_message: raw_response['error']['message'] }
-    else
-      { raw_response: raw_response, error_message: raw_response.to_s }
-    end
-  end
+  # def get_validated_response(raw_response)
+  #   if raw_response['success'] == true
+  #     OpenStruct.new(raw_response.parsed_response.deep_symbolize_keys)
+  #   elsif raw_response['error']
+  #     { raw_response: raw_response, error_message: raw_response['error']['message'] }
+  #   else
+  #     { raw_response: raw_response, error_message: raw_response.to_s }
+  #   end
+  # end
 
-  attr_accessor :customer_order_object, :cxml_header, :timestamp, :payload_id, :api_request_object, :buyer_cookie, :api_endpoint, :cart_response_object
+  attr_accessor :cart_object, :cxml_header, :timestamp, :payload_id, :api_request_object, :buyer_cookie, :api_endpoint, :cart_response_object
 
 end

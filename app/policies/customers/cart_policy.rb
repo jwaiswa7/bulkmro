@@ -48,4 +48,8 @@ class Customers::CartPolicy < Customers::ApplicationPolicy
   def punchout?
     show?
   end
+
+  def punchout_cart?
+    punchout?
+  end
 end

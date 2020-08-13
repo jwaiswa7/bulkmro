@@ -1,0 +1,14 @@
+<% content_for :page_title do %>
+  Punchout
+<% end %>
+
+<div class="col-md-5 my-5">
+  <div class="text-center">
+    <span class="display-3"><i class="fal fa-clipboard-check text-success"></i></span>
+    <h1 class="mb-1 mt-2 text-success"><strong>Punchout success!</strong></h1>
+  </div>
+</div>
+<form id="cxml_form" enctype="application/x-www-form-urlencoded">
+  <input type="hidden" name="cXML-urlencoded" value="<%= @data %>">
+  <input type="hidden" id="url" value="<%= @endpoint %>">
+</form>

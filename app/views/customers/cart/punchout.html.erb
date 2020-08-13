@@ -1,5 +1,5 @@
 <div class="col-12">
-  <%= simple_form_for([:customers, @cart], :url => customers_cart_path, :method => :patch) do |cart| %>
+  <%= simple_form_for([:customers, @cart], :url => punchout_cart_customers_cart_path, :method => :get) do |cart| %>
 
     <section class="pt-3 pt-lg-4 pb-2 pb-lg-3">
       <div class="d-md-flex justify-content-between">
@@ -98,8 +98,8 @@
                     </div>
                   </div>
                   <div class="col-md-7 mt-2 mt-md-0">
-                    <%= button_tag(type: "submit", class: "btn btn-success btn-block") do %>
-                      <i class="fal fa-shopping-cart mr-1"></i>Proceed to Checkout
+                    <%= button_tag(type: "submit", class: "btn btn-success btn-block checkout-button") do %>
+                      <i class="fal fa-shopping-cart mr-1"></i>Checkout
                     <% end %>
                   </div>
                 </div>
@@ -114,8 +114,3 @@
   <% end %>
   </div>
 </div>
-
-<form id="cxml_form" method="POST" action="{{buyer_form_post_url}}" enctype="application/x-www-form-urlencoded">
-  <input type="hidden" name="cXML-urlencoded" value="{{xml}}">
-</form>
-<script type="text/javascript">document.getElementById('cxml_form').submit()</script>

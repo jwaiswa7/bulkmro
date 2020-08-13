@@ -973,6 +973,7 @@ Rails.application.routes.draw do
     resource :cart, controller: :cart, except: [:index] do
       collection do
         get 'punchout'
+        get 'punchout_cart'
         get 'checkout'
         post 'update_cart_details'
         post 'update_billing_address'

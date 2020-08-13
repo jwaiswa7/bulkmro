@@ -9,6 +9,16 @@ class Customers::CartController < Customers::BaseController
     authorize @cart
   end
 
+  def punchout_cart
+    authorize @cart
+    service = Services::Api::OrderResponse.new(@cart, current_api_request)
+    @endpoint = current_api_request.payload["Request"]["PunchOutSetupRequest"]["BrowserFormPost"]["URL"]
+    @data = service.call
+
+    current_cart.destroy
+    render 'punchout_cart'
+  end
+
   def update
     authorize @cart
 

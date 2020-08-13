@@ -47,11 +47,6 @@ class Customers::CustomerOrdersController < Customers::BaseController
         end
       end
 
-      if is_api_request?
-        service = Services::Api::OrderResponse.new(@customer_order, current_api_request)
-        service.call
-      end
-
       if payment.present?
         payment.update_attributes!(customer_order: @customer_order)
         payment.capture
@@ -60,16 +55,15 @@ class Customers::CustomerOrdersController < Customers::BaseController
       current_cart.destroy
     end
 
-    # email_service = Services::Overseers::EmailMessages::SalesMailer.new(@customer_order, current_overseer)
-    # email_service.send_order_confirmation_email
+    email_service = Services::Overseers::EmailMessages::SalesMailer.new(@customer_order, current_overseer)
+    email_service.send_order_confirmation_email
 
-    # account_managers = @customer_order.company.contacts.where(role: 'account_manager')
-    # if account_managers.present?
-    #   email_service.send_order_approval_email(account_managers)
-    # end
+    account_managers = @customer_order.company.contacts.where(role: 'account_manager')
+    if account_managers.present?
+      email_service.send_order_approval_email(account_managers)
+    end
 
-    redirect_to order_confirmed_customers_customer_order_path(@customer_order)
-    # sign_out_and_redirect(current_customers_contact) 
+    redirect_to order_confirmed_customers_customer_order_path(@customer_order) 
   end
 
   def show
@@ -107,8 +101,6 @@ class Customers::CustomerOrdersController < Customers::BaseController
     else
       render template: 'customers/customer_orders/order_confirmed'
     end
-    # sleep(10)
-    # sign_out_and_redirect(current_customers_contact)
   end
 
   def index
