@@ -15,7 +15,8 @@ class Customers::CartController < Customers::BaseController
     @endpoint = current_api_request.payload["Request"]["PunchOutSetupRequest"]["BrowserFormPost"]["URL"]
     @data = service.call
 
-    current_cart.destroy
+    current_customers_contact.cart = nil
+    current_customers_contact.save
     render 'punchout_cart'
   end
 
