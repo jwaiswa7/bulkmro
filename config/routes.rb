@@ -974,6 +974,7 @@ Rails.application.routes.draw do
       collection do
         get 'punchout'
         get 'punchout_cart'
+        get 'manual_punchout'
         get 'checkout'
         post 'update_cart_details'
         post 'update_billing_address'

@@ -25,6 +25,9 @@
         <%#= nav_item 'Orders', customers_orders_path, true %>
         <%= nav_item 'Products', customers_products_path, policy(:customer_product).index? %>
         <%#= nav_item 'Invoices', customers_invoices_path, true %>
+        <% if is_api_request? %>
+          <%= nav_item 'Manual Punchout', manual_punchout_customers_cart_path, true %>
+        <% end %>
       <% end %>
       <% if current_company.id == 11420 %>
         <%= nav_item 'Online Orders', customers_customer_orders_path, policy(:customer_order).index? %>
