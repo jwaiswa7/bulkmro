@@ -19,7 +19,7 @@ class Services::Api::OrderResponse < Services::Shared::BaseService
   def call
     node = CXML.builder
     node.cXML(build_attributes) do |doc|
-      doc.header {|n| cxml_header.render(n, true) } if cxml_header
+      doc.Header {|n| cxml_header.render(n, true) } if cxml_header
       punchout_order_message(node)
     end
 

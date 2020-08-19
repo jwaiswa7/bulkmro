@@ -23,7 +23,11 @@ class Customers::CartItemsController < Customers::BaseController
 
     if @cart_item.destroy
       respond_to do |format|
-        format.html { redirect_to customers_cart_path(current_cart), notice: flash_message(@cart_item, action_name) }
+        if is_api_request?
+          format.html { redirect_to punchout_customers_cart_path(current_cart), notice: flash_message(@cart_item, action_name) }
+        else
+          format.html { redirect_to customers_cart_path(current_cart), notice: flash_message(@cart_item, action_name) }
+        end
         format.js { render layout: false }
       end
     end

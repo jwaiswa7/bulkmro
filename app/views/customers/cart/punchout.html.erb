@@ -1,5 +1,5 @@
 <div class="col-12">
-  <%= simple_form_for([:customers, @cart], :url => punchout_cart_customers_cart_path, :method => :get) do |cart| %>
+  <%= simple_form_for([:customers, @cart], :url => customers_cart_path, :method => :patch) do |cart| %>
 
     <section class="pt-3 pt-lg-4 pb-2 pb-lg-3">
       <div class="d-md-flex justify-content-between">
@@ -58,7 +58,7 @@
                     <td>
                       <%= cart_item.hidden_field :id %>
                       <% if cart_item.object.customer_product.best_image.present? %>
-                        <%#= image_tag cart_item.object.customer_product.tiny_best_image, fallback_url: image_path('coming_soon.png'), check_remote: false %>
+                        <%= image_tag cart_item.object.customer_product.tiny_best_image, fallback_url: image_path('coming_soon.png'), check_remote: false %>
                       <% else %>
                         <img src="<%= image_path('coming_soon.png') %>" alt="<%= cart_item.object.customer_product.sku %>" height="40" />
                       <% end %>
@@ -87,27 +87,31 @@
             <div class="form-row">
               <div class="col-md-12">
                 <div class="form-row">
-                  <div class="col-md-5">
-                    <div class="form-row">
+                  <div class="col-md-10">
+                    <div class="form-row mt-2">
                       <div class="col-6">
-                        <%= link_to "Empty Cart", empty_cart_customers_cart_path, class: "btn btn-block btn-outline-danger" %>
+                        <%= link_to customers_products_path, :class => "btn btn-outline-success btn-block btn-lg" do %>
+                          Add More Products
+                        <% end %>
                       </div>
                       <div class="col-6">
-                        <%= cart.submit "Update Cart", name: "show_cart", class: "btn btn-block btn-warning" %>
+                        <%= cart.submit "Update Cart", class: "btn btn-block btn-warning btn-lg" %>
                       </div>
                     </div>
                   </div>
-                  <div class="col-md-7 mt-2 mt-md-0">
-                    <%= button_tag(type: "submit", class: "btn btn-success btn-block checkout-button") do %>
-                      <i class="fal fa-shopping-cart mr-1"></i>Checkout
-                    <% end %>
+                  <div class="col-md-2 mt-2">
+                    <%= link_to "Empty Cart", empty_cart_customers_cart_path, class: "btn btn-block btn-danger btn-lg" %>
                   </div>
                 </div>
               </div>
+              <% if cart.object.items.size > 0 %>
+                <div class="col-md-12">
+                  <div class="form-row mt-4">
+                    <%= link_to "Order Summary", punchout_cart_customers_cart_path, class: "mt-2 btn btn-block btn-success btn-lg" %>
+                  </div>
+                </div>
+              <% end %>
             </div>
-            <%= link_to customers_products_path, :class => "mt-2 btn btn-outline-success btn-block btn-sm" do %>
-              Add More Products
-            <% end %>
           </div>
         </div>
       </div>
