@@ -71,7 +71,9 @@
                     <%= link_to "Shopping Cart", punchout_customers_cart_path, class: "btn btn-block btn-warning btn-lg" %>
                   </div>
                   <div class="col-6">
-                    <%= f.submit "Checkout", class: "btn btn-block btn-success btn-lg" %>
+                    <%= button_tag(type: "submit", class: "btn btn-block btn-success btn-lg") do %>
+                      Checkout
+                    <% end %>
                   </div>
                 </div>
               </div>
