@@ -22,14 +22,14 @@ class Overseers::SuppliersController < Overseers::BaseController
     service = Services::Overseers::Finders::Companies.new(params.merge(base_filter))
     service.call
     @indexed_companies = service.indexed_records
-    @companies = service.records
+    @companies = service.records.active
     authorize_acl @companies
 
     render 'customized_index'
   end
 
   def autocomplete
-    @suppliers = ApplyParams.to(Company.acts_as_supplier, params)
+    @suppliers = ApplyParams.to(Company.acts_as_supplier.active, params)
     authorize_acl @suppliers
   end
 
