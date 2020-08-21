@@ -163,6 +163,9 @@
                         <% if @arn_number.present? && @arn_date.present? %>
                           ARN # <%= @arn_number %>,
                           DOF: <%=@arn_date %>
+                        <% elsif defined?(arn_number) && arn_number.present? && defined?(arn_date) && arn_date.present? %>
+                        ARN # <%= arn_number %>,
+                        DOF: <%= arn_date %>
                         <% end %>
                     </td>
                     <td style="width: 2%;"></td>
@@ -176,10 +179,13 @@
                       <% end %>
                       PAN No.: AAGCB7343G
                         <br>
-                        <% if@arn_number.present? && @arn_date.present? %>
-                          ARN # <%= @arn_number %>,
-                          DOF: <%=@arn_date %>
-                        <% end %>
+                      <% if @arn_number.present? && @arn_date.present? %>
+                        ARN # <%= @arn_number %>,
+                        DOF: <%=@arn_date %>
+                      <% elsif defined?(arn_number) && arn_number.present? && defined?(arn_date) && arn_date.present? %>
+                        ARN # <%= arn_number %>,
+                        DOF: <%= arn_date %>
+                      <% end %>
                     </td>
                   </tr>
                   </tbody>

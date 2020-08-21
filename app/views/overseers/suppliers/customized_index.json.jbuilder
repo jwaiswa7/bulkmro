@@ -8,6 +8,7 @@ json.data (@companies) do |company|
                   company.nature_of_business&.titleize || '-',
                   company.supplied_brands.map(&:name)&.uniq&.join(', ').upcase,
                   company.default_contact&.name || "<div class='text-red align-middle'>No Default Contact</div>",
+                  format_boolean(company.is_active),
                   if company.is_supplier? && company.rating.present? && company.rating > 0
                     format_star(company.rating)
                   elsif company.is_supplier?
@@ -26,6 +27,7 @@ json.columnFilters [
                        [],
                        [],
                        [{ "source": autocomplete_supplier_overseers_accounts_path }],
+                       [],
                        [],
                        [],
                        [],
