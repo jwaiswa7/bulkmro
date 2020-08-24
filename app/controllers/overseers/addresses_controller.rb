@@ -35,6 +35,12 @@ class Overseers::AddressesController < Overseers::BaseController
   def get_gst_code
     authorize_acl :address
     @address_state = AddressState.indian.find(params[:state_id])
-    render json: { gst_code: @address_state.gst_code }
+    # Daman and Diu gst code changed in august 2020 from 25 to 26, we have to keep previous gst for existing data
+    if @address_state.id == 470 && Date.today <= Date.new(2020, 8, 21)
+      @gst_code = 25
+    else
+      @gst_code = @address_state.gst_code
+    end
+    render json: { gst_code: @gst_code }
   end
 end
