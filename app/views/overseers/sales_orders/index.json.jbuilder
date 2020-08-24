@@ -1,5 +1,4 @@
 json.data (@sales_orders) do |sales_order|
-  # binding.pry if sales_order.inquiry.inquiry_number == 9565
   json.array! [
                   [
                       if is_authorized(sales_order, 'relationship_map')
