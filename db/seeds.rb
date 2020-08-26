@@ -167,13 +167,6 @@
 #   Industry.create(name: industry)
 # end
 #
-# Overseer.create!(
-#     :first_name => 'Ashwin',
-#     :last_name => 'Goyal',
-#     :email => 'ashwin.goyal@bulkmro.com',
-#     :password => 'abc123',
-#     :password_confirmation => 'abc123'
-# )
 #
 #
 # devang = Overseer.create!(first_name: 'Devang', :last_name => 'Shah', role: :sales, :email => 'devang.shah@bulkmro.com', :password => 'abc123', :password_confirmation => 'abc123')
@@ -1418,7 +1411,6 @@
 # #
 #
 #
-# # Overseer.find_by_email('ashwin.goyal@bulkmro.com').update_attributes(:role => Overseer.find_by_email('ashwin.goyal@bulkmro.com').sales? ? :admin : :sales)
 # #
 #
 # account = Account.create(name: 'Ingersoll Rand (India) Ltd.', alias: 'IR')
