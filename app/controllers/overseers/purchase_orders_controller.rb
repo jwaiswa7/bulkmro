@@ -323,13 +323,14 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
 
   def cancelled_purchase_order
     authorize_acl @purchase_order
-    if @purchase_order.present?
-      @purchase_order.status = 'cancelled'
-      @purchase_order.po_request.status = 'Cancelled'
-      @purchase_order.save!
-      @purchase_order.po_request.save!
+    @status = Services::Overseers::PurchaseOrders::CancelPurchaseOrder.new(@purchase_order, purchase_order_params.merge(status: 'cancelled')).call
+    if @status.key?(:empty_message)
+      render json: {error: 'Cancellation Message is Required'}, status: 500
+    elsif @status[:status] == 'success'
+      render json: {url: overseers_purchase_orders_path, notice: @status[:message]}, status: 200
+    elsif @status[:status] == 'failed'
+      render json: {error: @status[:message]}, status: 500
     end
-    render json: {sucess: 'Successfully updated ', url: overseers_purchase_orders_path}, status: 200
   end
 
   def render_modal_form
@@ -362,30 +363,31 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
 
   private
 
-    def get_supplier(purchase_order, product_id)
-      if purchase_order.metadata['PoSupNum'].present?
-        product_supplier = (Company.find_by_legacy_id(purchase_order.metadata['PoSupNum']) || Company.find_by_remote_uid(purchase_order.metadata['PoSupNum']))
-        return product_supplier if purchase_order.inquiry.suppliers.include?(product_supplier) || purchase_order.is_legacy?
-      end
-      if purchase_order.inquiry.final_sales_quote.present?
-        product_supplier = purchase_order.inquiry.final_sales_quote.rows.select { |sales_quote_row| sales_quote_row.product.id == product_id || sales_quote_row.product.legacy_id == product_id }.first
-        product_supplier.supplier if product_supplier.present?
-      end
+  def get_supplier(purchase_order, product_id)
+    if purchase_order.metadata['PoSupNum'].present?
+      product_supplier = (Company.find_by_legacy_id(purchase_order.metadata['PoSupNum']) || Company.find_by_remote_uid(purchase_order.metadata['PoSupNum']))
+      return product_supplier if purchase_order.inquiry.suppliers.include?(product_supplier) || purchase_order.is_legacy?
     end
-
-    def set_purchase_order
-      @purchase_order = PurchaseOrder.find(params[:id])
+    if purchase_order.inquiry.final_sales_quote.present?
+      product_supplier = purchase_order.inquiry.final_sales_quote.rows.select { |sales_quote_row| sales_quote_row.product.id == product_id || sales_quote_row.product.legacy_id == product_id }.first
+      product_supplier.supplier if product_supplier.present?
     end
+  end
 
-    def purchase_order_params
-      params.require(:purchase_order).permit(
+  def set_purchase_order
+    @purchase_order = PurchaseOrder.find(params[:id])
+  end
+
+  def purchase_order_params
+    params.require(:purchase_order).permit(
         :material_status,
-          :supplier_dispatch_date,
-          :followup_date,
-          :logistics_owner_id,
-          :revised_supplier_delivery_date,
-          comments_attributes: [:id, :message, :created_by_id, :updated_by_id],
-          attachments: []
-      )
-    end
+        :supplier_dispatch_date,
+        :followup_date,
+        :logistics_owner_id,
+        :created_by_id,
+        :revised_supplier_delivery_date,
+        comments_attributes: [:id, :message, :created_by_id, :updated_by_id],
+        attachments: []
+    )
+  end
 end

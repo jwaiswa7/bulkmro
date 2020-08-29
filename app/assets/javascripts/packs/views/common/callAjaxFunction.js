@@ -15,6 +15,15 @@ const callAjaxFunction = function(json){
             $(json.className).empty();
             $(json.className).append(data);
             $(json.modalId).modal('show');
+            $('#submitPO').prop('disabled', true);
+            $('#purchase_order_comments_attributes_0_message').keyup(function() {
+                if($(this).val() == '' || $(this).val() == undefined) {
+                    $('#submitPO').prop('disabled', true);
+                }
+                else {
+                    $('#submitPO').prop('disabled', false);
+                }
+            });
             modalSubmit(json.modalId, json.buttonClassName);
             $(json.modalId).on('hidden.bs.modal', function () {
                 json.this.removeClass('disabled')
