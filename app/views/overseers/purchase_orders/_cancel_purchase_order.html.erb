@@ -24,13 +24,12 @@
           <div class="modal-footer bmro-mfp">
             <div class="form-row">
               <div class="col-6">
-                <%= button_tag(type: "submit", name: "update_sent_at_field", class: "btn btn-success bmro-button btn-block confirm-cancel", id: "submitPO") do %>
+                <%= button_tag(type: "submit", name: "update_sent_at_field", class: "btn btn-success bmro-button btn-block confirm-cancel") do %>
                   <i class="far fa-check mr-1"></i> YES
                 <% end %>
               </div>
               <div class="col-6">
-<!--                <a id="rejection-purchase-order-button" data-purchase_order-id="<%#= @purchase_order.id %>" class="btn-block bmro-button btn btn-danger text-white" remote="true"><i class="fa fa-bann mr-1"></i>No</a>-->
-                <button type="submit" class="btn-block bmro-button btn btn-danger text-white" data-dismiss="modal" id="cancelPO">
+                <button type="submit" class="btn-block bmro-button btn btn-danger text-white" data-dismiss="modal">
                   <i class="fa fa-bann mr-1"></i> NO
                 </button>
               </div>

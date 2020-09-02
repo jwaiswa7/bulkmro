@@ -15,8 +15,8 @@ const callAjaxFunction = function(json){
             $(json.className).empty();
             $(json.className).append(data);
             $(json.modalId).modal('show');
-            $('#submitPO').prop('disabled', true);
             if($(json.commentClass).length) {
+                $(json.buttonClassName).prop('disabled', true);
                 $(json.commentClass).keyup(function () {
                     if ($(this).val() == '' || $(this).val() == undefined) {
                         $(json.buttonClassName).prop('disabled', true);
@@ -57,8 +57,14 @@ const modalSubmit = (modalId, buttonClassName) => {
                 }
             },
             error: function error(_error) {
-                if (_error.responseJSON && _error.responseJSON.error)
+                if (_error.responseJSON && _error.responseJSON.error && _error.responseJSON.error.base) {
+                    $(formSelector).find('.error').empty().html("<div class='p-1'>" + _error.responseJSON.error.base + "</div>");
+                }
+                else
+                {
                     $(formSelector).find('.error').empty().html("<div class='p-1'>" + _error.responseJSON.error + "</div>");
+                }
+
             }
         });
         event.preventDefault();
