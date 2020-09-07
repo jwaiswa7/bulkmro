@@ -24,7 +24,7 @@ class Overseers::DeliveryChallansController < Overseers::BaseController
   end
 
   def create
-    @delivery_challan = DeliveryChallan.new(bank_params)
+    @delivery_challan = DeliveryChallan.new(delivery_challan_params)
     authorize_acl @delivery_challan
 
     if @delivery_challan.save

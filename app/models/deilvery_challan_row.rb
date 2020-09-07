@@ -1,4 +1,4 @@
-class DcRow < ApplicationRecord
+class DeliveryChallanRow < ApplicationRecord
   belongs_to :delivery_challan, class_name: 'DeliveryChallan'
   belongs_to :inquiry_product
   belongs_to :product
