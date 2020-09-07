@@ -3,7 +3,10 @@ class DeliveryChallan < ApplicationRecord
 
   belongs_to :inquiry
   belongs_to :sales_order
-  has_many :rows, class_name: 'DcRows'
+  belongs_to :purchase_order
+  belongs_to :ar_invoice_request
+  
+  has_many :rows, class_name: 'Dc Rows'
   
   has_one_attached :customer_request_attachment
 
@@ -13,5 +16,10 @@ class DeliveryChallan < ApplicationRecord
     'Urgent Delivery of Goods and SO not ready': 30,
     'Free Samples to be delivered': 40,
     'Partial Delivery of missed out goods on previous delivery': 50
+  }
+
+  enum goods_type: {
+    "Transfer - Outward": 10,
+    "Transfer - Inward": 20
   }
 end
