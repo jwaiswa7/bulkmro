@@ -42,9 +42,11 @@
         </div>
         </div>
       </div>
-      <%= button_tag(type: "submit", class: "btn btn-warning btn-block bmro-button") do %>
-        <i class="fal fa-pen"></i> <%= submit_text(@tax_code) %>
+      <% if current_overseer.admin? %>
+        <%= button_tag(type: "submit", class: "btn btn-warning btn-block bmro-button") do %>
+          <i class="fal fa-pen"></i> <%= submit_text(@tax_code) %>
+        <% end %>
       <% end %>
-     </div> 
+     </div>
   <% end %>
 </div>
