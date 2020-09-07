@@ -33,9 +33,10 @@ json.data (@companies) do |company|
                   company.addresses.size,
                   company.contacts.size,
                   company.inquiries.size,
-                  company.customer_products.size,
+                  company.is_supplier? ? company.supplier_products.size : company.customer_products.size,
                   (company.addresses.present? && company.is_international) ? 'International' : company.pan,
                   format_boolean(company.validate_pan),
+                  format_boolean(company.is_active),
                   if company.is_supplier? && company.rating.present? && company.rating > 0
                     format_star(company.rating)
                   elsif company.is_supplier?
@@ -58,6 +59,7 @@ json.columnFilters [
                        [],
                        [],
                        [{ "label": 'Yes', "value": true }, { "label": 'No', "value": false }],
+                       [],
                        [],
                        [],
                        [],

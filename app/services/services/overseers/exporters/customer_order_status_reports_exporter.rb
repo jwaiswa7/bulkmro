@@ -20,10 +20,11 @@ class Services::Overseers::Exporters::CustomerOrderStatusReportsExporter < Servi
       service = Services::Overseers::Finders::CustomerOrderStatusReports.new({}, @overseer, paginate: false)
       service.call
       records = service.indexed_records
-      sales_orders = Services::Overseers::SalesOrders::FetchCustomerOrderStatusReportData.new(records, 'All').fetch_data_bm_wise
+      records = Services::Overseers::SalesOrders::FetchCustomerOrderStatusReportData.new(records, 'All').fetch_data_bm_wise
     end
 
     @export = Export.create!(export_type: 92, status: 'Processing', filtered: false, created_by_id: @overseer.id, updated_by_id: @overseer.id)
+
     records.each do |sales_order|
       rows.push(
         inquiry_number: sales_order[:inquiry_number],

@@ -24,22 +24,22 @@ class Overseers::Inquiries::PoRequestsController < Overseers::Inquiries::BaseCon
     @po_request.assign_attributes(po_request_params.merge(overseer: current_overseer))
     authorize_acl @po_request
     if @po_request.valid?
-      # todo allow only in case of zero form errors
-      if @po_request.purchase_order.present? && @po_request.stock_status == 'Stock Requested'
-        @po_request.stock_status = 'Stock Supplier PO Created'
-        @po_request.approved_by = current_overseer
-      else @po_request.changed?
-           @po_request.stock_status = 'Supplier Stock PO: Amendment Pending'
-      end
       po_request_row_ids = []
       params[:po_request][:rows_attributes].each do |key, value|
         if value.key?('_destroy')
           po_request_row_ids << value['id']
         end
       end
-      purchase_order = @po_request.purchase_order
-      if purchase_order.present? && po_request_row_ids.present?
-        purchase_order.rows.where(po_request_row_id: po_request_row_ids).update_all(po_request_row_id: nil)
+
+      if @po_request.purchase_order.present? && po_request_row_ids.present?
+        @po_request.purchase_order.rows.where(po_request_row_id: po_request_row_ids).update_all(po_request_row_id: nil)
+      end
+      # todo allow only in case of zero form errors
+      if @po_request.purchase_order.present? && @po_request.stock_status == 'Stock Requested'
+        @po_request.stock_status = 'Stock Supplier PO Created'
+        @po_request.approved_by = current_overseer
+      else @po_request.changed?
+           @po_request.stock_status = 'Supplier Stock PO: Amendment Pending'
       end
       ActiveRecord::Base.transaction do
         if @po_request.stock_status_changed?

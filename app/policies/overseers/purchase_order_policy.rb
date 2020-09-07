@@ -6,7 +6,7 @@ class Overseers::PurchaseOrderPolicy < Overseers::ApplicationPolicy
   end
 
   def edit?
-    logistics? || admin?
+    true
   end
 
   def autocomplete?

@@ -122,7 +122,7 @@ company_specific:
 
 itops_mail:
   user_mail: 'itops@bulkmro.com'
-  smtp_password: 'dpeloqjmukgkmqim'
+  smtp_password: 'qtbhuetxezlcdvqg'
 
 #role id for role = "Account Manager" from AclRole table
 account_manager:
@@ -137,3 +137,18 @@ account_dashboard_task: '{
   "vijay.manjrekar@bulkmro.com":["GRPO Pending","AR Invoice requested","Pending AP Invoice","SO: Pending Accounts Approval"],
   "akshay.jindal@bulkmro.com":["GRPO Pending","AR Invoice requested","Pending AP Invoice","SO: Pending Accounts Approval"]
 }'
+
+# For ACL role = "Inside Sales Manager" to give access create PO
+inside_sales_manager:
+  role_id: 15
+
+currency:
+  name: "₹"
+
+aggregator:
+  name: 'Bulk MRO Industrial Supply Pvt. Ltd.'
+  alias: 'Bulk MRO'
+  website: 'http://www.bulkmro.com/'
+  address: ''
+  country: 'India'
+  country_code: 'IN'
