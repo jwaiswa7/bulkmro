@@ -5,8 +5,8 @@ class DeliveryChallan < ApplicationRecord
   belongs_to :sales_order
   belongs_to :purchase_order
   belongs_to :ar_invoice_request
-  
-  has_many :rows, class_name: 'Dc Rows'
+
+  has_many :rows, class_name: 'DeliveryChallanRow', dependent: :destroy
   
   has_one_attached :customer_request_attachment
 
