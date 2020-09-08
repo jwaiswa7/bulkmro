@@ -1,7 +1,7 @@
 json.data (@tax_codes) do |tax_code|
   json.array! [
                   [
-                      if is_authorized(tax_code, 'edit')
+                      if is_authorized(tax_code, 'edit') && current_overseer.admin?
                         row_action_button(edit_overseers_tax_code_path(tax_code), 'pencil', 'Edit Tax Code', 'warning')
                       end,
                   ].join(' '),

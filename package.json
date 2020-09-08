@@ -27,7 +27,7 @@
     "popper.js": "^1.14.4",
     "raty-fa": "https://github.com/Jacob87/raty-fa",
     "select2": "4.0.5",
-    "select2-theme-bootstrap4": "https://github.com/angel-vladov/select2-bootstrap-theme",
+    "select2-theme-bootstrap4": "^1.0.0",
     "stickybits": "^3.5.6",
     "treantjs": "^1.0.0",
     "vue": "^2.5.17",
@@ -39,12 +39,12 @@
   "author": "Bulkmro",
   "license": "MIT",
   "devDependencies": {
-    "jshint": "^2.10.1",
-    "webpack-dev-server": "2.11.2",
     "gulp": "^3.9.1",
     "gulp-autoprefixer": "^6.0.0",
     "gulp-connect": "^5.5.0",
-    "gulp-util": "^3.0.8"
+    "gulp-util": "^3.0.8",
+    "jshint": "^2.10.1",
+    "webpack-dev-server": "2.11.2"
   },
   "scripts": {
     "prefix": "gulp prefix"
