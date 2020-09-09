@@ -1,0 +1,44 @@
+
+<div class="page fixed">
+  <div class="main-container col1-layout">
+    <div class="main">
+      <div class="col-main">
+        <div id="compare-wrapper">
+          <div class="compare_open" id="compare_popup"></div>
+          <div style=" float:left; width: 49%; padding-top: 1px;padding-bottom: 10px; text-align: left;">
+            <%= wicked_pdf_image_tag 'BMIS_Logo_PNG.png', :width => "50%" %>
+          </div>
+          <div style="float:right;width:49%; padding-top: 1px;padding-bottom: 10px;text-align: right; vertical-align:center">
+            <b><span style="color:#000; font-size: 17.5px;">DELIVERY CHALLAN #<%= @delivery_challan.id %></span></b>
+          </div>
+          <br clear="all">
+          <%#= render 'shared/layouts/pdf_templates/sales_orders/addresses', formats=>[:pdf], locals: {record: @delivery_challan.inquiry.bill_from} %>
+          <div style="border:1px solid; border-radius: 5px;padding: 2px">
+          <table style="width: 100%;" cellspacing="0" border="0">
+            <tr>
+              <td style="font-size: 16px;text-align: -webkit-center;font-weight: bold;">
+                <font color="#f58220">Bulk MRO Industrial Supply Pvt. Ltd.</font></td>
+            </tr>
+            <tr>
+              <td style="text-align: center;">
+                <font color="#000000">2nd Floor, A Wing, Todi Estate, Sun Mill Compound, Lower Parel West, </font></td>
+            </tr>
+            <tr>
+              <td style="text-align: center;"><font color="#000000"> Mumbai 400013, Maharashtra, India</font></td>
+            </tr>
+            <tr>
+              <td style="text-align: center;">
+                <font style="position: relative;top: -5px;" color="#000000">Telephone: +91-22-4921-4921
+                  <span style="padding-left: 1%;padding-right: 1%;font-weight:bold;font-size: 20px;position: relative;top: -2px;">.</span>Website:
+                  www.bulkmro.com
+                  <span style="padding-left: 1%;padding-right: 1%;font-weight:bold;font-size: 20px;position: relative;top: -2px;">.</span>Email:
+                  sales@bulkmro.com</font></td>
+            </tr>
+          </table>
+          </div>
+          <br clear="all">
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

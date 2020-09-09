@@ -22,4 +22,11 @@ class DeliveryChallan < ApplicationRecord
     "Transfer - Outward": 10,
     "Transfer - Inward": 20
   }
+
+  def filename(include_extension: false)
+    [
+        ['del', id].join('_'),
+        ('pdf' if include_extension)
+    ].compact.join('.')
+  end
 end
