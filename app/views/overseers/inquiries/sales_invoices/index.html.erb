@@ -45,7 +45,7 @@
             <% end %>
 
             <% if policy(sales_invoice).view_pod? && (sales_invoice.pod_rows.count > 0) %>
-              <%= row_action_button(view_pod_overseers_sales_invoice_path(sales_invoice), 'bullseye', 'View Proof of Delivery', 'info') %>
+              <%= row_action_button(view_pod_overseers_sales_invoice_path(sales_invoice), 'eye', 'View Proof of Delivery', 'info') %>
             <% end %>
           </td>
           <td><%= sales_invoice.invoice_number %></td>
