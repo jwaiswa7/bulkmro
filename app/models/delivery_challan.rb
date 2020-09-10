@@ -22,4 +22,8 @@ class DeliveryChallan < ApplicationRecord
     "Transfer - Outward": 10,
     "Transfer - Inward": 20
   }
+
+  def total_qty
+    self.rows.sum(:quantity).to_i
+  end
 end

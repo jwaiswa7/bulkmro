@@ -231,6 +231,7 @@
               <%= nav_dropdown_sub_item 'Inward Delivered Queue', inward_dispatch_delivered_queue_overseers_purchase_orders_path, is_authorized(:purchase_order, 'inward_dispatch_delivered_queue') %>
               <%= nav_dropdown_sub_item 'Inward Completed Queue', inward_completed_queue_overseers_purchase_orders_path, is_authorized(:purchase_order, 'inward_completed_queue') %>
               <%= nav_dropdown_sub_item 'Cancelled Inward Dispatches', cancelled_inward_dispatches_overseers_purchase_orders_path, is_authorized(:purchase_order, 'cancelled_inward_dispatches') %>
+              <%= nav_dropdown_sub_item 'Delivery Challans', overseers_delivery_challans_path, is_authorized(:delivery_challan, 'index_delivery_challans') %>
             </div>
           </div>
           <div class="bmro-small-container">
