@@ -51,7 +51,15 @@ Rails.application.routes.draw do
 
   namespace 'overseers' do
     get '/docs/*page' => 'docs#index'
-    resources :delivery_challans
+    resources :delivery_challans do
+      collection do
+        get 'next_step'
+      end
+
+      member do
+        get 'preview'
+      end
+    end
     resources :payment_collection_emails
     resources :attachments
     resources :review_questions
