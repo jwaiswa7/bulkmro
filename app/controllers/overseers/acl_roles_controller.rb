@@ -31,6 +31,7 @@ class Overseers::AclRolesController < Overseers::BaseController
     begin
       if @acl_role.present?
         checked_ids = params[:checked_ids]
+        unchecked_ids = params[:unchecked_ids]
         menu_checked_ids = params[:menu_checked_ids]
         checked_ids = checked_ids + menu_checked_ids
         @acl_role.update_attribute(:role_resources, checked_ids.uniq.to_json)
@@ -40,8 +41,8 @@ class Overseers::AclRolesController < Overseers::BaseController
 
         #update overseer resources
         Overseer.where(acl_role: @acl_role).each do |overseer|
-          overseer_resources = ActiveSupport::JSON.decode(overseer.acl_resources)
-          new_resources = overseer_resources + ActiveSupport::JSON.decode(@acl_role.role_resources)
+          overseer_resources = ActiveSupport::JSON.decode(overseer.acl_resources).uniq
+          new_resources = overseer_resources + ActiveSupport::JSON.decode(@acl_role.role_resources).uniq - unchecked_ids
           overseer.update_attribute(:acl_resources, new_resources.uniq.to_json)
         end
 
