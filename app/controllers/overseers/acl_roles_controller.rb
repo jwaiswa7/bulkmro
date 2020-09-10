@@ -31,9 +31,9 @@ class Overseers::AclRolesController < Overseers::BaseController
     begin
       if @acl_role.present?
         checked_ids = params[:checked_ids]
+        unchecked_ids = params[:unchecked_ids]
         menu_checked_ids = params[:menu_checked_ids]
         checked_ids = checked_ids + menu_checked_ids
-        unchecked_ids = ActiveSupport::JSON.decode(@acl_role.role_resources) - checked_ids
         @acl_role.update_attribute(:role_resources, checked_ids.uniq.to_json)
         @acl_role.update_attribute(:is_default, params[:is_default])
 
