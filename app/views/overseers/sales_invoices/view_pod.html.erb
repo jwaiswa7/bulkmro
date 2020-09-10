@@ -16,13 +16,19 @@
           <% if @invoice.pod_rows.present? %>
             <% @invoice.pod_rows.each do |pod| %>
               <% pod.attachments.each do |attachment| %>
-                  <td> <%= link_to attachment, target: '_blank' do %>
+                <td>
+                  <%= link_to url_for(attachment), class: 'btn btn-success btn-rounded align-self-center btn-block-sm-down ml-1 mb-md-0 mb-1', target: '_blank', :"data-toggle" => 'tooltip', :status => attachment.filename do %>
+                    <i class="fal fa-download"></i>
+                  <% end %>
+                  <span class="ml-2">
+                    <%= link_to attachment, target: '_blank' do %>
                       <%= attachment.filename %>
                     <% end if attachment.present? %>
-                  </td>
-                  <td><%= pod.grn_no %></td>
-                  <td><%= pod.delivery_date %></td>
-                  <td><%=  @invoice.pod_status %></td>
+                    </span>
+                </td>
+                <td><%= pod.grn_no %></td>
+                <td><%= pod.delivery_date %></td>
+                <td><%= @invoice.pod_status %></td>
                 </tr>
               <% end if pod.attachments.attached? %>
             <% end %>
