@@ -42,4 +42,11 @@ class DeliveryChallan < ApplicationRecord
   def total_qty
     self.rows.sum(:quantity).to_i
   end
+
+  def filename(include_extension: false)
+    [
+        ['del', id].join('_'),
+        ('pdf' if include_extension)
+    ].compact.join('.')
+  end
 end

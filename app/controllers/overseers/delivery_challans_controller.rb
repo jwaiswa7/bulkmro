@@ -16,6 +16,12 @@ class Overseers::DeliveryChallansController < Overseers::BaseController
 
   def show
     authorize_acl @delivery_challan
+    respond_to do |format|
+      format.html {render 'show'}
+      format.pdf do
+        render_pdf_for(@delivery_challan, locals: {delivery_challan: @delivery_challan})
+      end
+    end
   end
 
   def new
