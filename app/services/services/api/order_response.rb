@@ -52,6 +52,7 @@ class Services::Api::OrderResponse < Services::Shared::BaseService
         'ItemDetail' => { 'Description' => item.customer_product.name, 
           'UnitOfMeasure' => item.customer_product.measurement_unit.present? ? item.customer_product.measurement_unit.name : 'EA',
           'ClassificationUnspsc' => '',
+          'LeadTime' => item.customer_product&.lead_time,
           'UnitPrice' => { 'Money' => {'currency' => 'INR', 'content' => item.customer_product.customer_price.to_i } }
         }
       }
