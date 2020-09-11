@@ -11,14 +11,13 @@
                 <%= image_tag 'BMIS_Logo_PNG.png', :width => "40%" %>
               </div>
               <div style="float:right;width:49%; padding-top: 1px;padding-bottom: 10px;text-align: right; vertical-align:center">
-                <% debugger %>
-                <b><span style="color:#000; font-size: 17.5px;">DELIVERY CHALLAN #<%= @delivery_challan.id %></span></b>
+                <b><span style="color:#000; font-size: 17.5px;">DELIVERY CHALLAN #<%= @delivery_challan.delivery_challan_number %></span></b>
               </div>
               <br clear="all">
               <%# <%= render 'overseers/delivery_challans/address', record: @delivery_challan.inquiry.bill_from %> %>
               <br clear="all">
               <div style="background: #d3d3d3; border:1px solid; border-radius: 5px;padding-top: 1px;padding-bottom: 1px; text-align: center;">
-                <span><b>DELIVERY CHALLAN #: BMPL-V-1/2018-19</b></span>
+                <span><b>DELIVERY CHALLAN #: <%= @delivery_challan.delivery_challan_number %></b></span>
               </div>
               <br clear="all">
               <div style="border:1px solid; border-radius: 5px;">
