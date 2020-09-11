@@ -1,9 +1,10 @@
 json.data (@delivery_challans) do |delivery_challan|
   columns = [
       [
-          # if is_authorized(delivery_challan.inquiry, 'relationship_map') && policy(delivery_challan.inquiry).relationship_map?
-          #   row_action_button(relationship_map_overseers_inquiry_path(delivery_challan.inquiry.to_param), 'sitemap', 'Relationship Map', 'info', :_blank)
-          # end,
+          if is_authorized(delivery_challan, 'show')
+            row_action_button(overseers_delivery_challan_path(delivery_challan.to_param), 'eye', 'View', 'info', :_blank)
+            row_action_button(overseers_delivery_challan_path(delivery_challan.to_param, stamp: 1, format: :pdf), 'file-alt', 'Pdf with Signature', 'success', :_blank, 'get', '', false, 'O')
+          end,
           # if is_authorized(delivery_challan.inquiry, 'new_freight_request') && policy(delivery_challan.inquiry).new_freight_request?
           #   row_action_button(new_overseers_freight_request_path(inquiry_id: delivery_challan.inquiry.to_param), 'external-link', 'New Freight Request', 'warning')
           # end,

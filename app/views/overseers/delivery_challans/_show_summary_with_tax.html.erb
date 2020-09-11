@@ -51,7 +51,7 @@
                       <span style="float:right">:</span>
                     </td>
                     <td align="left" colspan="6" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
-                      <span><%=@delivery_challan.goods_type %></span>
+                      <span><%= @delivery_challan.goods_type %></span>
                     </td>
                   </tr>
                   <tr>
@@ -186,22 +186,59 @@
                   <tr>
                     <th align="center" valign="center">
                       <b><span>Sr.<br>
-                    No.</span></b></th>
+                        No.</span></b></th>
                     <th align="center" valign="center">
                       <b><span>SKU</span></b></th>
                     <th align="center" valign="center">
                       <b><span>Mfr<br>
-                    Model</span></b></th>
+                        Model</span></b></th>
                     <th align="center" valign="center">
                       <b><span>Description</span></b></th>
                     <th align="center" valign="center">
+                      <b><span>Make</span></b></th>
+                    <th align="center" valign="center">
                       <b><span>HSN/<br>
-                    SAC<br>
-                    Code</span></b></th>
+                        SAC<br>
+                        Code</span></b></th>
                     <th align="center" valign="center">
                       <b><span>UOM</span></b></th>
                     <th align="center" valign="center">
-                      <b><span>Quantity</span></b></th>
+                      <b><span>Qty</span></b></th>
+                    <th align="center" valign="center">
+                      <b><span>Unit Price<br>
+                        (<%= @delivery_challan.inquiry.currency || Currency.inr %>)</span></b></th>
+                    <th align="center" valign="center">
+                      <b><span>Subtotal<br>
+                        (<%= @delivery_challan.inquiry.currency || Currency.inr %>)</span></b></th>
+                    <th align="center" valign="center">
+                      <b><span>Tax<br>
+                        Rate</span></b></th>
+
+                    <% if @delivery_challan.sales_order.sales_quote.tax_summary.strip == '0' ||
+                        (@delivery_challan.sales_order.sales_quote.tax_summary.to_s.include? "IGST") %>
+                      <th align="center" valign="center">
+                        <b><span>IGST<br>
+                        Rate</span></b></th>
+                      <th align="center" valign="center">
+                        <b><span>IGST<br>
+                        Amt</span></b></th>
+                    <% else %>
+                      <th align="center" valign="center">
+                        <b><span>CGST<br>
+                        Rate</span></b></th>
+                      <th align="center" valign="center">
+                        <b><span>CGST<br>
+                        Amt</span></b></th>
+                      <th align="center" valign="center">
+                        <b><span>SGST<br>
+                        Rate</span></b></th>
+                      <th align="center" valign="center">
+                        <b><span>SGST<br>
+                        Amt</span></b></th>
+                    <% end %>
+                    <th align="center" valign="center">
+                      <b><span>Total<br>
+                        (<%= @delivery_challan.inquiry.currency || Currency.inr %>)</span></b></th>
                   </tr>
                   </thead>
                   <tbody>
@@ -220,6 +257,8 @@
                         <span><%= item.product.present? ? item.product.name : '' %></span>
                       </td>
                       <td align="center" valign="top">
+                        <span><%= item.product.brand.to_s %></span></td>
+                      <td align="center" valign="top">
                                         <span>
                     <%= item.sales_quote_row.tax_code.to_s %>
                                         </span>
@@ -230,29 +269,79 @@
                       <td align="center" valign="top">
                         <span><%= number_to_currency(item.quantity, precision: 2, unit: '') %></span>
                       </td>
-                    </tr>
+                      <td align="right" style="font-size: 9px;border-right: 1px solid #3c3c3c;border-bottom: 1px solid #3c3c3c;text-align: right;">
+                        <span><%= number_to_currency(item.sales_quote_row.converted_unit_selling_price, precision: 2, unit: '') %></span>
+                      </td>
+                      <td align="right" style="text-align:right;">
+                        <span><%= number_to_currency(item.sales_quote_row.converted_total_selling_price, precision: 2, unit: '') %></span>
+                      </td>
+                      <td align="center">
+                        <span><%= item.sales_quote_row.applicable_tax_percentage * 100 %>%</span></td>
+                      <% if @delivery_challan.sales_order.sales_quote.tax_summary.strip == '0' || @delivery_challan.sales_order.sales_quote.tax_summary.to_s.include?("IGST") %>
+                        <td align="center" style="font-size: 9px;border-right: 1px solid #3c3c3c;border-bottom: 1px solid #3c3c3c;">
+                          <span><%= item.sales_quote_row.applicable_tax_percentage * 100 %>%</span></td>
+                        <td align="right" style="text-align:right;">
+                          <span><%= number_to_currency(item.sales_quote_row.converted_total_tax, precision: 2, unit: '') %></span></td>
+                      <% else %>
+                        <td align="center" style="font-size: 9px;border-right: 1px solid #3c3c3c;border-bottom: 1px solid #3c3c3c;">
+                          <span><%= item.sales_quote_row.best_tax_rate.tax_percentage / 2 if item.best_tax_rate.present? %>%</span></td>
+                        <td align="right" style="text-align:right;">
+                          <span><%= number_to_currency(item.sales_quote_row.converted_total_tax.to_f / 2, precision: 2, unit: '') %></span>
+                        </td>
+                        <td align="center" style="font-size: 9px;border-right: 1px solid #3c3c3c;border-bottom: 1px solid #3c3c3c;">
+                          <span><%= item.sales_quote_row.best_tax_rate.tax_percentage / 2 if item.best_tax_rate.present? %>%</span></td>
+                        <td align="right" style="text-align:right;">
+                          <span><%= number_to_currency(item.sales_quote_row.converted_total_tax / 2, precision: 2, unit: '') %></span></td>
+                      <% end %>
+                      <td align="right">
+                        <span><%= number_to_currency(item.sales_quote_row.converted_total_selling_price_with_tax.to_f.round(2), precision: 2, unit: '') %></span>
+                      </td>                    </tr>
                   <% end %>
                   <tr class="pdf-table-total-row">
                     <td align="center" valign="top">
-                      <span></span>
+                      <span>&nbsp;</span></td>
+                    <td align="center" valign="top">
+                      <span><b><span>Total</span></b></span></td>
+                    <td align="center" valign="top">
+                      <span></span></td>
+                    <td align="center" valign="top">
+                      <span></span></td>
+                    <td align="center" valign="top">
+                      <span></span></td>
+                    <td align="center" valign="top">
+                      <span></span></td>
+                    <td align="center" valign="top">
+                      <span></span></td>
+                    <td align="center" valign="top">
+                      <span></span></td>
+                    <td align="center" valign="top">
+                      <span></span></td>
+                    <td align="right" style="text-align: right;" valign="top">
+                      <b><span><%= number_to_currency(@delivery_challan.sales_order.sales_quote.converted_total.to_f, precision: 2, unit: '') %></span></b>
                     </td>
                     <td align="center" valign="top">
-                      <span><b><span>Total</span></b></span>
-                    </td>
-                    <td align="center" valign="top">
-                      <span></span>
-                    </td>
-                    <td align="center" valign="top">
-                      <span></span>
-                    </td>
-                    <td align="center" valign="top">
-                      <span></span>
-                    </td>
-                    <td align="center" valign="top">
-                      <span></span>
-                    </td>
-                    <td align="center" valign="top">
-                      <span><%= @delivery_challan.rows.sum(&:quantity).to_f %></span>
+                      <span></span></td>
+                    <% if @delivery_challan.sales_order.sales_quote.tax_summary.strip == '0' ||
+                        (@delivery_challan.sales_order.sales_quote.tax_summary.to_s.include? "IGST") %>
+                      <td align="center" valign="top">
+                        <span></span></td>
+                      <td align="right" style="text-align: right;" valign="top">
+                        <b><span><%= number_to_currency(@delivery_challan.sales_order.sales_quote.converted_total_tax, precision: 2, unit: '') %></span></b>
+                      </td>
+                    <% else %>
+                      <td align="center" style="font-size: 9px; border-right: 1px solid #3c3c3c;" valign="top">
+                        <span></span></td>
+                      <td align="right" style="text-align: right;" valign="top">
+                        <b><span><%= number_to_currency(@delivery_challan.sales_order.sales_quote.converted_total_tax / 2, precision: 2, unit: '') %></span></b>
+                      </td>
+                      <td align="center" style="text-align: right;" valign="top">
+                        <span></span></td>
+                      <td align="right" style="text-align: right;" valign="top">
+                        <b><span><%= number_to_currency(@delivery_challan.sales_order.sales_quote.converted_total_tax / 2, precision: 2, unit: '') %></span></b>
+                      </td>
+                    <% end %>
+                    <td align="right" valign="top">
+                      <b><span><%= number_to_currency(@delivery_challan.sales_order.sales_quote.converted_total_with_tax, precision: 2, unit: '') %></span></b>
                     </td>
                   </tr>
                   </tbody>
@@ -287,4 +376,6 @@
     </div>
   </div>
 </div>
+
+
 

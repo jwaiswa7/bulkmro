@@ -1,1 +1,5 @@
-<%= render 'overseers/delivery_challans/show_summary' %>
+<% if @delivery_challan.display_rates.present? %>
+  <%= render 'overseers/delivery_challans/show_summary_with_tax' %>
+<% else %>
+  <%= render 'overseers/delivery_challans/show_summary' %>
+<% end %>
