@@ -31,6 +31,8 @@ class Overseers::DeliveryChallansController < Overseers::BaseController
     @delivery_challan = DeliveryChallan.new(delivery_challan_params)
 
     if @delivery_challan.save
+      dc_number = Services::Resources::Shared::UidGenerator.generate_dc_number(@delivery_challan)
+      @delivery_challan.update_attributes(delivery_challan_number: dc_number)
       redirect_to preview_overseers_delivery_challan_path(@delivery_challan), notice: flash_message(@delivery_challan, action_name)
     else
       render 'new'
