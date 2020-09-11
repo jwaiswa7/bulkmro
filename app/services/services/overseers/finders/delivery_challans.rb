@@ -4,14 +4,10 @@ class Services::Overseers::Finders::DeliveryChallans < Services::Overseers::Find
   end
 
   def all_records
-    indexed_records = if current_overseer.present? && !current_overseer.allow_inquiries?
-      super.filter(filter_by_owner(current_overseer.self_and_descendant_ids))
-    else
-      super
-    end
+    indexed_records = index_klass.all
 
-    if @status.present?
-      indexed_records = indexed_records.filter(filter_by_value(:status, @status))
+    if @base_filter.present?
+      indexed_records = indexed_records.filter(@base_filter)
     end
 
     if search_filters.present?
@@ -22,25 +18,26 @@ class Services::Overseers::Finders::DeliveryChallans < Services::Overseers::Find
       indexed_records = range_query(indexed_records)
     end
 
-    indexed_records = indexed_records.aggregations(aggregate_by_status('reason_key'))
+    if @prefix.present?
+      indexed_records = search_as_to_type(indexed_records, @prefix)
+    end
+
     indexed_records
   end
 
-  def perform_query(query_string)
+  def perform_query(query)
+    query = query[0, 35]
+
     indexed_records = index_klass.query(
       multi_match: {
-          query: query_string,
+          query: query,
           operator: 'and',
-          fields: index_klass.fields
-      }
-    ).order(sort_definition)
+          fields: %w[inquiry_number order_number company_id],
+          minimum_should_match: '100%'
+      }).order(sort_definition)
 
-    if current_overseer.present? && !current_overseer.allow_inquiries?
-      indexed_records = indexed_records.filter(filter_by_owner(current_overseer.self_and_descendant_ids))
-    end
-
-    if @status.present?
-      indexed_records = indexed_records.filter(filter_by_value(:status, @status))
+    if @base_filter.present?
+      indexed_records = indexed_records.filter(@base_filter)
     end
 
     if search_filters.present?
@@ -50,7 +47,11 @@ class Services::Overseers::Finders::DeliveryChallans < Services::Overseers::Find
     if range_filters.present?
       indexed_records = range_query(indexed_records)
     end
-    indexed_records = indexed_records.aggregations(aggregate_by_status('reason_key'))
+
+    if @prefix.present?
+      indexed_records = search_as_to_type(indexed_records, @prefix)
+    end
+
     indexed_records
   end
 
