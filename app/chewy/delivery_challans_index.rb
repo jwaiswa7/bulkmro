@@ -1,9 +1,8 @@
 class DeliveryChallansIndex < BaseIndex
-  define_type DeliveryChallan.all do
+  define_type DeliveryChallan.with_includes.all do
     field :id, type: 'integer'
     field :inquiry_id, type: 'integer'
     field :sales_order_id, type: 'integer'
-    field :purchase_order_id, type: 'integer'
     field :ar_invoice_request_id, type: 'integer'
     field :supplier_bill_from_id, type: 'integer'
     field :supplier_ship_from_id, type: 'integer'

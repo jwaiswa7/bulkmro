@@ -2,10 +2,11 @@ json.data (@delivery_challans) do |delivery_challan|
   json.array! [
 
                   [].join(' '),
+                  delivery_challan.delivery_challan_number,
                   delivery_challan.inquiry.inquiry_number,
                   delivery_challan.sales_order.order_number,
-                  delivery_challan.sales_order.total_qty,
                   delivery_challan.total_qty,
+                  delivery_challan.sales_order.present? ? [delivery_challan.total_qty, ' of ', delivery_challan.sales_order.total_qty].join : '-',
                   format_succinct_date(delivery_challan.created_at),
                   delivery_challan.inquiry.company.to_s,
                   delivery_challan.inquiry.billing_contact.to_s,
@@ -15,6 +16,7 @@ json.data (@delivery_challans) do |delivery_challan|
 end
 
 json.columnFilters [
+                       [],
                        [],
                        [],
                        [],

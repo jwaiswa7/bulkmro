@@ -2,7 +2,7 @@ class DeliveryChallan < ApplicationRecord
   include Mixins::CanBeStamped
 
   attr_accessor :customer_inquiry_reference, :sales_order_number, :sales_order_date, :payment_terms
-
+  update_index('delivery_challans#delivery_challan') { self }
   belongs_to :inquiry
   belongs_to :sales_order, required: false
   belongs_to :purchase_order, required: false
@@ -15,6 +15,7 @@ class DeliveryChallan < ApplicationRecord
   has_many :rows, class_name: 'DeliveryChallanRow', inverse_of: :delivery_challan, dependent: :destroy
   
   has_one_attached :customer_request_attachment
+  scope :with_includes, -> { includes(:sales_order, :purchase_order, :inquiry, :ar_invoice_request, :created_by, :updated_by) }
 
   accepts_nested_attributes_for :rows, reject_if: lambda { |attributes| (attributes['quantity'].blank? || attributes['quantity'].to_f < 0) && attributes['id'].blank? }, allow_destroy: true
 
