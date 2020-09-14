@@ -21,6 +21,34 @@ class Services::Overseers::DeliveryChallans::NewDcFromSo < Services::Shared::Bas
         purpose: params[:purpose]
       )
 
+      generate_from_so_rows(sales_order, delivery_challan)
+      
+    else
+      delivery_challan = inquiry.delivery_challans.build(
+        inquiry_id: inquiry.id,
+        sales_order_id: (sales_order.id if sales_order.present?),
+        customer_po_number: inquiry&.customer_po_number,
+        customer_bill_from: (sales_order.present? ? sales_order.serialized_billing_address : inquiry&.billing_address),
+        customer_ship_from: (sales_order.present? ? sales_order.serialized_shipping_address : inquiry&.shipping_address),
+        supplier_bill_from: inquiry&.bill_from,
+        supplier_ship_from: inquiry&.ship_from,
+        customer_order_date: inquiry&.customer_order_date,
+        overseer: overseer,
+        purpose: params[:purpose],
+        reason: 70,
+        sales_order_date: (sales_order&.mis_date if sales_order.present?)
+      )
+
+      sales_order.present? ? generate_from_so_rows(sales_order, delivery_challan) : generate_from_inquiry_products(inquiry, delivery_challan)
+      
+    end
+
+    delivery_challan
+  end
+
+  private
+
+    def generate_from_so_rows(sales_order, delivery_challan)
       sales_order.rows.each do |row|
         delivery_challan.rows.where(sales_order_row_id: row.id).first_or_initialize(
           inquiry_product: row&.inquiry_product,
@@ -29,32 +57,17 @@ class Services::Overseers::DeliveryChallans::NewDcFromSo < Services::Shared::Bas
           overseer: overseer
         )
       end
-    else
-      delivery_challan = inquiry.delivery_challans.build(
-        inquiry_id: inquiry.id,
-        customer_po_number: inquiry&.customer_po_number,
-        customer_bill_from: inquiry&.billing_address,
-        customer_ship_from: inquiry&.shipping_address,
-        supplier_bill_from: inquiry&.bill_from,
-        supplier_ship_from: inquiry&.ship_from,
-        customer_order_date: inquiry&.customer_order_date,
-        overseer: overseer,
-        purpose: params[:purpose]
-      )
+    end
 
+    def generate_from_inquiry_products(inquiry, delivery_challan)
       inquiry.inquiry_products.each do |inquiry_product|
         delivery_challan.rows.where(inquiry_product_id: inquiry_product.id).first_or_initialize(
-          product: row&.product,
-          quantity: row.quantity,
+          product: inquiry_product&.product,
+          quantity: inquiry_product&.quantity,
           overseer: overseer
         )
       end
     end
-
-    delivery_challan
-  end
-
-  private
 
     attr_accessor :params, :sales_order, :overseer, :inquiry
 end

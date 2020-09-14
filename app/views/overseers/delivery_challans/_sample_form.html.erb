@@ -8,28 +8,39 @@
         <h6 class="text-uppercase bmro-form-heading text-black-50 mb-1">Inquiry Details</h6>
         <div class="form-row">
           <div class="col-6">
-            <%= f.input :inquiry, as: :string, disabled: true , input_html: {class: 'bmro-form-input'}%>
+            <%= f.hidden_field :inquiry_id, value: f.object.inquiry_id %>
+            <%= f.input :inquiry, as: :string, readonly: true , input_html: {class: 'bmro-form-input'}%>
           </div>
           <div class="col-6">
-            <%= f.input :customer_inquiry_reference, disabled: true, input_html: {class: 'bmro-form-input'}, value: f.object.inquiry.subject %>
-          </div>
-        </div>
-
-        <div class="form-row">
-          <div class="col-6">
-            <%= f.input :customer_po_number, disabled: true , input_html: {class: 'bmro-form-input'}%>
-          </div>
-          <div class="col-6">
-            <%= f.input :customer_order_date, disabled: true, input_html: {class: 'bmro-form-input'} %>
+            <%= f.input :customer_inquiry_reference, as: :text, readonly: true, input_html: {class: 'bmro-form-input', value: f.object.inquiry.subject} %>
           </div>
         </div>
 
         <div class="form-row">
           <div class="col-6">
-            <%= f.input :customer_po_number, disabled: true , input_html: {class: 'bmro-form-input'}%>
+            <%= f.input :customer_po_number, readonly: true , input_html: {class: 'bmro-form-input'}%>
           </div>
           <div class="col-6">
-            <%= f.input :customer_order_date, disabled: true, input_html: {class: 'bmro-form-input'} %>
+            <%= f.input :customer_order_date, as: :string, readonly: true, input_html: {class: 'bmro-form-input'} %>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="col-6">
+            <%= f.input :payment_terms, readonly: true , input_html: {class: 'bmro-form-input', value: f.object.inquiry&.payment_option&.to_s}%>
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-3">
+        <h6 class="text-uppercase bmro-form-heading text-black-50 mb-1">Sales Order Details</h6>
+        <div class="form-row">
+          <div class="col-6">
+            <%= f.hidden_field :sales_order_id, value: f.object.sales_order_id %>
+            <%= f.input :sales_order_number, readonly: true , input_html: {class: 'bmro-form-input', value: f.object&.sales_order&.order_number}%>
+          </div>
+          <div class="col-6">
+            <%= f.input :sales_order_date, as: :string, input_html: {:'data-toggle' => 'datepicker', value: f.object&.sales_order&.mis_date}, readonly: true %>
           </div>
         </div>
       </div>
@@ -38,10 +49,10 @@
         <h6 class="text-uppercase bmro-form-heading text-black-50 mb-1">Billing / Shipping Details</h6>
         <div class="form-row">
           <div class="col-12 col-md-6">
-            <%= f.association :supplier_bill_from, collection: selected_option_or_nil(f, :supplier_bill_from), label: "Supplier Bill From", include_blank: "Select a billing address", input_html: {class: 'bmro-form-input select2-ajax bmro-dropdown-icon', :'data-source' => autocomplete_overseers_warehouses_path(bill_from: true)}, required: true, disabled: true %>
+            <%= f.association :supplier_bill_from, collection: selected_option_or_nil(f, :supplier_bill_from), label: "Supplier Bill From", include_blank: "Select a billing address", input_html: {class: 'bmro-form-input select2-ajax bmro-dropdown-icon', :'data-source' => autocomplete_overseers_warehouses_path(bill_from: true)}, required: true, readonly: true %>
           </div>
           <div class="col-12 col-md-6">
-            <%= f.association :supplier_ship_from, collection: selected_option_or_nil(f, :supplier_ship_from), label: "Supplier Ship From", include_blank: "Select a shipping address", input_html: {class: 'bmro-form-input select2-ajax bmro-dropdown-icon', :'data-source' => autocomplete_overseers_warehouses_path}, required: true, disabled: true %>
+            <%= f.association :supplier_ship_from, collection: selected_option_or_nil(f, :supplier_ship_from), label: "Supplier Ship From", include_blank: "Select a shipping address", input_html: {class: 'bmro-form-input select2-ajax bmro-dropdown-icon', :'data-source' => autocomplete_overseers_warehouses_path}, required: true, readonly: true %>
           </div>
         </div>
 
@@ -51,6 +62,51 @@
           </div>
           <div class="col-12 col-md-6">
             <%= f.association :customer_ship_from, collection: selected_option_or_nil(f, :customer_ship_from), label: "Customer Ship From", include_blank: "Select a shipping address", input_html: {class: 'select2-ajax bmro-form-input bmro-dropdown-icon', :'data-source' => autocomplete_overseers_company_addresses_path(f.object.inquiry.company)}, required: true %>
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-3">
+        <h6 class="text-uppercase bmro-form-heading text-black-50 mb-1">Other Details</h6>
+        <div class="form-row">
+          <div class="col-12">
+            <%= f.input :customer_request_attachment, as: :file, wrapper: :custom_file, required: true, label: 'Customer Rquest Attachment', target: '_blank', :"data-toggle" => 'tooltip' %>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="col-12 col-md-6">
+            <%= f.hidden_field :reason, value: f.object.reason %>
+            <%= f.input :reason, as: :select, collection: enum_to_collection(DeliveryChallan.reasons, alphabetical: false), required: true, input_html: {id: 'dc_reasons', class: 'select2-single bmro-form-input bmro-dropdown-icon'}, disabled: true%>
+          </div>
+          <div class="col-12 col-md-6">
+            <%= f.input :goods_type, label: "Type of Goods Movement",collection: enum_to_collection(DeliveryChallan.goods_types), required: true, input_html: {class: 'select2-single bmro-form-input bmro-dropdown-icon'} %>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="col-6" id='other_reason'>
+            <%= f.input :other_reason, as: :text, input_html: {class: 'bmro-form-input'} %>
+          </div>
+          
+          <div class="col-6">
+            <%= f.input :delivery_challan_date, as: :string, input_html: {:'data-toggle' => 'datepicker', class: 'bmro-form-input'} %>
+          </div>
+        </div>
+        <div class="form-row">
+          <% if f.object.sales_order.present? %>
+            <div class="col-4">
+              <%= f.input :display_gst_pan, label: 'Display GST & PAN', as: :select, selected: true, required: true, input_html: {class: 'select2-single bmro-form-input bmro-dropdown-icon'}%>
+            </div>
+            
+            <div class="col-4">
+              <%= f.input :display_rates, label: 'Display Rates', as: :select, selected: true, required: true, input_html: {class: 'select2-single bmro-form-input bmro-dropdown-icon'}%>
+            </div>
+          <% else %>
+            <%= f.hidden_field :display_gst_pan, value: false %>
+            <%= f.hidden_field :display_rates, value: false %>
+          <% end %>
+
+          <div class="col-4">
+            <%= f.input :display_stamp, label: 'Display Stamp', as: :select, selected: true, required: true, input_html: {class: 'select2-single bmro-form-input bmro-dropdown-icon'}%>
           </div>
         </div>
       </div>
@@ -102,12 +158,15 @@
 
           <div class="col-1 text-center">
             <div class="form-group mb-0">
-              <label>Delete Row</label>
+              <label>Remove Product</label>
             </div>
           </div>
         </div>
           <%= f.nested_fields_for :rows, f.object.rows , wrapper_tag: :div do |row| %>
             <% if row.object.product.present? %>
+              <%= row.hidden_field :product_id, value: row.object&.product_id %>
+              <%= row.hidden_field :inquiry_product_id, value: row.object&.inquiry_product_id %>
+              <%= row.hidden_field :sales_order_row_id, value: row.object&.sales_order_row_id%>
               <div class="form-row flex-row align-items-start w-100 col-12">
                 <div class="col-1 text-center">
                   <%= row.object.product.sku %>
@@ -136,7 +195,7 @@
                 <div class="col-1 text-center">
                   <div class="d-flex flex-row">
                     <div>
-                      <%= row.input :quantity, :label => false, placeholder: placeholder_for(row, :quantity), input_html: {:'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''} %>
+                      <%= row.input :quantity, :label => false, placeholder: placeholder_for(row, :quantity), input_html: {:'data-parsley-errors-messages-readonly' => '', :'data-parsely-no-valid-feedback' => ''} %>
                     </div>
                   </div>
                 </div>
@@ -151,14 +210,9 @@
           <% end %>
           
           <div class="form-row bmro-cp-inquiry-form-button">
-            <div class=" bmro-cp-product-btn-parent col-6">
-              <%= f.add_nested_fields_link :rows, class: 'btn btn-block mb-2 mb-md-0 bmro-product-btn' do %>
-                <i class="bmro-addnew-icon mr-1"></i>Add New
-              <% end %>
-            </div>
-            <div class=" bmro-button-parent col-6">
+            <div class=" bmro-button-parent col-6 offset-md-3">
               <%= button_tag(type: "submit", class: "btn btn-block h-100") do %>
-                <i class="bmro-update-icon"></i> <%= submit_text(@delivery_challan) %>
+                Save and Confirm
               <% end %>
             </div>
           </div>

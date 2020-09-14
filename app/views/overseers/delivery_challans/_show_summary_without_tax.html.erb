@@ -59,7 +59,7 @@
                       <b><span>Delivery Challan #	</span></b> <span style="float:right">:</span>
                     </td>
                     <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c; padding-left: 10px;" valign="top">
-                      <span>BMPL-V-1/2018-19</span>
+                      <span><%= @delivery_challan.delivery_challan_number %></span>
                     </td>
                     <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
                       <b><span>Delivery Challan Date</span></b> <span style="float:right">:</span>
@@ -112,12 +112,12 @@
                   <tbody>
                   <tr>
                     <td class="address-wrapper" style="height: auto;width: 49%;">
-                      <% if @delivery_challan.inquiry.bill_from.present? %>
-                        <%= @delivery_challan.inquiry.bill_from.address.name.to_s %>
-                        <%= @delivery_challan.inquiry.bill_from.address.to_compact_multiline_s %><br>
-                        <% if @delivery_challan.inquiry.bill_from.address.phone.present? %>
+                      <% if @delivery_challan.supplier_bill_from.present? %>
+                        <%= @delivery_challan.supplier_bill_from.address.name.to_s %>
+                        <%= @delivery_challan.supplier_bill_from.address.to_compact_multiline_s %><br>
+                        <% if @delivery_challan.supplier_bill_from.address.phone.present? %>
                           Contact: <%= @delivery_challan.inquiry.contact.full_name %>
-                          - <%= @delivery_challan.inquiry.bill_from.address.phone %><br>
+                          - <%= @delivery_challan.supplier_bill_from.address.phone %><br>
                         <% end %>
                         <% if @delivery_challan.inquiry.bill_from.address.gst && @delivery_challan.display_gst_pan.present? %>
                           GST Number: <%= @delivery_challan.inquiry.bill_from.address.gst %><br>
@@ -127,12 +127,12 @@
                     </td>
                     <td style="width: 2%;"></td>
                     <td class="address-wrapper" style="height: auto;width: 49%;">
-                      <% if @delivery_challan.inquiry.ship_from.present? %>
-                        <%= @delivery_challan.inquiry.ship_from.address.name.to_s %>
-                        <%= @delivery_challan.inquiry.ship_from.address.to_compact_multiline_s %><br>
-                        <% if @delivery_challan.inquiry.ship_from.address.phone.present? %>
+                      <% if @delivery_challan.supplier_ship_from.present? %>
+                        <%= @delivery_challan.supplier_ship_from.address.name.to_s %>
+                        <%= @delivery_challan.supplier_ship_from.address.to_compact_multiline_s %><br>
+                        <% if @delivery_challan.supplier_ship_from.address.phone.present? %>
                           Contact: <%= @delivery_challan.inquiry.contact.full_name %>
-                          - <%= @delivery_challan.inquiry.ship_from.address.phone %><br>
+                          - <%= @delivery_challan.supplier_ship_from.address.phone %><br>
                         <% end %>
                         <% if @delivery_challan.inquiry.ship_from.address.gst && @delivery_challan.display_gst_pan.present? %>
                           GST Number: <%= @delivery_challan.inquiry.ship_from.address.gst %><br>
@@ -158,24 +158,24 @@
                   <tr>
                     <td class="address-wrapper" style="height: auto;width: 49%;">
                       <%= @delivery_challan.inquiry.company.name %><br>
-                      <%= @delivery_challan.inquiry.billing_address.to_compact_multiline_s %><br>
+                      <%= @delivery_challan.customer_bill_from.to_compact_multiline_s %><br>
                       <% if @delivery_challan.inquiry.contact.phone.present? %>
               <span class="d-block"><em>Contact</em>: <%= @delivery_challan.inquiry.contact.full_name %>
                 - <%= @delivery_challan.inquiry.contact.phone %></span>
                       <% end %>
                       <span class="d-block"><em>Email</em>: <%= @delivery_challan.inquiry.contact.email if @delivery_challan.inquiry.contact.email.present? %></span>
-                      <span class="d-block"><em>GST Number</em>: <%= @delivery_challan.inquiry.billing_address.gst || @delivery_challan.inquiry.company.default_billing_address.gst %></span>
+                      <span class="d-block"><em>GST Number</em>: <%= @delivery_challan.customer_bill_from.gst || @delivery_challan.inquiry.company.default_billing_address.gst %></span>
                     </td>
                     <td style="width: 2%;"></td>
                     <td class="address-wrapper" style="height: auto;width: 49%;">
                       <%= @delivery_challan.inquiry.company.name %><br>
-                      <%= @delivery_challan.inquiry.shipping_address.to_compact_multiline_s %><br>
+                      <%= @delivery_challan.customer_ship_from.to_compact_multiline_s %><br>
                       <% if @delivery_challan.inquiry.contact.mobile || @delivery_challan.inquiry.contact.telephone %>
               <span class="d-block"><em>Contact</em>: <%= @delivery_challan.inquiry.contact.full_name %>
                 - <%= @delivery_challan.inquiry.contact.phone %></span>
                       <% end %>
                       <span class="d-block"><em>Email</em>: <%= @delivery_challan.inquiry.contact.email if @delivery_challan.inquiry.contact.email.present? %></span>
-                      <span class="d-block"><em>GST Number</em>: <%= @delivery_challan.inquiry.shipping_address.gst || @delivery_challan.inquiry.company.default_shipping_address.gst %></span>
+                      <span class="d-block"><em>GST Number</em>: <%= @delivery_challan.customer_ship_from.gst || @delivery_challan.inquiry.company.default_shipping_address.gst %></span>
                     </td>
                   </tr>
                   </tbody>

@@ -70,7 +70,7 @@
         <h6 class="text-uppercase bmro-form-heading text-black-50 mb-1">Other Details</h6>
         <div class="form-row">
           <div class="col-12 col-md-6">
-            <%= f.input :reason, collection: enum_to_collection(DeliveryChallan.reasons, alphabetical: false), required: true, input_html: {id: 'dc_reasons', class: 'select2-single bmro-form-input bmro-dropdown-icon'} %>
+            <%= f.input :reason, collection: enum_to_collection(DeliveryChallan.reasons.except('Sample'), alphabetical: false), required: true, input_html: {id: 'dc_reasons', class: 'select2-single bmro-form-input bmro-dropdown-icon'} %>
           </div>
           <div class="col-12 col-md-6">
             <%= f.input :goods_type, label: "Type of Goods Movement",collection: enum_to_collection(DeliveryChallan.goods_types), required: true, input_html: {class: 'select2-single bmro-form-input bmro-dropdown-icon'} %>
@@ -83,6 +83,20 @@
           
           <div class="col-6">
             <%= f.input :delivery_challan_date, as: :string, input_html: {:'data-toggle' => 'datepicker', class: 'bmro-form-input'} %>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="col-4">
+            <%= f.input :display_gst_pan, label: 'Display GST & PAN', as: :select, selected: true, required: true, input_html: {class: 'select2-single bmro-form-input bmro-dropdown-icon'}%>
+          </div>
+          
+          <div class="col-4">
+            <%= f.input :display_rates, label: 'Display Rates', as: :select, selected: true, required: true, input_html: {class: 'select2-single bmro-form-input bmro-dropdown-icon'}%>
+          </div>
+
+          <div class="col-4">
+            <%= f.input :display_stamp, label: 'Display Stamp', as: :select, selected: true, required: true, input_html: {class: 'select2-single bmro-form-input bmro-dropdown-icon'}%>
           </div>
         </div>
       </div>

@@ -91,6 +91,9 @@ class Overseers::DeliveryChallansController < Overseers::BaseController
         :other_reason,
         :customer_request_attachment,
         :purpose,
+        :display_gst_pan,
+        :display_rates,
+        :display_stamp,
         rows_attributes: [:id, :product_id, :sr_no, :quantity, :inquiry_product_id, :sales_order_row_id, :_destroy]
       )
     end
