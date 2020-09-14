@@ -1,167 +1,168 @@
-
 <% content_for :heading do %>
   View Delivery Challan #<%= @delivery_challan.delivery_challan_number %>
 <% end %>
 <div class="col-12">
   <%#= render layout: 'overseers/inquiries/tabs_layout' do %>
-    <div class="card">
-      <div class="card-header bmro-bg">
-        <div class=form-row>
-          <div class="col-6 col-md-1 mt-1 mt-md-0">
-            <strong class="d-block bmro-summary-heading">Quotation #</strong>
-            <div class="bmro-summary-data">
-              <%= @inquiry.inquiry_number %>
-            </div>
+  <div class="card">
+    <div class="card-header bmro-bg">
+      <div class=form-row>
+        <div class="col-6 col-md-1 mt-1 mt-md-0">
+          <strong class="d-block bmro-summary-heading">Quotation #</strong>
+          <div class="bmro-summary-data">
+            <%= @inquiry.inquiry_number %>
           </div>
-          <div class="col-6 col-md-3 mt-1 mt-md-0">
-            <strong class="d-block bmro-summary-heading">Customer Inquiry Reference</strong>
-            <div class="bmro-summary-data">
-              <%= [@inquiry.inquiry_number, @inquiry.subject].join(" - ") %>
-            </div>
+        </div>
+        <div class="col-6 col-md-3 mt-1 mt-md-0">
+          <strong class="d-block bmro-summary-heading">Customer Inquiry Reference</strong>
+          <div class="bmro-summary-data">
+            <%= [@inquiry.inquiry_number, @inquiry.subject].join(" - ") %>
           </div>
-          <div class="col-6 col-md-3 mt-1 mt-md-0">
-            <strong class="d-block bmro-summary-heading">Customer Purchase Order # </strong>
-            <div class="bmro-summary-data">
-              <%= @inquiry.customer_po_number if @inquiry.customer_po_number.present? %>
-            </div>
+        </div>
+        <div class="col-6 col-md-3 mt-1 mt-md-0">
+          <strong class="d-block bmro-summary-heading">Customer Purchase Order # </strong>
+          <div class="bmro-summary-data">
+            <%= @inquiry.customer_po_number if @inquiry.customer_po_number.present? %>
           </div>
-          <div class="col-6 col-md-3 mt-2  mt-md-0">
-            <strong class="d-block bmro-summary-heading">Customer Purchase Order Date </strong>
-            <div class="bmro-summary-data">
-              <%= @inquiry.customer_order_date.strftime("%d-%b-%Y") if @inquiry.customer_order_date.present? %>
-            </div>
+        </div>
+        <div class="col-6 col-md-3 mt-2  mt-md-0">
+          <strong class="d-block bmro-summary-heading">Customer Purchase Order Date </strong>
+          <div class="bmro-summary-data">
+            <%= @inquiry.customer_order_date.strftime("%d-%b-%Y") if @inquiry.customer_order_date.present? %>
+          </div>
+        </div>
+
+        <div class="col-6 col-md-2 mt-2 mt-md-0 text-right">
+          <% if is_authorized(@delivery_challan, 'show') && policy(@delivery_challan).show? %>
+            <%= row_action_button(overseers_delivery_challan_path(@delivery_challan, format: :pdf), 'download', 'Download With Stamp', 'success', :_blank, 'get', '', false, 'O') %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+    <div class="card-body bmro-bg">
+      <div class="form-row mb-1">
+        <div class="col-12 col-md-2 mt-1 mt-md-0">
+          <strong class="d-block bmro-summary-heading">Sales Order # </strong>
+          <div class="bmro-summary-data">
+            <%= @delivery_challan.sales_order.order_number if @delivery_challan.sales_order.order_number.present? %>
+          </div>
+        </div>
+        <div class="col-6 col-md-2 mt-1 mt-md-0">
+          <strong class="d-block bmro-summary-heading">Sales Order Date</strong>
+          <div class="bmro-summary-data">
+            <%= @delivery_challan.sales_order.mis_date.strftime("%d-%b-%Y") if @delivery_challan.sales_order.mis_date.present? %>
+          </div>
+        </div>
+        <div class="col-6 col-md-2 mt-1 mt-md-0">
+          <strong class="d-block bmro-summary-heading">Delivery Challan #</strong>
+          <div class="bmro-summary-data">
+            <%= @delivery_challan.delivery_challan_number %>
+          </div>
+        </div>
+        <div class="col-6 col-md-2 mt-1 mt-md-0">
+          <strong class="d-block bmro-summary-heading">Delivery Challan Dates</strong>
+          <div class="bmro-summary-data">
+            <%= @delivery_challan.created_at.strftime("%d-%b-%Y") %>
           </div>
 
-          <div class="col-6 col-md-2 mt-2 mt-md-0 text-right">
-            <% if is_authorized(@delivery_challan,'show') && policy(@delivery_challan).show?%>
-              <%= row_action_button(overseers_delivery_challan_path(@delivery_challan, format: :pdf), 'download', 'Download With Stamp', 'success', :_blank, 'get','', false, 'O') %>
-            <% end %>
+        </div>
+        <div class="col-6 col-md-2 mt-1 mt-md-0">
+          <strong class="d-block bmro-summary-heading">GRN # </strong>
+          <div class="bmro-summary-data">
+          </div>
+        </div>
+        <div class="col-6 col-md-2 mt-1 mt-md-0">
+          <strong class="d-block bmro-summary-heading">Payment Terms</strong>
+          <div class="bmro-summary-data">
+            <%= @inquiry.payment_option %>
           </div>
         </div>
       </div>
-      <div class="card-body bmro-bg">
-        <div class="form-row mb-1">
-          <div class="col-12 col-md-2 mt-1 mt-md-0">
-            <strong class="d-block bmro-summary-heading">Sales Order # </strong>
-            <div class="bmro-summary-data">
-              <%= @delivery_challan.sales_order.order_number if @delivery_challan.sales_order.order_number.present? %>
-            </div>
-          </div>
-          <div class="col-6 col-md-2 mt-1 mt-md-0">
-            <strong class="d-block bmro-summary-heading">Sales Order Date</strong>
-            <div class="bmro-summary-data">
-              <%= @delivery_challan.sales_order.mis_date.strftime("%d-%b-%Y") if @delivery_challan.sales_order.mis_date.present? %>
-            </div>
-          </div>
-          <div class="col-6 col-md-2 mt-1 mt-md-0">
-            <strong class="d-block bmro-summary-heading">Delivery Challan #</strong>
-            <div class="bmro-summary-data">
-              <%= @delivery_challan.delivery_challan_number %>
-            </div>
-          </div>
-          <div class="col-6 col-md-2 mt-1 mt-md-0">
-            <strong class="d-block bmro-summary-heading">Delivery Challan Dates</strong>
-            <div class="bmro-summary-data">
-              <%= @delivery_challan.created_at.strftime("%d-%b-%Y") %>
-            </div>
 
-          </div>
-          <div class="col-6 col-md-2 mt-1 mt-md-0">
-            <strong class="d-block bmro-summary-heading">GRN # </strong>
+      <div class="card-alternative bmro-bg mt-3">
+        <div class="form-row">
+          <div class="col-md-6 mt-2 mt-md-0">
+            <strong class="d-block bmro-summary-heading">Supplier - Bill from:</strong>
             <div class="bmro-summary-data">
+              <% if @delivery_challan.supplier_bill_from.present? %>
+                <%= @delivery_challan.supplier_bill_from.address.name.to_s %><br>
+                <%= @delivery_challan.supplier_bill_from.address.to_compact_multiline_s %><br>
+              <% else %>
+                ''
+              <% end %>
+              <% if @delivery_challan.supplier_bill_from.address.phone.present? %>
+                <em>Contact</em>: <%= @inquiry.contact.full_name %>
+                - <%= @delivery_challan.supplier_bill_from.address.phone %><br>
+              <% end %>
+              <% if @delivery_challan.supplier_bill_from.address.gst %>
+                <em>GST Number</em>: <%= @delivery_challan.supplier_bill_from.address.gst %><br>
+              <% end %>
             </div>
           </div>
-          <div class="col-6 col-md-2 mt-1 mt-md-0">
-            <strong class="d-block bmro-summary-heading">Payment Terms</strong>
+          <div class="col-md-6 mt-2 mt-md-0">
+            <strong class="d-block bmro-summary-heading">Supplier - Ship from:</strong>
             <div class="bmro-summary-data">
-              <%= @inquiry.payment_option %>
+              <% if @delivery_challan.supplier_ship_from.present? %>
+                <%= @delivery_challan.supplier_ship_from.address.name.to_s %><br>
+                <%= @delivery_challan.supplier_ship_from.address.to_compact_multiline_s %><br>
+                <% if @delivery_challan.supplier_ship_from.address.mobile || @delivery_challan.supplier_ship_from.address.telephone %>
+                  <em>Contact</em>: <%= @delivery_challan.supplier_ship_from.address.mobile || @delivery_challan.supplier_ship_from.address.telephone %>
+                  <br>
+                <% end %>
+                <% if @delivery_challan.supplier_ship_from.address.gst %>
+                  <em>GST Number</em>: <%= @delivery_challan.supplier_ship_from.address.gst %><br>
+                <% end %>
+              <% end %>
             </div>
           </div>
         </div>
 
-        <div class="card-alternative bmro-bg mt-3">
-          <div class="form-row">
-            <div class="col-md-6 mt-2 mt-md-0">
-              <strong class="d-block bmro-summary-heading">Supplier - Bill from:</strong>
-              <div class="bmro-summary-data">
-                <% if @delivery_challan.supplier_bill_from.present? %>
-                  <%= @delivery_challan.supplier_bill_from.address.name.to_s %><br>
-                  <%= @delivery_challan.supplier_bill_from.address.to_compact_multiline_s %><br>
-                <%else %>
-                  ''
-                <% end %>
-                <% if @delivery_challan.supplier_bill_from.address.phone.present? %>
-                  <em>Contact</em>: <%= @inquiry.contact.full_name %> - <%= @delivery_challan.supplier_bill_from.address.phone %><br>
-                <% end %>
-                <% if @delivery_challan.supplier_bill_from.address.gst %>
-                  <em>GST Number</em>: <%= @delivery_challan.supplier_bill_from.address.gst %><br>
-                <% end %>
-              </div>
-            </div>
-            <div class="col-md-6 mt-2 mt-md-0">
-              <strong class="d-block bmro-summary-heading">Supplier - Ship from:</strong>
-              <div class="bmro-summary-data">
-                <% if @delivery_challan.supplier_ship_from.present? %>
-                  <%= @delivery_challan.supplier_ship_from.address.name.to_s %><br>
-                  <%= @delivery_challan.supplier_ship_from.address.to_compact_multiline_s %><br>
-                  <% if @delivery_challan.supplier_ship_from.address.mobile || @delivery_challan.supplier_ship_from.address.telephone %>
-                    <em>Contact</em>: <%= @delivery_challan.supplier_ship_from.address.mobile || @delivery_challan.supplier_ship_from.address.telephone %><br>
-                  <% end %>
-                  <% if @delivery_challan. supplier_ship_from.address.gst %>
-                    <em>GST Number</em>: <%= @delivery_challan.supplier_ship_from.address.gst %><br>
-                  <% end %>
-                <% end %>
-              </div>
+        <div class="form-row mt-0 mt-md-2">
+          <div class="col-md-6 mt-2 mt-md-0">
+            <strong class="d-block bmro-summary-heading">Customer - Bill to:</strong>
+            <div class="bmro-summary-data">
+              <%= @inquiry.contact.full_name %><br>
+              <%= @inquiry.company.name %><br>
+              <%= @inquiry.billing_address.to_compact_multiline_s if @inquiry.billing_address.present? %>
+              <br>
+              <% if @inquiry.billing_contact.present? %>
+                Tel: <%= @inquiry.billing_contact.phone || @inquiry.billing_contact.mobile || @inquiry.billing_contact.telephone %>
+              <% else %>
+                Tel: <%= @inquiry.contact.phone || @inquiry.contact.mobile || @inquiry.contact.telephone %>
+              <% end %> <br>
+              <em>Email</em>: <%= @inquiry.contact.email if @inquiry.contact.email.present? %><br>
+              GST No.:<%= @inquiry.billing_address.gst %><br>
             </div>
           </div>
-
-          <div class="form-row mt-0 mt-md-2">
-            <div class="col-md-6 mt-2 mt-md-0">
-              <strong class="d-block bmro-summary-heading">Customer - Bill to:</strong>
-              <div class="bmro-summary-data">
-                <%= @inquiry.contact.full_name %><br>
-                <%=@inquiry.company.name %><br>
-                <%= @inquiry.billing_address.to_compact_multiline_s if @inquiry.billing_address.present? %>
-                <br>
-                <% if @inquiry.billing_contact.present? %>
-                  Tel: <%= @inquiry.billing_contact.phone || @inquiry.billing_contact.mobile || @inquiry.billing_contact.telephone %>
-                <% else %>
-                  Tel: <%= @inquiry.contact.phone || @inquiry.contact.mobile || @inquiry.contact.telephone %>
-                <% end %> <br>
-                <em>Email</em>: <%= @inquiry.contact.email if @inquiry.contact.email.present? %><br>
-                GST No.:<%= @inquiry.billing_address.gst %><br>
-              </div>
-            </div>
-            <div class="col-md-6 mt-2 mt-md-0">
-              <strong class="d-block bmro-summary-heading">Customer - Ship to:</strong>
-              <div class="bmro-summary-data">
-                <%= @inquiry.contact.full_name %><br>
-                <%= (@inquiry.shipping_company.name) %>
-                <br>
-                <%= @inquiry.shipping_address.to_compact_multiline_s if @inquiry.shipping_address.present? %>
-                <br>
-                <% if @inquiry.contact.mobile || @inquiry.contact.telephone %>
+          <div class="col-md-6 mt-2 mt-md-0">
+            <strong class="d-block bmro-summary-heading">Customer - Ship to:</strong>
+            <div class="bmro-summary-data">
+              <%= @inquiry.contact.full_name %><br>
+              <%= (@inquiry.shipping_company.name) %>
+              <br>
+              <%= @inquiry.shipping_address.to_compact_multiline_s if @inquiry.shipping_address.present? %>
+              <br>
+              <% if @inquiry.contact.mobile || @inquiry.contact.telephone %>
             <span class="d-block bmro-summary-heading"><em>Contact</em>: <%= @inquiry.contact.full_name %>
               - <%= @inquiry.contact.phone %></span>
-                <% end %>
-                <em>Email</em>: <%= @inquiry.contact.email if @inquiry.contact.email.present? %>
-                <span class="d-block bmro-summary-heading"><em>GST Number</em>: <%= @inquiry.shipping_address.gst || @inquiry.company.default_serialized_shipping_address.gst %></span>
-              </div>
+              <% end %>
+              <em>Email</em>: <%= @inquiry.contact.email if @inquiry.contact.email.present? %>
+              <span class="d-block bmro-summary-heading"><em>GST Number</em>: <%= @inquiry.shipping_address.gst || @inquiry.company.default_serialized_shipping_address.gst %></span>
             </div>
           </div>
         </div>
+      </div>
 
-        <% if @inquiry.attachments.present? %>
-          <div class="form-row mt-3">
-            <div class="col-6">
-              <strong class="d-block bmro-summary-heading">Customer Purchase Order</strong>
-              <div class="bmro-summary-data">
-                <%= link_to @inquiry.customer_po_sheet, target: '_blank' do %>
-                  <%= @inquiry.customer_po_sheet.filename %>
-                <% end if @inquiry.customer_po_sheet.attached? %>
-              </div>
+      <% if @inquiry.attachments.present? %>
+        <div class="form-row mt-3">
+          <div class="col-6">
+            <strong class="d-block bmro-summary-heading">Customer Purchase Order</strong>
+            <div class="bmro-summary-data">
+              <%= link_to @inquiry.customer_po_sheet, target: '_blank' do %>
+                <%= @inquiry.customer_po_sheet.filename %>
+              <% end if @inquiry.customer_po_sheet.attached? %>
             </div>
-            <!--  <div class="col-6">
+          </div>
+          <!--  <div class="col-6">
               <% if @inquiry.copy_of_email.attached? %>
                 <strong class="d-block bmro-summary-heading">Email attachment</strong>
                 <div class="bmro-summary-data">
@@ -171,51 +172,54 @@
               <% end %>
             </div>
             </div> -->
-            <div class="col-6">
-              <strong class="d-block bmro-summary-heading">Supplier Quotes Attachment</strong>
-              <div class="bmro-summary-data">
-                <% @inquiry.supplier_quotes.attachments.each do |attachment| %>
-                  <%= link_to url_for(attachment), target: '_blank', :status => attachment.filename do %>
-                    <span class="d-block"><%= attachment.filename %></span>
-                  <% end %>
-                <% end if @inquiry.supplier_quotes.attached? %>
-              </div>
+          <div class="col-6">
+            <strong class="d-block bmro-summary-heading">Supplier Quotes Attachment</strong>
+            <div class="bmro-summary-data">
+              <% @inquiry.supplier_quotes.attachments.each do |attachment| %>
+                <%= link_to url_for(attachment), target: '_blank', :status => attachment.filename do %>
+                  <span class="d-block"><%= attachment.filename %></span>
+                <% end %>
+              <% end if @inquiry.supplier_quotes.attached? %>
             </div>
           </div>
-        <% end %>
-        <table class="w-100 table table-bordered bmro-summary-table bmro-datatable-style dt-responsive datatable wrap-whitespace" data-fixed-header="false">
-          <thead>
-          <tr>
-            <th class="no-sort">
-              <span data-toggle="tooltip" title="Serial Number">Sr.</span>
-            </th>
-            <th class="no-sort">
-              <span>SKU</span>
-            </th>
-            <th class="no-sort">
-              <span data-toggle="tooltip" title="MPN">Mfr</span>
-            </th>
-            <th class="no-sort">
-              <span data-toggle="tooltip" title="Description">Description</span>
-            </th>
+        </div>
+      <% end %>
+      <table class="w-100 table table-bordered bmro-summary-table bmro-datatable-style dt-responsive datatable wrap-whitespace" data-fixed-header="false">
+        <thead>
+        <tr>
+          <th class="no-sort">
+            <span data-toggle="tooltip" title="Serial Number">Sr.</span>
+          </th>
+          <th class="no-sort">
+            <span>SKU</span>
+          </th>
+          <th class="no-sort">
+            <span data-toggle="tooltip" title="MPN">Mfr</span>
+          </th>
+          <th class="no-sort">
+            <span data-toggle="tooltip" title="Description">Description</span>
+          </th>
+          <% if @delivery_challan.reason != 'Sample' %>
             <th class="no-sort">
               <span data-toggle="tooltip" title="Make">Make</span>
             </th>
-            <th class="no-sort">
-              <span data-toggle="tooltip" title="">HSN /SAC Code</span>
-            </th>
-            <th class="no-sort">
-              <span data-toggle="tooltip" title="e">UOM</span>
-            </th>
-            <th class="no-sort">
-              <span data-toggle="tooltip" title="Quantity">Qty</span>
-            </th>
-            <th class="no-sort">
-              <span data-toggle="tooltip" title="Unit Price">Unit Price</span>
-            </th>
-            <th class="no-sort">
-              <span data-toggle="tooltip" title="Subtotal">Subtotal</span>
-            </th>
+          <% end %>
+          <th class="no-sort">
+            <span data-toggle="tooltip" title="">HSN /SAC Code</span>
+          </th>
+          <th class="no-sort">
+            <span data-toggle="tooltip" title="e">UOM</span>
+          </th>
+          <th class="no-sort">
+            <span data-toggle="tooltip" title="Quantity">Qty</span>
+          </th>
+          <% if @delivery_challan.reason != 'Sample' %>
+          <th class="no-sort">
+            <span data-toggle="tooltip" title="Unit Price">Unit Price</span>
+          </th>
+          <th class="no-sort">
+            <span data-toggle="tooltip" title="Subtotal">Subtotal</span>
+          </th>
             <th class="no-sort">
               <span data-toggle="tooltip" title="Tax Rate">Tax Rate</span>
             </th>
@@ -248,41 +252,44 @@
             <th class="no-sort">
               <span data-toggle="tooltip" title="Total Freight">T. Freight</span>
             </th>
-
-          </tr>
-          </thead>
-          <tbody>
-          <% @delivery_challan.rows.order(:created_at).each_with_index do |item, index| %>
-            <tr>
-              <td>
-                <span>#<%= index + 1 %></span>
-              </td>
-              <td>
-                <span><%= item.product.present? ? item.product.sku : '' %></span>
-              </td>
-              <td>
-                <span><%= item.product.present? ? item.product.mpn : ''  %></span>
-              </td>
-              <td>
-                <span><%= item.product.present? ? item.product.name : '' %></span>
-              </td>
+          <% end %>
+        </tr>
+        </thead>
+        <tbody>
+        <% @delivery_challan.rows.order(:created_at).each_with_index do |item, index| %>
+          <tr>
+            <td>
+              <span>#<%= index + 1 %></span>
+            </td>
+            <td>
+              <span><%= item.product.present? ? item.product.sku : '' %></span>
+            </td>
+            <td>
+              <span><%= item.product.present? ? item.product.mpn : '' %></span>
+            </td>
+            <td>
+              <span><%= item.product.present? ? item.product.name : '' %></span>
+            </td>
+            <% if @delivery_challan.reason != 'Sample' %>
               <td>
                 <span><%= item.product.brand.to_s %></span>
               </td>
-              <td>
-                <span><%= item.sales_quote_row.tax_code.to_s %></span>
-              </td>
-              <td>
-                <span><%= item.product.present? ? item.product.measurement_unit.to_s : '' %></span>
-              </td>
-              <td>
-                <span><%= number_to_currency(item.quantity, precision: 2, unit: '') %></span>
-              </td>
+            <% end %>
+            <td>
+              <span><%= item.sales_quote_row.tax_code.to_s %></span>
+            </td>
+            <td>
+              <span><%= item.product.present? ? item.product.measurement_unit.to_s : '' %></span>
+            </td>
+            <td>
+              <span><%= number_to_currency(item.quantity, precision: 2, unit: '') %></span>
+            </td>
+            <% if @delivery_challan.reason != 'Sample' %>
               <td>
                 <span><%= number_to_currency(item.sales_quote_row.converted_unit_selling_price, precision: 2, unit: '') %></span>
               </td>
               <td>
-                <span><%=  number_to_currency(item.sales_quote_row.converted_total_selling_price, precision: 2, unit: '') %></span>
+                <span><%= number_to_currency(item.sales_quote_row.converted_total_selling_price, precision: 2, unit: '') %></span>
               </td>
               <td>
                 <span><%= item.sales_quote_row.applicable_tax_percentage * 100 %>%</span>
@@ -290,20 +297,22 @@
               <% if @delivery_challan.sales_order.sales_quote.tax_summary.strip == '0' ||
                   (@delivery_challan.sales_order.sales_quote.tax_summary.to_s.include? "IGST") %>
                 <td>
-                  <span><%=  item.sales_quote_row.applicable_tax_percentage * 100 %>%</span>
+                  <span><%= item.sales_quote_row.applicable_tax_percentage * 100 %>%</span>
                 </td>
                 <td>
                   <span><%= number_to_currency(item.sales_quote_row.converted_total_tax, precision: 2, unit: '') %></span>
                 </td>
               <% else %>
                 <td>
-                  <span><%= item.sales_quote_row.best_tax_rate.tax_percentage / 2 if item.best_tax_rate.present? %>%</span>
+                <span><%= item.sales_quote_row.best_tax_rate.tax_percentage / 2 if item.best_tax_rate.present? %>
+                  %</span>
                 </td>
                 <td>
                   <span><%= number_to_currency(item.sales_quote_row.converted_total_tax.to_f / 2, precision: 2, unit: '') %></span>
                 </td>
                 <td>
-                  <span><%= item.sales_quote_row.best_tax_rate.tax_percentage / 2 if item.best_tax_rate.present? %>%</span>
+                <span><%= item.sales_quote_row.best_tax_rate.tax_percentage / 2 if item.best_tax_rate.present? %>
+                  %</span>
                 </td>
                 <td>
                   <span><%= number_to_currency(item.sales_quote_row.converted_total_tax / 2, precision: 2, unit: '') %></span>
@@ -315,12 +324,14 @@
               <td>
                 <span><%= format_currency(item.sales_quote_row.freight_cost_subtotal) %></span>
               </td>
-            </tr>
-          <% end %>
-          </tbody>
-        </table>
-      </div>
-      <div class="card-footer bmro-summary-footer bmro-summary-product-bottom">
+            <% end %>
+          </tr>
+        <% end %>
+        </tbody>
+      </table>
+    </div>
+    <div class="card-footer bmro-summary-footer bmro-summary-product-bottom">
+      <% if @delivery_challan.reason != 'Sample' %>
         <div class="form-row bmro-summary-footer-padding">
           <div class="col-6 col-md-2">
             Products
@@ -342,59 +353,60 @@
             Grand Total
             <strong class="d-block bmro-summary-heading"><%= format_currency(@delivery_challan.sales_order.converted_total_with_tax.to_f, precision: 2, symbol: nil) %></strong>
           </div>
-        </div>
+      <% end %>
       </div>
-      <div class="card-body bmro-bg">
-        <div>
-          <th><h6 class="bmro-summary-heading text-black-50 mb-1">
-            Note :
-          </h6></th>
-          <ul>
-            <li>Order once confirmed can not be cancelled.</li>
-            <li>Delayed payments will attract 2% interest per month.</li>
-            <li>Invoice will be deemed accepted unless any discrepancy is raised in writing within 7 days from the date
-              of invoice.
-            </li>
-          </ul>
-        </div>
-      </div>
-      <div class="card-footer bmro-bg">
-        <div>
-          <th><h6 class="bmro-summary-heading text-black-50 mb-1">
-            Other Information :
-          </h6></th>
-          <ul>
-            <li>Please reference our Bulk MRO Industrial Supply Pvt. Ltd.
-              Delivery Challan # <%= @delivery_challan.delivery_challan_number %> when remitting Wire Transfer payment.
-            </li>
-            <li>Bulk MRO Industrial Supply Pvt. Ltd. is not responsible for any banking fees.</li>
-          </ul>
-        </div>
-      </div>
-      <div class="card-body bmro-bg">
-        <div>
-          <th><h6 class="bmro-summary-heading text-black-50 mb-1">
-            Bulk MRO bank details :
-          </h6></th>
-          <ul>
-            <li>Bank: Kotak Mahindra Bank Ltd</li>
-            <li>Address: Aum Saheel Tower, Mumbai 400080.</li>
-            <li>Account Name: Bulk MRO Industrial Supply Pvt. Ltd.</li>
-            <li>Account Number: 9412329433</li>
-            <li>NEFT/RTGS Code: KKBK0001411</li>
-          </ul>
-          <ul>
-
-            <li>Bank: State Bank of India</li>
-            <li>Address: Kalpa Taru - 39, Pedder Road, Mumbai 400026.</li>
-            <li>Account Name: Bulk MRO Industrial Supply Pvt. Ltd.</li>
-            <li>Account Number: 35924122136</li>
-            <li>NEFT/RTGS Code: SBIN0000510</li>
-          </ul>
-        </div>
-      </div>
-
     </div>
+    <div class="card-body bmro-bg">
+      <div>
+        <th><h6 class="bmro-summary-heading text-black-50 mb-1">
+          Note :
+        </h6></th>
+        <ul>
+          <li>Order once confirmed can not be cancelled.</li>
+          <li>Delayed payments will attract 2% interest per month.</li>
+          <li>Invoice will be deemed accepted unless any discrepancy is raised in writing within 7 days from the date
+            of invoice.
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="card-footer bmro-bg">
+      <div>
+        <th><h6 class="bmro-summary-heading text-black-50 mb-1">
+          Other Information :
+        </h6></th>
+        <ul>
+          <li>Please reference our Bulk MRO Industrial Supply Pvt. Ltd.
+            Delivery Challan # <%= @delivery_challan.delivery_challan_number %> when remitting Wire Transfer payment.
+          </li>
+          <li>Bulk MRO Industrial Supply Pvt. Ltd. is not responsible for any banking fees.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="card-body bmro-bg">
+      <div>
+        <th><h6 class="bmro-summary-heading text-black-50 mb-1">
+          Bulk MRO bank details :
+        </h6></th>
+        <ul>
+          <li>Bank: Kotak Mahindra Bank Ltd</li>
+          <li>Address: Aum Saheel Tower, Mumbai 400080.</li>
+          <li>Account Name: Bulk MRO Industrial Supply Pvt. Ltd.</li>
+          <li>Account Number: 9412329433</li>
+          <li>NEFT/RTGS Code: KKBK0001411</li>
+        </ul>
+        <ul>
+
+          <li>Bank: State Bank of India</li>
+          <li>Address: Kalpa Taru - 39, Pedder Road, Mumbai 400026.</li>
+          <li>Account Name: Bulk MRO Industrial Supply Pvt. Ltd.</li>
+          <li>Account Number: 35924122136</li>
+          <li>NEFT/RTGS Code: SBIN0000510</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
 
   <%# end %>
 
