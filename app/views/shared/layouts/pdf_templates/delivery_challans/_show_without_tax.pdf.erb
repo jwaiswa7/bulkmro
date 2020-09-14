@@ -1,296 +1,294 @@
 <div class="page fixed">
   <div class="main-container col1-layout">
-    <div class="card">
-      <div class="card-body" style="color: #000;">
-        <div class="main">
-          <div class="col-main">
-            <div id="compare-wrapper">
-              <div class="compare_open" id="compare_popup"></div>
-              <div style=" float:left; width: 49%; padding-top: 1px;padding-bottom: 10px; text-align: left;">
-                <%= image_tag 'BMIS_Logo_PNG.png', :width => "40%" %>
-              </div>
-              <div style="float:right;width:49%; padding-top: 1px;padding-bottom: 10px;text-align: right; vertical-align:center">
-                <b><span style="color:#000; font-size: 17.5px;">DELIVERY CHALLAN #<%= record.id %></span></b>
-              </div>
-              <br clear="all">
-              <%= render 'shared/layouts/pdf_templates/sales_orders/addresses', record: record.inquiry.bill_from %>
-              <br clear="all">
-              <div style="background: #d3d3d3; border:1px solid; border-radius: 5px;padding-top: 1px;padding-bottom: 1px; text-align: center;">
-                <span><b>DELIVERY CHALLAN #: BMPL-V-1/2018-19</b></span>
-              </div>
-              <br clear="all">
-              <div style="border:1px solid; border-radius: 5px;">
-                <table border="0" cellspacing="0" style="width: 100%;">
-                  <tbody>
-                  <tr>
-                    <td align="left" colspan="5" style="width:25%; padding-left: 10px;" valign="top">
-                      <b><span>Inquiry #</span></b> <span style="float:right">:</span>
-                    </td>
-                    <td align="left" colspan="5" style="width:25%;padding-left: 10px;" valign="top">
-                      <span><%= record.inquiry.inquiry_number %></span>
-                    </td>
-                    <td align="left" colspan="5" style="width:25%;padding-left: 10px;" valign="top">
-                      <b><span>Quotation #</span></b> <span style="float:right">:</span>
-                    </td>
-                    <td align="left" colspan="6" style="width:25%; padding-left: 10px;" valign="top">
+    <div class="main">
+      <div class="col-main">
+        <div id="compare-wrapper">
+          <div class="compare_open" id="compare_popup"></div>
+          <div style=" float:left; width: 49%; padding-top: 1px;padding-bottom: 10px; text-align: left;">
+            <%= wicked_pdf_image_tag 'BMIS_Logo_PNG.png', :width => "40%" %>
+          </div>
+          <div style="float:right;width:49%; padding-top: 1px;padding-bottom: 10px;text-align: right; vertical-align:center">
+            <b><span style="color:#000; font-size: 17.5px;">DELIVERY CHALLAN #<%= record.delivery_challan_number %></span></b>
+          </div>
+          <br clear="all">
+          <%= render 'shared/layouts/pdf_templates/sales_orders/addresses', record: record.inquiry.bill_from %>
+          <br clear="all">
+          <div style="background: #d3d3d3; border:1px solid; border-radius: 5px;padding-top: 1px;padding-bottom: 1px; text-align: center;">
+            <span><b>DELIVERY CHALLAN #: <%= record.delivery_challan_number %></b></span>
+          </div>
+          <br clear="all">
+          <div style="border:1px solid; border-radius: 5px;">
+            <table border="0" cellspacing="0" style="width: 100%;">
+              <tbody>
+              <tr>
+                <td align="left" colspan="5" style="width:25%; padding-left: 10px;" valign="top">
+                  <b><span>Inquiry #</span></b> <span style="float:right">:</span>
+                </td>
+                <td align="left" colspan="5" style="width:25%;padding-left: 10px;" valign="top">
+                  <span><%= record.inquiry.inquiry_number %></span>
+                </td>
+                <td align="left" colspan="5" style="width:25%;padding-left: 10px;" valign="top">
+                  <b><span>Quotation #</span></b> <span style="float:right">:</span>
+                </td>
+                <td align="left" colspan="6" style="width:25%; padding-left: 10px;" valign="top">
                   <span>
                     <%= record.inquiry.sales_quotes.last %>
                   </span>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
-                      <b><span>Sales Order#	</span></b>
-                      <span style="float:right">:</span>
-                    </td>
-                    <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
-                      <span><%= record.sales_order.order_number %></span>
-                    </td>
-                    <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
-                      <b><span>Type of Goods Movement #</span></b>
-                      <span style="float:right">:</span>
-                    </td>
-                    <td align="left" colspan="6" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
-                      <span><%= record.goods_type %></span>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c; padding-left: 10px;" valign="top">
-                      <b><span>Delivery Challan #	</span></b> <span style="float:right">:</span>
-                    </td>
-                    <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c; padding-left: 10px;" valign="top">
-                      <span>BMPL-V-1/2018-19</span>
-                    </td>
-                    <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
-                      <b><span>Delivery Challan Date</span></b> <span style="float:right">:</span>
-                    </td>
-                    <td align="left" colspan="6" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
-                      <span>: <%= record.delivery_challan_date %></span>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c; padding-left: 10px;" valign="top">
-                      <b><span>Customer Purchase Order</span></b> <span style="float:right">:</span>
-                    </td>
-                    <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c; padding-left: 10px;" valign="top">
-                      <span><%= record.inquiry.customer_po_number %></span>
-                    </td>
-                    <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
-                      <b><span>Customer Purchase Order Date</span></b> <span style="float:right">:</span>
-                    </td>
-                    <td align="left" colspan="6" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
-                      <span>: <%= record.inquiry&.customer_order_date %></span>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
-                      <b><span>Payment terms </span></b> <span style="float:right">:</span>
-                    </td>
-                    <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c; padding-left: 10px;" valign="top">
-                      <span><%= record.inquiry.payment_option.to_s %></span>
-                    </td>
-                    <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c; padding-left: 10px;" valign="top">
-                      <b><span>Customer Inquiry Ref</span></b> <span style="float:right">:</span>
-                    </td>
-                    <td align="left" colspan="6" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
-                      <span><%= record.inquiry.subject %></span>
-                    </td>
-                  </tr>
-                  </tbody>
-                </table>
-              </div>
-              <br clear="all">
-              <div class="address-blocks">
-                <div style=" " class="heading heading-left">
-                  <b><span>Supplier - Bill from:</span></b>
-                </div>
-                <div class="heading heading-right">
-                  <b><span>Supplier - Ship from:</span></b>
-                </div>
-                <br clear="all">
-                <table border="0" cellspacing="0" style="width: 100%; margin-top: 10px;">
-                  <tbody>
-                  <tr>
-                    <td class="address-wrapper" style="height: auto;width: 49%;">
-                      <% if record.inquiry.bill_from.present? %>
-                        <%= record.inquiry.bill_from.address.name.to_s %>
-                        <%= record.inquiry.bill_from.address.to_compact_multiline_s %><br>
-                        <% if record.inquiry.bill_from.address.phone.present? %>
-                          Contact: <%= record.inquiry.contact.full_name %>
-                          - <%= record.inquiry.bill_from.address.phone %><br>
-                        <% end %>
-                        <% if record.inquiry.bill_from.address.gst %>
-                          GST Number: <%= record.inquiry.bill_from.address.gst %><br>
-                        <% end %>
-                      <% end %>
-                    </td>
-                    <td style="width: 2%;"></td>
-                    <td class="address-wrapper" style="height: auto;width: 49%;">
-                      <% if record.inquiry.ship_from.present? %>
-                        <%= record.inquiry.ship_from.address.name.to_s %>
-                        <%= record.inquiry.ship_from.address.to_compact_multiline_s %><br>
-                        <% if record.inquiry.ship_from.address.phone.present? %>
-                          Contact: <%= record.inquiry.contact.full_name %>
-                          - <%= record.inquiry.ship_from.address.phone %><br>
-                        <% end %>
-                        <% if record.inquiry.ship_from.address.gst %>
-                          GST Number: <%= record.inquiry.ship_from.address.gst %><br>
-                        <% end %>
-                      <% end %>
-                    </td>
-                  </tr>
-                  </tbody>
-                </table>
-              </div>
-              <br clear="all">
-              <div class="address-blocks">
-                <div style=" " class="heading heading-left">
-                  <b><span>Customer - Bill to :</span></b>
-                </div>
-                <div class="heading heading-right">
-                  <b><span>Customer - Ship to :</span></b>
-                </div>
-                <br clear="all">
-                <table border="0" cellspacing="0" style="width: 100%; margin-top: 10px;">
-                  <tbody>
-                  <tr>
-                    <td class="address-wrapper" style="height: auto;width: 49%;">
-                      <%= record.inquiry.company.name %><br>
-                      <%= record.inquiry.billing_address.to_compact_multiline_s %><br>
-                      <% if record.inquiry.contact.phone.present? %>
+                </td>
+              </tr>
+              <tr>
+                <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
+                  <b><span>Sales Order#	</span></b>
+                  <span style="float:right">:</span>
+                </td>
+                <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
+                  <span><%= record.sales_order.order_number %></span>
+                </td>
+                <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
+                  <b><span>Type of Goods Movement #</span></b>
+                  <span style="float:right">:</span>
+                </td>
+                <td align="left" colspan="6" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
+                  <span><%= record.goods_type %></span>
+                </td>
+              </tr>
+              <tr>
+                <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c; padding-left: 10px;" valign="top">
+                  <b><span>Delivery Challan #	</span></b> <span style="float:right">:</span>
+                </td>
+                <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c; padding-left: 10px;" valign="top">
+                  <span>BMPL-V-1/2018-19</span>
+                </td>
+                <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
+                  <b><span>Delivery Challan Date</span></b> <span style="float:right">:</span>
+                </td>
+                <td align="left" colspan="6" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
+                  <span>: <%= record.delivery_challan_date %></span>
+                </td>
+              </tr>
+              <tr>
+                <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c; padding-left: 10px;" valign="top">
+                  <b><span>Customer Purchase Order</span></b> <span style="float:right">:</span>
+                </td>
+                <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c; padding-left: 10px;" valign="top">
+                  <span><%= record.inquiry.customer_po_number %></span>
+                </td>
+                <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
+                  <b><span>Customer Purchase Order Date</span></b> <span style="float:right">:</span>
+                </td>
+                <td align="left" colspan="6" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
+                  <span>: <%= record.inquiry&.customer_order_date %></span>
+                </td>
+              </tr>
+              <tr>
+                <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
+                  <b><span>Payment terms </span></b> <span style="float:right">:</span>
+                </td>
+                <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c; padding-left: 10px;" valign="top">
+                  <span><%= record.inquiry.payment_option.to_s %></span>
+                </td>
+                <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c; padding-left: 10px;" valign="top">
+                  <b><span>Customer Inquiry Ref</span></b> <span style="float:right">:</span>
+                </td>
+                <td align="left" colspan="6" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
+                  <span><%= record.inquiry.subject %></span>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+          <br clear="all">
+          <div class="address-blocks">
+            <div style=" " class="heading heading-left">
+              <b><span>Supplier - Bill from:</span></b>
+            </div>
+            <div class="heading heading-right">
+              <b><span>Supplier - Ship from:</span></b>
+            </div>
+            <br clear="all">
+            <table border="0" cellspacing="0" style="width: 100%; margin-top: 10px;">
+              <tbody>
+              <tr>
+                <td class="address-wrapper" style="height: auto;width: 49%;">
+                  <% if record.inquiry.bill_from.present? %>
+                    <%= record.inquiry.bill_from.address.name.to_s %><br>
+                    <%= record.inquiry.bill_from.address.to_compact_multiline_s %><br>
+                    <% if record.inquiry.bill_from.address.phone.present? %>
+                      Contact: <%= record.inquiry.contact.full_name %>
+                      - <%= record.inquiry.bill_from.address.phone %><br>
+                    <% end %>
+                    <% if record.inquiry.bill_from.address.gst && record.display_gst_pan.present? %>
+                      GST Number: <%= record.inquiry.bill_from.address.gst %><br>
+                      PAN No.: AAGCB7343G
+                    <% end %>
+                  <% end %>
+                </td>
+                <td style="width: 2%;"></td>
+                <td class="address-wrapper" style="height: auto;width: 49%;">
+                  <% if record.inquiry.ship_from.present? %>
+                    <%= record.inquiry.ship_from.address.name.to_s %><br>
+                    <%= record.inquiry.ship_from.address.to_compact_multiline_s %><br>
+                    <% if record.inquiry.ship_from.address.phone.present? %>
+                      Contact: <%= record.inquiry.contact.full_name %>
+                      - <%= record.inquiry.ship_from.address.phone %><br>
+                    <% end %>
+                    <% if record.inquiry.ship_from.address.gst && record.display_gst_pan.present? %>
+                      GST Number: <%= record.inquiry.ship_from.address.gst %><br>
+                      PAN No.: AAGCB7343G
+                    <% end %>
+                  <% end %>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+          <br clear="all">
+          <div class="address-blocks">
+            <div style=" " class="heading heading-left">
+              <b><span>Customer - Bill to :</span></b>
+            </div>
+            <div class="heading heading-right">
+              <b><span>Customer - Ship to :</span></b>
+            </div>
+            <br clear="all">
+            <table border="0" cellspacing="0" style="width: 100%; margin-top: 10px;">
+              <tbody>
+              <tr>
+                <td class="address-wrapper" style="height: auto;width: 49%;">
+                  <%= record.inquiry.company.name %><br>
+                  <%= record.inquiry.billing_address.to_compact_multiline_s %><br>
+                  <% if record.inquiry.contact.phone.present? %>
               <span class="d-block"><em>Contact</em>: <%= record.inquiry.contact.full_name %>
                 - <%= record.inquiry.contact.phone %></span>
-                      <% end %>
-                      <span class="d-block"><em>Email</em>: <%= record.inquiry.contact.email if record.inquiry.contact.email.present? %></span>
-                      <span class="d-block"><em>GST Number</em>: <%= record.inquiry.billing_address.gst || record.inquiry.company.default_billing_address.gst %></span>
-                    </td>
-                    <td style="width: 2%;"></td>
-                    <td class="address-wrapper" style="height: auto;width: 49%;">
-                      <%= record.inquiry.company.name %><br>
-                      <%= record.inquiry.shipping_address.to_compact_multiline_s %><br>
-                      <% if record.inquiry.contact.mobile || record.inquiry.contact.telephone %>
+                  <% end %><br>
+                  <span class="d-block"><em>Email</em>: <%= record.inquiry.contact.email if record.inquiry.contact.email.present? %></span><br>
+                  <span class="d-block"><em>GST Number</em>: <%= record.inquiry.billing_address.gst || record.inquiry.company.default_billing_address.gst %></span>
+                </td>
+                <td style="width: 2%;"></td>
+                <td class="address-wrapper" style="height: auto;width: 49%;">
+                  <%= record.inquiry.company.name %><br>
+                  <%= record.inquiry.shipping_address.to_compact_multiline_s %><br>
+                  <% if record.inquiry.contact.mobile || record.inquiry.contact.telephone %>
               <span class="d-block"><em>Contact</em>: <%= record.inquiry.contact.full_name %>
                 - <%= record.inquiry.contact.phone %></span>
-                      <% end %>
-                      <span class="d-block"><em>Email</em>: <%= record.inquiry.contact.email if record.inquiry.contact.email.present? %></span>
-                      <span class="d-block"><em>GST Number</em>: <%= record.inquiry.shipping_address.gst || record.inquiry.company.default_shipping_address.gst %></span>
-                    </td>
-                  </tr>
-                  </tbody>
-                </table>
-              </div>
-              <br clear="all">
-              <div style="width: 100%;">
-                <table border="0" cellspacing="0" class="pdf-table" style="font-size: 12px;">
-                  <thead>
-                  <tr>
-                    <th align="center" valign="center">
-                      <b><span>Sr.<br>
+                  <% end %><br>
+                  <span class="d-block"><em>Email</em>: <%= record.inquiry.contact.email if record.inquiry.contact.email.present? %></span><br>
+                  <span class="d-block"><em>GST Number</em>: <%= record.inquiry.shipping_address.gst || record.inquiry.company.default_shipping_address.gst %></span>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+          <br clear="all">
+          <div style="width: 100%;">
+            <table border="0" cellspacing="0" class="pdf-table" style="font-size: 12px;">
+              <thead>
+              <tr>
+                <th align="center" valign="center">
+                  <b><span>Sr.<br>
                     No.</span></b></th>
-                    <th align="center" valign="center">
-                      <b><span>SKU</span></b></th>
-                    <th align="center" valign="center">
-                      <b><span>Mfr<br>
+                <th align="center" valign="center">
+                  <b><span>SKU</span></b></th>
+                <th align="center" valign="center">
+                  <b><span>Mfr<br>
                     Model</span></b></th>
-                    <th align="center" valign="center">
-                      <b><span>Description</span></b></th>
-                    <th align="center" valign="center">
-                      <b><span>HSN/<br>
+                <th align="center" valign="center">
+                  <b><span>Description</span></b></th>
+                <th align="center" valign="center">
+                  <b><span>HSN/<br>
                     SAC<br>
                     Code</span></b></th>
-                    <th align="center" valign="center">
-                      <b><span>UOM</span></b></th>
-                    <th align="center" valign="center">
-                      <b><span>Quantity</span></b></th>
-                  </tr>
-                  </thead>
-                  <tbody>
-                  <% record.rows.order(:created_at).each_with_index do |item, index| %>
-                    <tr>
-                      <td align="center" valign="top">
-                        <span><%= index + 1 %></span>
-                      </td>
-                      <td align="center" valign="top">
-                        <span><%= item.product.present? ? item.product.sku : '' %></span>
-                      </td>
-                      <td align="center" valign="top">
-                        <span><%= item.product.present? ? item.product.mpn : '' %></span>
-                      </td>
-                      <td align="left" valign="top">
-                        <span><%= item.product.present? ? item.product.name : '' %></span>
-                      </td>
-                      <td align="center" valign="top">
+                <th align="center" valign="center">
+                  <b><span>UOM</span></b></th>
+                <th align="center" valign="center">
+                  <b><span>Quantity</span></b></th>
+              </tr>
+              </thead>
+              <tbody>
+              <% record.rows.order(:created_at).each_with_index do |item, index| %>
+                <tr>
+                  <td align="center" valign="top">
+                    <span><%= index + 1 %></span>
+                  </td>
+                  <td align="center" valign="top">
+                    <span><%= item.product.present? ? item.product.sku : '' %></span>
+                  </td>
+                  <td align="center" valign="top">
+                    <span><%= item.product.present? ? item.product.mpn : '' %></span>
+                  </td>
+                  <td align="left" valign="top">
+                    <span><%= item.product.present? ? item.product.name : '' %></span>
+                  </td>
+                  <td align="center" valign="top">
                                         <span>
                     <%= item.sales_quote_row.tax_code.to_s %>
                                         </span>
-                      </td>
-                      <td align="center" valign="top">
-                        <span><%= item.product.present? ? item.product.measurement_unit.to_s : '' %></span>
-                      </td>
-                      <td align="center" valign="top">
-                        <span><%= number_to_currency(item.quantity, precision: 2, unit: '') %></span>
-                      </td>
-                    </tr>
-                  <% end %>
-                  <tr class="pdf-table-total-row">
-                    <td align="center" valign="top">
-                      <span></span>
-                    </td>
-                    <td align="center" valign="top">
-                      <span><b><span>Total</span></b></span>
-                    </td>
-                    <td align="center" valign="top">
-                      <span></span>
-                    </td>
-                    <td align="center" valign="top">
-                      <span></span>
-                    </td>
-                    <td align="center" valign="top">
-                      <span></span>
-                    </td>
-                    <td align="center" valign="top">
-                      <span></span>
-                    </td>
-                    <td align="center" valign="top">
-                      <span><%= record.rows.sum(&:quantity).to_f %></span>
-                    </td>
-                  </tr>
-                  </tbody>
-                </table>
-                <br clear="all">
-                <div class="bottom-info" style="position: relative">
-                  <% if @stamp %>
-                    <div id="stamp" style="width:94%;position:absolute;top:0px; padding-top: 1px;padding-bottom: 1px;">
-                      <div id="inner-stamp" style="float: right; position: relative;">
-                        <%= wicked_pdf_image_tag 'BulkMRO-stamp.png', :width => "95", :height => "95" %>
-                      </div>
-                    </div>
-                  <% end %>
+                  </td>
+                  <td align="center" valign="top">
+                    <span><%= item.product.present? ? item.product.measurement_unit.to_s : '' %></span>
+                  </td>
+                  <td align="center" valign="top">
+                    <span><%= number_to_currency(item.quantity, precision: 2, unit: '') %></span>
+                  </td>
+                </tr>
+              <% end %>
+              <tr class="pdf-table-total-row">
+                <td align="center" valign="top">
+                  <span></span>
+                </td>
+                <td align="center" valign="top">
+                  <span><b><span>Total</span></b></span>
+                </td>
+                <td align="center" valign="top">
+                  <span></span>
+                </td>
+                <td align="center" valign="top">
+                  <span></span>
+                </td>
+                <td align="center" valign="top">
+                  <span></span>
+                </td>
+                <td align="center" valign="top">
+                  <span></span>
+                </td>
+                <td align="center" valign="top">
+                  <span><%= record.rows.sum(&:quantity).to_f %></span>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+            <br clear="all">
+            <div class="bottom-info" style="position: relative">
+              <% if @stamp %>
+                <div id="stamp" style="width:94%;position:absolute;top:0px; padding-top: 1px;padding-bottom: 1px;">
+                  <div id="inner-stamp" style="float: right; position: relative;">
+                    <%= wicked_pdf_image_tag 'BulkMRO-stamp.png', :width => "95", :height => "95" %>
+                  </div>
                 </div>
-                <br clear="all">
-                <table border="0" cellspacing="0" style="width: 100%;">
-                  <tbody>
-                  <tr class="mb-5">
-                    <td align="left" colspan="5" style="width:25%; padding-left: 5%;" valign="top">
-                      <b><span>Received By	</span></b>
-                    </td>
-                    <td align="right" colspan="6" style="width:25%; padding-right: 15%;" valign="top">
-                      <b><span>SIGNATURE:	</span></b>
-                    </td>
-                  </tr>
-                  <br clear="all">
-                  <tr>
-                    <td align="left" colspan="5" style="width:25%; padding-left: 5%;" valign="top">
-                      <b><span>Name :	</span></b>
-                    </td>
-                    <td align="right" colspan="6" style="width:25%; padding-right: 15%;" valign="top">
-                      <b><span>Date :	</span></b>
-                    </td>
-                  </tr>
-                  </tbody>
-                </table>
-              </div>
+              <% end %>
             </div>
+            <br clear="all">
+            <table border="0" cellspacing="0" style="width: 100%;">
+              <tbody>
+              <tr class="mb-5">
+                <td align="left" colspan="5" style="width:25%; padding-left: 5%;" valign="top">
+                  <b><span>Received By	</span></b>
+                </td>
+                <td align="right" colspan="6" style="width:25%; padding-right: 15%;" valign="top">
+                  <b><span>SIGNATURE:	</span></b>
+                </td>
+              </tr>
+              <br clear="all">
+              <tr>
+                <td align="left" colspan="5" style="width:25%; padding-left: 5%;" valign="top">
+                  <b><span>Name :	</span></b>
+                </td>
+                <td align="right" colspan="6" style="width:25%; padding-right: 15%;" valign="top">
+                  <b><span>Date :	</span></b>
+                </td>
+              </tr>
+              </tbody>
+            </table>
           </div>
         </div>
       </div>

@@ -7,16 +7,16 @@
             <div id="compare-wrapper">
               <div class="compare_open" id="compare_popup"></div>
               <div style=" float:left; width: 49%; padding-top: 1px;padding-bottom: 10px; text-align: left;">
-                <%= image_tag 'BMIS_Logo_PNG.png', :width => "40%" %>
+                <%= wicked_pdf_image_tag 'BMIS_Logo_PNG.png', :width => "40%" %>
               </div>
               <div style="float:right;width:49%; padding-top: 1px;padding-bottom: 10px;text-align: right; vertical-align:center">
-                <b><span style="color:#000; font-size: 17.5px;">DELIVERY CHALLAN #<%= record.id %></span></b>
+                <b><span style="color:#000; font-size: 17.5px;">DELIVERY CHALLAN #<%= record.delivery_challan_number %></span></b>
               </div>
               <br clear="all">
               <%= render 'shared/layouts/pdf_templates/sales_orders/addresses', record: record.inquiry.bill_from %>
               <br clear="all">
               <div style="background: #d3d3d3; border:1px solid; border-radius: 5px;padding-top: 1px;padding-bottom: 1px; text-align: center;">
-                <span><b>DELIVERY CHALLAN #: BMPL-V-1/2018-19</b></span>
+                <span><b>DELIVERY CHALLAN #: <%= record.delivery_challan_number %></b></span>
               </div>
               <br clear="all">
               <div style="border:1px solid; border-radius: 5px;">
@@ -119,8 +119,9 @@
                           Contact: <%= record.inquiry.contact.full_name %>
                           - <%= record.inquiry.bill_from.address.phone %><br>
                         <% end %>
-                        <% if record.inquiry.bill_from.address.gst %>
+                        <% if record.inquiry.bill_from.address.gst && record.display_gst_pan.present? %>
                           GST Number: <%= record.inquiry.bill_from.address.gst %><br>
+                          PAN No.: AAGCB7343G
                         <% end %>
                       <% end %>
                     </td>
@@ -133,8 +134,9 @@
                           Contact: <%= record.inquiry.contact.full_name %>
                           - <%= record.inquiry.ship_from.address.phone %><br>
                         <% end %>
-                        <% if record.inquiry.ship_from.address.gst %>
+                        <% if record.inquiry.ship_from.address.gst && record.display_gst_pan.present? %>
                           GST Number: <%= record.inquiry.ship_from.address.gst %><br>
+                          PAN No.: AAGCB7343G
                         <% end %>
                       <% end %>
                     </td>
@@ -160,8 +162,8 @@
                       <% if record.inquiry.contact.phone.present? %>
               <span class="d-block"><em>Contact</em>: <%= record.inquiry.contact.full_name %>
                 - <%= record.inquiry.contact.phone %></span>
-                      <% end %>
-                      <span class="d-block"><em>Email</em>: <%= record.inquiry.contact.email if record.inquiry.contact.email.present? %></span>
+                      <% end %><br>
+                      <span class="d-block"><em>Email</em>: <%= record.inquiry.contact.email if record.inquiry.contact.email.present? %></span><br>
                       <span class="d-block"><em>GST Number</em>: <%= record.inquiry.billing_address.gst || record.inquiry.company.default_billing_address.gst %></span>
                     </td>
                     <td style="width: 2%;"></td>
@@ -171,8 +173,8 @@
                       <% if record.inquiry.contact.mobile || record.inquiry.contact.telephone %>
               <span class="d-block"><em>Contact</em>: <%= record.inquiry.contact.full_name %>
                 - <%= record.inquiry.contact.phone %></span>
-                      <% end %>
-                      <span class="d-block"><em>Email</em>: <%= record.inquiry.contact.email if record.inquiry.contact.email.present? %></span>
+                      <% end %><br>
+                      <span class="d-block"><em>Email</em>: <%= record.inquiry.contact.email if record.inquiry.contact.email.present? %></span><br>
                       <span class="d-block"><em>GST Number</em>: <%= record.inquiry.shipping_address.gst || record.inquiry.company.default_shipping_address.gst %></span>
                     </td>
                   </tr>
@@ -346,6 +348,16 @@
                   </tr>
                   </tbody>
                 </table>
+                <br clear="all">
+                <div class="bottom-info" style="position: relative">
+                  <% if @stamp %>
+                    <div id="stamp" style="width:94%;position:absolute;top:0px; padding-top: 1px;padding-bottom: 1px;">
+                      <div id="inner-stamp" style="float: right; position: relative;">
+                        <%= wicked_pdf_image_tag 'BulkMRO-stamp.png', :width => "95", :height => "95" %>
+                      </div>
+                    </div>
+                  <% end %>
+                </div>
                 <br clear="all">
                 <table border="0" cellspacing="0" style="width: 100%;">
                   <tbody>

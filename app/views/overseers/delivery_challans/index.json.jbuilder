@@ -3,8 +3,11 @@ json.data (@delivery_challans) do |delivery_challan|
 
                   [
                       if is_authorized(delivery_challan, 'show')
-                        row_action_button(overseers_delivery_challan_path(delivery_challan.to_param), 'eye', 'View', 'info', :_blank)
+                        [
+                        row_action_button(overseers_delivery_challan_path(delivery_challan.to_param), 'eye', 'View', 'info', :_blank),
+                        row_action_button(overseers_delivery_challan_path(delivery_challan, format: :pdf), 'download', 'Pdf Without Signature', 'success', :_blank, 'get','', false, 'O'),
                         row_action_button(overseers_delivery_challan_path(delivery_challan.to_param, stamp: 1, format: :pdf), 'file-alt', 'Pdf with Signature', 'success', :_blank, 'get', '', false, 'O')
+                        ]
                       end,
                   ].join(' '),
                   delivery_challan.delivery_challan_number,
