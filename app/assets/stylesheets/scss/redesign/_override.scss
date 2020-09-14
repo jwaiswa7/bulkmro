@@ -4428,6 +4428,23 @@ td .media.chat-item{
   float: left;
 }
 
+.dc-buttons {
+	padding: 8px 10px !important;
+	border: 2px solid #2C4159 !important;
+	border-radius: 2px !important;
+	background-color: #2C4159!important;
+	color: #FFFFFF!important;
+	font-family: 'Inter UI', sans-serif;
+	-webkit-font-smoothing: antialiased;
+	font-size: 13px !important;
+	font-weight: 600 !important;
+	letter-spacing: -0.5px;
+	line-height: 16px !important;
+	outline: none !important;
+	text-transform: capitalize !important;
+	box-shadow: none !important;
+}
+
  // start DeliveryChallan show page pdf view css
 .address-blocks .heading {
   background: #d3d3d3;

@@ -25,8 +25,7 @@ class DeliveryChallan < ApplicationRecord
     'Urgent Delivery of Goods and SO not ready': 30,
     'Free Samples to be delivered': 40,
     'Partial Delivery of missed out goods on previous delivery': 50,
-    'Other': 60,
-    'Sample': 70
+    'Other': 60
   }, _suffix: true
 
   enum goods_type: {

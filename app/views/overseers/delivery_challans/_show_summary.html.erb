@@ -10,7 +10,7 @@
                 <%= image_tag 'BMIS_Logo_PNG.png', :width => "40%" %>
               </div>
               <div style="float:right;width:49%; padding-top: 1px;padding-bottom: 10px;text-align: right; vertical-align:center">
-                <b><span style="color:#000; font-size: 17.5px;">DELIVERY CHALLAN #<%= @delivery_challan.delivery_challan_number %></span></b>
+                <b><span style="color:#000; font-size: 17.5px;">DELIVERY CHALLAN #: <%= @delivery_challan.delivery_challan_number %></span></b>
               </div>
               <br clear="all">
               <%= render 'overseers/delivery_challans/address', record: @delivery_challan.inquiry.bill_from %>
@@ -65,7 +65,7 @@
                       <b><span>Delivery Challan Date</span></b> <span style="float:right">:</span>
                     </td>
                     <td align="left" colspan="6" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
-                      <span>: <%= @delivery_challan.delivery_challan_date %></span>
+                      <span><%= @delivery_challan.delivery_challan_date %></span>
                     </td>
                   </tr>
                   <tr>
@@ -79,7 +79,7 @@
                       <b><span>Customer Purchase Order Date</span></b> <span style="float:right">:</span>
                     </td>
                     <td align="left" colspan="6" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
-                      <span>: <%= @delivery_challan.inquiry&.customer_order_date %></span>
+                      <span><%= @delivery_challan.inquiry&.customer_order_date %></span>
                     </td>
                   </tr>
                   <tr>
@@ -87,13 +87,13 @@
                       <b><span>Payment terms </span></b> <span style="float:right">:</span>
                     </td>
                     <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c; padding-left: 10px;" valign="top">
-                      <span><%= @delivery_challan.inquiry.payment_option.to_s %></span>
+                      <span><%= @delivery_challan.inquiry&.payment_option&.to_s %></span>
                     </td>
                     <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c; padding-left: 10px;" valign="top">
                       <b><span>Customer Inquiry Ref</span></b> <span style="float:right">:</span>
                     </td>
                     <td align="left" colspan="6" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
-                      <span><%= @delivery_challan.inquiry.subject.truncate(45) %></span>
+                      <span data-toggle="tooltip" title=<%= @delivery_challan.inquiry&.subject%>><%= @delivery_challan.inquiry&.subject&.truncate(45) %></span>
                     </td>
                   </tr>
                   </tbody>
@@ -196,7 +196,7 @@
                         Model</span></b></th>
                     <th align="center" valign="center">
                       <b><span>Description</span></b></th>
-                    <% if @delivery_challan.display_rates.present? %>
+                    <% if @delivery_challan.display_rates.present? && @delivery_challan.sales_order.present? %>
                       <th align="center" valign="center">
                         <b><span>Make</span></b></th>
                     <% end %>
@@ -208,7 +208,7 @@
                       <b><span>UOM</span></b></th>
                     <th align="center" valign="center">
                       <b><span>Qty</span></b></th>
-                    <% if @delivery_challan.display_rates.present? %>
+                    <% if @delivery_challan.display_rates.present? && @delivery_challan.sales_order.present? %>
                       <th align="center" valign="center">
                         <b><span>Unit Price<br>
                         (<%= @delivery_challan.inquiry.currency || Currency.inr %>)</span></b></th>
@@ -262,22 +262,22 @@
                       <td align="left" valign="top">
                         <span><%= item.product.present? ? item.product.name : '' %></span>
                       </td>
-                      <% if @delivery_challan.display_rates.present? %>
+                      <% if @delivery_challan.display_rates.present? && @delivery_challan.sales_order.present? %>
                         <td align="center" valign="top">
                           <span><%= item.product.brand.to_s %></span></td>
                       <% end %>
                       <td align="center" valign="top">
                                         <span>
-                    <%= item&.sales_quote_row&.tax_code&.to_s %>
+                        <%= item&.sales_quote_row&.tax_code&.to_s %>
                                         </span>
                       </td>
                       <td align="center" valign="top">
-                        <span><%= item.product.present? ? item.product.measurement_unit.to_s : '' %></span>
+                        <span><%= item.product.present? ? item.product&.measurement_unit&.to_s : '' %></span>
                       </td>
                       <td align="center" valign="top">
                         <span><%= number_to_currency(item.quantity, precision: 2, unit: '') %></span>
                       </td>
-                      <% if @delivery_challan.display_rates.present? %>
+                      <% if @delivery_challan.display_rates.present? && @delivery_challan.sales_order.present? %>
                         <td align="right" style="font-size: 9px;border-right: 1px solid #3c3c3c;border-bottom: 1px solid #3c3c3c;text-align: right;">
                           <span><%= number_to_currency(item.sales_quote_row.converted_unit_selling_price, precision: 2, unit: '') %></span>
                         </td>
@@ -294,13 +294,13 @@
                           </td>
                         <% else %>
                           <td align="center" style="font-size: 9px;border-right: 1px solid #3c3c3c;border-bottom: 1px solid #3c3c3c;">
-                          <span><%= item.sales_quote_row.best_tax_rate.tax_percentage / 2 if item.best_tax_rate.present? %>
+                          <span><%= item.sales_quote_row.best_tax_rate.tax_percentage / 2 if item.sales_quote_row.best_tax_rate.present? %>
                             %</span></td>
                           <td align="right" style="text-align:right;">
                             <span><%= number_to_currency(item.sales_quote_row.converted_total_tax.to_f / 2, precision: 2, unit: '') %></span>
                           </td>
                           <td align="center" style="font-size: 9px;border-right: 1px solid #3c3c3c;border-bottom: 1px solid #3c3c3c;">
-                          <span><%= item.sales_quote_row.best_tax_rate.tax_percentage / 2 if item.best_tax_rate.present? %>
+                          <span><%= item.sales_quote_row.best_tax_rate.tax_percentage / 2 if item.sales_quote_row.best_tax_rate.present? %>
                             %</span></td>
                           <td align="right" style="text-align:right;">
                             <span><%= number_to_currency(item.sales_quote_row.converted_total_tax / 2, precision: 2, unit: '') %></span>
@@ -325,7 +325,7 @@
                       <span></span></td>
                     <td align="center" valign="top">
                       <span></span></td>
-                    <% if @delivery_challan.display_rates.present? %>
+                    <% if @delivery_challan.display_rates.present? && @delivery_challan.sales_order.present? %>
                       <td align="center" valign="top">
                         <span></span></td>
                       <td align="center" valign="top">

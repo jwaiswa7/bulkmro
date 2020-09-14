@@ -28,15 +28,18 @@ class Overseers::DeliveryChallansController < Overseers::BaseController
 
   def new
     @delivery_challan = DeliveryChallan.new(purpose: 20)
+    authorize_acl @delivery_challan
   end
 
   def next_step
     @delivery_challan = Services::Overseers::DeliveryChallans::NewDcFromSo.new(delivery_challan_params, current_overseer).call
+    authorize_acl @delivery_challan
     render 'new'
   end
 
   def create
-    @delivery_challan = DeliveryChallan.new(delivery_challan_params)
+    @delivery_challan = DeliveryChallan.new(delivery_challan_params.merge(overseer: current_overseer))
+    authorize_acl @delivery_challan
 
     if @delivery_challan.save
       dc_number = Services::Resources::Shared::UidGenerator.generate_dc_number(@delivery_challan)
@@ -48,7 +51,7 @@ class Overseers::DeliveryChallansController < Overseers::BaseController
   end
 
   def preview
-    
+    authorize_acl @delivery_challan
   end
 
   def edit
@@ -56,13 +59,18 @@ class Overseers::DeliveryChallansController < Overseers::BaseController
   end
 
   def update
-    @delivery_challan.assign_attributes(delivery_challan_params)
     authorize_acl @delivery_challan
 
-    if @delivery_challan.save
-      redirect_to overseers_delivery_challan_path(@delivery_challan), notice: flash_message(@delivery_challan, action_name)
+    if params[:preview].present?
+      redirect_to overseers_delivery_challans_path, notice: flash_message(@delivery_challan, 'create')
     else
-      render 'edit'
+      @delivery_challan.assign_attributes(delivery_challan_params.merge(overseer: current_overseer))
+
+      if @delivery_challan.save
+        redirect_to preview_overseers_delivery_challan_path(@delivery_challan), notice: flash_message(@delivery_challan, action_name)
+      else
+        render 'edit'
+      end
     end
   end
 
