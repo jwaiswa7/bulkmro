@@ -1,5 +1,5 @@
 class Overseers::DeliveryChallansController < Overseers::BaseController
-  before_action :set_delivery_challan, only: [:show, :edit, :update, :preview]
+  before_action :set_delivery_challan, only: [:show, :edit, :update, :preview, :relationship_map, :get_relationship_map_json]
 
   def index
     service = Services::Overseers::Finders::DeliveryChallans.new(params)
@@ -62,6 +62,20 @@ class Overseers::DeliveryChallansController < Overseers::BaseController
     else
       render 'edit'
     end
+  end
+
+  def relationship_map
+    authorize_acl @delivery_challan
+  end
+
+  def get_relationship_map_json
+    authorize_acl @delivery_challan
+    # purchase_order = PurchaseOrder.includes(po_request: :sales_order).where(inquiry_id: @inquiry).where(po_requests: {id: nil}, sales_orders: {id: nil})
+    # inquiry_json = Services::Overseers::Inquiries::RelationshipMap.new(@inquiry, @inquiry.sales_quotes, purchase_order).call
+    # render json: {data: inquiry_json}
+    #
+    inquiry_json = Services::Overseers::DeliveryChallans::RelationshipMap.new(@delivery_challan).call
+    render json: {data: inquiry_json}
   end
 
   private

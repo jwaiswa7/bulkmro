@@ -58,6 +58,8 @@ Rails.application.routes.draw do
 
       member do
         get 'preview'
+        get 'relationship_map'
+        get 'get_relationship_map_json'
       end
     end
     resources :payment_collection_emails
