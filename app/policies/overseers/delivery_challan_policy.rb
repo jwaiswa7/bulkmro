@@ -12,5 +12,9 @@ class Overseers::DeliveryChallanPolicy < Overseers::ApplicationPolicy
   def autocomplete_supplier?
     index?
   end
+
+  def relationship_map?
+    all_roles?
+  end
 end
 
