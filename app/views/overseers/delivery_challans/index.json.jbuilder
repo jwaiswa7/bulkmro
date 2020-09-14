@@ -4,8 +4,14 @@ json.data (@delivery_challans) do |delivery_challan|
                   [
                       if is_authorized(delivery_challan, 'relationship_map') && policy(delivery_challan).relationship_map?
                         row_action_button(relationship_map_overseers_delivery_challan_path(delivery_challan.to_param), 'sitemap', 'Relationship Map', 'info', :_blank)
+                      end,
+                      if is_authorized(delivery_challan, 'show')
+                        [
+                            row_action_button(overseers_delivery_challan_path(delivery_challan.to_param), 'eye', 'View', 'info', :_blank),
+                            row_action_button(overseers_delivery_challan_path(delivery_challan, format: :pdf), 'download', 'Pdf Without Signature', 'success', :_blank, 'get','', false, 'O'),
+                            row_action_button(overseers_delivery_challan_path(delivery_challan.to_param, stamp: 1, format: :pdf), 'file-alt', 'Pdf with Signature', 'success', :_blank, 'get', '', false, 'O')
+                        ]
                       end
-                      # row_action_button_without_fa(new_overseers_ar_invoice_request_path(sales_order_id: inward_dispatch.sales_order, ids: inward_dispatch.id), 'bmro-icon-table bmro-icon-circle', 'Create AR Invoice Request', 'success', target: :_blank)
                   ].join(' '),
                   delivery_challan.delivery_challan_number,
                   delivery_challan.inquiry.inquiry_number,

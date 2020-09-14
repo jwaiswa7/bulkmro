@@ -16,6 +16,8 @@ class Overseers::DeliveryChallansController < Overseers::BaseController
 
   def show
     authorize_acl @delivery_challan
+    @stamp = params[:stamp]
+    @inquiry = @delivery_challan.inquiry
     respond_to do |format|
       format.html {render 'show'}
       format.pdf do
