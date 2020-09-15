@@ -43,13 +43,13 @@
         <div class="col-12 col-md-2 mt-1 mt-md-0">
           <strong class="d-block bmro-summary-heading">Sales Order # </strong>
           <div class="bmro-summary-data">
-            <%= @delivery_challan.sales_order.order_number if @delivery_challan.sales_order.order_number.present? %>
+            <%= @delivery_challan.sales_order.order_number if @delivery_challan.sales_order.present? %>
           </div>
         </div>
         <div class="col-6 col-md-2 mt-1 mt-md-0">
           <strong class="d-block bmro-summary-heading">Sales Order Date</strong>
           <div class="bmro-summary-data">
-            <%= @delivery_challan.sales_order.mis_date.strftime("%d-%b-%Y") if @delivery_challan.sales_order.mis_date.present? %>
+            <%= @delivery_challan.sales_order&.mis_date.strftime("%d-%b-%Y") if @delivery_challan.sales_order.present? %>
           </div>
         </div>
         <div class="col-6 col-md-2 mt-1 mt-md-0">
@@ -122,7 +122,7 @@
             <div class="bmro-summary-data">
               <%= @inquiry.contact.full_name %><br>
               <%= @inquiry.company.name %><br>
-              <%= @inquiry.billing_address.to_compact_multiline_s if @inquiry.billing_address.present? %>
+              <%= @delivery_challan.customer_bill_from.to_compact_multiline_s if @delivery_challan.customer_bill_from.present? %>
               <br>
               <% if @inquiry.billing_contact.present? %>
                 Tel: <%= @inquiry.billing_contact.phone || @inquiry.billing_contact.mobile || @inquiry.billing_contact.telephone %>
@@ -130,7 +130,7 @@
                 Tel: <%= @inquiry.contact.phone || @inquiry.contact.mobile || @inquiry.contact.telephone %>
               <% end %> <br>
               <em>Email</em>: <%= @inquiry.contact.email if @inquiry.contact.email.present? %><br>
-              GST No.:<%= @inquiry.billing_address.gst %><br>
+              GST No.:<%= @delivery_challan.customer_bill_from&.gst %><br>
             </div>
           </div>
           <div class="col-md-6 mt-2 mt-md-0">
@@ -139,14 +139,14 @@
               <%= @inquiry.contact.full_name %><br>
               <%= (@inquiry.shipping_company.name) %>
               <br>
-              <%= @inquiry.shipping_address.to_compact_multiline_s if @inquiry.shipping_address.present? %>
+              <%= @delivery_challan.customer_ship_from.to_compact_multiline_s if @delivery_challan.customer_ship_from.present? %>
               <br>
               <% if @inquiry.contact.mobile || @inquiry.contact.telephone %>
             <span class="d-block bmro-summary-heading"><em>Contact</em>: <%= @inquiry.contact.full_name %>
               - <%= @inquiry.contact.phone %></span>
               <% end %>
               <em>Email</em>: <%= @inquiry.contact.email if @inquiry.contact.email.present? %>
-              <span class="d-block bmro-summary-heading"><em>GST Number</em>: <%= @inquiry.shipping_address.gst || @inquiry.company.default_serialized_shipping_address.gst %></span>
+              <span class="d-block bmro-summary-heading"><em>GST Number</em>: <%= @delivery_challan.customer_ship_from.gst || @inquiry.company.default_serialized_shipping_address.gst %></span>
             </div>
           </div>
         </div>
@@ -199,7 +199,7 @@
           <th class="no-sort">
             <span data-toggle="tooltip" title="Description">Description</span>
           </th>
-          <% if @delivery_challan.reason != 'Sample' %>
+          <% if @delivery_challan.display_rates.present? && @delivery_challan.sales_order.present? %>
             <th class="no-sort">
               <span data-toggle="tooltip" title="Make">Make</span>
             </th>
@@ -213,7 +213,7 @@
           <th class="no-sort">
             <span data-toggle="tooltip" title="Quantity">Qty</span>
           </th>
-          <% if @delivery_challan.reason != 'Sample' %>
+          <% if @delivery_challan.display_rates.present? && @delivery_challan.sales_order.present? %>
           <th class="no-sort">
             <span data-toggle="tooltip" title="Unit Price">Unit Price</span>
           </th>
@@ -270,13 +270,13 @@
             <td>
               <span><%= item.product.present? ? item.product.name : '' %></span>
             </td>
-            <% if @delivery_challan.reason != 'Sample' %>
+            <% if @delivery_challan.display_rates.present? && @delivery_challan.sales_order.present? %>
               <td>
                 <span><%= item.product.brand.to_s %></span>
               </td>
             <% end %>
             <td>
-              <span><%= item.sales_quote_row.tax_code.to_s %></span>
+              <span><%= item.sales_quote_row.present? ? item.sales_quote_row.tax_code.to_s: item.product.tax_code.to_s %></span>
             </td>
             <td>
               <span><%= item.product.present? ? item.product.measurement_unit.to_s : '' %></span>
@@ -284,7 +284,7 @@
             <td>
               <span><%= number_to_currency(item.quantity, precision: 2, unit: '') %></span>
             </td>
-            <% if @delivery_challan.reason != 'Sample' %>
+            <% if @delivery_challan.display_rates.present? && @delivery_challan.sales_order.present? %>
               <td>
                 <span><%= number_to_currency(item.sales_quote_row.converted_unit_selling_price, precision: 2, unit: '') %></span>
               </td>
@@ -331,7 +331,7 @@
       </table>
     </div>
     <div class="card-footer bmro-summary-footer bmro-summary-product-bottom">
-      <% if @delivery_challan.reason != 'Sample' %>
+      <% if @delivery_challan.display_rates.present? && @delivery_challan.sales_order.present? %>
         <div class="form-row bmro-summary-footer-padding">
           <div class="col-6 col-md-2">
             Products
