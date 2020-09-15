@@ -22,7 +22,7 @@ json.data (@delivery_challans) do |delivery_challan|
                   link_to(delivery_challan.inquiry.company.to_s, overseers_company_path(delivery_challan.inquiry.company), target: '_blank'),
                   delivery_challan.inquiry.billing_contact.to_s,
                   delivery_challan.inquiry.shipping_contact.to_s,
-                  delivery_challan.created_by.to_s
+                  delivery_challan.created_by.try(:name)
               ]
 end
 
