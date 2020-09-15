@@ -99,18 +99,18 @@
         <div class="form-row">
           <% if f.object.sales_order.present? %>
             <div class="col-4">
-              <%= f.input :display_rates, label: 'Display Rates', as: :select, selected: selected_option_or_boolean(f, :display_rates), required: true, input_html: {class: 'select2-single bmro-form-input bmro-dropdown-icon'}%>
+              <%= f.input :display_rates, :wrapper => :vertical_collection_inline, as: :radio_buttons, label: 'Display Rates', required: true %>
             </div>
           <% else %>
             <%= f.hidden_field :display_rates, value: false %>
           <% end %>
 
           <div class="col-4">
-            <%= f.input :display_gst_pan, label: 'Display GST & PAN', as: :select, selected: selected_option_or_boolean(f, :display_gst_pan), required: true, input_html: {class: 'select2-single bmro-form-input bmro-dropdown-icon'}%>
+            <%= f.input :display_gst_pan, :wrapper => :vertical_collection_inline, as: :radio_buttons, label: 'Display GST & PAN', required: true %>
           </div>
 
           <div class="col-4">
-            <%= f.input :display_stamp, label: 'Display Stamp', as: :select, selected: selected_option_or_boolean(f, :display_stamp), required: true, input_html: {class: 'select2-single bmro-form-input bmro-dropdown-icon'}%>
+            <%= f.input :display_stamp, :wrapper => :vertical_collection_inline, as: :radio_buttons, label: 'Display Stamp', required: true %>
           </div>
         </div>
       </div>
