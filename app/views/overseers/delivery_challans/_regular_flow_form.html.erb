@@ -71,7 +71,7 @@
         <h6 class="text-uppercase bmro-form-heading text-black-50 mb-1">Other Details</h6>
         <div class="form-row">
           <div class="col-12 col-md-6">
-            <%= f.input :reason, collection: enum_to_collection(DeliveryChallan.reasons.except('Free Samples to be delivered'), alphabetical: false), required: true, input_html: {id: 'dc_reasons', class: 'select2-single bmro-form-input bmro-dropdown-icon'} %>
+            <%= f.input :reason, collection: enum_to_collection(DeliveryChallan.reasons.except('Free Samples to be delivered'), alphabetical: false, keep_raw: true), required: true, input_html: {id: 'dc_reasons', class: 'select2-single bmro-form-input bmro-dropdown-icon'} %>
           </div>
           <div class="col-12 col-md-6">
             <%= f.input :goods_type, label: "Type of Goods Movement",collection: enum_to_collection(DeliveryChallan.goods_types), required: true, input_html: {class: 'select2-single bmro-form-input bmro-dropdown-icon'} %>

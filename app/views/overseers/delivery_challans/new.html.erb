@@ -1,9 +1,11 @@
 <div class="col-lg-12">
   <%= render 'shared/snippets/page_header', e: @delivery_challan %>
-  <% if @delivery_challan.purpose == 'Regular Flow' && @delivery_challan.inquiry_id.present? %>
-    <%= render 'overseers/delivery_challans/regular_flow_form' %>
-  <% elsif @delivery_challan.purpose == 'Sample' && @delivery_challan.inquiry_id.present? %>
-    <%= render 'overseers/delivery_challans/sample_form' %>
+  <% if @delivery_challan.persisted? %>
+    <% if @delivery_challan.purpose == 'Regular Flow' %>
+      <%= render 'overseers/delivery_challans/regular_flow_form' %>
+    <% else %>
+      <%= render 'overseers/delivery_challans/sample_form' %>
+    <% end %>
   <% else %>
     <%= render 'overseers/delivery_challans/primary_form_fields' %>
   <% end %>

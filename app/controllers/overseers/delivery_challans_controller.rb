@@ -28,6 +28,11 @@ class Overseers::DeliveryChallansController < Overseers::BaseController
 
   def new
     @delivery_challan = DeliveryChallan.new(purpose: 20)
+    if params[:po].present?
+      po = PurchaseOrder.find(params[:po])
+      @delivery_challan.assign_attributes(inquiry: po.inquiry)
+    end
+
     authorize_acl @delivery_challan
   end
 
