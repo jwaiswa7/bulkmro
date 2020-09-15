@@ -99,16 +99,15 @@
         <div class="form-row">
           <% if f.object.sales_order.present? %>
             <div class="col-4">
-              <%= f.input :display_gst_pan, label: 'Display GST & PAN', as: :select, selected: selected_option_or_boolean(f, :display_gst_pan), required: true, input_html: {class: 'select2-single bmro-form-input bmro-dropdown-icon'}%>
-            </div>
-            
-            <div class="col-4">
               <%= f.input :display_rates, label: 'Display Rates', as: :select, selected: selected_option_or_boolean(f, :display_rates), required: true, input_html: {class: 'select2-single bmro-form-input bmro-dropdown-icon'}%>
             </div>
           <% else %>
-            <%= f.hidden_field :display_gst_pan, value: false %>
             <%= f.hidden_field :display_rates, value: false %>
           <% end %>
+
+          <div class="col-4">
+            <%= f.input :display_gst_pan, label: 'Display GST & PAN', as: :select, selected: selected_option_or_boolean(f, :display_gst_pan), required: true, input_html: {class: 'select2-single bmro-form-input bmro-dropdown-icon'}%>
+          </div>
 
           <div class="col-4">
             <%= f.input :display_stamp, label: 'Display Stamp', as: :select, selected: selected_option_or_boolean(f, :display_stamp), required: true, input_html: {class: 'select2-single bmro-form-input bmro-dropdown-icon'}%>
