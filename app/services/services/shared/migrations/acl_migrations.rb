@@ -658,4 +658,24 @@ class Services::Shared::Migrations::AclMigrations < Services::Shared::BaseServic
     acl_resource = AclResource.new
     acl_resource.update_acl_resource_cache
   end
+
+  def set_acl_for_delivery_challan
+    role_name = ['Admin', 'Logistics']
+    acl_resources_for_targets = {
+        'delivery_challan': %w(index index_delivery_challans new create next_step preview edit update relationship_map get_relationship_map_json)
+    }
+    acl_resources_for_targets.each do |key, val|
+      val.each do |action_name|
+        acl_resource = AclResource.where(resource_model_name: key, resource_action_name: action_name).first_or_create!
+        # update role
+        acl_roles = AclRole.where(role_name: role_name)
+        acl_roles.each do |acl_role|
+          update_role_resource(acl_role, acl_resource.id)
+        end
+      end
+    end
+    acl_resource = AclResource.new
+    acl_resource.update_acl_resource_cache
+  end
+
 end
