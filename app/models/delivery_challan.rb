@@ -22,11 +22,11 @@ class DeliveryChallan < ApplicationRecord
   accepts_nested_attributes_for :rows, reject_if: lambda { |attributes| (attributes['quantity'].blank? || attributes['quantity'].to_f < 0) && attributes['id'].blank? }, allow_destroy: true
 
   enum reason: {
-    'Urgent Delivery of Goods and AR invoice not ready': 10,
-    'Multiple delivery of goods against single AR Invoice': 20,
+    'Urgent Delivery of Goods and AR Invoice not ready': 10,
+    'Multiple Delivery of Goods against single AR Invoice': 20,
     'Urgent Delivery of Goods and SO not ready': 30,
-    'Free Samples to be delivered': 40,
-    'Partial Delivery of missed out goods on previous delivery': 50,
+    'Free Samples to be Delivered': 40,
+    'Partial Delivery of missed out goods on Previous Delivery': 50,
     'Other': 60
   }, _suffix: true
 

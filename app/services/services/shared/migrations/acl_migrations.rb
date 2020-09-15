@@ -496,13 +496,15 @@ class Services::Shared::Migrations::AclMigrations < Services::Shared::BaseServic
 
     # update overseer resources
     Overseer.where(acl_role_id: acl_role.id).each do |overseer|
-      overseer_resources = ActiveSupport::JSON.decode(overseer.acl_resources)
-      new_resources = overseer_resources + ActiveSupport::JSON.decode(acl_role.role_resources)
-      new_resources = new_resources.map { |x| x.to_i }
-      new_resources = new_resources.sort { |x, y| (x <=> y) }
-      new_resources = new_resources.map { |x| x.to_s }
-      overseer.update_attribute(:acl_resources, new_resources.uniq.to_json)
-      puts overseer
+      # if overseer.acl_resources.present?
+        overseer_resources = ActiveSupport::JSON.decode(overseer.acl_resources)
+        new_resources = overseer_resources + ActiveSupport::JSON.decode(acl_role.role_resources)
+        new_resources = new_resources.map { |x| x.to_i }
+        new_resources = new_resources.sort { |x, y| (x <=> y) }
+        new_resources = new_resources.map { |x| x.to_s }
+        overseer.update_attribute(:acl_resources, new_resources.uniq.to_json)
+        puts overseer
+      # end
     end
   end
 
@@ -658,4 +660,24 @@ class Services::Shared::Migrations::AclMigrations < Services::Shared::BaseServic
     acl_resource = AclResource.new
     acl_resource.update_acl_resource_cache
   end
+
+  def set_acl_for_delivery_challan
+    role_name = ['Admin', 'Logistics']
+    acl_resources_for_targets = {
+        'delivery_challan': %w(index index_delivery_challans new create next_step preview edit update show relationship_map get_relationship_map_json)
+    }
+    acl_resources_for_targets.each do |key, val|
+      val.each do |action_name|
+        acl_resource = AclResource.where(resource_model_name: key, resource_action_name: action_name).first_or_create!
+        # update role
+        acl_roles = AclRole.where(role_name: role_name)
+        acl_roles.each do |acl_role|
+          update_role_resource(acl_role, acl_resource.id)
+        end
+      end
+    end
+    acl_resource = AclResource.new
+    acl_resource.update_acl_resource_cache
+  end
+
 end

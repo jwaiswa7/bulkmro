@@ -60,16 +60,6 @@ module FormHelper
 		end
 	end
 
-	def selected_option_or_boolean(form_object, attribute_name)
-		attribute = form_object.object.send(attribute_name)
-
-		if !attribute.nil?
-			[attribute]
-		else
-			[true]
-		end
-	end
-
   def action_button(action, entity)
 		  if action.capitalize == 'New'
   			 i = 'fa-plus-circle'

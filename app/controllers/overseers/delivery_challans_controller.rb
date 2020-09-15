@@ -28,6 +28,11 @@ class Overseers::DeliveryChallansController < Overseers::BaseController
 
   def new
     @delivery_challan = DeliveryChallan.new(purpose: 20)
+    if params[:po].present?
+      po = PurchaseOrder.find(params[:po])
+      @delivery_challan.assign_attributes(inquiry: po.inquiry)
+    end
+
     authorize_acl @delivery_challan
   end
 
@@ -44,7 +49,7 @@ class Overseers::DeliveryChallansController < Overseers::BaseController
     if @delivery_challan.save
       dc_number = Services::Resources::Shared::UidGenerator.generate_dc_number(@delivery_challan)
       @delivery_challan.update_attributes(delivery_challan_number: dc_number)
-      redirect_to preview_overseers_delivery_challan_path(@delivery_challan), notice: flash_message(@delivery_challan, action_name)
+      redirect_to preview_overseers_delivery_challan_path(@delivery_challan)
     else
       render 'new'
     end
