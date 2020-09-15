@@ -1,6 +1,6 @@
 class Services::Shared::Migrations::AddDeliveryChallanAcl < Services::Shared::Migrations::Migrations
   def set_acl_for_delivery_challan
-    acl_resources = ["index","index_delivery_challans", "new", "create", "next_step", "preview", "edit", "update"]
+    acl_resources = ["index","index_delivery_challans", "new", "create", "next_step", "preview", "edit", "update", "show"]
     acl_resources.each do |acl_resource|
       acl_resource_create = AclResource.create(resource_model_name: 'delivery_challan', resource_action_name: acl_resource)
       acl_resource_create.save

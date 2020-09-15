@@ -268,7 +268,7 @@
                       <% end %>
                       <td align="center" valign="top">
                                         <span>
-                        <%= item&.sales_quote_row&.tax_code&.to_s %>
+                        <%= item.sales_quote_row.present? ? item.sales_quote_row&.tax_code.to_s: item.product&.tax_code.to_s %>
                                         </span>
                       </td>
                       <td align="center" valign="top">
