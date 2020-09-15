@@ -33,7 +33,7 @@
 
         <div class="col-6 col-md-2 mt-2 mt-md-0 text-right">
           <% if is_authorized(@delivery_challan, 'show') && policy(@delivery_challan).show? %>
-            <%= row_action_button(overseers_delivery_challan_path(@delivery_challan, format: :pdf), 'download', 'Download With Stamp', 'success', :_blank, 'get', '', false, 'O') %>
+            <%= row_action_button(overseers_delivery_challan_path(@delivery_challan, format: :pdf), 'download', 'Download', 'success', :_blank, 'get', '', false, 'O') %>
           <% end %>
         </div>
       </div>
@@ -58,19 +58,14 @@
             <%= @delivery_challan.delivery_challan_number %>
           </div>
         </div>
-        <div class="col-6 col-md-2 mt-1 mt-md-0">
+        <div class="col-6 col-md-3 mt-1 mt-md-0">
           <strong class="d-block bmro-summary-heading">Delivery Challan Dates</strong>
           <div class="bmro-summary-data">
             <%= @delivery_challan.created_at.strftime("%d-%b-%Y") %>
           </div>
 
         </div>
-        <div class="col-6 col-md-2 mt-1 mt-md-0">
-          <strong class="d-block bmro-summary-heading">GRN # </strong>
-          <div class="bmro-summary-data">
-          </div>
-        </div>
-        <div class="col-6 col-md-2 mt-1 mt-md-0">
+        <div class="col-6 col-md-3 mt-1 mt-md-0">
           <strong class="d-block bmro-summary-heading">Payment Terms</strong>
           <div class="bmro-summary-data">
             <%= @inquiry.payment_option %>
@@ -93,7 +88,7 @@
                 <em>Contact</em>: <%= @inquiry.contact.full_name %>
                 - <%= @delivery_challan.supplier_bill_from.address.phone %><br>
               <% end %>
-              <% if @delivery_challan.supplier_bill_from.address.gst %>
+              <% if @delivery_challan.supplier_bill_from.address.gst && @delivery_challan.display_gst_pan.present? %>
                 <em>GST Number</em>: <%= @delivery_challan.supplier_bill_from.address.gst %><br>
               <% end %>
             </div>
@@ -108,7 +103,7 @@
                   <em>Contact</em>: <%= @delivery_challan.supplier_ship_from.address.mobile || @delivery_challan.supplier_ship_from.address.telephone %>
                   <br>
                 <% end %>
-                <% if @delivery_challan.supplier_ship_from.address.gst %>
+                <% if @delivery_challan.supplier_ship_from.address.gst && @delivery_challan.display_gst_pan.present? %>
                   <em>GST Number</em>: <%= @delivery_challan.supplier_ship_from.address.gst %><br>
                 <% end %>
               <% end %>
@@ -130,7 +125,9 @@
                 Tel: <%= @inquiry.contact.phone || @inquiry.contact.mobile || @inquiry.contact.telephone %>
               <% end %> <br>
               <em>Email</em>: <%= @inquiry.contact.email if @inquiry.contact.email.present? %><br>
-              GST No.:<%= @delivery_challan.customer_bill_from&.gst %><br>
+              <% if @delivery_challan.display_gst_pan.present? %>
+                GST No.:<%= @delivery_challan.customer_bill_from&.gst %>
+              <% end %>
             </div>
           </div>
           <div class="col-md-6 mt-2 mt-md-0">
@@ -146,7 +143,9 @@
               - <%= @inquiry.contact.phone %></span>
               <% end %>
               <em>Email</em>: <%= @inquiry.contact.email if @inquiry.contact.email.present? %>
-              <span class="d-block bmro-summary-heading"><em>GST Number</em>: <%= @delivery_challan.customer_ship_from.gst || @inquiry.company.default_serialized_shipping_address.gst %></span>
+              <% if @delivery_challan.display_gst_pan.present? %>
+                <span class="d-block bmro-summary-heading"><em>GST Number</em>: <%= @delivery_challan.customer_ship_from.gst || @inquiry.company.default_serialized_shipping_address.gst %></span>
+              <% end %>
             </div>
           </div>
         </div>
@@ -214,12 +213,12 @@
             <span data-toggle="tooltip" title="Quantity">Qty</span>
           </th>
           <% if @delivery_challan.display_rates.present? && @delivery_challan.sales_order.present? %>
-          <th class="no-sort">
-            <span data-toggle="tooltip" title="Unit Price">Unit Price</span>
-          </th>
-          <th class="no-sort">
-            <span data-toggle="tooltip" title="Subtotal">Subtotal</span>
-          </th>
+            <th class="no-sort">
+              <span data-toggle="tooltip" title="Unit Price">Unit Price</span>
+            </th>
+            <th class="no-sort">
+              <span data-toggle="tooltip" title="Subtotal">Subtotal</span>
+            </th>
             <th class="no-sort">
               <span data-toggle="tooltip" title="Tax Rate">Tax Rate</span>
             </th>
@@ -276,7 +275,7 @@
               </td>
             <% end %>
             <td>
-              <span><%= item.sales_quote_row.present? ? item.sales_quote_row.tax_code.to_s: item.product.tax_code.to_s %></span>
+              <span><%= item.sales_quote_row.present? ? item.sales_quote_row.tax_code.to_s : item.product.tax_code.to_s %></span>
             </td>
             <td>
               <span><%= item.product.present? ? item.product.measurement_unit.to_s : '' %></span>
@@ -289,7 +288,7 @@
                 <span><%= number_to_currency(item.sales_quote_row.converted_unit_selling_price, precision: 2, unit: '') %></span>
               </td>
               <td>
-                <span><%= number_to_currency(item.sales_quote_row.converted_total_selling_price, precision: 2, unit: '') %></span>
+                <span><%= number_to_currency(item.converted_total_selling_price, precision: 2, unit: '') %></span>
               </td>
               <td>
                 <span><%= item.sales_quote_row.applicable_tax_percentage * 100 %>%</span>
@@ -300,7 +299,7 @@
                   <span><%= item.sales_quote_row.applicable_tax_percentage * 100 %>%</span>
                 </td>
                 <td>
-                  <span><%= number_to_currency(item.sales_quote_row.converted_total_tax, precision: 2, unit: '') %></span>
+                  <span><%= number_to_currency(item.converted_total_tax, precision: 2, unit: '') %></span>
                 </td>
               <% else %>
                 <td>
@@ -308,21 +307,21 @@
                   %</span>
                 </td>
                 <td>
-                  <span><%= number_to_currency(item.sales_quote_row.converted_total_tax.to_f / 2, precision: 2, unit: '') %></span>
+                  <span><%= number_to_currency(item.converted_total_tax.to_f / 2, precision: 2, unit: '') %></span>
                 </td>
                 <td>
                 <span><%= item.sales_quote_row.best_tax_rate.tax_percentage / 2 if item.best_tax_rate.present? %>
                   %</span>
                 </td>
                 <td>
-                  <span><%= number_to_currency(item.sales_quote_row.converted_total_tax / 2, precision: 2, unit: '') %></span>
+                  <span><%= number_to_currency(item.converted_total_tax / 2, precision: 2, unit: '') %></span>
                 </td>
               <% end %>
               <td>
-                <span><%= number_to_currency(item.sales_quote_row.converted_total_selling_price_with_tax.to_f.round(2), precision: 2, unit: '') %></span>
+                <span><%= number_to_currency(item.converted_total_selling_price_with_tax.round(2), precision: 2, unit: '') %></span>
               </td>
               <td>
-                <span><%= format_currency(item.sales_quote_row.freight_cost_subtotal) %></span>
+                <span><%= format_currency(item.sales_order_row.freight_cost_subtotal) %></span>
               </td>
             <% end %>
           </tr>
@@ -343,69 +342,22 @@
           </div>
           <div class="col-6 col-md-2 mt-2 mt-md-0">
             Subtotal
-            <strong class="d-block bmro-summary-heading"><%= format_currency(@delivery_challan.sales_order.converted_total_with_tax.to_f - @delivery_challan.sales_order.converted_total_tax.to_f, precision: 2, symbol: nil) %></strong>
+            <strong class="d-block bmro-summary-heading"><%= format_currency(@delivery_challan.converted_total_with_tax.to_f - @delivery_challan.converted_total_tax.to_f, precision: 2, symbol: nil) %></strong>
           </div>
           <div class="col-6 col-md-2">
             Total Tax Amt
-            <strong class="d-block bmro-summary-heading"><%= format_currency(@delivery_challan.sales_order.converted_total_tax, precision: 2, symbol: nil) %></strong>
+            <strong class="d-block bmro-summary-heading"><%= format_currency(@delivery_challan.converted_total_tax, precision: 2, symbol: nil) %></strong>
           </div>
           <div class="col-6 col-md-2">
             Grand Total
-            <strong class="d-block bmro-summary-heading"><%= format_currency(@delivery_challan.sales_order.converted_total_with_tax.to_f, precision: 2, symbol: nil) %></strong>
+            <strong class="d-block bmro-summary-heading"><%= format_currency(@delivery_challan.converted_total_with_tax.to_f, precision: 2, symbol: nil) %></strong>
           </div>
       <% end %>
       </div>
     </div>
     <div class="card-body bmro-bg">
-      <div>
-        <th><h6 class="bmro-summary-heading text-black-50 mb-1">
-          Note :
-        </h6></th>
-        <ul>
-          <li>Order once confirmed can not be cancelled.</li>
-          <li>Delayed payments will attract 2% interest per month.</li>
-          <li>Invoice will be deemed accepted unless any discrepancy is raised in writing within 7 days from the date
-            of invoice.
-          </li>
-        </ul>
-      </div>
-    </div>
-    <div class="card-footer bmro-bg">
-      <div>
-        <th><h6 class="bmro-summary-heading text-black-50 mb-1">
-          Other Information :
-        </h6></th>
-        <ul>
-          <li>Please reference our Bulk MRO Industrial Supply Pvt. Ltd.
-            Delivery Challan # <%= @delivery_challan.delivery_challan_number %> when remitting Wire Transfer payment.
-          </li>
-          <li>Bulk MRO Industrial Supply Pvt. Ltd. is not responsible for any banking fees.</li>
-        </ul>
-      </div>
-    </div>
-    <div class="card-body bmro-bg">
-      <div>
-        <th><h6 class="bmro-summary-heading text-black-50 mb-1">
-          Bulk MRO bank details :
-        </h6></th>
-        <ul>
-          <li>Bank: Kotak Mahindra Bank Ltd</li>
-          <li>Address: Aum Saheel Tower, Mumbai 400080.</li>
-          <li>Account Name: Bulk MRO Industrial Supply Pvt. Ltd.</li>
-          <li>Account Number: 9412329433</li>
-          <li>NEFT/RTGS Code: KKBK0001411</li>
-        </ul>
-        <ul>
 
-          <li>Bank: State Bank of India</li>
-          <li>Address: Kalpa Taru - 39, Pedder Road, Mumbai 400026.</li>
-          <li>Account Name: Bulk MRO Industrial Supply Pvt. Ltd.</li>
-          <li>Account Number: 35924122136</li>
-          <li>NEFT/RTGS Code: SBIN0000510</li>
-        </ul>
-      </div>
     </div>
-
   </div>
 
   <%# end %>
