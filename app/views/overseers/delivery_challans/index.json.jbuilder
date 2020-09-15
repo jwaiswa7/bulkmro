@@ -13,7 +13,7 @@ json.data (@delivery_challans) do |delivery_challan|
                         ]
                       end
                   ].join(' '),
-                  delivery_challan.delivery_challan_number,
+                  link_to(delivery_challan.delivery_challan_number,overseers_delivery_challan_path(delivery_challan.to_param), target: '_blank'),
                   link_to(delivery_challan.inquiry.inquiry_number, edit_overseers_inquiry_path(delivery_challan.inquiry), target: '_blank'),
                   delivery_challan.sales_order.present? ? link_to(delivery_challan.sales_order.order_number, overseers_inquiry_sales_order_path(delivery_challan.sales_order.inquiry, delivery_challan.sales_order), target: '_blank') : ' - ',
                   delivery_challan.total_qty,
