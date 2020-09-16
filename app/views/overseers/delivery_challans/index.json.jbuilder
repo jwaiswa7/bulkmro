@@ -5,6 +5,9 @@ json.data (@delivery_challans) do |delivery_challan|
                       if is_authorized(delivery_challan, 'relationship_map') && policy(delivery_challan).relationship_map?
                         row_action_button(relationship_map_overseers_delivery_challan_path(delivery_challan.to_param), 'sitemap', 'Relationship Map', 'info', :_blank)
                       end,
+                      if is_authorized(delivery_challan, 'edit')
+                        row_action_button(edit_overseers_delivery_challan_path(delivery_challan.to_param), 'pencil', 'View', 'info', :_blank)
+                      end,
                       if is_authorized(delivery_challan, 'show')
                         [
                             row_action_button(overseers_delivery_challan_path(delivery_challan.to_param), 'eye', 'View', 'info', :_blank),
