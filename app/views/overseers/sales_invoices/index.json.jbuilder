@@ -51,6 +51,9 @@ json.data (@sales_invoices) do |sales_invoice|
                                                                                              sales_invoice),
                                                      'bmro-icon-table bmro-relationship', 'Add outward dispatch', 'info', :_blank)
                       end,
+                      if policy(sales_invoice).view_pod? && (sales_invoice.pod_rows.count > 0)
+                        row_action_button(view_pod_overseers_sales_invoice_path(sales_invoice), 'eye', 'View Proof of Delivery', 'info')
+                      end,
                   ].join(' '),
                   conditional_link(sales_invoice.invoice_number, overseers_inquiry_sales_invoice_path(sales_invoice.inquiry, sales_invoice), is_authorized(sales_invoice, 'show')),
                   sales_invoice.inquiry.present? ?  conditional_link(sales_invoice.inquiry.inquiry_number, edit_overseers_inquiry_path(sales_invoice.inquiry), is_authorized(sales_invoice.inquiry, 'edit')) : '-',
