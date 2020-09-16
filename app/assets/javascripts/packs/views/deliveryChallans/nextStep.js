@@ -1,4 +1,5 @@
 import select2s from "../../components/select2s";
+import deleteRow from "./deleteRowbutton";
 
 const nextStepAction = () => {
   $('#other_reason').hide();
@@ -11,6 +12,8 @@ const nextStepAction = () => {
       $('#other_reason').hide();
     }
   })
+
+    deleteRow();
 };
 
 export default nextStepAction
