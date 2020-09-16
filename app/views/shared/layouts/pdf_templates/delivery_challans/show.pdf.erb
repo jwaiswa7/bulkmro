@@ -1,4 +1,3 @@
-
 <div class="page fixed">
   <div class="main-container col1-layout">
     <div class="card">
@@ -162,10 +161,12 @@
                       <%= record.customer_bill_from.to_compact_multiline_s if record.customer_bill_from.present? %><br>
                       <% if record.inquiry.contact.phone.present? %>
               <span class="d-block"><em>Contact</em>: <%= record.inquiry.contact.full_name %>
-                - <%= record.inquiry.contact.phone %></span>
-                      <% end %><br>
+                - <%= record.inquiry.contact.phone %></span><br>
+                      <% end %>
                       <span class="d-block"><em>Email</em>: <%= record.inquiry.contact.email if record.inquiry.contact.email.present? %></span><br>
-                      <span class="d-block"><em>GST Number</em>: <%= record.customer_bill_from.gst || record.inquiry.company.default_billing_address.gst %></span>
+                      <% if record.display_gst_pan.present? %>
+                        <span class="d-block"><em>GST Number</em>: <%= record.customer_bill_from.gst || record.inquiry.company.default_billing_address.gst %></span>
+                      <% end %>
                     </td>
                     <td style="width: 2%;"></td>
                     <td class="address-wrapper" style="height: auto;width: 49%;">
@@ -173,10 +174,12 @@
                       <%= record.customer_ship_from.to_compact_multiline_s %><br>
                       <% if record.inquiry.contact.mobile || record.inquiry.contact.telephone %>
               <span class="d-block"><em>Contact</em>: <%= record.inquiry.contact.full_name %>
-                - <%= record.inquiry.contact.phone %></span>
-                      <% end %><br>
+                - <%= record.inquiry.contact.phone %></span><br>
+                      <% end %>
                       <span class="d-block"><em>Email</em>: <%= record.inquiry.contact.email if record.inquiry.contact.email.present? %></span><br>
-                      <span class="d-block"><em>GST Number</em>: <%= record.customer_ship_from.gst || record.inquiry.company.default_shipping_address&.gst %></span>
+                      <% if record.display_gst_pan.present? %>
+                        <span class="d-block"><em>GST Number</em>: <%= record.customer_ship_from.gst || record.inquiry.company.default_shipping_address&.gst %></span>
+                      <% end %>
                     </td>
                   </tr>
                   </tbody>
@@ -269,7 +272,7 @@
                       <% end %>
                       <td align="center" valign="top">
                                         <span>
-                    <%= item.sales_quote_row.present? ? item.sales_quote_row.tax_code.to_s: item.product.tax_code.to_s %>
+                    <%= item.sales_quote_row.present? ? item.sales_quote_row.tax_code.to_s : item.product.tax_code.to_s %>
                                         </span>
                       </td>
                       <td align="center" valign="top">
@@ -283,7 +286,7 @@
                           <span><%= number_to_currency(item.sales_quote_row.converted_unit_selling_price, precision: 2, unit: '') %></span>
                         </td>
                         <td align="right" style="text-align:right;">
-                          <span><%= number_to_currency(item.sales_quote_row.converted_total_selling_price, precision: 2, unit: '') %></span>
+                          <span><%= number_to_currency(item.converted_total_selling_price, precision: 2, unit: '') %></span>
                         </td>
                         <td align="center">
                           <span><%= item.sales_quote_row.applicable_tax_percentage * 100 %>%</span></td>
@@ -291,24 +294,24 @@
                           <td align="center" style="font-size: 9px;border-right: 1px solid #3c3c3c;border-bottom: 1px solid #3c3c3c;">
                             <span><%= item.sales_quote_row.applicable_tax_percentage * 100 %>%</span></td>
                           <td align="right" style="text-align:right;">
-                            <span><%= number_to_currency(item.sales_quote_row.converted_total_tax, precision: 2, unit: '') %></span>
+                            <span><%= number_to_currency(item.converted_total_tax, precision: 2, unit: '') %></span>
                           </td>
                         <% else %>
                           <td align="center" style="font-size: 9px;border-right: 1px solid #3c3c3c;border-bottom: 1px solid #3c3c3c;">
                           <span><%= item.sales_quote_row.best_tax_rate.tax_percentage / 2 if item.best_tax_rate.present? %>
                             %</span></td>
                           <td align="right" style="text-align:right;">
-                            <span><%= number_to_currency(item.sales_quote_row.converted_total_tax.to_f / 2, precision: 2, unit: '') %></span>
+                            <span><%= number_to_currency(item.converted_total_tax.to_f / 2, precision: 2, unit: '') %></span>
                           </td>
                           <td align="center" style="font-size: 9px;border-right: 1px solid #3c3c3c;border-bottom: 1px solid #3c3c3c;">
                           <span><%= item.sales_quote_row.best_tax_rate.tax_percentage / 2 if item.best_tax_rate.present? %>
                             %</span></td>
                           <td align="right" style="text-align:right;">
-                            <span><%= number_to_currency(item.sales_quote_row.converted_total_tax / 2, precision: 2, unit: '') %></span>
+                            <span><%= number_to_currency(item.converted_total_tax / 2, precision: 2, unit: '') %></span>
                           </td>
                         <% end %>
                         <td align="right">
-                          <span><%= number_to_currency(item.sales_quote_row.converted_total_selling_price_with_tax.to_f.round(2), precision: 2, unit: '') %></span>
+                          <span><%= number_to_currency(item.converted_total_selling_price_with_tax.round(2), precision: 2, unit: '') %></span>
                         </td>
                       <% end %>
                     </tr>
@@ -334,7 +337,7 @@
                       <td align="center" valign="top">
                         <span></span></td>
                       <td align="right" style="text-align: right;" valign="top">
-                        <b><span><%= number_to_currency(record.sales_order.converted_total.to_f, precision: 2, unit: '') %></span></b>
+                        <b><span><%= number_to_currency(record.converted_total.to_f, precision: 2, unit: '') %></span></b>
                       </td>
                       <td align="center" valign="top">
                         <span></span></td>
@@ -343,24 +346,24 @@
                         <td align="center" valign="top">
                           <span></span></td>
                         <td align="right" style="text-align: right;" valign="top">
-                          <b><span><%= number_to_currency(record.sales_order.converted_total_tax, precision: 2, unit: '') %></span></b>
+                          <b><span><%= number_to_currency(record.converted_total_tax, precision: 2, unit: '') %></span></b>
                         </td>
                       <% else %>
                         <td align="center" style="font-size: 9px; border-right: 1px solid #3c3c3c;" valign="top">
                           <span></span></td>
                         <td align="right" style="text-align: right;" valign="top">
-                          <b><span><%= number_to_currency(record.sales_order.converted_total_tax / 2, precision: 2, unit: '') %></span></b>
+                          <b><span><%= number_to_currency(record.converted_total_tax / 2, precision: 2, unit: '') %></span></b>
                         </td>
                         <td align="center" style="text-align: right;" valign="top">
                           <span></span></td>
                         <td align="right" style="text-align: right;" valign="top">
-                          <b><span><%= number_to_currency(record.sales_order.converted_total_tax / 2, precision: 2, unit: '') %></span></b>
+                          <b><span><%= number_to_currency(record.converted_total_tax / 2, precision: 2, unit: '') %></span></b>
                         </td>
                       <% end %>
                       <td align="right" valign="top">
-                        <b><span><%= number_to_currency(record.sales_order.converted_total_with_tax, precision: 2, unit: '') %></span></b>
+                        <b><span><%= number_to_currency(record.converted_total_with_tax, precision: 2, unit: '') %></span></b>
                       </td>
-                      <% else %>
+                    <% else %>
                       <td align="center" valign="top">
                         <span><%= record.rows.sum(&:quantity).to_f %></span>
                       </td>
