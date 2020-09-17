@@ -6,7 +6,7 @@ json.data (@delivery_challans) do |delivery_challan|
                         row_action_button(relationship_map_overseers_delivery_challan_path(delivery_challan.to_param), 'sitemap', 'Relationship Map', 'info', :_blank)
                       end,
                       if is_authorized(delivery_challan, 'edit')
-                        row_action_button(edit_overseers_delivery_challan_path(delivery_challan.to_param), 'pencil', 'View', 'info', :_blank)
+                        row_action_button(edit_overseers_delivery_challan_path(delivery_challan.to_param), 'pencil', 'Edit', 'info', :_blank)
                       end,
                       if is_authorized(delivery_challan, 'show')
                         [
