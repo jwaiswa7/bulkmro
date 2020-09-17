@@ -298,13 +298,13 @@
                           </td>
                         <% else %>
                           <td align="center" style="font-size: 9px;border-right: 1px solid #3c3c3c;border-bottom: 1px solid #3c3c3c;">
-                          <span><%= item.sales_quote_row.best_tax_rate.tax_percentage / 2 if item.best_tax_rate.present? %>
+                          <span><%= item.sales_quote_row.best_tax_rate.tax_percentage / 2 if item.sales_quote_row.best_tax_rate.present? %>
                             %</span></td>
                           <td align="right" style="text-align:right;">
                             <span><%= number_to_currency(item.converted_total_tax.to_f / 2, precision: 2, unit: '') %></span>
                           </td>
                           <td align="center" style="font-size: 9px;border-right: 1px solid #3c3c3c;border-bottom: 1px solid #3c3c3c;">
-                          <span><%= item.sales_quote_row.best_tax_rate.tax_percentage / 2 if item.best_tax_rate.present? %>
+                          <span><%= item.sales_quote_row.best_tax_rate.tax_percentage / 2 if item.sales_quote_row.best_tax_rate.present? %>
                             %</span></td>
                           <td align="right" style="text-align:right;">
                             <span><%= number_to_currency(item.converted_total_tax / 2, precision: 2, unit: '') %></span>
