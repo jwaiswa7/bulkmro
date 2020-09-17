@@ -2,11 +2,12 @@ class Services::Overseers::DeliveryChallans::RelationshipMap < Services::Shared:
   def initialize(delivery_challan)
     @delivery_challan = delivery_challan
     @inquiry = delivery_challan.inquiry
-    if delivery_challan.sales_order.sales_quote.present?
-      @sales_quote = delivery_challan.sales_order.sales_quote
-    end
+
     if delivery_challan.sales_order.present?
       @sales_order = delivery_challan.sales_order
+      if delivery_challan.sales_order.sales_quote.present?
+        @sales_quote = delivery_challan.sales_order.sales_quote
+      end
     end
     if delivery_challan.ar_invoice_request.present?
       @ar_invoice_req = delivery_challan.ar_invoice_request
@@ -52,11 +53,12 @@ class Services::Overseers::DeliveryChallans::RelationshipMap < Services::Shared:
     if delivery_challan.ar_invoice_request.present?
       invoice = ar_invoice_req.sales_invoice
       assign_block_data('overseers/inquiries/treant_templates/invoice', block_data_array, {invoice: invoice}, [])
+      sales_order.shipments.each do |shipment|
+        assign_block_data('overseers/inquiries/treant_templates/shipment', block_data_array, {shipment: shipment}, [])
+      end
+    else
+      block_data_array = nil
     end
-    sales_order.shipments.each do |shipment|
-      assign_block_data('overseers/inquiries/treant_templates/shipment', block_data_array, {shipment: shipment}, [])
-    end
-
     # PurchaseOrder.joins(po_request: :sales_order).where(sales_orders: {id: sales_order.id}).each do |purchase_order|
     #   assign_block_data('overseers/inquiries/treant_templates/purchaseorder', block_data_array, {po: purchase_order}, [])
     # end
