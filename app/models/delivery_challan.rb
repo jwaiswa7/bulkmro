@@ -9,6 +9,7 @@ class DeliveryChallan < ApplicationRecord
   belongs_to :sales_order, required: false
   belongs_to :purchase_order, required: false
   belongs_to :ar_invoice_request, required: false
+  belongs_to :inward_dispatch, required: false
   belongs_to :customer_bill_from, class_name: 'Address', required: false
   belongs_to :customer_ship_from, class_name: 'Address', required: false
   belongs_to :supplier_bill_from, class_name: 'Warehouse', required: false

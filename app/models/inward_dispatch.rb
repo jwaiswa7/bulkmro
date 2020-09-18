@@ -17,6 +17,7 @@ class InwardDispatch < ApplicationRecord
   belongs_to :invoice_request, optional: true
   belongs_to :ar_invoice_request, optional: true
   belongs_to :sales_order, optional: true
+  has_many :delivery_challans
   accepts_nested_attributes_for :rows, reject_if: lambda { |attributes| attributes['purchase_order_row_id'].blank? && attributes['id'].blank? }, allow_destroy: true
   validates_associated :rows
   enum document_types: {
