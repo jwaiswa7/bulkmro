@@ -31,8 +31,14 @@ class Overseers::ArInvoiceRequestsController < Overseers::BaseController
   # GET /ar_invoices/new
   def new
     @inward_dispatches = InwardDispatch.where(id: params[:ids])
-    service = Services::Overseers::ArInvoiceRequests::New.new(params.merge(overseer: current_overseer), @inward_dispatches)
-    @ar_invoice_request = service.call
+    @delivery_challan = DeliveryChallan.where(id: params[:delivery_challan_ids])
+    if @delivery_challan.present?
+      service = Services::Overseers::ArInvoiceRequests::New.new(params.merge(overseer: current_overseer), nil, @delivery_challan)
+      @ar_invoice_request = service.ar_creation_from_delivery
+    else
+      service = Services::Overseers::ArInvoiceRequests::New.new(params.merge(overseer: current_overseer), @delivery_challan, nil)
+      @ar_invoice_request = service.ar_creation_from_inward
+    end
     authorize_acl @ar_invoice_request
   end
 
@@ -46,7 +52,13 @@ class Overseers::ArInvoiceRequestsController < Overseers::BaseController
   def create
     @ar_invoice_request = ArInvoiceRequest.new()
     @ar_invoice_request.assign_attributes(ar_invoice_request_params.merge(overseer: current_overseer))
-    @ar_invoice_request.inward_dispatch_ids = params['inward_dispatch_ids'].split(',').map {|x| x.to_i}
+    inward_dispatch_ids = params['inward_dispatch_ids']
+    delivery_challan_ids = params['delivery_challan_ids']
+    if inward_dispatch_ids.present?
+      @ar_invoice_request.inward_dispatch_ids = params['inward_dispatch_ids'].split(',').map { |x| x.to_i }
+    elsif delivery_challan_ids.present?
+      @ar_invoice_request.delivery_challan_ids = params['delivery_challan_ids'].split(',').map { |x| x.to_i }
+    end
     @ar_invoice_request.update_status(@ar_invoice_request.status)
     authorize_acl @ar_invoice_request
     respond_to do |format|
@@ -108,7 +120,7 @@ class Overseers::ArInvoiceRequestsController < Overseers::BaseController
   def render_cancellation_form
     authorize_acl @ar_invoice_request
     respond_to do |format|
-      format.html {render partial: 'cancel_ar_invoice', locals: {status: params[:status]}}
+      format.html { render partial: 'cancel_ar_invoice', locals: {status: params[:status]} }
     end
   end
 
@@ -128,7 +140,7 @@ class Overseers::ArInvoiceRequestsController < Overseers::BaseController
     authorize_acl @ar_invoice_request
     respond_to do |format|
       if params[:title] == 'Comment'
-        format.html {render partial: 'shared/layouts/add_comment', locals: {obj: @ar_invoice_request, url: add_comment_overseers_ar_invoice_request_path(@ar_invoice_request), view_more: overseers_ar_invoice_request_path(@ar_invoice_request)}}
+        format.html { render partial: 'shared/layouts/add_comment', locals: {obj: @ar_invoice_request, url: add_comment_overseers_ar_invoice_request_path(@ar_invoice_request), view_more: overseers_ar_invoice_request_path(@ar_invoice_request)} }
       end
     end
   end
@@ -152,27 +164,29 @@ class Overseers::ArInvoiceRequestsController < Overseers::BaseController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_ar_invoice_request
-      @ar_invoice_request = ArInvoiceRequest.find(params[:id])
-    end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def ar_invoice_request_params
-      params.require(:ar_invoice_request).except(:action_name)
+  # Use callbacks to share common setup or constraints between actions.
+  def set_ar_invoice_request
+    @ar_invoice_request = ArInvoiceRequest.find(params[:id])
+  end
+
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def ar_invoice_request_params
+    params.require(:ar_invoice_request).except(:action_name)
         .permit(
-          :sales_order_id,
-          :inquiry_id,
-          :status,
-          :cancellation_reason,
-          :rejection_reason,
-          :other_rejection_reason,
-          :other_cancellation_reason,
-          :sales_invoice_id,
-          :e_way,
-          :inward_dispatch_ids,
-          rows_attributes: [ :id, :inward_dispatch_row_id, :sales_order_id, :quantity, :delivered_quantity, :_destroy, :product_id, :sales_order_row_id ],
-          comments_attributes: [:id, :message, :created_by_id, :updated_by_id],
-          )
-    end
+            :sales_order_id,
+            :inquiry_id,
+            :status,
+            :cancellation_reason,
+            :rejection_reason,
+            :other_rejection_reason,
+            :other_cancellation_reason,
+            :sales_invoice_id,
+            :e_way,
+            :inward_dispatch_ids,
+            :delivery_challan_ids,
+            rows_attributes: [:id, :inward_dispatch_row_id, :sales_order_id, :quantity, :delivered_quantity, :_destroy, :product_id, :sales_order_row_id],
+            comments_attributes: [:id, :message, :created_by_id, :updated_by_id],
+        )
+  end
 end

@@ -16,7 +16,7 @@ json.data (@delivery_challans) do |delivery_challan|
                         ]
                       end,
                       if delivery_challan.sales_order.present? && (policy(delivery_challan).create_ar_invoice?) && delivery_challan.sales_order.remote_uid.present?
-                        row_action_button_without_fa(new_overseers_ar_invoice_request_path(sales_order_id: delivery_challan.sales_order, ids: delivery_challan.id), 'bmro-icon-table bmro-icon-circle', 'Create AR Invoice Request', 'success', target: :_blank)
+                        row_action_button_without_fa(new_overseers_ar_invoice_request_path(sales_order_id: delivery_challan.sales_order, delivery_challan_ids: delivery_challan.id), 'bmro-icon-table bmro-icon-circle', 'Create AR Invoice Request', 'success', target: :_blank)
                       elsif delivery_challan.sales_order.present? && is_authorized(delivery_challan, 'can_create_ar_invoice') && (policy(delivery_challan).create_ar_invoice?) && delivery_challan.sales_order.remote_uid.blank?
                         link_to('', class: 'btn btn-sm btn-success able_to_create_ar_invoice', 'data-sales-order-number': delivery_challan.sales_order.order_number, title: 'Create AR Invoice', remote: true) do
                           concat content_tag(:span, '')
