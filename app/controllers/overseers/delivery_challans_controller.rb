@@ -1,5 +1,6 @@
 class Overseers::DeliveryChallansController < Overseers::BaseController
   before_action :set_delivery_challan, only: [:show, :edit, :update, :preview, :relationship_map, :get_relationship_map_json]
+  before_action :set_inquiry_and_inward, only: :new
 
   def index
     service = Services::Overseers::Finders::DeliveryChallans.new(params)
@@ -27,12 +28,7 @@ class Overseers::DeliveryChallansController < Overseers::BaseController
   end
 
   def new
-    @delivery_challan = DeliveryChallan.new(purpose: 20)
-    if params[:po].present?
-      po = PurchaseOrder.find(params[:po])
-      @delivery_challan.assign_attributes(inquiry: po.inquiry)
-    end
-
+    @delivery_challan = DeliveryChallan.new(purpose: 20, inquiry: @inquiry, inward_dispatch: @inward_dispatch)
     authorize_acl @delivery_challan
   end
 
@@ -99,10 +95,16 @@ class Overseers::DeliveryChallansController < Overseers::BaseController
       @delivery_challan ||= DeliveryChallan.find(params[:id])
     end
 
+    def set_inquiry_and_inward
+      @inquiry ||= Inquiry.find(params[:inquiry])
+      @inward_dispatch ||= InwardDispatch.find(params[:inward_dispatch])
+    end
+
     def delivery_challan_params
       params.require(:delivery_challan).permit(
         :id,
         :inquiry_id,
+        :inward_dispatch_id,
         :sales_order_id,
         :customer_po_number,
         :ar_invoice_request_id,
@@ -121,7 +123,7 @@ class Overseers::DeliveryChallansController < Overseers::BaseController
         :display_gst_pan,
         :display_rates,
         :display_stamp,
-        rows_attributes: [:id, :product_id, :sr_no, :quantity, :inquiry_product_id, :sales_order_row_id, :_destroy]
+        rows_attributes: [:id, :product_id, :sr_no, :quantity, :total_quantity, :inquiry_product_id, :sales_order_row_id, :inward_dispatch_row_id, :_destroy]
       )
     end
 end
