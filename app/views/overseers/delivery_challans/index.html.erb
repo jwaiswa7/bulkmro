@@ -12,19 +12,16 @@
 <div class="col-lg-12 bmro-table-layout">
   <% content_for :header_row do %>
     <th class="no-sort all" width="98px">Quick Actions</th>
-    <th class="sort all text-right" width="78px" data-name="delivery_challan_number:">DC Number</th>
+    <th class="sort all text-right" width="78px" data-name="delivery_challan_number">DC Number</th>
     <th class="sort all text-right" width="78px" data-name="inquiry_number">Inquiry Number</th>
     <th class="no-sort text-right" width="88px" data-name="order_number">Order Number</th>
     <th class="no-sort desktop" width="88px">DC Qty</th>
     <th class="no-sort desktop" width="88px">Order Qty</th>
     <th class="sort desktop text-left" width="75px">DC Dates</th>
-<!--    <th class="no-sort desktop" width="88px">AR Qty</th>-->
     <th class="no-sort desktop text-left" width="130px" data-name="company_id">Company</th>
     <th class="no-sort desktop text-left" width="130px">Billing Contact</th>
     <th class="no-sort desktop text-left" width="130px">Shipping Contact</th>
-    <th class="no-sort desktop text-left" width="130px">DC Created By</th>
-<!--    <th class="sort desktop text-left" width="75px">AR Dates</th>-->
-<!--    <th class="sort desktop text-left" width="75px">POD received date</th>-->
+    <th class="no-sort desktop text-left" width="130px" data-name="created_by_id">DC Created By</th>
   <% end %>
 
   <% content_for :filter_row do %>
@@ -35,13 +32,10 @@
     <td data-filter="false"></td>
     <td data-filter="false"></td>
     <td data-filter="false"></td>
-<!--    <td data-filter="false"></td>-->
     <td data-filter="ajax"></td>
     <td data-filter="false"></td>
     <td data-filter="false"></td>
     <td data-filter="dropdown"></td>
-<!--    <td data-filter="false"></td>-->
-<!--    <td data-filter="false"></td>-->
   <% end %>
 
 

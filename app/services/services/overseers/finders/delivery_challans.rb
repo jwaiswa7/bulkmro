@@ -32,8 +32,7 @@ class Services::Overseers::Finders::DeliveryChallans < Services::Overseers::Find
       multi_match: {
           query: query,
           operator: 'and',
-          fields: %w[inquiry_number order_number company_id],
-          minimum_should_match: '100%'
+          fields: %w[inquiry_number order_number]
       }).order(sort_definition)
 
     if @base_filter.present?

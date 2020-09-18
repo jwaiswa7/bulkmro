@@ -5,6 +5,7 @@ class DeliveryChallanRow < ApplicationRecord
   belongs_to :inquiry_product
   belongs_to :product
   belongs_to :sales_order_row, required: false
+  belongs_to :inward_dispatch_row, required: false
   delegate :sales_quote_row, to: :sales_order_row, allow_nil: true
   
   validates_numericality_of :quantity, greater_than: 0, allow_nil: true
@@ -39,6 +40,20 @@ class DeliveryChallanRow < ApplicationRecord
 
   def converted_total_tax
     converted_total_selling_price_with_tax - converted_total_selling_price
+  end
+
+  def get_quantity
+    used_quantity = if self.sales_order_row.present?
+      DeliveryChallanRow.where(sales_order_row: self.sales_order_row).sum(&:quantity)
+    else
+      DeliveryChallanRow.where(inquiry_product_id: self.inquiry_product_id, sales_order_row_id: nil).sum(&:quantity)
+    end
+
+    if used_quantity < self.total_quantity
+      self.total_quantity - used_quantity
+    else
+      0
+    end
   end
 
 end
