@@ -15,7 +15,7 @@ class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseCo
   end
 
   def autocomplete
-    @sales_orders = @inquiry.sales_orders
+    @sales_orders = @inquiry.sales_orders.where.not(order_number: nil)
     authorize_acl @sales_orders
   end
 

@@ -9,6 +9,7 @@
         <div class="form-row">
           <div class="col-6">
             <%= f.hidden_field :inquiry_id, value: f.object.inquiry_id %>
+            <%= f.hidden_field :inward_dispatch_id, value: f.object&.inward_dispatch_id %>
             <%= f.hidden_field :purpose, value: f.object.purpose %>
             <%= f.input :inquiry, as: :string, readonly: true , input_html: {class: 'bmro-form-input'}%>
           </div>
@@ -71,7 +72,7 @@
         <h6 class="text-uppercase bmro-form-heading text-black-50 mb-1">Other Details</h6>
         <div class="form-row">
           <div class="col-12 col-md-6">
-            <%= f.input :reason, collection: enum_to_collection(DeliveryChallan.reasons.except('Free Samples to be delivered'), alphabetical: false, keep_raw: true), required: true, input_html: {id: 'dc_reasons', class: 'select2-single bmro-form-input bmro-dropdown-icon'} %>
+            <%= f.input :reason, collection: enum_to_collection(DeliveryChallan.reasons.except('Free Samples to be Delivered'), alphabetical: false, keep_raw: true), required: true, input_html: {id: 'dc_reasons', class: 'select2-single bmro-form-input bmro-dropdown-icon'} %>
           </div>
           <div class="col-12 col-md-6">
             <%= f.input :goods_type, label: "Type of Goods Movement",collection: enum_to_collection(DeliveryChallan.goods_types), required: true, input_html: {class: 'select2-single bmro-form-input bmro-dropdown-icon'} %>
@@ -139,6 +140,7 @@
               <%= row.hidden_field :product_id, value: row.object&.product_id %>
               <%= row.hidden_field :inquiry_product_id, value: row.object&.inquiry_product_id %>
               <%= row.hidden_field :sales_order_row_id, value: row.object&.sales_order_row_id%>
+              <%= row.hidden_field :inward_dispatch_row_id, value: row.object&.inward_dispatch_row_id %>
               <tr>
                 <td>
                   <span><%= row.object.product.sku %></span>
@@ -160,8 +162,8 @@
                 </td>
                 <td>
                   <span>
-                  <%= row.input :quantity, :label => false, placeholder: placeholder_for(row, :quantity), input_html: {:'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => '', max: row.object&.sales_order_row&.quantity, min: 1} %>
-                </span>
+                    <%= row.input :quantity, :label => false, placeholder: placeholder_for(row, :quantity), input_html: {:'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => '', max: row.object&.sales_order_row&.quantity, min: 1} %>
+                  </span>
                 </td>
                 <td>
                   <span>

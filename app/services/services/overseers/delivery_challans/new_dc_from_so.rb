@@ -3,6 +3,7 @@ class Services::Overseers::DeliveryChallans::NewDcFromSo < Services::Shared::Bas
     @params = params
     @sales_order = SalesOrder.find(params[:sales_order_id]) if params[:sales_order_id].present?
     @inquiry = Inquiry.find(params[:inquiry_id])
+    @inward_dispatch = InwardDispatch.find(params[:inward_dispatch_id]) if params[:inward_dispatch_id].present?
     @overseer = overseer
   end
 
@@ -18,10 +19,11 @@ class Services::Overseers::DeliveryChallans::NewDcFromSo < Services::Shared::Bas
         customer_order_date: inquiry&.customer_order_date,
         sales_order_date: sales_order&.mis_date,
         overseer: overseer,
-        purpose: params[:purpose]
+        purpose: params[:purpose],
+        inward_dispatch_id: inward_dispatch&.id
       )
-
-      generate_from_so_rows(sales_order, delivery_challan)
+      
+      inward_dispatch.present? ? generate_from_inward_dispatch_rows(inward_dispatch, delivery_challan) : generate_from_so_rows(sales_order, delivery_challan)
       
     else
       delivery_challan = inquiry.delivery_challans.build(
@@ -54,6 +56,7 @@ class Services::Overseers::DeliveryChallans::NewDcFromSo < Services::Shared::Bas
           inquiry_product: row&.inquiry_product,
           product: row&.product,
           quantity: row.quantity,
+          total_quantity: row.quantity,
           overseer: overseer
         )
       end
@@ -64,10 +67,23 @@ class Services::Overseers::DeliveryChallans::NewDcFromSo < Services::Shared::Bas
         delivery_challan.rows.where(inquiry_product_id: inquiry_product.id).first_or_initialize(
           product: inquiry_product&.product,
           quantity: inquiry_product&.quantity,
+          total_quantity: inquiry_product&.quantity,
           overseer: overseer
         )
       end
     end
 
-    attr_accessor :params, :sales_order, :overseer, :inquiry
+    def generate_from_inward_dispatch_rows(inward_dispatch, delivery_challan)
+      inward_dispatch.rows.each do |row|
+        delivery_challan.rows.where(inward_dispatch_row_id: row.id).first_or_initialize(
+          product: row&.product,
+          inquiry_product: row&.product&.inquiry_products&.where(inquiry: row.inward_dispatch&.inquiry)&.last,
+          quantity: row&.delivered_quantity,
+          total_quantity: row&.delivered_quantity,
+          overseer: overseer
+        )
+      end
+    end
+
+    attr_accessor :params, :sales_order, :overseer, :inquiry, :inward_dispatch
 end

@@ -2,7 +2,7 @@ class DeliveryChallanRow < ApplicationRecord
   include Mixins::CanBeStamped
   include Mixins::HasConvertedCalculations
   belongs_to :delivery_challan
-  belongs_to :inquiry_product
+  belongs_to :inquiry_product, required: false
   belongs_to :product
   belongs_to :sales_order_row, required: false
   belongs_to :inward_dispatch_row, required: false
@@ -42,11 +42,11 @@ class DeliveryChallanRow < ApplicationRecord
     converted_total_selling_price_with_tax - converted_total_selling_price
   end
 
-  def get_quantity
-    used_quantity = if self.sales_order_row.present?
-      DeliveryChallanRow.where(sales_order_row: self.sales_order_row).sum(&:quantity)
+  def get_quantity_for_regular_flow
+    used_quantity = if self.inward_dispatch_row.present?
+      DeliveryChallanRow.where(inward_dispatch_row: self.inward_dispatch_row).sum(&:quantity)
     else
-      DeliveryChallanRow.where(inquiry_product_id: self.inquiry_product_id, sales_order_row_id: nil).sum(&:quantity)
+      DeliveryChallanRow.where(sales_order_row: self.sales_order_row).sum(&:quantity)
     end
 
     if used_quantity < self.total_quantity
