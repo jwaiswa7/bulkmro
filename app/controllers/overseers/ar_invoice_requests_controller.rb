@@ -31,9 +31,9 @@ class Overseers::ArInvoiceRequestsController < Overseers::BaseController
   # GET /ar_invoices/new
   def new
     @inward_dispatches = InwardDispatch.where(id: params[:ids])
-    @delivery_challan = DeliveryChallan.where(id: params[:delivery_challan_ids])
-    if @delivery_challan.present?
-      service = Services::Overseers::ArInvoiceRequests::New.new(params.merge(overseer: current_overseer), nil, @delivery_challan)
+    @delivery_challans = DeliveryChallan.where(id: params[:delivery_challan_ids])
+    if @delivery_challans.present?
+      service = Services::Overseers::ArInvoiceRequests::New.new(params.merge(overseer: current_overseer), nil, @delivery_challans)
       @ar_invoice_request = service.ar_creation_from_delivery
     else
       service = Services::Overseers::ArInvoiceRequests::New.new(params.merge(overseer: current_overseer), @inward_dispatches, nil)
