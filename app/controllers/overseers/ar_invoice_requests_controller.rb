@@ -36,7 +36,7 @@ class Overseers::ArInvoiceRequestsController < Overseers::BaseController
       service = Services::Overseers::ArInvoiceRequests::New.new(params.merge(overseer: current_overseer), nil, @delivery_challan)
       @ar_invoice_request = service.ar_creation_from_delivery
     else
-      service = Services::Overseers::ArInvoiceRequests::New.new(params.merge(overseer: current_overseer), @delivery_challan, nil)
+      service = Services::Overseers::ArInvoiceRequests::New.new(params.merge(overseer: current_overseer), @inward_dispatches, nil)
       @ar_invoice_request = service.ar_creation_from_inward
     end
     authorize_acl @ar_invoice_request

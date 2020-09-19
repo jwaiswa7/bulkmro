@@ -51,7 +51,7 @@ class Overseers::InwardDispatchPolicy < Overseers::ApplicationPolicy
   end
 
   def create_ar_invoice?
-    if record.sales_order.present?
+    if (record.sales_order.present? && !record.delivery_challans.present?)
       product_ids = SalesOrderRow.where(sales_order_id: record.sales_order_id).pluck(:product_id)
       so_rows = record.rows.where(product_id: product_ids)
       if so_rows.present?
