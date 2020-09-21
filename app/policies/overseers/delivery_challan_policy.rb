@@ -17,4 +17,3 @@ class Overseers::DeliveryChallanPolicy < Overseers::ApplicationPolicy
     all_roles?
   end
 end
-

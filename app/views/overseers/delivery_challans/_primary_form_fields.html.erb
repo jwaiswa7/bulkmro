@@ -4,6 +4,7 @@
   <div class="card bmro-card">
     <div class="card-body">
       <%= f.hidden_field :inward_dispatch_id, values: f.object.inward_dispatch_id %>
+      <%= f.hidden_field :created_from, values: f.object.created_from %>
       <div>
         <h6 class="text-uppercase bmro-form-heading text-black-50 mb-1">Primary Details</h6>
         <div class="form-row">
@@ -12,7 +13,12 @@
           </div>
 
           <div class="col-6">
-            <%= f.input :purpose, collection: enum_to_collection(DeliveryChallan.purposes), required: true, input_html: {id: 'dc_purpose', class: 'select2-single bmro-form-input bmro-dropdown-icon'}, selected: @delivery_challan.purpose %>
+            <% if @delivery_challan.inward_dispatch.present? || @delivery_challan.sales_order.present? %>
+              <%= f.hidden_field :purpose, value: @delivery_challan.purpose %>
+              <%= f.input :purpose, collection: enum_to_collection(DeliveryChallan.purposes), required: true, input_html: {id: 'dc_purpose', class: 'select2-single bmro-form-input bmro-dropdown-icon'}, selected: @delivery_challan.purpose, disabled: true %>
+            <% else %>
+              <%= f.input :purpose, collection: enum_to_collection(DeliveryChallan.purposes), required: true, input_html: {id: 'dc_purpose', class: 'select2-single bmro-form-input bmro-dropdown-icon'}, selected: @delivery_challan.purpose %>
+            <% end %>
           </div>
         </div>
         <div class="form-row">

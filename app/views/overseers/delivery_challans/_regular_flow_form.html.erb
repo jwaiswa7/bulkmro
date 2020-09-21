@@ -11,6 +11,7 @@
             <%= f.hidden_field :inquiry_id, value: f.object.inquiry_id %>
             <%= f.hidden_field :inward_dispatch_id, value: f.object&.inward_dispatch_id %>
             <%= f.hidden_field :purpose, value: f.object.purpose %>
+            <%= f.hidden_field :created_from, values: f.object.created_from %>
             <%= f.input :inquiry, as: :string, readonly: true , input_html: {class: 'bmro-form-input'}%>
           </div>
           <div class="col-6">
@@ -137,9 +138,11 @@
           <tbody>
           <%= f.nested_fields_for :rows, f.object.rows , wrapper_tag: :div do |row| %>
             <% if row.object.product.present? %>
+              <%= row.hidden_field :id, value: row.object.id %>
               <%= row.hidden_field :product_id, value: row.object&.product_id %>
               <%= row.hidden_field :inquiry_product_id, value: row.object&.inquiry_product_id %>
-              <%= row.hidden_field :sales_order_row_id, value: row.object&.sales_order_row_id%>
+              <%= row.hidden_field :sales_order_row_id, value: row.object&.sales_order_row_id %>
+              <%= row.hidden_field :total_quantity, value: row.object&.total_quantity %>
               <%= row.hidden_field :inward_dispatch_row_id, value: row.object&.inward_dispatch_row_id %>
               <tr>
                 <td>
@@ -162,7 +165,7 @@
                 </td>
                 <td>
                   <span>
-                    <%= row.input :quantity, :label => false, placeholder: placeholder_for(row, :quantity), input_html: {:'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => '', max: row.object&.sales_order_row&.quantity, min: 1} %>
+                    <%= row.input :quantity, :label => false, placeholder: (params[:action] == 'edit' ? row.object.get_quantity_for_regular_flow(params[:action]) : row.object.get_quantity_for_regular_flow), input_html: {:'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => '', max: (params[:action] == 'edit' ? row.object.get_quantity_for_regular_flow(params[:action]) : row.object.get_quantity_for_regular_flow), min: 1} %>
                   </span>
                 </td>
                 <td>

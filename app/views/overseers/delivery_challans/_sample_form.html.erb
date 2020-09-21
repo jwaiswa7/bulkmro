@@ -10,6 +10,7 @@
           <div class="col-6">
             <%= f.hidden_field :inquiry_id, value: f.object.inquiry_id %>
             <%= f.hidden_field :purpose, value: f.object.purpose %>
+            <%= f.hidden_field :created_from, values: f.object.created_from %>
             <%= f.input :inquiry, as: :string, readonly: true , input_html: {class: 'bmro-form-input'}%>
           </div>
           <div class="col-6">

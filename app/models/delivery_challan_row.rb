@@ -42,13 +42,31 @@ class DeliveryChallanRow < ApplicationRecord
     converted_total_selling_price_with_tax - converted_total_selling_price
   end
 
-  def get_quantity_for_regular_flow
-    used_quantity = if self.inward_dispatch_row.present?
-      DeliveryChallanRow.where(inward_dispatch_row: self.inward_dispatch_row).sum(&:quantity)
+  def get_quantity
+    if self.delivery_challan.purpose == 'Regular Flow'
+      get_quantity_for_regular_flow
     else
-      DeliveryChallanRow.where(sales_order_row: self.sales_order_row).sum(&:quantity)
+      get_quantity_for_sample_flow
+    end
+  end
+
+  def get_quantity_for_sample_flow
+  end
+
+  def get_quantity_for_regular_flow(action=nil)
+    created_from = case self.delivery_challan.created_from
+    when 'InwardDispatch'
+      ['inward_dispatch_row_id', self.inward_dispatch_row_id]
+    when ('SalesOrder' || 'DeliveryChallan')
+      ['sales_order_row_id', self.sales_order_row_id]
     end
 
+    used_quantity = if action.present?
+      DeliveryChallanRow.where("#{created_from[0]} = ?", created_from[1]).where.not(id: self.id).sum(&:quantity)
+    else
+      DeliveryChallanRow.where("#{created_from[0]} = ?", created_from[1]).sum(&:quantity)
+    end
+    
     if used_quantity < self.total_quantity
       self.total_quantity - used_quantity
     else

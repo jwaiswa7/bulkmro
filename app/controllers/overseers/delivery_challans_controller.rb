@@ -28,7 +28,7 @@ class Overseers::DeliveryChallansController < Overseers::BaseController
   end
 
   def new
-    @delivery_challan = DeliveryChallan.new(purpose: 20, inquiry: @inquiry, inward_dispatch: @inward_dispatch)
+    @delivery_challan = DeliveryChallan.new(purpose: 20, inquiry: @inquiry, inward_dispatch: @inward_dispatch, created_from: params[:created_from])
     authorize_acl @delivery_challan
   end
 
@@ -123,6 +123,7 @@ class Overseers::DeliveryChallansController < Overseers::BaseController
         :display_gst_pan,
         :display_rates,
         :display_stamp,
+        :created_from,
         rows_attributes: [:id, :product_id, :sr_no, :quantity, :total_quantity, :inquiry_product_id, :sales_order_row_id, :inward_dispatch_row_id, :_destroy]
       )
     end
