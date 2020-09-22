@@ -15,20 +15,20 @@ const index = () => {
 };
 
 let toggleCheckboxes = () => {
-    $('table').on('change', 'input[type=checkbox][name="the_inward_dispatches[]"]', (event) => {
+    $('table').on('change', 'input[type=checkbox][name="the_delivery_challans[]"]', (event) => {
         showOrHideActions();
     })
 }
 
 
 let createArInvoice = () => {
-    let inward_dispatches = {};
-    $('input[type=checkbox][name="the_inward_dispatches[]"]:checked').each((index, element) => {
-        inward_dispatches[$(element).val()] = $(element).data("so-id");
+    let delivery_challans = {};
+    $('input[type=checkbox][name="the_delivery_challans[]"]:checked').each((index, element) => {
+        delivery_challans[$(element).val()] = $(element).data("so-id");
     });
 
-    if (checkValues(inward_dispatches) == true) {
-        let data = {delivery_challan_ids: Object.keys(inward_dispatches), so_id: Object.values(inward_dispatches)[0]};
+    if (checkValues(delivery_challans) == true) {
+        let data = {delivery_challan_ids: Object.keys(delivery_challans), so_id: Object.values(delivery_challans)[0]};
         window.open(Routes.new_overseers_ar_invoice_request_path(data));
     } else {
         $.notify({
@@ -47,7 +47,7 @@ let checkValues = (obj) => {
 let showOrHideActions = () => {
     var hide = true;
     console.log('showOrHideActions')
-    $('input[type=checkbox][name="the_inward_dispatches[]"]').each((index, element) => {
+    $('input[type=checkbox][name="the_delivery_challans[]"]').each((index, element) => {
         if ($(element).is(':checked')) {
             hide = false;
         }

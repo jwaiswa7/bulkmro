@@ -1,7 +1,7 @@
 json.data (@delivery_challans) do |delivery_challan|
   json.array! [
                   if delivery_challan.sales_order.present? && is_authorized(delivery_challan, 'can_create_ar_invoice') && (policy(delivery_challan).create_ar_invoice?) && delivery_challan.sales_order.remote_uid.present?
-                    "<div class='d-inline-block custom-control custom-checkbox align-middle'><input type='checkbox' name='the_inward_dispatches[]' class='custom-control-input' value='#{delivery_challan.id}' id='c-#{delivery_challan.id}' data-so-id='#{delivery_challan.sales_order.id}'><label class='custom-control-label' for='c-#{delivery_challan.id}'></label></div>"
+                    "<div class='d-inline-block custom-control custom-checkbox align-middle'><input type='checkbox' name='the_delivery_challans[]' class='custom-control-input' value='#{delivery_challan.id}' id='c-#{delivery_challan.id}' data-so-id='#{delivery_challan.sales_order.id}'><label class='custom-control-label' for='c-#{delivery_challan.id}'></label></div>"
                   end,
                   [
                       if is_authorized(delivery_challan, 'relationship_map') && policy(delivery_challan).relationship_map?
