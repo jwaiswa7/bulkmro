@@ -259,6 +259,11 @@ class Overseers::InquiriesController < Overseers::BaseController
     authorize_acl :inquiry
   end
 
+  def autocomplete_without_so_confirmed
+    inquiries = Inquiry.where.not(status: ['Order Won', 'SO Rejected by Sales Manager', 'Rejected by Accounts', 'Hold by Accounts', 'Order Lost', 'Regret', 'Regret Request'])
+    @inquiries = ApplyParams.to(inquiries, params)
+  end
+
   def show
     authorize_acl @inquiry
     redirect_to edit_overseers_inquiry_path(@inquiry)

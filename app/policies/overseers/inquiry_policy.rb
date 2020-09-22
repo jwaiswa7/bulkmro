@@ -232,6 +232,10 @@ class Overseers::InquiryPolicy < Overseers::ApplicationPolicy
     record.id.present? && new_email_message?
   end
 
+  def create_new_dc?
+    !record.sales_orders.present? && !has_approved_sales_orders?
+  end
+
   class Scope
     attr_reader :overseer, :scope
 

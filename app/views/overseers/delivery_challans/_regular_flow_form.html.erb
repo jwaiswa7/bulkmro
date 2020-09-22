@@ -165,7 +165,7 @@
                 </td>
                 <td>
                   <span>
-                    <%= row.input :quantity, :label => false, placeholder: (params[:action] == 'edit' ? row.object.get_quantity_for_regular_flow(params[:action]) : row.object.get_quantity_for_regular_flow), input_html: {:'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => '', max: (params[:action] == 'edit' ? row.object.get_quantity_for_regular_flow(params[:action]) : row.object.get_quantity_for_regular_flow), min: 1} %>
+                    <%= row.input :quantity, :label => false, placeholder: row.object.get_quantity_for_regular_flow((params[:action] == 'edit') ? params[:action] : nil), input_html: {:'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => '', max: row.object.get_quantity_for_regular_flow((params[:action] == 'edit') ? params[:action] : nil), min: 1} %>
                   </span>
                 </td>
                 <td>

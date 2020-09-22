@@ -1,6 +1,6 @@
 class Overseers::DeliveryChallansController < Overseers::BaseController
   before_action :set_delivery_challan, only: [:show, :edit, :update, :preview, :relationship_map, :get_relationship_map_json]
-  before_action :set_inquiry_and_inward, only: :new
+  before_action :set_inquiry_so_and_inward, only: :new
 
   def index
     service = Services::Overseers::Finders::DeliveryChallans.new(params)
@@ -28,7 +28,8 @@ class Overseers::DeliveryChallansController < Overseers::BaseController
   end
 
   def new
-    @delivery_challan = DeliveryChallan.new(purpose: 20, inquiry: @inquiry, inward_dispatch: @inward_dispatch, created_from: params[:created_from])
+    @delivery_challan = DeliveryChallan.new(purpose: 20, inquiry: @inquiry, sales_order: @sales_order, 
+      inward_dispatch: @inward_dispatch, created_from: params[:created_from])
     authorize_acl @delivery_challan
   end
 
@@ -95,9 +96,10 @@ class Overseers::DeliveryChallansController < Overseers::BaseController
       @delivery_challan ||= DeliveryChallan.find(params[:id])
     end
 
-    def set_inquiry_and_inward
-      @inquiry ||= Inquiry.find(params[:inquiry])
-      @inward_dispatch ||= InwardDispatch.find(params[:inward_dispatch])
+    def set_inquiry_so_and_inward
+      @inquiry ||= Inquiry.find(params[:inquiry_id]) if params[:inquiry_id].present?
+      @sales_order ||= SalesOrder.find(params[:sales_order_id]) if params[:sales_order_id].present?
+      @inward_dispatch ||= InwardDispatch.find(params[:inward_dispatch]) if params[:inward_dispatch_id].present?
     end
 
     def delivery_challan_params
