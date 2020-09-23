@@ -10,6 +10,7 @@
           <div class="col-6">
             <%= f.hidden_field :inquiry_id, value: f.object.inquiry_id %>
             <%= f.hidden_field :purpose, value: f.object.purpose %>
+            <%= f.hidden_field :created_from, values: f.object.created_from %>
             <%= f.input :inquiry, as: :string, readonly: true , input_html: {class: 'bmro-form-input'}%>
           </div>
           <div class="col-6">
@@ -74,7 +75,7 @@
             <% if f.object.customer_request_attachment.attached? %>
               <%= f.input :customer_request_attachment, wrapper: :custom_file, label: 'Customer Request Attachment', hint: "#{link_to '<i class="bmro-download-icon"></i>'.html_safe, url_for(f.object.customer_request_attachment), class: 'ml-1 btn btn-success bmro-button bmro-margin-neg', target: '_blank', :"data-toggle" => 'tooltip', :status => f.object.customer_request_attachment.filename}".html_safe %>
             <% else %>
-              <%= f.input :customer_request_attachment, as: :file, wrapper: :custom_file, required: true, label: 'Customer Request Attachment', target: '_blank', :"data-toggle" => 'tooltip' %>
+              <%= f.input :customer_request_attachment, as: :file, wrapper: :custom_file, error: 'Please attach a file', required: true, label: 'Customer Request Attachment', target: '_blank', :"data-toggle" => 'tooltip', class: 'bmro-form-input', autofocus: true %>
             <% end %>
           </div>
         </div>
@@ -149,8 +150,11 @@
           <tbody>
           <%= f.nested_fields_for :rows, f.object.rows , wrapper_tag: :div do |row| %>
             <% if row.object.product.present? %>
+              <%= row.hidden_field :id, value: row.object.id %>
               <%= row.hidden_field :product_id, value: row.object&.product_id %>
               <%= row.hidden_field :inquiry_product_id, value: row.object&.inquiry_product_id %>
+              <%= row.hidden_field :sales_order_row_id, value: row.object&.sales_order_row_id %>
+              <%= row.hidden_field :total_quantity, value: row.object&.total_quantity %>
               <%= row.hidden_field :sales_order_row_id, value: row.object&.sales_order_row_id%>
               <tr>
                 <td>
@@ -173,7 +177,7 @@
                 </td>
                 <td>
                   <span>
-                    <%= row.input :quantity, :label => false, placeholder: placeholder_for(row, :quantity), input_html: {:'data-parsley-errors-messages-readonly' => '', :'data-parsely-no-valid-feedback' => ''} %>
+                    <%= row.input :quantity, :label => false, placeholder: row.object.get_quantity_for_sample_flow((params[:action] == 'edit') ? params[:action] : nil), input_html: {:'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => '', max: row.object.get_quantity_for_sample_flow((params[:action] == 'edit') ? params[:action] : nil), min: 1} %>
                   </span>
                 </td>
                 <td>

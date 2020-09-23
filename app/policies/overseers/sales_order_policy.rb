@@ -221,6 +221,19 @@ class Overseers::SalesOrderPolicy < Overseers::ApplicationPolicy
     (inside? || admin_or_manager?) && !record.po_requests.present? && !record.invoices.present? && !record.inward_dispatches.present? && !record.outward_dispatches.present? && record.created_at.month == Date.today.month
   end
 
+  def create_new_dc?
+    total_quantity = 0
+    so_quantities = record.rows.sum(&:quantity)
+    so_delivery_challans = record.delivery_challans.where(created_from: 'SalesOrder')
+    if so_delivery_challans.present?
+      so_delivery_challans.each do |dc|
+        total_quantity += dc.rows.sum(&:quantity)
+      end
+    end
+
+    record.order_number.present? && !record&.po_requests&.joins(:purchase_order).present? && (total_quantity < so_quantities)
+  end
+
   class Scope
     attr_reader :overseer, :scope
 

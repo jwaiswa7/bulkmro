@@ -16,6 +16,9 @@ json.data (@inquiries) do |inquiry|
               concat content_tag :i, nil, class: ['fal fa-comment-lines'].join
             end
           end,
+          if is_authorized(:delivery_challan, 'create') && (policy(inquiry).create_new_dc?)
+            row_action_button_without_fa(new_overseers_delivery_challan_path(inquiry_id: inquiry.id, created_from: inquiry.class), 'bmro-plus-circle-icon', 'New Delivery Challan', 'success', target: :_blank)
+          end,
       ].join(' '),
       link_to(inquiry.inquiry_number, edit_overseers_inquiry_path(inquiry), target: '_blank'),
       inquiry.sales_orders.where.not(order_number: nil).map { |sales_order| link_to(sales_order.order_number, overseers_inquiry_sales_order_path(inquiry, sales_order), target: '_blank') }.compact.join(' '),

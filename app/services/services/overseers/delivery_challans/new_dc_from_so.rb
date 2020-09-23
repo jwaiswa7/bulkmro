@@ -20,7 +20,8 @@ class Services::Overseers::DeliveryChallans::NewDcFromSo < Services::Shared::Bas
         sales_order_date: sales_order&.mis_date,
         overseer: overseer,
         purpose: params[:purpose],
-        inward_dispatch_id: inward_dispatch&.id
+        inward_dispatch_id: inward_dispatch&.id,
+        created_from: params[:created_from]
       )
       
       inward_dispatch.present? ? generate_from_inward_dispatch_rows(inward_dispatch, delivery_challan) : generate_from_so_rows(sales_order, delivery_challan)
@@ -38,7 +39,8 @@ class Services::Overseers::DeliveryChallans::NewDcFromSo < Services::Shared::Bas
         overseer: overseer,
         purpose: params[:purpose],
         reason: 40,
-        sales_order_date: (sales_order&.mis_date if sales_order.present?)
+        sales_order_date: (sales_order&.mis_date if sales_order.present?),
+        created_from: params[:created_from]
       )
 
       sales_order.present? ? generate_from_so_rows(sales_order, delivery_challan) : generate_from_inquiry_products(inquiry, delivery_challan)
@@ -52,36 +54,39 @@ class Services::Overseers::DeliveryChallans::NewDcFromSo < Services::Shared::Bas
 
     def generate_from_so_rows(sales_order, delivery_challan)
       sales_order.rows.each do |row|
-        delivery_challan.rows.where(sales_order_row_id: row.id).first_or_initialize(
-          inquiry_product: row&.inquiry_product,
-          product: row&.product,
-          quantity: row.quantity,
-          total_quantity: row.quantity,
-          overseer: overseer
-        )
+        delivery_challan.rows.build do |dc_row|
+          dc_row.sales_order_row_id = row.id
+          dc_row.inquiry_product = row&.inquiry_product
+          dc_row.product = row&.product
+          dc_row.total_quantity = row.quantity
+          dc_row.quantity = dc_row.get_quantity
+          dc_row.overseer = overseer
+        end
       end
     end
 
     def generate_from_inquiry_products(inquiry, delivery_challan)
       inquiry.inquiry_products.each do |inquiry_product|
-        delivery_challan.rows.where(inquiry_product_id: inquiry_product.id).first_or_initialize(
-          product: inquiry_product&.product,
-          quantity: inquiry_product&.quantity,
-          total_quantity: inquiry_product&.quantity,
-          overseer: overseer
-        )
+        delivery_challan.rows.build do |dc_row|
+          dc_row.inquiry_product_id = inquiry_product.id
+          dc_row.product = inquiry_product&.product
+          dc_row.total_quantity = inquiry_product&.quantity
+          dc_row.quantity = dc_row.get_quantity
+          dc_row.overseer = overseer
+        end
       end
     end
 
     def generate_from_inward_dispatch_rows(inward_dispatch, delivery_challan)
       inward_dispatch.rows.each do |row|
-        delivery_challan.rows.where(inward_dispatch_row_id: row.id).first_or_initialize(
-          product: row&.product,
-          inquiry_product: row&.product&.inquiry_products&.where(inquiry: row.inward_dispatch&.inquiry)&.last,
-          quantity: row&.delivered_quantity,
-          total_quantity: row&.delivered_quantity,
-          overseer: overseer
-        )
+        delivery_challan.rows.build do |dc_row|
+          dc_row.inward_dispatch_row_id = row.id
+          dc_row.product = row&.product
+          dc_row.inquiry_product = row&.product&.inquiry_products&.where(inquiry: row.inward_dispatch&.inquiry)&.last
+          dc_row.total_quantity = row&.delivered_quantity
+          dc_row.quantity = dc_row.get_quantity
+          dc_row.overseer = overseer
+        end
       end
     end
 

@@ -33,4 +33,3 @@ class Overseers::DeliveryChallanPolicy < Overseers::ApplicationPolicy
   end
 
 end
-

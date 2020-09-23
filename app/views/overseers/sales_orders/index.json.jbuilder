@@ -39,6 +39,9 @@ json.data (@sales_orders) do |sales_order|
                           concat content_tag :i, nil, class: ['fal fa-comment-lines'].join
                         end
                       end,
+                      if is_authorized(:delivery_challan, 'create') && (policy(sales_order).create_new_dc?)
+                        row_action_button_without_fa(new_overseers_delivery_challan_path(sales_order_id: sales_order.id, inquiry_id: sales_order.inquiry.id, created_from: sales_order.class), 'bmro-plus-circle-icon', 'New Delivery Challan', 'success', target: :_blank)
+                      end,
 
                   ].join(' '),
                   conditional_link(sales_order.order_number.present? ? sales_order.order_number : '-', overseers_inquiry_sales_order_path(sales_order.inquiry, sales_order), is_authorized(sales_order, 'show')),
