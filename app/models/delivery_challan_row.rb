@@ -50,7 +50,29 @@ class DeliveryChallanRow < ApplicationRecord
     end
   end
 
-  def get_quantity_for_sample_flow
+  def get_quantity_for_sample_flow(action=nil)
+    created_from = case self.delivery_challan.created_from
+    when 'Inquiry'
+      ['inquiry_product_id', self.inquiry_product_id]
+    when 'DeliveryChallan'
+      if self.sales_order_row.present?
+        ['sales_order_row_id', self.sales_order_row_id]
+      else
+        ['inquiry_product_id', self.inquiry_product_id]
+      end
+    end
+
+    used_quantity = if action.present?
+      DeliveryChallanRow.where("#{created_from[0]} = ?", created_from[1]).where.not(id: self.id).sum(&:quantity)
+    else
+      DeliveryChallanRow.where("#{created_from[0]} = ?", created_from[1]).sum(&:quantity)
+    end
+    
+    if used_quantity < self.total_quantity
+      self.total_quantity - used_quantity
+    else
+      0
+    end
   end
 
   def get_quantity_for_regular_flow(action=nil)
