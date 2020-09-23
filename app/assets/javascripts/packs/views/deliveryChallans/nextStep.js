@@ -12,6 +12,17 @@ const nextStepAction = () => {
       $('#other_reason').hide();
     }
   })
+    var dataAttributes = $('body').data();
+    var controllerAction = camelize(dataAttributes.controllerAction);
+    if( controllerAction == "nextStep")
+    {
+        $('#delivery_challan_customer_request_attachment').prop('required',true);
+        $('.error').text('Attachment is required')
+    }
+    else {
+        $('#delivery_challan_customer_request_attachment').prop('required',false);
+        $('.error').text('');
+    }
 
     deleteRow();
 };

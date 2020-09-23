@@ -77,6 +77,7 @@
             <% else %>
               <%= f.input :customer_request_attachment, as: :file, wrapper: :custom_file, error: 'Please attach a file', required: true, label: 'Customer Request Attachment', target: '_blank', :"data-toggle" => 'tooltip', class: 'bmro-form-input', autofocus: true %>
             <% end %>
+            <div class="error list-group disabled align-center text-danger mb-2 px-1"></div>
           </div>
         </div>
         <div class="form-row">
