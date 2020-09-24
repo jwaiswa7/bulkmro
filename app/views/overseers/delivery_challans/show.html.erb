@@ -345,10 +345,34 @@
       <% end %>
       </div>
     </div>
-    <div class="card-body bmro-bg">
-
-    </div>
-  </div>
+    <% if @delivery_challan.comments.persisted.size > 0 %>
+      <div class="card">
+        <div class="card-body">
+          <div class="flex-fill">
+            <h6 class="text-uppercase text-black-50 mb-1">Delivery Challan History</h6>
+          </div>
+          <div class="chats">
+            <% @delivery_challan.comments.each do |comment| %>
+              <div class="media chat-item comments-wrap w-100">
+                <div class="media-body">
+                  <div class="chat-item-title">
+                    <span class="chat-item-author"><%= comment.author.full_name if comment.author.present? %>
+                      <span class="mr-1"><strong><span class="badge badge-secondary"><%= comment.author_role %></span></strong></span>
+                    </span>
+                  </div>
+                  <div class="chat-item-body">
+                    <%= simple_format comment.message.gsub(/\\r\\n/, "\n") %>
+                  </div>
+                  <div class="mt-2">
+                    <%= format_times_ago(comment.created_at) + ' on ' + format_date_with_time(comment.created_at) %>
+                  </div>
+                </div>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    <% end %>
 
   <%# end %>
 

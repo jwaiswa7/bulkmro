@@ -28,8 +28,9 @@ class Overseers::DeliveryChallansController < Overseers::BaseController
   end
 
   def new
+    created_from = params[:created_from].present? ? params[:created_from] : 'DeliveryChallan'
     @delivery_challan = DeliveryChallan.new(purpose: 20, inquiry: @inquiry, sales_order: @sales_order, 
-      inward_dispatch: @inward_dispatch, created_from: params[:created_from])
+      inward_dispatch: @inward_dispatch, created_from: created_from)
     authorize_acl @delivery_challan
   end
 
@@ -66,9 +67,19 @@ class Overseers::DeliveryChallansController < Overseers::BaseController
     if params[:preview].present?
       redirect_to overseers_delivery_challans_path, notice: flash_message(@delivery_challan, 'create')
     else
+
       @delivery_challan.assign_attributes(delivery_challan_params.merge(overseer: current_overseer))
 
-      if @delivery_challan.save
+      if @delivery_challan.valid?
+        messages = FieldModifiedMessage.for(@delivery_challan, message_fields(@delivery_challan))
+
+        @delivery_challan.rows.each do |row|
+          messages << FieldModifiedMessage.for(row, ['quantity'])
+        end
+        if messages.present?
+          @delivery_challan.comments.create(message: messages, overseer: current_overseer)
+        end
+        @delivery_challan.save
         redirect_to preview_overseers_delivery_challan_path(@delivery_challan), notice: flash_message(@delivery_challan, action_name)
       else
         render 'edit'
@@ -100,6 +111,13 @@ class Overseers::DeliveryChallansController < Overseers::BaseController
       @inquiry ||= Inquiry.find(params[:inquiry_id]) if params[:inquiry_id].present?
       @sales_order ||= SalesOrder.find(params[:sales_order_id]) if params[:sales_order_id].present?
       @inward_dispatch ||= InwardDispatch.find(params[:inward_dispatch]) if params[:inward_dispatch_id].present?
+    end
+
+    def message_fields(object)
+      object.attributes.keys - %w(id inquiry_id sales_order_id ar_invoice_request_id customer_order_date
+      sales_order_date customer_request_attachment customer_po_number delivery_challan_number
+      created_from created_by_id updated_by_id created_at updated_at inward_dispatch_id display_gst_pan
+      display_rates display_stamp)
     end
 
     def delivery_challan_params
