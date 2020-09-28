@@ -233,16 +233,20 @@ class Overseers::InquiryPolicy < Overseers::ApplicationPolicy
   end
 
   def create_new_dc?
-    total_quantity = 0
-    inquiry_quantities = record.inquiry_products.sum(&:quantity)
-    inquiry_delivery_challans = record.delivery_challans.where(created_from: 'Inquiry')
-    if inquiry_delivery_challans.present?
-      inquiry_delivery_challans.each do |dc|
-        total_quantity += dc.rows.sum(&:quantity)
+    if record.inquiry_products.present?
+      total_quantity = 0
+      inquiry_quantities = record.inquiry_products.sum(&:quantity)
+      inquiry_delivery_challans = record.delivery_challans.where(created_from: 'Inquiry')
+      if inquiry_delivery_challans.present?
+        inquiry_delivery_challans.each do |dc|
+          total_quantity += dc.rows.sum(&:quantity)
+        end
       end
-    end
 
-    !record.sales_orders.present? && !has_approved_sales_orders? && (total_quantity < inquiry_quantities)
+      !record.sales_orders.present? && !has_approved_sales_orders? && (total_quantity < inquiry_quantities)
+    else
+      false
+    end
   end
 
   class Scope

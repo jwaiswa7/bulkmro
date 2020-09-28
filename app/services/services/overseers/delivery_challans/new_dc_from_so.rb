@@ -26,6 +26,9 @@ class Services::Overseers::DeliveryChallans::NewDcFromSo < Services::Shared::Bas
       
       inward_dispatch.present? ? generate_from_inward_dispatch_rows(inward_dispatch, delivery_challan) : generate_from_so_rows(sales_order, delivery_challan)
       
+      if inward_dispatch.present?
+        set_sales_order_row(inward_dispatch, delivery_challan)
+      end
     else
       delivery_challan = inquiry.delivery_challans.build(
         inquiry_id: inquiry.id,
@@ -86,6 +89,15 @@ class Services::Overseers::DeliveryChallans::NewDcFromSo < Services::Shared::Bas
           dc_row.total_quantity = row&.delivered_quantity
           dc_row.quantity = dc_row.get_quantity
           dc_row.overseer = overseer
+        end
+      end
+    end
+
+    def set_sales_order_row(inward_dispatch, delivery_challan)
+      sales_order = inward_dispatch&.sales_order
+      if sales_order.present?
+        delivery_challan.rows.each do |dc_row|
+          dc_row.sales_order_row_id = sales_order&.rows&.where(product_id: dc_row.product_id)&.last&.id
         end
       end
     end

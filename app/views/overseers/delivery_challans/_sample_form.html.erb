@@ -143,9 +143,11 @@
             <th class="no-sort">
               <span data-toggle="tooltip" title="Quantity">Quantity</span>
             </th>
-            <th class="no-sort">
-              <span data-toggle="tooltip" title="Quantity">Remove Product</span>
-            </th>
+            <% if f.object.rows.size > 1 %>
+              <th class="no-sort">
+                <span data-toggle="tooltip" title="Quantity">Remove Product</span>
+              </th>
+            <% end %>
           </tr>
           </thead>
           <tbody>
@@ -157,6 +159,7 @@
               <%= row.hidden_field :sales_order_row_id, value: row.object&.sales_order_row_id %>
               <%= row.hidden_field :total_quantity, value: row.object&.total_quantity %>
               <%= row.hidden_field :sales_order_row_id, value: row.object&.sales_order_row_id%>
+              <%= row.hidden_field :_destroy, :member_id => (f.object.rows.index(row.object) || 0) %>
               <tr>
                 <td>
                   <span><%= row.object.product.sku %></span>
@@ -181,13 +184,15 @@
                     <%= row.input :quantity, :label => false, placeholder: row.object.get_quantity_for_sample_flow((params[:action] == 'edit') ? params[:action] : nil), input_html: {:'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => '', max: row.object.get_quantity_for_sample_flow((params[:action] == 'edit') ? params[:action] : nil), min: 1} %>
                   </span>
                 </td>
-                <td>
-                  <span>
-                    <%= row.remove_nested_fields_link do %>
-                      <i class="far status-cross-danger"></i>
-                    <% end %>
-                  </span>
-                </td>
+                <% if f.object.rows.size > 1 %>
+                  <td>
+                    <span>
+                      <%= row.remove_nested_fields_link '', wrapper_class: 'simple-row', data: {id: (f.object.rows.index(row.object) || 0)} do%>
+                        <i class="far status-cross-danger"></i>
+                      <% end %>
+                    </span>
+                  </td>
+                <% end %>
               </tr>
             <% end %>
           <% end %>

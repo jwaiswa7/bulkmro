@@ -260,7 +260,7 @@ class Overseers::InquiriesController < Overseers::BaseController
   end
 
   def autocomplete_without_so_confirmed
-    inquiries = Inquiry.where.not(status: ['Order Won', 'SO Rejected by Sales Manager', 'Rejected by Accounts', 'Hold by Accounts', 'Order Lost', 'Regret', 'Regret Request'])
+    inquiries = Inquiry.includes(:inquiry_products).where.not(inquiry_products: {id: nil}).without_so
     @inquiries = ApplyParams.to(inquiries, params)
   end
 

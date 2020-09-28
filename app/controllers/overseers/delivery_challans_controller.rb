@@ -67,7 +67,6 @@ class Overseers::DeliveryChallansController < Overseers::BaseController
     if params[:preview].present?
       redirect_to overseers_delivery_challans_path, notice: flash_message(@delivery_challan, 'create')
     else
-
       @delivery_challan.assign_attributes(delivery_challan_params.merge(overseer: current_overseer))
 
       if @delivery_challan.valid?
@@ -110,7 +109,7 @@ class Overseers::DeliveryChallansController < Overseers::BaseController
     def set_inquiry_so_and_inward
       @inquiry ||= Inquiry.find(params[:inquiry_id]) if params[:inquiry_id].present?
       @sales_order ||= SalesOrder.find(params[:sales_order_id]) if params[:sales_order_id].present?
-      @inward_dispatch ||= InwardDispatch.find(params[:inward_dispatch]) if params[:inward_dispatch_id].present?
+      @inward_dispatch ||= InwardDispatch.find(params[:inward_dispatch_id]) if params[:inward_dispatch_id].present?
     end
 
     def message_fields(object)

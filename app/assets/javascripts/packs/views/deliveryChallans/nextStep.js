@@ -25,6 +25,22 @@ const nextStepAction = () => {
     }
 
     deleteRow();
+
+    $('.delivery_challan_rows_quantity').on('input', function(e){
+      e.preventDefault();
+      let currentElement = $(this);
+      let input = currentElement.find('input').val();
+      let maxQuantity = currentElement.find('input').attr('max');
+
+      if(typeof input !== undefined ){
+        if(parseFloat(input) > parseFloat(maxQuantity)){
+          currentElement.find('.text-error').remove();
+          currentElement.append("<span class='text-error text-danger'>Please enter a value less than or equal to" + maxQuantity + ".</span>")
+        } else {
+          currentElement.find('.text-error').remove();
+        }
+      }
+    })
 };
 
 export default nextStepAction
