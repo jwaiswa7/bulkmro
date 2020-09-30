@@ -79,7 +79,7 @@ class DeliveryChallanRow < ApplicationRecord
     created_from = case self.delivery_challan.created_from
     when 'InwardDispatch'
       ['inward_dispatch_row_id', self.inward_dispatch_row_id]
-    when ('SalesOrder' || 'DeliveryChallan')
+    when 'SalesOrder', 'DeliveryChallan'
       ['sales_order_row_id', self.sales_order_row_id]
     end
 

@@ -90,7 +90,7 @@
         </div>
 
         <div class="form-row">
-          <% unless f.object&.inward_dispatch&.sales_order.present? %>
+          <% if (f.object.created_from == InwardDispatch && !(f.object&.inward_dispatch&.sales_order.present?)) %>
             <%= f.hidden_field :display_rates, value: false %>
           <% else %>
             <div class="col-4">
