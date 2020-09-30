@@ -261,7 +261,9 @@ class Overseers::InquiriesController < Overseers::BaseController
 
   def autocomplete_without_so_confirmed
     inquiries = Inquiry.includes(:inquiry_products).where.not(inquiry_products: {id: nil}).without_so
-    @inquiries = ApplyParams.to(inquiries, params)
+    inquiries = inquiries.where(id: inquiries.pluck(:id))
+    @encoded = params[:encoded]
+    @inquiries = ApplyParams.to(inquiries, params).order(inquiry_number: :desc)
   end
 
   def show

@@ -12,7 +12,7 @@
         <h6 class="text-uppercase bmro-form-heading text-black-50 mb-1">Primary Details</h6>
         <div class="form-row">
           <div class="col-6">
-            <%= f.input :inquiry_id, as: :select, collection: selected_option_or_nil(f, :inquiry), input_html: {id: 'dc_inquiry_select', class: 'select2-ajax bmro-form-input bmro-dropdown-icon', :'data-source' => autocomplete_without_so_confirmed_overseers_inquiries_path, label: "Inquiries"}, required: true, disabled: f.object.inquiry_id.present? %>
+            <%= f.input :inquiry_id, as: :select, collection: selected_option_or_nil(f, :inquiry), input_html: {id: 'dc_inquiry_select', class: 'select2-ajax bmro-form-input bmro-dropdown-icon', :'data-source' => autocomplete_without_so_confirmed_overseers_inquiries_path(encoded: true), label: "Inquiries"}, required: true, disabled: f.object.inquiry_id.present? %>
           </div>
 
           <div class="col-6">
