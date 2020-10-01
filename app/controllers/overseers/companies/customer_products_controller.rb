@@ -54,7 +54,11 @@ class Overseers::Companies::CustomerProductsController < Overseers::Companies::B
 
   def destroy_all
     authorize_acl :customer_product
-    @company.customer_products.destroy_all
+    @company.customer_products.each do |customer_product|
+      unless customer_product.customer_order_rows.exists?
+        customer_product.destroy
+      end
+    end
 
     redirect_to overseers_company_path(@company)
   end
