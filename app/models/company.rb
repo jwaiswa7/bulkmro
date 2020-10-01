@@ -56,7 +56,7 @@ class Company < ApplicationRecord
   has_many :supplied_products, through: :purchase_orders, source: :products
   has_many :supplied_brands, through: :supplied_products, source: :brand
   has_many :supplier_rfqs, foreign_key: :supplier_id
-
+  has_many :company_so_total_amounts
 
   has_many :sales_receipts
   has_many :payment_collections
@@ -304,6 +304,40 @@ class Company < ApplicationRecord
           confirmed_invoices: confirmed_invoices,
           confirmed_invoices_total_value: confirmed_invoices_total_value
       }
+    end
+  end
+
+  def self.current_financial_year_start
+    current_date = Date.today
+    current_month = current_date.month.to_i
+    if current_month >= 4
+      current_year = current_date.year
+      financial_year_start = Date.new(current_year, 04, 01)
+    else
+      current_year = current_date.year - 1
+      financial_year_start = Date.new(current_year, 04, 01)
+    end
+    financial_year_start
+  end
+
+  def self.current_financial_year_end
+    current_date = Date.today
+    current_year = current_date.year + 1
+    financial_year_end = Date.new(current_year, 03, 31)
+    financial_year_end
+  end
+
+  def self.current_financial_year
+    "#{current_financial_year_start.year}-#{current_financial_year_end.year}"
+  end
+
+  def check_company_so_total_amount
+    company_so_amount = self.company_so_total_amounts.where(financial_year: Company.current_financial_year).last
+    tcs_applied_from = Date.new(2020, 10, 01).beginning_of_day
+    if company_so_amount.present? && tcs_applied_from <= self.created_at
+      company_so_amount.so_total_amount.to_f > 5000000.0
+    else
+      false
     end
   end
 end
