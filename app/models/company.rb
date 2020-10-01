@@ -331,10 +331,10 @@ class Company < ApplicationRecord
     "#{current_financial_year_start.year}-#{current_financial_year_end.year}"
   end
 
-  def check_company_so_total_amount
+  def check_company_so_total_amount(record)
     company_so_amount = self.company_so_total_amounts.where(financial_year: Company.current_financial_year).last
     tcs_applied_from = Date.new(2020, 10, 01).beginning_of_day
-    if company_so_amount.present? && tcs_applied_from <= self.created_at
+    if company_so_amount.present? && tcs_applied_from <= record.created_at
       company_so_amount.so_total_amount.to_f > 5000000.0
     else
       false
