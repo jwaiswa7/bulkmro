@@ -340,5 +340,4 @@ class Company < ApplicationRecord
       false
     end
   end
-
 end

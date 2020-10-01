@@ -1,5 +1,4 @@
 class CompanySoTotalAmount < ApplicationRecord
-
   belongs_to :company
 
   def increment_total_amount(so_amount)
