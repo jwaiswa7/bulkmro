@@ -1,5 +1,4 @@
 class Services::Shared::Migrations::AddCompanySoTotalAmountYearwise < Services::Shared::BaseService
-
   def calculate_total_so_amount
     Company.includes(:sales_orders).each do |company|
       start_date = Company.current_financial_year_start
