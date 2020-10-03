@@ -456,8 +456,8 @@
                     <% end %>
                     <% if record.company.check_company_so_total_amount(record) %>
                       <td align="right" valign="top">
-                        <% tcs_amount = (record.metadata['base_grand_total'].to_f / record.metadata['base_to_order_rate'].to_f) + record.calculate_tcs_amount %>
-                        <b><span><%= number_to_currency(tcs_amount, precision: 2, unit: '') %></span></b>
+                        <% total_with_tcs = (record.metadata['base_grand_total'].to_f / record.metadata['base_to_order_rate'].to_f) + record.calculate_tcs_amount %>
+                        <b><span><%= number_to_currency(total_with_tcs, precision: 2, unit: '') %></span></b>
                       </td>
                     <% else %>
                       <td align="right" valign="top">
