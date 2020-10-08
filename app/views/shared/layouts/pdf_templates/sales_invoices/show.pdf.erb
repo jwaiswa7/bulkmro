@@ -159,14 +159,14 @@
                         GST No.: <%= bill_from_warehouse.address.gst %><br>
                       <% end %>
                       PAN No.: AAGCB7343G
-                        <br>
-                        <% if @arn_number.present? && @arn_date.present? %>
-                          ARN # <%= @arn_number %>,
-                          DOF: <%=@arn_date %>
-                        <% elsif defined?(arn_number) && arn_number.present? && defined?(arn_date) && arn_date.present? %>
+                      <br>
+                      <% if @arn_number.present? && @arn_date.present? %>
+                        ARN # <%= @arn_number %>,
+                        DOF: <%= @arn_date %>
+                      <% elsif defined?(arn_number) && arn_number.present? && defined?(arn_date) && arn_date.present? %>
                         ARN # <%= arn_number %>,
                         DOF: <%= arn_date %>
-                        <% end %>
+                      <% end %>
                     </td>
                     <td style="width: 2%;"></td>
                     <td class="address-wrapper" style="height: auto;width: 49%;">
@@ -178,10 +178,10 @@
                         GST No.: <%= inquiry.ship_from.address.gst %><br>
                       <% end %>
                       PAN No.: AAGCB7343G
-                        <br>
+                      <br>
                       <% if @arn_number.present? && @arn_date.present? %>
                         ARN # <%= @arn_number %>,
-                        DOF: <%=@arn_date %>
+                        DOF: <%= @arn_date %>
                       <% elsif defined?(arn_number) && arn_number.present? && defined?(arn_date) && arn_date.present? %>
                         ARN # <%= arn_number %>,
                         DOF: <%= arn_date %>
@@ -200,11 +200,11 @@
                   <b><span>Customer - Bill to:</span></b>
                 </div>
                 <div class="heading heading-right">
-                  <% if inquiry.company_id==5 %>
+                  <% if inquiry.company_id == 5 %>
                     <b><span>Customer - Ship to / Place Of Supply</span></b>
-                  <%else %>
+                  <% else %>
                     <b><span>Customer - Ship to:</span></b>
-                  <%end %>
+                  <% end %>
                 </div>
 
                 <br clear="all">
@@ -333,7 +333,8 @@
                       <td align="right" valign="top">
                         <span><%= number_to_currency(item.metadata['price'], precision: 2, unit: '') %></span></td>
                       <td align="right" valign="top">
-                        <span><%= number_to_currency(item.metadata['base_row_total'], precision: 2, unit: '') %></span></td>
+                        <span><%= number_to_currency(item.metadata['base_row_total'], precision: 2, unit: '') %></span>
+                      </td>
                       <td align="center" valign="top">
                         <span><%= item.tax_rate.round(0) %>%</span></td>
                       <% if record.sales_order.sales_quote.tax_summary.strip == '0' ||
@@ -361,7 +362,55 @@
                       </td>
                     </tr>
                   <% end if record.metadata['ItemLine'].present? %>
-
+                  <% if record.company.check_company_so_total_amount(record) %>
+                    <tr class="pdf-table-total-row-tcs">
+                      <td align="center" valign="top">
+                        <span></span></td>
+                      <td align="center" valign="top">
+                        <span><b><span>TCS Amt @0.075%</span></b></span></td>
+                      <td align="center" valign="top">
+                        <span></span></td>
+                      <td align="center" valign="top">
+                        <span></span></td>
+                      <td align="center" valign="top">
+                        <span></span></td>
+                      <td align="center" valign="top">
+                        <span></span></td>
+                      <td align="center" valign="top">
+                        <span></span></td>
+                      <td align="center" valign="top">
+                        <span></span></td>
+                      <td align="center" valign="top">
+                        <span></span></td>
+                      <td align="right" valign="top">
+                        <b><span></span></b>
+                      </td>
+                      <td align="center" valign="top">
+                        <span></span></td>
+                      <% if record.sales_order.sales_quote.tax_summary.strip == '0' ||
+                          (record.sales_order.sales_quote.tax_summary.to_s.include? "IGST") %>
+                        <td align="center" valign="top">
+                          <span></span></td>
+                        <td align="right" valign="top">
+                          <b><span></span></b>
+                        </td>
+                      <% else %>
+                        <td align="center" valign="top">
+                          <span></span></td>
+                        <td align="right" valign="top">
+                          <b><span></span></b>
+                        </td>
+                        <td align="center" valign="top">
+                          <span></span></td>
+                        <td align="right" valign="top">
+                          <b><span></span></b>
+                        </td>
+                      <% end %>
+                      <td align="right" valign="top">
+                        <b><span><%= number_to_currency((record.calculate_tcs_amount), precision: 2, unit: '') %></span></b>
+                      </td>
+                    </tr>
+                  <% end %>
                   <tr class="pdf-table-total-row">
                     <td align="center" valign="top">
                       <span></span></td>
@@ -405,9 +454,16 @@
                         <b><span><%= number_to_currency(((record.metadata['base_tax_amount'].to_f / record.metadata['base_to_order_rate'].to_f) / 2), precision: 2, unit: '') %></span></b>
                       </td>
                     <% end %>
-                    <td align="right" valign="top">
-                      <b><span><%= number_to_currency((record.metadata['base_grand_total'].to_f / record.metadata['base_to_order_rate'].to_f), precision: 2, unit: '') %></span></b>
-                    </td>
+                    <% if record.company.check_company_so_total_amount(record) %>
+                      <td align="right" valign="top">
+                        <% tcs_amount = (record.metadata['base_grand_total'].to_f / record.metadata['base_to_order_rate'].to_f) + record.calculate_tcs_amount %>
+                        <b><span><%= number_to_currency(tcs_amount, precision: 2, unit: '') %></span></b>
+                      </td>
+                    <% else %>
+                      <td align="right" valign="top">
+                        <b><span><%= number_to_currency((record.metadata['base_grand_total'].to_f / record.metadata['base_to_order_rate'].to_f), precision: 2, unit: '') %></span></b>
+                      </td>
+                    <% end %>
                   </tr>
 
                   </tbody>
