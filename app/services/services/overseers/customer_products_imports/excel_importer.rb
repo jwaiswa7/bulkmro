@@ -66,9 +66,13 @@ class Services::Overseers::CustomerProductsImports::ExcelImporter
           customer_product = CustomerProduct.where(company_id: company.id, product_id: product.id).first_or_create
           customer_product.customer_price = row['price'].to_f
           customer_product.name = (row['name'] if row['name'].present?) || product.name
+          customer_product.technical_description = row['technical_description']
           customer_product.sku = row['material_code'] || product.sku
+          customer_product.customer_product_sku = row['customer_material_code']
+          customer_product.lead_time = row['lead_time']
           customer_product.brand = (Brand.find_by_name(row['brand']) if row['brand'].present?) || product.brand
           customer_product.measurement_unit = (MeasurementUnit.find_by_name(row['uom']) if row['uom'].present?) || product.measurement_unit
+          customer_product.customer_uom = row['customer_uom']
           customer_product.moq = row['moq'].to_i > 1 ? row['moq'].to_i : 1
           if row['url'].present?
             filename = row['url'].split('/').last
