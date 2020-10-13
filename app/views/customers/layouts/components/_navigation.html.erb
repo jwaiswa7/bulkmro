@@ -21,18 +21,15 @@
         <%= nav_item 'Invoices', customers_invoices_path, true %>
       <% else %>
         <%= nav_item 'Dashboard', customers_dashboard_path, true %>
-        <%#= nav_item 'Quotes', customers_quotes_path, true %>
-        <%#= nav_item 'Orders', customers_orders_path, true %>
+        <%= nav_item 'Quotes', customers_quotes_path, true %>
+        <%= nav_item 'Orders', customers_orders_path, true %>
         <%= nav_item 'Products', customers_products_path, policy(:customer_product).index? %>
-        <%#= nav_item 'Invoices', customers_invoices_path, true %>
-        <% if is_api_request? %>
-          <%= nav_item 'Manual Punchout', manual_punchout_customers_cart_path, is_api_request? %>
-        <% end %>
+        <%= nav_item 'Invoices', customers_invoices_path, true %>
       <% end %>
       <% if current_company.id == 11420 %>
         <%= nav_item 'Online Orders', customers_customer_orders_path, policy(:customer_order).index? %>
       <% else %>
-        <li class="nav-item dropdown d-none">
+        <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="inquiriesDropdown" role="button" data-toggle="dropdown">
             Reports
           </a>
@@ -42,7 +39,7 @@
             <%= nav_dropdown_item 'Stock Reports', stock_reports_customers_reports_path, policy(:report).stock_reports? %>
           </div>
         </li>
-        <li class="nav-item dropdown d-none">
+        <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown">
             Online Orders
           </a>
@@ -68,15 +65,9 @@
     <span class="d-none d-md-inline badge badge-light mr-1"><%= current_company.name %></span>
     <% if policy(:cart).show? %>
       <div class="dropdown d-inline mr-2" id="cart">
-        <% if is_api_request? %>
-          <a href="<%= punchout_customers_cart_path %>" role="button" id="cart-count">
-            <i class="fal fa-shopping-cart mr-1"></i><span class="text-primary cart-items-count"><%= current_cart.items.count %></span>
-          </a>
-        <% else %>
-          <a href="<%= customers_cart_path %>" role="button" id="cart-count">
-            <i class="fal fa-shopping-cart mr-1"></i><span class="text-primary cart-items-count"><%= current_cart.items.count %></span>
-          </a>
-        <% end %>
+        <a href="<%= customers_cart_path %>" role="button" id="cart-count">
+          <i class="fal fa-shopping-cart mr-1"></i><span class="text-primary cart-items-count"><%= current_cart.items.count %></span>
+        </a>
       </div>
     <% end %>
     <div class="dropdown d-inline">
@@ -88,7 +79,7 @@
         <%= link_to reset_current_company_customers_sign_in_steps_path, method: :post, :class => 'dropdown-item' do %>
           <i class="fal fa-building"></i>&nbsp;Choose Another Company
         <% end if policy(current_customers_contact).reset_current_company? %>
-        <%= link_to edit_customers_profile_path, class: 'dropdown-item d-none' do %>
+        <%= link_to edit_customers_profile_path, class: 'dropdown-item' do %>
           <i class="bmro-profile-icon"></i> Edit Profile
         <% end %>
         <%= link_to destroy_customers_contact_session_path, method: :delete, :class => 'dropdown-item' do %>
