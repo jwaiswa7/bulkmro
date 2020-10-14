@@ -12,9 +12,14 @@
           <div class="error bg-danger text-white mb-3 px-1 rounded"></div>
           <div class="modal-body" style="padding: 0px 18px;">
             <%= f.hidden_field :created_by_id %>
-              <div class="mb-2 form-group">
-                <strong> Do you want to cancel this #<%= @purchase_order.po_number %> Purchase Order?</strong>
-              </div>
+            <div class="mb-2 form-group">
+              <strong> Do you want to cancel this #<%= @purchase_order.po_number %> Purchase Order?</strong>
+            </div>
+            <%= f.nested_fields_for :comments, f.object.comments.build(:overseer => current_overseer) do |purchase_order| %>
+            <%= purchase_order.hidden_field :created_by_id %>
+            <%= purchase_order.hidden_field :purchase_order_id, :value => @purchase_order.id %>
+            <%= purchase_order.input :message, :placeholder => 'Type message', :required => true, input_html: {:'data-parsely-no-valid-feedback' => '', class: 'message-required'} %>
+            <% end %>
           </div>
           <div class="modal-footer bmro-mfp">
             <div class="form-row">
@@ -24,7 +29,9 @@
                 <% end %>
               </div>
               <div class="col-6">
-                <a id="rejection-purchase-order-button" data-purchase_order-id="<%= @purchase_order.id %>" class="btn-block bmro-button btn btn-danger text-white" remote="true" ><i class="fa fa-bann mr-1"></i>No</a>
+                <button type="submit" class="btn-block bmro-button btn btn-danger text-white" data-dismiss="modal">
+                  <i class="fa fa-bann mr-1"></i> NO
+                </button>
               </div>
             </div>
           </div>
