@@ -10,7 +10,7 @@ json.data (@purchase_orders) do |purchase_order|
                       if purchase_order.document.present? && is_authorized(purchase_order, 'show_document') && policy(purchase_order).show_document?
                         row_action_button_without_fa(url_for(purchase_order.document), 'bmro-icon-table bmro-icon-pdf', purchase_order.document.filename, 'dark', :_blank)
                       end,
-                      if (policy(purchase_order).logistics? || policy(purchase_order).admin?) && purchase_order.status != 'cancelled'
+                      if (policy(purchase_order).logistics? || policy(purchase_order).admin?) && purchase_order.status != 'Cancelled'
                         link_to('', class: 'btn btn-sm btn-danger cancel-purchase-order', 'data-purchase-order-id': purchase_order.id, title: 'Cancel Purchase Order', remote: true) do
                           concat content_tag(:span, '')
                           concat content_tag :i, nil, class: ['bmro-icon-table bmro-icon-ban'].join
