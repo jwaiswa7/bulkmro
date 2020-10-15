@@ -11,7 +11,8 @@ class Services::Overseers::PoRequests::Update < Services::Shared::BaseService
     ActiveRecord::Base.transaction do
       if @po_request.status == 'Cancelled'
         @po_request_comment = PoRequestComment.new(message: @po_request&.purchase_order&.po_number.present? ? "Status Changed: #{@po_request.status} PO Request for Purchase Order number #{@po_request.purchase_order.po_number} \r\n Cancellation Reason: #{@po_request.cancellation_reason}" : "Status Changed: #{@po_request.status} \r\n Cancellation Reason: #{@po_request.cancellation_reason}", po_request: @po_request, overseer: current_overseer)
-        @po_request.purchase_order = nil
+        # commenting below code as it remove PO relation with Po Request and due to which pdf does not open
+        # @po_request.purchase_order = nil
 
         if @po_request.payment_request.present?
           payment_request = @po_request.payment_request
