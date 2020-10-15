@@ -1,7 +1,7 @@
 json.data (@po_requests) do |po_request|
   json.array! [
                   [
-                      if po_request.sales_order.present? && (is_authorized(po_request, 'edit'))
+                      if po_request.sales_order.present? && (is_authorized(po_request, 'edit')) && po_request.status != 'Cancelled'
                         row_action_button(edit_overseers_po_request_path(po_request), 'pencil', 'Edit PO Request', 'warning')
                       elsif is_authorized(po_request, 'edit') && po_request.status != 'Cancelled'
                         row_action_button(edit_overseers_inquiry_po_request_path(po_request.inquiry, po_request), 'pencil', 'Edit PO Request', 'warning')
@@ -44,7 +44,7 @@ json.data (@po_requests) do |po_request|
                       else
                         row_action_button(material_received_in_bm_warehouse_overseers_po_request_email_messages_path(po_request), 'envelope', 'Enter SMTP settings', 'warning disabled')
                       end,
-                      if is_authorized(po_request, 'new_purchase_order') && policy(po_request).new_purchase_order? && po_request.purchase_order_id.nil?
+                      if is_authorized(po_request, 'new_purchase_order') && policy(po_request).new_purchase_order? && po_request.purchase_order_id.nil? && po_request.status != 'Cancelled'
                         row_action_button_without_fa(new_purchase_order_overseers_po_request_path(po_request), 'bmro-plus-circle-icon', 'Create New Purchase Order', 'success')
                       end,
                       if po_request.status == 'Supplier PO: Amendment Pending' && is_authorized(po_request, 'po_amended')
