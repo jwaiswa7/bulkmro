@@ -587,7 +587,7 @@
                     </div>
                   </div>
                 </div>
-                <% if @inquiry.inquiry_number != 2019 %>
+                <% if @inquiry.inquiry_number != 48613 %>
                   <div class="col-md-1 text-center">
                     <% if inquiry_product.object.persisted? && inquiry_product.object.product.present? %>
                       <a href="<%= resync_inventory_overseers_product_path(inquiry_product.object.product) %>" target="_blank"
