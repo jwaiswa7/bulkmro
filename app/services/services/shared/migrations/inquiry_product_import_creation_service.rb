@@ -15,7 +15,7 @@ class Services::Shared::Migrations::InquiryProductImportCreationService < Servic
   end
 
   def inquiry_product_creation_service
-    service = Services::Shared::Spreadsheets::CsvImporter.new('52317_Bayer1.csv', 'seed_files_3')
+    service = Services::Shared::Spreadsheets::CsvImporter.new('52898BayerVapiPrivateLimited.csv', 'seed_files_3')
     data_not_done = []
     inquiry = Inquiry.find_by_inquiry_number(48576)
     current_overseer = Overseer.find_by_id(238)
