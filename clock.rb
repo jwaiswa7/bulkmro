@@ -4,6 +4,7 @@ include Clockwork
 require './config/environment'
 require 'active_support/time'
 require 'sidekiq'
+require 'rake'
 
 configure do |config|
   config[:tz] = "Asia/Kolkata"
@@ -35,9 +36,13 @@ every(1.day, 'set_overseer_monthly_target', at: '00:10') do
 end
 
 every(1.day, 'refresh_indices', at: '01:30') do
-  GC.start
   Services::Shared::Chewy::RefreshIndices.new
+end
 
+every(1.day, 'reset_indices', at: '02:00') do
+  GC.start
+  Rails.application.class.load_tasks
+  Rake::Task['chewy:parallel:reset'].invoke
   # Dir[[Chewy.indices_path, '/*'].join()].map do |path|
   #   puts "Indexing #{path}"
   #   path.gsub('.rb', '').gsub('app/chewy/', '').classify.constantize.reset!
@@ -45,7 +50,7 @@ every(1.day, 'refresh_indices', at: '01:30') do
   # end
 end
 
-every(1.day, 'inquiry_product_inventory_update', at: '05:00') do
+every(1.day, 'inquiry_product_inventory_update', at: '05:30') do
   service = Services::Resources::Products::UpdateRecentInquiryProductInventory.new
   service.call
 end if Rails.env.production?
