@@ -248,3 +248,6 @@ gem 'unparser'
 
 # Heroku autoscaling add-on
 gem 'rails_autoscale_agent'
+
+# running tasks parallely
+gem 'parallel'
