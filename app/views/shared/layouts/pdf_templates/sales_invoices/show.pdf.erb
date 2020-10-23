@@ -341,25 +341,45 @@
                           (record.sales_order.sales_quote.tax_summary.to_s.include? "IGST") %>
                         <td align="center" valign="top">
                           <span><%= item.tax_rate.round(0) %>%</span></td>
+<!--                        <td align="right" valign="top">-->
+<!--                          <span><%#= number_to_currency(item.metadata['base_tax_amount'], precision: 2, unit: '') %></span>-->
+<!--                        </td>-->
                         <td align="right" valign="top">
-                          <span><%= number_to_currency(item.metadata['base_tax_amount'], precision: 2, unit: '') %></span>
+                          <% igst_total_tax = item.metadata['base_row_total'].to_f * (item.metadata['base_tax_amount']/100).to_f %>
+                          <span><%= number_to_currency(igst_total_tax, precision: 2, unit: '') %></span>
                         </td>
                       <% else %>
                         <td align="center" valign="top">
                           <span><%= (item.tax_rate.round(0) / 2.0).to_f.round(2) %>%</span></td>
                         <td align="right" valign="top">
-                          <span><%= number_to_currency((item.metadata['base_tax_amount'].to_f / 2), precision: 2, unit: '') %></span>
+                          <% cgst_total_tax = item.metadata['base_row_total'].to_f * ((item.tax_rate.round(0) / 2.0)/100).to_f %>
+                          <span><%= number_to_currency(cgst_total_tax, precision: 2, unit: '') %></span>
                         </td>
+<!--                        <td align="right" valign="top">-->
+<!--                          <span><%#= number_to_currency((item.metadata['base_tax_amount'].to_f / 2), precision: 2, unit: '') %></span>-->
+<!--                        </td>-->
                         <td align="center" valign="top">
                           <span><%= (item.tax_rate.round(0) / 2.0).to_f.round(2) %>%</span></td>
-                        <td align="center" valign="top">
-                          <span><%= number_to_currency((item.metadata['base_tax_amount'].to_f / 2), precision: 2, unit: '') %>
-                            <br></span>
+                        <td align="right" valign="top">
+                          <% sgst_total_tax = item.metadata['base_row_total'].to_f * ((item.tax_rate.round(0) / 2.0)/100).to_f %>
+                          <span><%= number_to_currency(sgst_total_tax, precision: 2, unit: '') %></span>
+                        </td>
+<!--                        <td align="center" valign="top">-->
+<!--                          <span><%#= number_to_currency((item.metadata['base_tax_amount'].to_f / 2), precision: 2, unit: '') %>-->
+<!--                            <br></span>-->
+<!--                        </td>-->
+                      <% end %>
+                      <% if igst_total_tax.present? %>
+                        <td align="right" valign="top">
+                          <% total_with_tax = (item.metadata['base_row_total']+igst_total_tax).to_f %>
+                          <span><%= number_to_currency(total_with_tax, precision: 2, unit: '') %></span>
+                        </td>
+                      <% else %>
+                        <td align="right" valign="top">
+                          <% total_with_tax = (item.metadata['base_row_total']+cgst_total_tax+sgst_total_tax).to_f %>
+                          <span><%= number_to_currency(total_with_tax, precision: 2, unit: '') %></span>
                         </td>
                       <% end %>
-                      <td align="right" valign="top">
-                        <span><%= number_to_currency(item.metadata['base_row_total_incl_tax'], precision: 2, unit: '') %></span>
-                      </td>
                     </tr>
                   <% end if record.metadata['ItemLine'].present? %>
                   <% if record.company.check_company_so_total_amount(record) %>
@@ -431,7 +451,7 @@
                     <td align="center" valign="top">
                       <span></span></td>
                     <td align="right" valign="top">
-                      <b><span><%= number_to_currency((record.metadata['base_grand_total'].to_f - record.metadata['base_tax_amount'].to_f) / record.metadata['base_to_order_rate'].to_f, precision: 2, unit: '') %></span></b>
+                      <b><span><%= number_to_currency(record.rows.map { |row| row.metadata['row_total'] }.sum.to_f, precision: 2, unit: '') %></span></b>
                     </td>
                     <td align="center" valign="top">
                       <span></span></td>
@@ -440,18 +460,21 @@
                       <td align="center" valign="top">
                         <span></span></td>
                       <td align="right" valign="top">
+                        <% total_cgst_tax_amount = record.rows.map { |row| row.metadata['row_total'] * ((row.tax_rate.round(0))/100) }.sum %>
                         <b><span><%= number_to_currency(record.metadata['base_tax_amount'].to_f / record.metadata['base_to_order_rate'].to_f, precision: 2, unit: '') %></span></b>
                       </td>
                     <% else %>
                       <td align="center" valign="top">
                         <span></span></td>
                       <td align="right" valign="top">
-                        <b><span><%= number_to_currency(((record.metadata['base_tax_amount'].to_f / record.metadata['base_to_order_rate'].to_f) / 2), precision: 2, unit: '') %></span></b>
+                        <% total_cgst_tax_amount = record.rows.map { |row| row.metadata['row_total'] * ((row.tax_rate.round(0) / 2.0)/100) }.sum %>
+                        <b><span><%= number_to_currency(total_cgst_tax_amount, precision: 2, unit: '') %></span></b>
                       </td>
                       <td align="center" valign="top">
                         <span></span></td>
                       <td align="right" valign="top">
-                        <b><span><%= number_to_currency(((record.metadata['base_tax_amount'].to_f / record.metadata['base_to_order_rate'].to_f) / 2), precision: 2, unit: '') %></span></b>
+                        <% total_sgst_tax_amount = record.rows.map { |row| row.metadata['row_total'] * ((row.tax_rate.round(0) / 2.0)/100) }.sum %>
+                        <b><span><%= number_to_currency(total_sgst_tax_amount, precision: 2, unit: '') %></span></b>
                       </td>
                     <% end %>
                     <%# if record.company.check_company_so_total_amount(record) %>
@@ -461,6 +484,7 @@
 <!--                      </td>-->
                     <%# else %>
                     <td align="right" valign="top">
+                      <% total = record.rows.map { |row| row.metadata['row_total'] }.sum %>
                       <b><span><%= number_to_currency((record.metadata['base_grand_total'].to_f / record.metadata['base_to_order_rate'].to_f), precision: 2, unit: '') %></span></b>
                     </td>
                     <%# end %>
