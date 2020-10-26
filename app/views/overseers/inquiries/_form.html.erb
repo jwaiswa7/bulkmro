@@ -587,7 +587,8 @@
                     </div>
                   </div>
                 </div>
-                <% if @inquiry.inquiry_number != 48613 %>
+                <!-- # Below if condition is temp code-->
+                <% if @inquiry.inquiry_number != 52898 || @inquiry.inquiry_number != 52899 || @inquiry.inquiry_number != 52900 || @inquiry.inquiry_number != 52317 %>
                   <div class="col-md-1 text-center">
                     <% if inquiry_product.object.persisted? && inquiry_product.object.product.present? %>
                       <a href="<%= resync_inventory_overseers_product_path(inquiry_product.object.product) %>" target="_blank"
