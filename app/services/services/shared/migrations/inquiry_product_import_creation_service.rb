@@ -14,90 +14,97 @@ class Services::Shared::Migrations::InquiryProductImportCreationService < Servic
     end
   end
 
-  def inquiry_product_52317_creation_service
-    #inquiry - 48576 -> 52898BayerVapiPrivateLimited.csv
-    service = Services::Shared::Spreadsheets::CsvImporter.new('52317BayerProducts.csv', 'seed_files_3')
-    data_not_done = []
-    inquiry = Inquiry.find_by_inquiry_number(48369)
-    current_overseer = Overseer.find_by_id(238)
+  def build_inquiry_product(product, inquiry, sr_no, quantity)
+    excel_import = inquiry.imports.build(import_type: :excel, overseer: Overseer.find(238))
     services = Services::Overseers::InquiryImports::NextSrNo.new(inquiry)
-    excel_import = inquiry.imports.build(import_type: :excel, overseer: current_overseer)
+    inquiry_product = inquiry.inquiry_products.where(product_id: product.id).last
+    unless inquiry_product.present?
+      inquiry_product = inquiry.inquiry_products.build(
+          inquiry: inquiry,
+          import: excel_import,
+          product_id: product.id,
+          sr_no: services.call(sr_no),
+          quantity: quantity.to_i
+      )
+      inquiry_product.save
+    end
+  end
+
+  def inquiry_product_52317_creation_service
+    service = Services::Shared::Spreadsheets::CsvImporter.new('52317BayerProducts.csv', 'seed_files_3')
+    products_with_issues = []
+    inquiry = Inquiry.find_by_inquiry_number(52317)
+    inquiry.update_attributes(status: 'Cross Reference')
+    current_overseer = Overseer.find_by_id(238)
 
     column_headers = ['sku', 'name', 'message']
     csv_data = CSV.generate(write_headers: true, headers: column_headers) do |writer|
 
       service.loop(nil) do |row|
-        # Chewy.strategy(:bypass) do
-          product_name = row.get_column('name').to_s
-          mpn = row.get_column('mpn')
-          sr_no = row.get_column('sr_no')
-          quantity = row.get_column('quantity')
-          brand = row.get_column('brand').to_s
-          tax_code = row.get_column('tax_code').present? ? row.get_column('tax_code').to_s : nil
-          is_service = row.get_column('is_service').present? && row.get_column('is_service').downcase == 'yes' ? true : false
-          category = row.get_column('category_id').present? ? row.get_column('category_id') : nil
-          tax_rate = row.get_column('tax_rate').present? ? row.get_column('tax_rate').to_f : nil
-          brand_data = Brand.find_by_name(brand)
-          if product_name.present?
-            @product = Product.where(name: product_name).first_or_initialize
-            if @product.present?
-              @product.assign_attributes(
+        product_name = row.get_column('name').to_s
+        mpn = row.get_column('mpn')
+        sr_no = row.get_column('sr_no')
+        quantity = row.get_column('quantity')
+        brand = row.get_column('brand').to_s
+        tax_code = row.get_column('tax_code').present? ? row.get_column('tax_code').to_s : nil
+        is_service = row.get_column('is_service').present? && row.get_column('is_service').downcase == 'yes' ? true : false
+        category = row.get_column('category_id').present? ? row.get_column('category_id') : nil
+        tax_rate = row.get_column('tax_rate').present? ? row.get_column('tax_rate').to_f : nil
+        brand_data = Brand.find_by_name(brand)
+        if product_name.present?
+          product = Product.where(name: product_name).last
+          if product.present?
+            build_inquiry_product(product, inquiry, sr_no, quantity)
+          else
+            product = Product.new(
+                name: product_name,
                 tax_code: tax_code.present? ? TaxCode.where('code LIKE ?', tax_code).first : nil,
                 brand: brand_data.present? && brand_data.is_active ? brand_data : nil,
                 mpn: mpn,
                 tax_rate: tax_rate.present? ? TaxRate.where(tax_percentage: tax_rate).last : nil,
                 category: category.present? ? Category.where(id: category, is_active: true).last : Category.find(5100),
                 is_service: is_service,
-              )
-              if Product.where(sku: @product.sku).present?
-                @product.sku = Services::Resources::Shared::UidGenerator.product_sku([@product.sku])
-              end
-              begin
-                if @product.save
-                  inquiry_product = inquiry.inquiry_products.build(
-                    inquiry: inquiry,
-                    import: excel_import,
-                    product_id: @product.id,
-                    sr_no: services.call(sr_no),
-                    quantity: quantity.to_i
-                  )
-                  inquiry_product.save
-                  # sync_product_to_sap(@product, current_overseer)
-
-                  # ############## SAP SYNCING AND PRODUCT APPROVAL CODE#############################################
-                  comment = @product.comments.build(message: 'Product approved from backened', created_by: current_overseer)
-                  @product.create_approval(comment: comment, overseer: current_overseer)
-                  @product.save_and_sync
+            )
+            if Product.where(sku: product.sku).present?
+              product.sku = Services::Resources::Shared::UidGenerator.product_sku([product.sku])
+            end
+            if product.save
+              build_inquiry_product(product, inquiry, sr_no, quantity)
+              comment = product.comments.build(message: 'Product approved from backened', created_by: current_overseer)
+              product.create_approval(comment: comment, overseer: current_overseer)
+              if product.approved?
+                begin
+                  product.save_and_sync
+                rescue => e
+                  writer << ["#{product.sku} - #{product_name}", "#{e.message}-Sync issue"]
+                  next
                 end
-              rescue => e
-                puts @product.errors.full_messages
-                data_not_done << ["#{@product.sku} - #{product_name}", "#{e.message}"]
-                writer << [@product.sku, @product.name, e.message]
-                next
               end
+            else
+              products_with_issues << ["#{product.sku} - #{product_name}", "#{product.errors}}-active record issue"]
+              writer << [product.sku, product.name, product.errors]
             end
           end
-        # end
+        end
       end
+      writer
     end
-    fetch_csv('sap_not_sync_product.csv', csv_data)
-    inquiry.update_attributes(status: 'Cross Reference')
-    puts data_not_done
+
+    fetch_csv('sap_not_sync_product_52317.csv', csv_data)
+    puts products_with_issues
   end
 
   def inquiry_product_52898_creation_service
     service = Services::Shared::Spreadsheets::CsvImporter.new('52898BayerProducts.csv', 'seed_files_3')
-    data_not_done = []
-    inquiry = Inquiry.find_by_inquiry_number(48347)
+    products_with_issues = []
+    inquiry = Inquiry.find_by_inquiry_number(52898)
+    inquiry.update_attributes(status: 'Cross Reference')
     current_overseer = Overseer.find_by_id(238)
-    services = Services::Overseers::InquiryImports::NextSrNo.new(inquiry)
-    excel_import = inquiry.imports.build(import_type: :excel, overseer: current_overseer)
 
     column_headers = ['sku', 'name', 'message']
     csv_data = CSV.generate(write_headers: true, headers: column_headers) do |writer|
 
       service.loop(nil) do |row|
-        # Chewy.strategy(:bypass) do
         product_name = row.get_column('name').to_s
         mpn = row.get_column('mpn')
         sr_no = row.get_column('sr_no')
@@ -109,9 +116,12 @@ class Services::Shared::Migrations::InquiryProductImportCreationService < Servic
         tax_rate = row.get_column('tax_rate').present? ? row.get_column('tax_rate').to_f : nil
         brand_data = Brand.find_by_name(brand)
         if product_name.present?
-          @product = Product.where(name: product_name).first_or_initialize
-          if @product.present?
-            @product.assign_attributes(
+          product = Product.where(name: product_name).last
+          if product.present?
+            build_inquiry_product(product, inquiry, sr_no, quantity)
+          else
+            product = Product.new(
+                name: product_name,
                 tax_code: tax_code.present? ? TaxCode.where('code LIKE ?', tax_code).first : nil,
                 brand: brand_data.present? && brand_data.is_active ? brand_data : nil,
                 mpn: mpn,
@@ -119,55 +129,46 @@ class Services::Shared::Migrations::InquiryProductImportCreationService < Servic
                 category: category.present? ? Category.where(id: category, is_active: true).last : Category.find(5100),
                 is_service: is_service,
                 )
-            if Product.where(sku: @product.sku).present?
-              @product.sku = Services::Resources::Shared::UidGenerator.product_sku([@product.sku])
+            if Product.where(sku: product.sku).present?
+              product.sku = Services::Resources::Shared::UidGenerator.product_sku([product.sku])
             end
-            begin
-              if @product.save
-                inquiry_product = inquiry.inquiry_products.build(
-                    inquiry: inquiry,
-                    import: excel_import,
-                    product_id: @product.id,
-                    sr_no: services.call(sr_no),
-                    quantity: quantity.to_i
-                )
-                inquiry_product.save
-                # sync_product_to_sap(@product, current_overseer)
-
-                # ############## SAP SYNCING AND PRODUCT APPROVAL CODE#############################################
-                comment = @product.comments.build(message: 'Product approved from backened', created_by: current_overseer)
-                @product.create_approval(comment: comment, overseer: current_overseer)
-                @product.save_and_sync
+            if product.save
+              build_inquiry_product(product, inquiry, sr_no, quantity)
+              comment = product.comments.build(message: 'Product approved from backened', created_by: current_overseer)
+              product.create_approval(comment: comment, overseer: current_overseer)
+              if product.approved?
+                begin
+                  product.save_and_sync
+                rescue => e
+                  writer << ["#{product.sku} - #{product_name}", "#{e.message}-Sync issue"]
+                  next
+                end
               end
-            rescue => e
-              puts @product.errors.full_messages
-              data_not_done << ["#{@product.sku} - #{product_name}", "#{e.message}"]
-              writer << [@product.sku, @product.name, e.message]
-              next
+            else
+              products_with_issues << ["#{product.sku} - #{product_name}", "#{product.errors}}-active record issue"]
+              writer << [product.sku, product.name, product.errors]
             end
           end
         end
-        # end
       end
+      writer
     end
-    fetch_csv('sap_not_sync_product.csv', csv_data)
-    inquiry.update_attributes(status: 'Cross Reference')
-    puts data_not_done
+
+    fetch_csv('sap_not_sync_product_52898.csv', csv_data)
+    puts products_with_issues
   end
 
   def inquiry_product_52899_creation_service
     service = Services::Shared::Spreadsheets::CsvImporter.new('52899BayerProducts.csv', 'seed_files_3')
-    data_not_done = []
-    inquiry = Inquiry.find_by_inquiry_number(48303)
+    products_with_issues = []
+    inquiry = Inquiry.find_by_inquiry_number(52899)
+    inquiry.update_attributes(status: 'Cross Reference')
     current_overseer = Overseer.find_by_id(238)
-    services = Services::Overseers::InquiryImports::NextSrNo.new(inquiry)
-    excel_import = inquiry.imports.build(import_type: :excel, overseer: current_overseer)
 
     column_headers = ['sku', 'name', 'message']
     csv_data = CSV.generate(write_headers: true, headers: column_headers) do |writer|
 
       service.loop(nil) do |row|
-        # Chewy.strategy(:bypass) do
         product_name = row.get_column('name').to_s
         mpn = row.get_column('mpn')
         sr_no = row.get_column('sr_no')
@@ -179,9 +180,12 @@ class Services::Shared::Migrations::InquiryProductImportCreationService < Servic
         tax_rate = row.get_column('tax_rate').present? ? row.get_column('tax_rate').to_f : nil
         brand_data = Brand.find_by_name(brand)
         if product_name.present?
-          @product = Product.where(name: product_name).first_or_initialize
-          if @product.present?
-            @product.assign_attributes(
+          product = Product.where(name: product_name).last
+          if product.present?
+            build_inquiry_product(product, inquiry, sr_no, quantity)
+          else
+            product = Product.new(
+                name: product_name,
                 tax_code: tax_code.present? ? TaxCode.where('code LIKE ?', tax_code).first : nil,
                 brand: brand_data.present? && brand_data.is_active ? brand_data : nil,
                 mpn: mpn,
@@ -189,55 +193,46 @@ class Services::Shared::Migrations::InquiryProductImportCreationService < Servic
                 category: category.present? ? Category.where(id: category, is_active: true).last : Category.find(5100),
                 is_service: is_service,
                 )
-            if Product.where(sku: @product.sku).present?
-              @product.sku = Services::Resources::Shared::UidGenerator.product_sku([@product.sku])
+            if Product.where(sku: product.sku).present?
+              product.sku = Services::Resources::Shared::UidGenerator.product_sku([product.sku])
             end
-            begin
-              if @product.save
-                inquiry_product = inquiry.inquiry_products.build(
-                    inquiry: inquiry,
-                    import: excel_import,
-                    product_id: @product.id,
-                    sr_no: services.call(sr_no),
-                    quantity: quantity.to_i
-                )
-                inquiry_product.save
-                # sync_product_to_sap(@product, current_overseer)
-
-                # ############## SAP SYNCING AND PRODUCT APPROVAL CODE#############################################
-                comment = @product.comments.build(message: 'Product approved from backened', created_by: current_overseer)
-                @product.create_approval(comment: comment, overseer: current_overseer)
-                @product.save_and_sync
+            if product.save
+              build_inquiry_product(product, inquiry, sr_no, quantity)
+              comment = product.comments.build(message: 'Product approved from backened', created_by: current_overseer)
+              product.create_approval(comment: comment, overseer: current_overseer)
+              if product.approved?
+                begin
+                  product.save_and_sync
+                rescue => e
+                  writer << ["#{product.sku} - #{product_name}", "#{e.message}-Sync issue"]
+                  next
+                end
               end
-            rescue => e
-              puts @product.errors.full_messages
-              data_not_done << ["#{@product.sku} - #{product_name}", "#{e.message}"]
-              writer << [@product.sku, @product.name, e.message]
-              next
+            else
+              products_with_issues << ["#{product.sku} - #{product_name}", "#{product.errors}}-active record issue"]
+              writer << [product.sku, product.name, product.errors]
             end
           end
         end
-        # end
       end
+      writer
     end
-    fetch_csv('sap_not_sync_product.csv', csv_data)
-    inquiry.update_attributes(status: 'Cross Reference')
-    puts data_not_done
+
+    fetch_csv('sap_not_sync_product_52899.csv', csv_data)
+    puts products_with_issues
   end
 
   def inquiry_product_52900_creation_service
     service = Services::Shared::Spreadsheets::CsvImporter.new('52900BayerProducts.csv', 'seed_files_3')
-    data_not_done = []
-    inquiry = Inquiry.find_by_inquiry_number(48304)
+    products_with_issues = []
+    inquiry = Inquiry.find_by_inquiry_number(52900)
+    inquiry.update_attributes(status: 'Cross Reference')
     current_overseer = Overseer.find_by_id(238)
-    services = Services::Overseers::InquiryImports::NextSrNo.new(inquiry)
-    excel_import = inquiry.imports.build(import_type: :excel, overseer: current_overseer)
 
     column_headers = ['sku', 'name', 'message']
     csv_data = CSV.generate(write_headers: true, headers: column_headers) do |writer|
 
       service.loop(nil) do |row|
-        # Chewy.strategy(:bypass) do
         product_name = row.get_column('name').to_s
         mpn = row.get_column('mpn')
         sr_no = row.get_column('sr_no')
@@ -249,9 +244,12 @@ class Services::Shared::Migrations::InquiryProductImportCreationService < Servic
         tax_rate = row.get_column('tax_rate').present? ? row.get_column('tax_rate').to_f : nil
         brand_data = Brand.find_by_name(brand)
         if product_name.present?
-          @product = Product.where(name: product_name).first_or_initialize
-          if @product.present?
-            @product.assign_attributes(
+          product = Product.where(name: product_name).last
+          if product.present?
+            build_inquiry_product(product, inquiry, sr_no, quantity)
+          else
+            product = Product.new(
+                name: product_name,
                 tax_code: tax_code.present? ? TaxCode.where('code LIKE ?', tax_code).first : nil,
                 brand: brand_data.present? && brand_data.is_active ? brand_data : nil,
                 mpn: mpn,
@@ -259,58 +257,32 @@ class Services::Shared::Migrations::InquiryProductImportCreationService < Servic
                 category: category.present? ? Category.where(id: category, is_active: true).last : Category.find(5100),
                 is_service: is_service,
                 )
-            if Product.where(sku: @product.sku).present?
-              @product.sku = Services::Resources::Shared::UidGenerator.product_sku([@product.sku])
+            if Product.where(sku: product.sku).present?
+              product.sku = Services::Resources::Shared::UidGenerator.product_sku([product.sku])
             end
-            begin
-              if @product.save
-                inquiry_product = inquiry.inquiry_products.build(
-                    inquiry: inquiry,
-                    import: excel_import,
-                    product_id: @product.id,
-                    sr_no: services.call(sr_no),
-                    quantity: quantity.to_i
-                )
-                inquiry_product.save
-                # sync_product_to_sap(@product, current_overseer)
-
-                # ############## SAP SYNCING AND PRODUCT APPROVAL CODE#############################################
-                comment = @product.comments.build(message: 'Product approved from backened', created_by: current_overseer)
-                @product.create_approval(comment: comment, overseer: current_overseer)
-                @product.save_and_sync
+            if product.save
+              build_inquiry_product(product, inquiry, sr_no, quantity)
+              comment = product.comments.build(message: 'Product approved from backened', created_by: current_overseer)
+              product.create_approval(comment: comment, overseer: current_overseer)
+              if product.approved?
+                begin
+                  product.save_and_sync
+                rescue => e
+                  writer << ["#{product.sku} - #{product_name}", "#{e.message}-Sync issue"]
+                  next
+                end
               end
-            rescue => e
-              puts @product.errors.full_messages
-              data_not_done << ["#{@product.sku} - #{product_name}", "#{e.message}"]
-              writer << [@product.sku, @product.name, e.message]
-              next
+            else
+              products_with_issues << ["#{product.sku} - #{product_name}", "#{product.errors}}-active record issue"]
+              writer << [product.sku, product.name, product.errors]
             end
           end
         end
-        # end
       end
+      writer
     end
-    fetch_csv('sap_not_sync_product.csv', csv_data)
-    inquiry.update_attributes(status: 'Cross Reference')
-    puts data_not_done
-  end
 
-  def sync_product_to_sap(product, current_overseer)
-    not_synced_data = []
-    column_headers = ['sku', 'name', 'message']
-    comment = @product.comments.build(message: 'Product approved from backened', created_by: current_overseer)
-    csv_data = CSV.generate(write_headers: true, headers: column_headers) do |writer|
-      begin
-        ActiveRecord::Base.transaction do
-          product.create_approval(comment: comment, overseer: current_overseer)
-          product.save_and_sync
-        end
-      rescue StandardError => e
-        not_synced_data << [product.sku, product.name, e.message]
-        writer << [product.sku, product.name, e.message]
-      end
-    end
-    fetch_csv('sap_not_sync_product.csv', csv_data)
-    puts not_synced_data
+    fetch_csv('sap_not_sync_product_52900.csv', csv_data)
+    puts products_with_issues
   end
 end
