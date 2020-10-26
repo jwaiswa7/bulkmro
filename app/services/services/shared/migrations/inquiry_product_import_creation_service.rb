@@ -20,11 +20,11 @@ class Services::Shared::Migrations::InquiryProductImportCreationService < Servic
     inquiry_product = inquiry.inquiry_products.where(product_id: product.id).last
     unless inquiry_product.present?
       inquiry_product = inquiry.inquiry_products.build(
-          inquiry: inquiry,
-          import: excel_import,
-          product_id: product.id,
-          sr_no: services.call(sr_no),
-          quantity: quantity.to_i
+        inquiry: inquiry,
+        import: excel_import,
+        product_id: product.id,
+        sr_no: services.call(sr_no),
+        quantity: quantity.to_i
       )
       inquiry_product.save
     end
@@ -39,7 +39,6 @@ class Services::Shared::Migrations::InquiryProductImportCreationService < Servic
 
     column_headers = ['sku', 'name', 'message']
     csv_data = CSV.generate(write_headers: true, headers: column_headers) do |writer|
-
       service.loop(nil) do |row|
         product_name = row.get_column('name').to_s
         mpn = row.get_column('mpn')
@@ -57,13 +56,13 @@ class Services::Shared::Migrations::InquiryProductImportCreationService < Servic
             build_inquiry_product(product, inquiry, sr_no, quantity)
           else
             product = Product.new(
-                name: product_name,
-                tax_code: tax_code.present? ? TaxCode.where('code LIKE ?', tax_code).first : nil,
-                brand: brand_data.present? && brand_data.is_active ? brand_data : nil,
-                mpn: mpn,
-                tax_rate: tax_rate.present? ? TaxRate.where(tax_percentage: tax_rate).last : nil,
-                category: category.present? ? Category.where(id: category, is_active: true).last : Category.find(5100),
-                is_service: is_service,
+              name: product_name,
+              tax_code: tax_code.present? ? TaxCode.where('code LIKE ?', tax_code).first : nil,
+              brand: brand_data.present? && brand_data.is_active ? brand_data : nil,
+              mpn: mpn,
+              tax_rate: tax_rate.present? ? TaxRate.where(tax_percentage: tax_rate).last : nil,
+              category: category.present? ? Category.where(id: category, is_active: true).last : Category.find(5100),
+              is_service: is_service,
             )
             if Product.where(sku: product.sku).present?
               product.sku = Services::Resources::Shared::UidGenerator.product_sku([product.sku])
@@ -103,7 +102,6 @@ class Services::Shared::Migrations::InquiryProductImportCreationService < Servic
 
     column_headers = ['sku', 'name', 'message']
     csv_data = CSV.generate(write_headers: true, headers: column_headers) do |writer|
-
       service.loop(nil) do |row|
         product_name = row.get_column('name').to_s
         mpn = row.get_column('mpn')
@@ -121,13 +119,13 @@ class Services::Shared::Migrations::InquiryProductImportCreationService < Servic
             build_inquiry_product(product, inquiry, sr_no, quantity)
           else
             product = Product.new(
-                name: product_name,
-                tax_code: tax_code.present? ? TaxCode.where('code LIKE ?', tax_code).first : nil,
-                brand: brand_data.present? && brand_data.is_active ? brand_data : nil,
-                mpn: mpn,
-                tax_rate: tax_rate.present? ? TaxRate.where(tax_percentage: tax_rate).last : nil,
-                category: category.present? ? Category.where(id: category, is_active: true).last : Category.find(5100),
-                is_service: is_service,
+              name: product_name,
+              tax_code: tax_code.present? ? TaxCode.where('code LIKE ?', tax_code).first : nil,
+              brand: brand_data.present? && brand_data.is_active ? brand_data : nil,
+              mpn: mpn,
+              tax_rate: tax_rate.present? ? TaxRate.where(tax_percentage: tax_rate).last : nil,
+              category: category.present? ? Category.where(id: category, is_active: true).last : Category.find(5100),
+              is_service: is_service,
                 )
             if Product.where(sku: product.sku).present?
               product.sku = Services::Resources::Shared::UidGenerator.product_sku([product.sku])
@@ -167,7 +165,6 @@ class Services::Shared::Migrations::InquiryProductImportCreationService < Servic
 
     column_headers = ['sku', 'name', 'message']
     csv_data = CSV.generate(write_headers: true, headers: column_headers) do |writer|
-
       service.loop(nil) do |row|
         product_name = row.get_column('name').to_s
         mpn = row.get_column('mpn')
@@ -185,13 +182,13 @@ class Services::Shared::Migrations::InquiryProductImportCreationService < Servic
             build_inquiry_product(product, inquiry, sr_no, quantity)
           else
             product = Product.new(
-                name: product_name,
-                tax_code: tax_code.present? ? TaxCode.where('code LIKE ?', tax_code).first : nil,
-                brand: brand_data.present? && brand_data.is_active ? brand_data : nil,
-                mpn: mpn,
-                tax_rate: tax_rate.present? ? TaxRate.where(tax_percentage: tax_rate).last : nil,
-                category: category.present? ? Category.where(id: category, is_active: true).last : Category.find(5100),
-                is_service: is_service,
+              name: product_name,
+              tax_code: tax_code.present? ? TaxCode.where('code LIKE ?', tax_code).first : nil,
+              brand: brand_data.present? && brand_data.is_active ? brand_data : nil,
+              mpn: mpn,
+              tax_rate: tax_rate.present? ? TaxRate.where(tax_percentage: tax_rate).last : nil,
+              category: category.present? ? Category.where(id: category, is_active: true).last : Category.find(5100),
+              is_service: is_service,
                 )
             if Product.where(sku: product.sku).present?
               product.sku = Services::Resources::Shared::UidGenerator.product_sku([product.sku])
@@ -231,7 +228,6 @@ class Services::Shared::Migrations::InquiryProductImportCreationService < Servic
 
     column_headers = ['sku', 'name', 'message']
     csv_data = CSV.generate(write_headers: true, headers: column_headers) do |writer|
-
       service.loop(nil) do |row|
         product_name = row.get_column('name').to_s
         mpn = row.get_column('mpn')
@@ -249,13 +245,13 @@ class Services::Shared::Migrations::InquiryProductImportCreationService < Servic
             build_inquiry_product(product, inquiry, sr_no, quantity)
           else
             product = Product.new(
-                name: product_name,
-                tax_code: tax_code.present? ? TaxCode.where('code LIKE ?', tax_code).first : nil,
-                brand: brand_data.present? && brand_data.is_active ? brand_data : nil,
-                mpn: mpn,
-                tax_rate: tax_rate.present? ? TaxRate.where(tax_percentage: tax_rate).last : nil,
-                category: category.present? ? Category.where(id: category, is_active: true).last : Category.find(5100),
-                is_service: is_service,
+              name: product_name,
+              tax_code: tax_code.present? ? TaxCode.where('code LIKE ?', tax_code).first : nil,
+              brand: brand_data.present? && brand_data.is_active ? brand_data : nil,
+              mpn: mpn,
+              tax_rate: tax_rate.present? ? TaxRate.where(tax_percentage: tax_rate).last : nil,
+              category: category.present? ? Category.where(id: category, is_active: true).last : Category.find(5100),
+              is_service: is_service,
                 )
             if Product.where(sku: product.sku).present?
               product.sku = Services::Resources::Shared::UidGenerator.product_sku([product.sku])
