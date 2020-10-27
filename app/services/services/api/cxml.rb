@@ -43,5 +43,4 @@ class Services::Api::Cxml < Services::Shared::BaseService
   private
 
   attr_accessor :params, :version, :timestamp, :payload_id, :api_request_object
-
 end

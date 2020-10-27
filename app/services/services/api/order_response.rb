@@ -1,6 +1,6 @@
 class Services::Api::OrderResponse < Services::Shared::BaseService
   include HTTParty
-  
+
   def initialize(cart_object, api_request_object)
     @cart_object = cart_object
     @api_request_object = api_request_object
@@ -35,19 +35,18 @@ class Services::Api::OrderResponse < Services::Shared::BaseService
 
   def punchout_order_message(node)
     main_array = []
-    item_id_hash, item_detail_hash = {}
-    header_data = {'BuyerCookie' => buyer_cookie, 
+    header_data = {'BuyerCookie' => buyer_cookie,
       'PunchOutOrderMessageHeader' => {
         'Total' => {
           'Money' => {'currency' => 'INR', 'content' => cart_object.calculated_total.to_i}
-        }  
+        }
       }
     }
 
     cart_object.items.each do |item|
       item_hash = { 'quantity' => item.quantity.to_i,
-        'ItemID' => {'SupplierPartID' => item.customer_product.sku, 'SupplierPartAuxillaryID' => item.customer_product.sku }, 
-        'ItemDetail' => { 'Description' => item.customer_product.name, 
+        'ItemID' => {'SupplierPartID' => item.customer_product.sku, 'SupplierPartAuxillaryID' => item.customer_product.sku },
+        'ItemDetail' => { 'Description' => item.customer_product.name,
           'UnitOfMeasure' => item.customer_product.measurement_unit.present? ? item.customer_product.measurement_unit.name : 'EA',
           'ClassificationUnspsc' => '',
           'LeadTime' => item.customer_product&.lead_time,
@@ -90,5 +89,4 @@ class Services::Api::OrderResponse < Services::Shared::BaseService
   # end
 
   attr_accessor :cart_object, :cxml_header, :timestamp, :payload_id, :api_request_object, :buyer_cookie, :api_endpoint, :cart_response_object
-
 end

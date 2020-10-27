@@ -1,5 +1,4 @@
 class Services::Customers::CustomerOrders::GeneratePunchoutOrder < Services::Shared::BaseService
-
   def initialize(contact, cart, company)
     @contact = contact
     @cart = cart
@@ -28,7 +27,7 @@ class Services::Customers::CustomerOrders::GeneratePunchoutOrder < Services::Sha
 
     customer_order.create_approval(contact: company.account_manager_contact)
     customer_order.comments.create(customer_order_id: customer_order.id, contact_id: company.account_manager_contact.id, message: 'Approved.', show_to_customer: true)
-    
+
     cart.destroy
   end
 
