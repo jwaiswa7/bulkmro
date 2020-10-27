@@ -18,7 +18,7 @@ class Customers::CustomerOrdersController < Customers::BaseController
       special_instructions: current_cart.special_instructions,
       customer_po_sheet: (current_cart.customer_po_sheet.attached?) ? current_cart.customer_po_sheet.blob : nil
     )
-    
+
     ActiveRecord::Base.transaction do
       @customer_order = current_customers_contact.customer_orders.create(company: current_company)
       @customer_order.assign_attributes(
@@ -63,7 +63,7 @@ class Customers::CustomerOrdersController < Customers::BaseController
       email_service.send_order_approval_email(account_managers)
     end
 
-    redirect_to order_confirmed_customers_customer_order_path(@customer_order) 
+    redirect_to order_confirmed_customers_customer_order_path(@customer_order)
   end
 
   def show
