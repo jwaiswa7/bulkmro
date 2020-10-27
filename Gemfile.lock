@@ -644,6 +644,7 @@ DEPENDENCIES
   oj
   omniauth-google-oauth2
   paper_trail
+  parallel
   parser
   percentage
   pg

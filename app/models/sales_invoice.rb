@@ -396,4 +396,10 @@ class SalesInvoice < ApplicationRecord
   def get_contact_for_email
     [self.inquiry.billing_contact.email, self.inquiry.shipping_contact.email].uniq.join(',')
   end
+
+  def calculate_tcs_amount
+    if self.company.check_company_so_total_amount(self)
+      ((self.metadata['base_grand_total'].to_f / self.metadata['base_to_order_rate'].to_f) * (0.075 / 100))
+    end
+  end
 end

@@ -49,6 +49,10 @@ class Overseers::Companies::AddressesController < Overseers::Companies::BaseCont
 
   def edit
     authorize_acl @address
+    # Daman and Diu gst code changed in august 2020 from 25 to 26, we have to keep previous gst for existing data
+    if @address.address_state_id == 470 && @address.gst.present? && Date.today >= Date.new(2020, 8, 21)
+      @gst_code = @address.gst.to_s[0..1].to_i
+    end
   end
 
   def update

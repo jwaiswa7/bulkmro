@@ -144,3 +144,11 @@ inside_sales_manager:
 
 currency:
   name: "₹"
+
+aggregator:
+  name: 'Bulk MRO Industrial Supply Pvt. Ltd.'
+  alias: 'Bulk MRO'
+  website: 'http://www.bulkmro.com/'
+  address: ''
+  country: 'India'
+  country_code: 'IN'

@@ -1,5 +1,5 @@
 class Overseers::SalesInvoicesController < Overseers::BaseController
-  before_action :set_invoice, only: [:edit_pod, :update_pod, :delivery_mail_to_customer, :delivery_mail_to_customer_notification, :dispatch_mail_to_customer, :dispatch_mail_to_customer_notification, :resync_sap_status]
+  before_action :set_invoice, only: [:edit_pod, :view_pod, :update_pod, :delivery_mail_to_customer, :delivery_mail_to_customer_notification, :dispatch_mail_to_customer, :dispatch_mail_to_customer_notification, :resync_sap_status]
 
   def index
     authorize_acl :sales_invoice
@@ -35,6 +35,10 @@ class Overseers::SalesInvoicesController < Overseers::BaseController
     if !@invoice.pod_rows.present?
       @invoice.pod_rows.build
     end
+  end
+
+  def view_pod
+    authorize @invoice
   end
 
   def update_pod
@@ -80,7 +84,7 @@ class Overseers::SalesInvoicesController < Overseers::BaseController
     service = Services::Overseers::Exporters::SalesInvoicesLogisticsExporter.new
     service.call
 
-    redirect_to url_for(Export.sales_invoice_logistics.last.report)
+    redirect_to url_for(Export.sales_invoices_logistics.last.report)
   end
 
 

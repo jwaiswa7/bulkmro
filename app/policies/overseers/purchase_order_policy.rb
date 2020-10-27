@@ -6,7 +6,7 @@ class Overseers::PurchaseOrderPolicy < Overseers::ApplicationPolicy
   end
 
   def edit?
-    logistics? || admin?
+    true
   end
 
   def autocomplete?
@@ -105,5 +105,8 @@ class Overseers::PurchaseOrderPolicy < Overseers::ApplicationPolicy
   end
   def manually_close?
     developer? && (record.material_status != 'Manually Closed')
+  end
+  def cancellation_access?
+    logistics? || admin? || (overseer.acl_role_id == Settings.inside_sales_manager.role_id)
   end
 end

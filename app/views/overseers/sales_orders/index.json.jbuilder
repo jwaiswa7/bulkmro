@@ -10,7 +10,7 @@ json.data (@sales_orders) do |sales_order|
                       if is_authorized(sales_order, 'edit_mis_date')
                         row_action_button(edit_mis_date_overseers_inquiry_sales_order_path(sales_order.inquiry, sales_order), 'calender-alt', 'Update MIS Date', 'success', :_blank)
                       end,
-                      if is_authorized(sales_order, 'can_request_po')
+                      if is_authorized(sales_order, 'can_request_po') && sales_order.status == 'Approved' && sales_order.remote_status != 'Cancelled by SAP'
                         row_action_button(new_purchase_orders_requests_overseers_sales_order_path(sales_order.to_param), 'file-alt', 'PO Request', 'success', :_blank)
                       end,
 =begin

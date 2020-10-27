@@ -69,10 +69,10 @@ class PurchaseOrder < ApplicationRecord
       'Supplier PI delayed': 67,
       'Payment to Supplier Delayed': 68,
       'payment_done_out_from_bm_warehouse': 69,
-      'cancelled': 95,
+      'Cancelled': 95,
       'Closed': 96,
       'Delivered': 97
-  }
+  }, _suffix: true
 
   enum main_summary_status: {
       'PO Sent to Supplier': 36,
