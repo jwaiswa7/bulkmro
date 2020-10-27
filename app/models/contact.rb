@@ -11,7 +11,7 @@ class Contact < ApplicationRecord
   # Include default devise modules. Others available are:
   # :confirmable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :trackable, :validatable, :lockable
+         :recoverable, :rememberable, :trackable, :validatable, :lockable, :timeoutable
 
   belongs_to :account
   has_many :inquiries

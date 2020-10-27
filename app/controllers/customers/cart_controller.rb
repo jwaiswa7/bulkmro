@@ -5,6 +5,30 @@ class Customers::CartController < Customers::BaseController
     authorize @cart
   end
 
+  def punchout
+    authorize @cart
+  end
+
+  def punchout_cart
+    authorize @cart
+
+    service = Services::Api::OrderResponse.new(@cart, current_api_request)
+    @endpoint = current_api_request.payload["Request"]["PunchOutSetupRequest"]["BrowserFormPost"]["URL"]
+    # @endpoint = 'https://webhook.site/d31d22e4-69a1-4d48-b7d9-2bf585b52e62'
+    @data = service.call
+
+    render 'punchout_cart'
+  end
+
+  def manual_punchout
+    authorize @cart
+
+    service = Services::Api::OrderResponse.new(@cart, current_api_request)
+    @endpoint = current_api_request.payload["Request"]["PunchOutSetupRequest"]["BrowserFormPost"]["URL"]
+    # @endpoint = 'https://webhook.site/d31d22e4-69a1-4d48-b7d9-2bf585b52e62'
+    @data = service.call
+  end
+
   def update
     authorize @cart
 
@@ -13,6 +37,8 @@ class Customers::CartController < Customers::BaseController
     if @cart.save
       if params['show_cart']
         redirect_to customers_cart_path
+      elsif is_api_request?
+        redirect_to punchout_customers_cart_path
       else
         redirect_to final_checkout_customers_checkout_path
       end

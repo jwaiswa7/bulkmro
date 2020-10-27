@@ -1,0 +1,86 @@
+<div class="col-12">
+  <%= simple_form_for(:cxml, :url => @endpoint, :method => :post) do |f| %>
+    <%= f.input :data, as: :hidden, input_html: {name: 'cXML-urlencoded', value: @data}%>
+    <div class="row flex-lg-row-reverse">
+      <div class="col-lg-3">
+        <div class="card" data-toggle="sticky">
+          <div class="card-header">
+            <h5 class="mb-0"><strong>Cart Summary</strong></h5>
+          </div>
+          <div class="card-body text-right">
+            <span class="d-block"><strong class="float-left">Subtotal:</strong> <strong><%= format_currency(current_cart.calculated_total) %></strong></span>
+            <% if @cart.billing_address.present? %>
+              <hr class="my-1">
+              <% current_cart.tax_line_items.each do |key, value| %>
+                <span class="d-block"><em class="float-left"><%= TaxRateString.for(current_cart.billing_address, current_cart.default_warehouse_address, current_cart.default_warehouse_address, key) %>:</em> <%= format_currency(value) %></span>
+              <% end %>
+              <strong class="float-left">Total Tax:</strong> <strong><%= format_currency(current_cart.calculated_total_tax) %></strong>
+              <hr class="my-1">
+              <strong class="d-block"><span class="float-left">Grand Total:</span> <%= format_currency(current_cart.grand_total) %></strong>
+            <% else %>
+              <span class="d-block" data-toggle="tooltip" title="Taxes will be displayed after you select a billing address."><strong class="float-left">Total Tax <i class="fal fa-info-circle text-small"></i>:</strong> 0.00</span>
+              <hr class="my-1">
+              <span class="d-block"><strong class="float-left">Grand Total:</strong> <%= format_currency(current_cart.calculated_total) %></span>
+            <% end %>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-9">
+        <div class="card mt-2 mt-lg-0">
+          <div class="card-body py-2">
+            <div class="text-left">
+              <table class="datatable table table-bordered dt-responsive wrap-whitespace w-100" data-fixed-header="false">
+                <thead>
+                <tr>
+                  <th class="no-sort desktop">Image</th>
+                  <th class="no-sort all">Product</th>
+                  <th class="no-sort">Price</th>
+                  <th data-toggle="tooltip" title="Minimum Order Quantity">MOQ</th>
+                  <th class="no-sort all">Quantity</th>
+                  <th class="all">Subtotal</th>
+                </tr>
+                </thead>
+                <tbody>
+                <% current_cart.items.each do |cart_item| %>
+                  <tr>
+                    <td>
+                      <% if cart_item.customer_product.best_image.present? %>
+                        <%= image_tag cart_item.customer_product.tiny_best_image, fallback_url: image_path('coming_soon.png'), check_remote: false %>
+                      <% else %>
+                        <img src="<%= image_path('coming_soon.png') %>" alt="<%= cart_item.customer_product.sku %>" height="40" />
+                      <% end %>
+                    </td>
+                    <td>
+                      <%= cart_item.customer_product.name.truncate(80) %>
+                    </td>
+                    <td><%= format_currency(cart_item.customer_product.customer_price, precision: 2, symbol: '') %></td>
+                    <td><%= cart_item.customer_product.moq %></td>
+                    <td style="width: 90px"><%= cart_item.quantity %></td>
+                    <td><%= format_currency(cart_item.customer_product.customer_price.to_f * cart_item.quantity, precision: 2) %></td>
+                  </tr>
+                <% end %>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="card-footer">
+            <div class="form-row">
+              <div class="col-md-12">
+                <div class="form-row">
+                  <div class="col-6">
+                    <%= link_to "Shopping Cart", punchout_customers_cart_path, class: "btn btn-block btn-warning btn-lg" %>
+                  </div>
+                  <div class="col-6">
+                    <%= button_tag(type: "submit", class: "btn btn-block btn-success btn-lg", :data => {:disable_with => 'Redirecting...'}) do %>
+                      Checkout
+                    <% end %>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+  <% end %>
+  </div>
+</div>

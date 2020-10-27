@@ -18,6 +18,7 @@ class Customers::CustomerOrdersController < Customers::BaseController
       special_instructions: current_cart.special_instructions,
       customer_po_sheet: (current_cart.customer_po_sheet.attached?) ? current_cart.customer_po_sheet.blob : nil
     )
+
     ActiveRecord::Base.transaction do
       @customer_order = current_customers_contact.customer_orders.create(company: current_company)
       @customer_order.assign_attributes(
@@ -110,6 +111,11 @@ class Customers::CustomerOrdersController < Customers::BaseController
     end.order(id: :desc)
     @customer_orders = ApplyDatatableParams.to(@customer_orders, params)
     authorize @customer_orders
+  end
+
+  def generate_punchout_order
+    Services::Customers::CustomerOrders::GeneratePunchoutOrder.new(current_customers_contact, current_cart, current_company).call
+    sign_out
   end
 
   private

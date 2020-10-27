@@ -3,7 +3,7 @@
 class Cart < ApplicationRecord
   include Mixins::CanBeTotalled
 
-  belongs_to :contact
+  belongs_to :contact, optional: true
   belongs_to :company, required: false
   has_many :items, class_name: 'CartItem', dependent: :destroy
   accepts_nested_attributes_for :items
