@@ -6,7 +6,7 @@ class Customers::BaseController < ApplicationController
 
   before_action :authenticate_customers_contact!, except: [:route]
   before_action :set_paper_trail_whodunnit
-  after_action :verify_authorized, except: [:route]
+  after_action :verify_authorized, except: [:route, :generate_punchout_order]
   before_action :redirect_if_required, except: [:route]
 
   helper_method :current_cart, :current_company, :is_api_request?, :current_api_request
@@ -83,19 +83,11 @@ class Customers::BaseController < ApplicationController
     end
 
     def is_api_request?
-      if session[:api_request]
-        true
-      else
-        false
-      end
+      session[:api_request].present?
     end
 
     def current_api_request
-      if is_api_request?
-        ApiRequest.find(session[:api_request_id])
-      else
-        nil
-      end
+      is_api_request? ? ApiRequest.find(session[:api_request_id]) : nil
     end
 
     def pundit_user

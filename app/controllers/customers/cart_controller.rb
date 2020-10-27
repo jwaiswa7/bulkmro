@@ -11,6 +11,7 @@ class Customers::CartController < Customers::BaseController
 
   def punchout_cart
     authorize @cart
+
     service = Services::Api::OrderResponse.new(@cart, current_api_request)
     @endpoint = current_api_request.payload["Request"]["PunchOutSetupRequest"]["BrowserFormPost"]["URL"]
     # @endpoint = 'https://webhook.site/d31d22e4-69a1-4d48-b7d9-2bf585b52e62'
@@ -21,6 +22,7 @@ class Customers::CartController < Customers::BaseController
 
   def manual_punchout
     authorize @cart
+
     service = Services::Api::OrderResponse.new(@cart, current_api_request)
     @endpoint = current_api_request.payload["Request"]["PunchOutSetupRequest"]["BrowserFormPost"]["URL"]
     # @endpoint = 'https://webhook.site/d31d22e4-69a1-4d48-b7d9-2bf585b52e62'

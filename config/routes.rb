@@ -911,6 +911,7 @@ Rails.application.routes.draw do
       collection do
         get 'pending'
         get 'approved'
+        get 'generate_punchout_order'
       end
 
       scope module: 'customer_orders' do

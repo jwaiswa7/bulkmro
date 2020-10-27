@@ -11,34 +11,29 @@ class Services::Api::Cxml < Services::Shared::BaseService
   def parser
     if params.body.present?
       parsed_body = CXML.parse(params.body)
-      p parsed_body
       contact_email = parsed_body["Request"]["PunchOutSetupRequest"]["Extrinsic"].select{|hash| hash["name"] == "UserEmail"}.first["content"].downcase
       header = parsed_body["Header"]
-      # landing_url = "http://659e3da6ebea.ngrok.io/customers/dashboard/route?email=#{contact_email}"
-      landing_url = "https://demo-test.bulkmro.com/customers/dashboard/route?email=#{contact_email}&request_id=#{api_request_object.hashid}"
-      # landing_url = "http://localhost:3000/customers/dashboard/route?email=#{contact_email}&request_id=#{api_request_object.hashid}"
+
+      landing_url = "https://sprint.bulkmro.com/customers/dashboard/route?email=#{contact_email}&amp;request_id=#{api_request_object.hashid}"
+      # landing_url = "http://localhost:3000/customers/dashboard/route?email=#{contact_email}&amp;request_id=#{api_request_object.hashid}"
 
       response_data = { 'Status' => { 'code' => "200", 'text' => "OK" },
                         'PunchOutSetupResponse' => { 'StartPage' => { 'URL' => landing_url } } }
       response = CXML::Response.new(response_data)
-      p response
       
       api_request_object.update_attributes(payload: parsed_body, contact_email: contact_email, request_header: header.to_json)
       
-      if contact_email.present?
-        contact = Contact.find_by(email: contact_email)
-        if contact.present?
-          node = CXML.builder
-          node.cXML('payloadID' => payload_id, 'timestamp' => timestamp.iso8601) do |doc|
-            response.render(node)
-          end
-          api_request_object.update_attributes(response: node, updated_at: Time.now.iso8601)
-          node
-        else
-          api_request_object.update_attributes(error_message: "Contact is not present in the system".to_json, updated_at: Time.now.iso8601)
+      contact = Contact.find_by(email: contact_email)
+
+      if contact.present?
+        node = CXML.builder
+        node.cXML('payloadID' => payload_id, 'timestamp' => timestamp.iso8601) do |doc|
+          response.render(node)
         end
+        api_request_object.update_attributes(response: node, updated_at: Time.now.iso8601)
+        node
       else
-        api_request_object.update_attributes(error_message: "Contact email is not present in the payload".to_json, updated_at: Time.now.iso8601)
+        api_request_object.update_attributes(error_message: "Contact is not present in the system".to_json, updated_at: Time.now.iso8601)
       end
     else
       api_request_object.update_attributes(error_message: "Request body is empty".to_json, updated_at: Time.now.iso8601)

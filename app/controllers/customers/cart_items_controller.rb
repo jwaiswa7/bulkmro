@@ -20,14 +20,11 @@ class Customers::CartItemsController < Customers::BaseController
 
   def destroy
     authorize @cart_item
+    redirect_url = is_api_request? ? punchout_customers_cart_path(current_cart) : customers_cart_path(current_cart)
 
     if @cart_item.destroy
       respond_to do |format|
-        if is_api_request?
-          format.html { redirect_to punchout_customers_cart_path(current_cart), notice: flash_message(@cart_item, action_name) }
-        else
-          format.html { redirect_to customers_cart_path(current_cart), notice: flash_message(@cart_item, action_name) }
-        end
+        format.html { redirect_to redirect_url, notice: flash_message(@cart_item, action_name) }
         format.js { render layout: false }
       end
     end

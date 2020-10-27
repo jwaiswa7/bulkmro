@@ -113,6 +113,11 @@ class Customers::CustomerOrdersController < Customers::BaseController
     authorize @customer_orders
   end
 
+  def generate_punchout_order
+    Services::Customers::CustomerOrders::GeneratePunchoutOrder.new(current_customers_contact, current_cart, current_company).call
+    sign_out
+  end
+
   private
 
     def set_customer_order

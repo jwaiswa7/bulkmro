@@ -13,6 +13,20 @@ const punchoutCart = () => {
   //     }
   //   });
   // }
+
+  $('form.cxml').submit(function() {
+    createPunchoutOrder();
+  });
 };
+
+let createPunchoutOrder = () => {
+  $.ajax({
+    url: Routes.generate_punchout_order_customers_customer_orders_path(),
+    type: 'get',
+    success: function (data) {
+      console.log("Order Created Successfully")
+    }
+  });
+}
 
 export default punchoutCart
