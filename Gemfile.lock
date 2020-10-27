@@ -1,3 +1,12 @@
+GIT
+  remote: https://github.com/cef/cxml.git
+  revision: 813e1b884f24557f24e77377cf8a209afed47fbf
+  specs:
+    cxml (0.1.7)
+      hashr
+      nokogiri
+      xml-simple
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -246,6 +255,7 @@ GEM
       hashids (~> 1.0)
     hashids (1.0.5)
     hashie (3.6.0)
+    hashr (2.0.1)
     heroics (0.0.25)
       erubis (~> 2.0)
       excon
@@ -580,6 +590,7 @@ GEM
       activesupport
     with_advisory_lock (4.0.0)
       activerecord (>= 4.2)
+    xml-simple (1.1.5)
 
 PLATFORMS
   ruby
@@ -601,6 +612,7 @@ DEPENDENCIES
   cocoon
   config
   country_select
+  cxml (~> 0.1.7)!
   dalli
   deep_cloneable (~> 2.3.2)
   devise

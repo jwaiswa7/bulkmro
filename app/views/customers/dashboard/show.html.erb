@@ -130,7 +130,7 @@
           <% @dashboard.recent_sales_invoices.each do |sales_invoice| %>
             <tr>
               <td>
-                <% if policy(sales_invoice).show? && sales_invoice.inquiry.present? %>
+                <% if policy(sales_invoice).show? && sales_invoice.inquiry.present? && !is_api_request? %>
                   <%= row_action_button(customers_invoice_path(sales_invoice), 'eye', 'View Invoice', 'info') %>
                   <%= row_action_button(customers_invoice_path(sales_invoice, :stamp => 1, format: :pdf), 'file-pdf', 'Download', 'dark', :_blank) %>
                 <% end %>
@@ -139,7 +139,7 @@
               <td class="text-left"><%= sales_invoice.inquiry.customer_po_number %></td>
               <td><%= format_date(sales_invoice.inquiry.customer_order_date) %></td>
               <td class="text-left">
-                <% if policy(sales_invoice).show? && sales_invoice.inquiry.present? %>
+                <% if policy(sales_invoice).show? && sales_invoice.inquiry.present? && !is_api_request? %>
                   <%= link_to overseers_inquiry_sales_invoice_path(sales_invoice.inquiry, sales_invoice, format: :pdf), target: :_blank do %>
                     <%= sales_invoice.invoice_number %>
                   <% end %>

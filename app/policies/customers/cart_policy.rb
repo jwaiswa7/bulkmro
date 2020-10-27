@@ -44,4 +44,16 @@ class Customers::CartPolicy < Customers::ApplicationPolicy
   def add_po_number?
     true
   end
+
+  def punchout?
+    show?
+  end
+
+  def punchout_cart?
+    punchout?
+  end
+
+  def manual_punchout?
+    show?
+  end
 end
