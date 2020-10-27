@@ -1,10 +1,10 @@
 class Api::V1::PunchoutsController < Api::V1::BaseController
   before_action :log_api_request, :debug_log_request
-  
+
   def auth
     service = Services::Api::Cxml.new(request, @api_request)
     response_data = service.parser
-    
+
     if response_data
       respond_to do |format|
         format.html { render xml: response_data.to_xml }
@@ -29,6 +29,5 @@ class Api::V1::PunchoutsController < Api::V1::BaseController
     MyLog.debug headers
     MyLog.debug request.format
   end
-  
 end
   

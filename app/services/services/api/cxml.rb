@@ -1,5 +1,4 @@
 class Services::Api::Cxml < Services::Shared::BaseService
-  
   def initialize(params = {}, api_request_object)
     @params = params
     @api_request_object = api_request_object
@@ -22,7 +21,7 @@ class Services::Api::Cxml < Services::Shared::BaseService
       response = CXML::Response.new(response_data)
       
       api_request_object.update_attributes(payload: parsed_body, contact_email: contact_email, request_header: header.to_json)
-      
+
       contact = Contact.find_by(email: contact_email)
 
       if contact.present?

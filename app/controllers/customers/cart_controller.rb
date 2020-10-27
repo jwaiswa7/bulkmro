@@ -16,7 +16,7 @@ class Customers::CartController < Customers::BaseController
     @endpoint = current_api_request.payload["Request"]["PunchOutSetupRequest"]["BrowserFormPost"]["URL"]
     # @endpoint = 'https://webhook.site/d31d22e4-69a1-4d48-b7d9-2bf585b52e62'
     @data = service.call
-    
+
     render 'punchout_cart'
   end
 
