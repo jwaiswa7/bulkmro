@@ -4995,4 +4995,19 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       end
     end
   end
+
+  def create_tsl_contacts
+    company = Company.find ('PwXtDz')
+    service = Services::Shared::Spreadsheets::CsvImporter.new('tsl_user_email.csv', 'seed_files')
+    service.loop(nil) do |x|
+      company.contacts.where(email: x.get_column('email')).first_or_create do |contact|
+        contact.first_name = x.get_column('first_name')
+        contact.last_name = x.get_column('last_name')
+        contact.mobile = 9999999999
+        contact.account_id = company.account.id
+        contact.password = 123456
+        contact.password_confirmation = 123456
+      end
+    end
+  end
 end
