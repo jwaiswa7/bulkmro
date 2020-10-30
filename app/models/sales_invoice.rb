@@ -399,7 +399,7 @@ class SalesInvoice < ApplicationRecord
 
   def calculate_tcs_amount
     if self.company.check_company_so_total_amount(self)
-      ((self.metadata['base_grand_total'].to_f / self.metadata['base_to_order_rate'].to_f) * (0.075 / 100))
+      ((self.metadata['base_subtotal_incl_tax'].to_f / self.metadata['base_to_order_rate'].to_f) * (0.075 / 100))
     end
   end
 end
