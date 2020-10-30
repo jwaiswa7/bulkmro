@@ -52,7 +52,11 @@ class Overseers::Companies::CustomerProductsController < Overseers::Companies::B
 
   def destroy_all
     authorize_acl :customer_product
-    @company.customer_products.destroy_all
+    @company.customer_products.each do |customer_product|
+      unless customer_product.customer_order_rows.exists?
+        customer_product.destroy
+      end
+    end
 
     redirect_to overseers_company_path(@company)
   end
@@ -103,17 +107,21 @@ class Overseers::Companies::CustomerProductsController < Overseers::Companies::B
     def customer_product_params
       params.require(:customer_product).permit(
         :name,
-          :company_id,
-          :product_id,
-          :tax_code_id,
-          :tax_rate_id,
-          :measurement_unit_id,
-          :customer_price,
-          :sku,
-          :brand_id,
-          :moq,
-          :category_id,
-          images: []
+        :company_id,
+        :product_id,
+        :tax_code_id,
+        :tax_rate_id,
+        :measurement_unit_id,
+        :customer_price,
+        :sku,
+        :brand_id,
+        :moq,
+        :technical_description,
+        :customer_product_sku,
+        :lead_time,
+        :customer_uom,
+        tag_ids: [],
+        images: []
       )
     end
 end

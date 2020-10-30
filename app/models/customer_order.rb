@@ -25,6 +25,11 @@ class CustomerOrder < ApplicationRecord
       'Online Payment': 20
   }
 
+  enum order_type: {
+    'Normal': 10,
+    'Punchout': 20
+  }
+
   def paid_online?
     self.online_payment.present?
   end

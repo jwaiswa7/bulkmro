@@ -72,6 +72,8 @@ import documentCreations from "./documentCreations/init";
 
 import checkout from "./checkout/init";
 
+import cart from "./cart/init";
+
 // Image Reader
 
 import imageReaders from "./imageReaders/init"
@@ -145,7 +147,8 @@ let loader = {
     emailMessages: emailMessages,
     exports: exports,
     supplierRfqs: supplierRfqs,
-    rfq: rfq
+    rfq: rfq,
+    cart: cart
 };
 
 // Imports

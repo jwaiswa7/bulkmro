@@ -249,5 +249,8 @@ gem 'unparser'
 # Heroku autoscaling add-on
 gem 'rails_autoscale_agent'
 
+# CXML parser and builder
+gem 'cxml', '~> 0.1.7', git: "https://github.com/cef/cxml.git"
+
 # running tasks parallely
 gem 'parallel'
