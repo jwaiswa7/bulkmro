@@ -223,6 +223,9 @@ class Overseers::SalesOrdersController < Overseers::BaseController
       @po_requests = service.call
     end
     @index = 1
+    if @po_requests.class == String
+      redirect_to overseers_sales_orders_path, notice: @po_requests
+    end
   end
 
   def preview_purchase_orders_requests
