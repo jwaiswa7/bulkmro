@@ -13,9 +13,13 @@ class Services::Overseers::SalesOrders::NewPoRequests < Services::Shared::BaseSe
           if po_requests[row.supplier.id] == nil && row.supplier.contacts.any?
             po_requests[row.supplier.id] = @sales_order.po_requests.build(inquiry_id: @sales_order.inquiry.id, supplier_id: row.supplier.id, status: :'Supplier PO: Request Pending', contact_id: row.supplier.contacts.first.id, bill_from_id: row.supplier.addresses.first.id, ship_from_id: row.supplier.addresses.first.id, bill_to_id: @sales_order.inquiry.bill_from_id, ship_to_id: @sales_order.inquiry.ship_from_id)
           end
-        rescue NoMethodError => e
+        rescue
           if !row.supplier.addresses.present?
             error = 'Supplier address is not present'
+          elsif row.supplier.contacts.present?
+            error = 'Supplier contacts is not present'
+          else
+            error = "Something went wrong, please check your supplier's contact or address"
           end
           return error
         end
