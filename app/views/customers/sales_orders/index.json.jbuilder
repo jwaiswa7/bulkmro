@@ -4,7 +4,7 @@ json.data (@sales_orders) do |sales_order|
                       if policy(sales_order).index?
                         row_action_button(customers_order_path(sales_order), 'eye', 'View Order', 'info')
                       end,
-                      if policy(sales_order).index?
+                      if policy(sales_order).index? && !is_api_request?
                         row_action_button(customers_order_path(sales_order, format: :pdf), 'file-pdf', 'Download Order', 'dark', :_blank)
                       end
                   ].join(' '),
