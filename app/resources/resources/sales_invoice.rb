@@ -130,14 +130,18 @@ class Resources::SalesInvoice < Resources::ApplicationResource
       product = Product.find_by_sku(sku)
       quantity = remote_row['Quantity'].to_f
       # tax_amount = remote_row['NetTaxAmountFC'].to_f != 0 ? remote_row['NetTaxAmountFC'].to_f : remote_row['NetTaxAmount'].to_f
-      company = sales_invoice.company
-      tcs_applicable = company.check_company_so_total_amount(sales_invoice)
-      if tcs_applicable
-        tax_remote_row = remote_row['LineTaxJurisdictions'].select{ |tax_jurisdiction| tax_jurisdiction['JurisdictionType'] != 8 }
-        if remote_row["TaxCode"].include?("IG")
-          tax_amount = tax_remote_row[0]['TaxAmountFC'].to_f != 0 ? tax_remote_row[0]['TaxAmountFC'].to_f : tax_remote_row[0]['TaxAmount'].to_f
+      if sales_invoice.present?
+        company = sales_invoice.company
+        tcs_applicable = company.check_company_so_total_amount(sales_invoice)
+        if tcs_applicable
+          tax_remote_row = remote_row['LineTaxJurisdictions'].select{ |tax_jurisdiction| tax_jurisdiction['JurisdictionType'] != 8 }
+          if remote_row["TaxCode"].include?("IG")
+            tax_amount = tax_remote_row[0]['TaxAmountFC'].to_f != 0 ? tax_remote_row[0]['TaxAmountFC'].to_f : tax_remote_row[0]['TaxAmount'].to_f
+          else
+            tax_amount = (tax_remote_row[0]['TaxAmountFC'].to_f != 0 ? tax_remote_row[0]['TaxAmountFC'].to_f : tax_remote_row[0]['TaxAmount'].to_f)*2
+          end
         else
-          tax_amount = (tax_remote_row[0]['TaxAmountFC'].to_f != 0 ? tax_remote_row[0]['TaxAmountFC'].to_f : tax_remote_row[0]['TaxAmount'].to_f)*2
+          tax_amount = remote_row['NetTaxAmountFC'].to_f != 0 ? remote_row['NetTaxAmountFC'].to_f : remote_row['NetTaxAmount'].to_f
         end
       else
         tax_amount = remote_row['NetTaxAmountFC'].to_f != 0 ? remote_row['NetTaxAmountFC'].to_f : remote_row['NetTaxAmount'].to_f
