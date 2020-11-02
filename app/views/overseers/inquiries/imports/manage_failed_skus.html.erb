@@ -115,7 +115,7 @@
                   <div class="col-6 col-md-2">
                     <%= row.label :approved_alternative_id, class: 'mb-0 py-2 d-block', for: /id="([a-z\d_]*)"/.match(radio)[1] do %>
                       <span class="mt-2 d-block d-md-none"><strong>Category</strong></span>
-                      <%= approved_alternative.category.name %>
+                      <%= approved_alternative.category.try(:name) %>
                     <% end %>
                   </div>
                   <div class="col-6 col-md-2">

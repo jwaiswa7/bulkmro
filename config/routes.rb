@@ -22,6 +22,16 @@ Rails.application.routes.draw do
     devise_for :contacts, controllers: {sessions: 'customers/sessions', passwords: 'customers/passwords'}, path: :customers
   end
 
+  namespace :api do
+    namespace :v1 do
+      resources :punchouts do
+        collection do
+          post 'auth'
+        end
+      end
+    end
+  end
+
   namespace 'callbacks' do
     resources :sales_orders do
       member do
@@ -888,6 +898,7 @@ Rails.application.routes.draw do
 
     resource :dashboard, controller: :dashboard do
       collection do
+        get 'route'
         get 'export_for_amat_customer'
       end
     end
@@ -901,6 +912,7 @@ Rails.application.routes.draw do
       collection do
         get 'pending'
         get 'approved'
+        get 'generate_punchout_order'
       end
 
       scope module: 'customer_orders' do
@@ -962,6 +974,9 @@ Rails.application.routes.draw do
 
     resource :cart, controller: :cart, except: [:index] do
       collection do
+        get 'punchout'
+        get 'punchout_cart'
+        get 'manual_punchout'
         get 'checkout'
         post 'update_cart_details'
         post 'update_billing_address'

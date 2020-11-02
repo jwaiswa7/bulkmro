@@ -7,9 +7,10 @@ class Resources::SalesInvoice < Resources::ApplicationResource
     sales_invoice_numbers.each do |sales_invoice_number|
       remote_response = self.custom_find(sales_invoice_number)
       if remote_response.present?
-        metadata = self.build_metadata(remote_response)
 
         sales_invoice = ::SalesInvoice.find_by_invoice_number(sales_invoice_number)
+        metadata = self.build_metadata(remote_response, sales_invoice)
+
         if !sales_invoice.present?
           service = Services::Callbacks::SalesInvoices::Create.new(metadata, nil)
           service.call
@@ -34,10 +35,21 @@ class Resources::SalesInvoice < Resources::ApplicationResource
 
             # sales_order_row = sales_order.rows.joins(:product).where('products.sku = ?', sku).first
             quantity = remote_row['Quantity'].to_f
-            tax_amount = remote_row['NetTaxAmountFC'].to_f != 0 ? remote_row['NetTaxAmountFC'].to_f : remote_row['NetTaxAmount'].to_f
             sales_invoice_row = sales_invoice.rows.where(sku: sku).first_or_initialize
             sales_invoice_row.quantity = quantity
             sales_invoice_row.sku = sku
+            company = sales_invoice.company
+            tcs_applicable = company.check_company_so_total_amount(sales_invoice)
+            if tcs_applicable
+              tax_remote_row = remote_row['LineTaxJurisdictions'].select{ |tax_jurisdiction| tax_jurisdiction['JurisdictionType'] != 8 }
+              if remote_row["TaxCode"].include?("IG")
+                tax_amount = tax_remote_row[0]['TaxAmountFC'].to_f != 0 ? tax_remote_row[0]['TaxAmountFC'].to_f : tax_remote_row[0]['TaxAmount'].to_f
+              else
+                tax_amount = (tax_remote_row[0]['TaxAmountFC'].to_f != 0 ? tax_remote_row[0]['TaxAmountFC'].to_f : tax_remote_row[0]['TaxAmount'].to_f)*2
+              end
+            else
+              tax_amount = remote_row['NetTaxAmountFC'].to_f != 0 ? remote_row['NetTaxAmountFC'].to_f : remote_row['NetTaxAmount'].to_f
+            end
             sales_invoice_row.metadata = {
                   qty: quantity,
                   sku: sku,
@@ -96,7 +108,7 @@ class Resources::SalesInvoice < Resources::ApplicationResource
     remote_record
   end
 
-  def self.build_metadata(remote_response)
+  def self.build_metadata(remote_response, sales_invoice)
     remote_rows = remote_response['DocumentLines']
     remote_rows_arr = []
 
@@ -117,7 +129,23 @@ class Resources::SalesInvoice < Resources::ApplicationResource
       sku = remote_row['ItemCode']
       product = Product.find_by_sku(sku)
       quantity = remote_row['Quantity'].to_f
-      tax_amount = remote_row['NetTaxAmountFC'].to_f != 0 ? remote_row['NetTaxAmountFC'].to_f : remote_row['NetTaxAmount'].to_f
+      # tax_amount = remote_row['NetTaxAmountFC'].to_f != 0 ? remote_row['NetTaxAmountFC'].to_f : remote_row['NetTaxAmount'].to_f
+      if sales_invoice.present?
+        company = sales_invoice.company
+        tcs_applicable = company.check_company_so_total_amount(sales_invoice)
+        if tcs_applicable
+          tax_remote_row = remote_row['LineTaxJurisdictions'].select{ |tax_jurisdiction| tax_jurisdiction['JurisdictionType'] != 8 }
+          if remote_row["TaxCode"].include?("IG")
+            tax_amount = tax_remote_row[0]['TaxAmountFC'].to_f != 0 ? tax_remote_row[0]['TaxAmountFC'].to_f : tax_remote_row[0]['TaxAmount'].to_f
+          else
+            tax_amount = (tax_remote_row[0]['TaxAmountFC'].to_f != 0 ? tax_remote_row[0]['TaxAmountFC'].to_f : tax_remote_row[0]['TaxAmount'].to_f)*2
+          end
+        else
+          tax_amount = remote_row['NetTaxAmountFC'].to_f != 0 ? remote_row['NetTaxAmountFC'].to_f : remote_row['NetTaxAmount'].to_f
+        end
+      else
+        tax_amount = remote_row['NetTaxAmountFC'].to_f != 0 ? remote_row['NetTaxAmountFC'].to_f : remote_row['NetTaxAmount'].to_f
+      end
       remote_row_obj = {
           qty: quantity,
           sku: sku,
@@ -175,7 +203,7 @@ class Resources::SalesInvoice < Resources::ApplicationResource
             'updated_at' => nil
         },
         'unitprice_kit' => remote_rows_arr[0][:price],
-        'base_tax_amount' => remote_response['VatSum'],
+        'base_tax_amount' => remote_rows_arr.pluck(:base_tax_amount).compact.sum,
         'discount_amount' => '',
         'shipping_amount' => nil,
         'base_grand_total' => remote_response['DocTotal'],
@@ -195,7 +223,7 @@ class Resources::SalesInvoice < Resources::ApplicationResource
         'discount_description' => nil,
         'base_hidden_tax_amount' => nil,
         'base_shipping_incl_tax' => nil,
-        'base_subtotal_incl_tax' => remote_response['DocTotal'],
+        'base_subtotal_incl_tax' => remote_rows_arr.pluck(:base_row_total_incl_tax).compact.sum,
         'base_shipping_tax_amount' => nil,
         'shipping_hidden_tax_amount' => nil,
         'base_shipping_hidden_tax_amnt' => nil,
