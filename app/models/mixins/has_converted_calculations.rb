@@ -14,6 +14,10 @@ module Mixins::HasConvertedCalculations
       rows.map { |row| row.total_selling_price_with_tax }.compact.sum.round(2)
     end
 
+    def calculated_total_tcs_amount
+      rows.map { |row| row.try(:product).try(:is_service)}.compact.sum.round(2)
+    end
+
     def calculated_total_margin
       rows.map { |row| row.total_margin }.compact.sum.round(2)
     end
