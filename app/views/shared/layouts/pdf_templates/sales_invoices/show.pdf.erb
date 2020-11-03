@@ -362,7 +362,7 @@
                       </td>
                     </tr>
                   <% end if record.metadata['ItemLine'].present? %>
-                  <% if record.company.check_company_so_total_amount(record) && (record.metadata['tcs_amount'].present? && record.metadata['tcs_amount'].to_f != 0.0) %>
+                  <% if record.company.check_company_total_amount(record) && (record.metadata['tcs_amount'].present? && record.metadata['tcs_amount'].to_f != 0.0) %>
                     <tr class="pdf-table-total-row-tcs">
                       <td align="center" valign="top">
                         <span></span></td>

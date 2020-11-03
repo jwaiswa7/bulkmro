@@ -39,7 +39,7 @@ class Resources::SalesInvoice < Resources::ApplicationResource
             sales_invoice_row.quantity = quantity
             sales_invoice_row.sku = sku
             company = sales_invoice.company
-            tcs_applicable = company.check_company_so_total_amount(sales_invoice)
+            tcs_applicable = company.check_company_total_amount(sales_invoice)
             if tcs_applicable && product.is_service != true
               tax_remote_row = remote_row['LineTaxJurisdictions'].select{ |tax_jurisdiction| tax_jurisdiction['JurisdictionType'] != 8 }
               tcs_amount_row = remote_row['LineTaxJurisdictions'].select{ |tax_jurisdiction| tax_jurisdiction['JurisdictionType'] == 8 }
