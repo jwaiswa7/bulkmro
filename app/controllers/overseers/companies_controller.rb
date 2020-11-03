@@ -140,6 +140,16 @@ class Overseers::CompaniesController < Overseers::BaseController
     render json: {account_id: @company.account.id, account_name: @company.account.name}
   end
 
+  def get_contact
+    authorize_acl :company
+    if params['attribute'] == 'company'
+      contact = Company.find(params['attribute_id']).default_contact
+    else
+      contact = Contact.find(params['attribute_id'])
+    end
+    render json: {contact_id: contact.id, contact_name: contact.name, contact_email: contact.email, contact_mobile: contact.mobile}
+  end
+
   private
 
     def set_company

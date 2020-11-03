@@ -68,4 +68,8 @@ class Overseers::CompanyPolicy < Overseers::ApplicationPolicy
   def get_account?
     manager_or_sales? || cataloging? || logistics? || admin?
   end
+
+  def get_contact?
+    true
+  end
 end
