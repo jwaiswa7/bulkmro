@@ -41,19 +41,19 @@ class Services::Overseers::SalesQuotes::Taxation < Services::Shared::BaseService
     if is_sez
       'IG@0'
     elsif is_igst
-      if bill_to.company.check_company_so_total_amount(sales_quote) && bill_to.company.pan.present? && !is_service
+      if bill_to.company.check_company_total_amount(sales_quote) && bill_to.company.pan.present? && !is_service
         # 'IG@%g' % ('%.2f' % tax_rate.tax_percentage)
         'IG%gT' % ('%.2f' % tax_rate.tax_percentage) + 0.1.to_s
-      elsif bill_to.company.check_company_so_total_amount(sales_quote) && !(bill_to.company.pan.present?) && !is_service
+      elsif bill_to.company.check_company_total_amount(sales_quote) && !(bill_to.company.pan.present?) && !is_service
         'IG%gT' % ('%.2f' % tax_rate.tax_percentage) + 1.to_s
       else
         'IG@%g' % ('%.2f' % tax_rate.tax_percentage)
       end
     else
-      if bill_to.company.check_company_so_total_amount(sales_quote) && bill_to.company.pan.present?
+      if bill_to.company.check_company_total_amount(sales_quote) && bill_to.company.pan.present?
         # 'IG@%g' % ('%.2f' % tax_rate.tax_percentage)
         'CS%gT' % ('%.2f' % tax_rate.tax_percentage) + 0.1.to_s
-      elsif bill_to.company.check_company_so_total_amount(sales_quote) && !(bill_to.company.pan.present?)
+      elsif bill_to.company.check_company_total_amount(sales_quote) && !(bill_to.company.pan.present?)
         'CS%gT' % ('%.2f' % tax_rate.tax_percentage) + 1.to_s
       else
         'CSG@%g' % ('%.2f' % tax_rate.tax_percentage)

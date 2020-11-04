@@ -14,8 +14,17 @@ module Mixins::HasConvertedCalculations
       rows.map { |row| row.total_selling_price_with_tax }.compact.sum.round(2)
     end
 
-    def calculated_total_tcs_amount
-      rows.map { |row| row.try(:product).try(:is_service)}.compact.sum.round(2)
+    def calculated_total_for_tcs_without_service
+      rows.map { |row| row.total_selling_price_with_tax_tcs_applicable }.compact.sum.round(2)
+    end
+
+    def tcs_amount
+      (calculated_total_for_tcs_without_service.to_f * (0.075 / 100)).round(2)
+      # ((calculated_total_for_tcs_without_service.to_f / inquiry_currency.conversion_rate) * (0.075 / 100))
+    end
+
+    def converted_total_tax_with_tcs
+      (converted_total_with_tax.to_f + tcs_amount.to_f)
     end
 
     def calculated_total_margin
