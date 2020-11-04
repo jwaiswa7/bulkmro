@@ -350,7 +350,7 @@
             Total Tax Amt
             <strong class="d-block bmro-summary-heading"><%= format_currency(@sales_invoice.metadata['base_tax_amount'].to_f, precision: 2, symbol: nil) %></strong>
           </div>
-          <% if @sales_invoice.company.check_company_so_total_amount(@sales_invoice) %>
+          <% if @sales_invoice.company.check_company_total_amount(@sales_invoice) %>
             <div class="col-6 col-md-2">
               TCS Amt @0.075%
               <strong class="d-block bmro-summary-heading"><%= format_currency(@sales_invoice.calculate_tcs_amount.to_f, precision: 2, symbol: nil) %></strong>
