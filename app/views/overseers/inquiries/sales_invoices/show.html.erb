@@ -309,12 +309,14 @@
                 <td>
                   <span><%= (item.tax_rate.round(0) / 2.0).to_f.round(2) %>%</span>
                 </td>
-                <td>
+
+                <td align="right" valign="top">
                   <span><%= format_currency((item.metadata['base_tax_amount'].to_f / 2), precision: 2, symbol: nil) %></span>
+                </td>
                 </td>
               <% end %>
               <td>
-                <span><%= format_currency(item.metadata['base_row_total_incl_tax'], precision: 2, symbol: nil) %></span>
+                <span><%= format_currency(item.metadata['base_row_total_incl_tax'].to_f, precision: 2, symbol: nil) %></span>
               </td>
               <td>
                 <span><%= format_currency(item.freight_cost_subtotal) %></span>
@@ -330,18 +332,24 @@
             Products
             <strong class="d-block bmro-summary-heading"><%= @sales_invoice.rows.count %></strong>
           </div>
-          <div class="col-6 col-md-4">
+          <div class="col-6 col-md-2">
             Total Freight
             <strong class="d-block bmro-summary-heading"><%= format_currency(@sales_invoice.calculated_freight_cost_total) %></strong>
           </div>
-          <div class="col-6 col-md-2 mt-2 mt-md-0">
+          <div class="col-6 col-md-1 mt-2 mt-md-0">
             Subtotal
             <strong class="d-block bmro-summary-heading"><%= format_currency(@sales_invoice.metadata['base_grand_total'].to_f - @sales_invoice.metadata['base_tax_amount'].to_f, precision: 2, symbol: nil) %></strong>
           </div>
           <div class="col-6 col-md-2">
             Total Tax Amt
-            <strong class="d-block bmro-summary-heading"><%= format_currency(@sales_invoice.metadata['base_tax_amount'].to_f / 2, precision: 2, symbol: nil) %></strong>
+            <strong class="d-block bmro-summary-heading"><%= format_currency(@sales_invoice.metadata['base_tax_amount'].to_f, precision: 2, symbol: nil) %></strong>
           </div>
+          <% if @sales_invoice.company.check_company_total_amount(@sales_invoice) && (@sales_invoice.metadata['tcs_amount'].present? && @sales_invoice.metadata['tcs_amount'].to_f != 0.0) %>
+            <div class="col-6 col-md-2">
+              TCS Amt @0.075%
+              <strong class="d-block bmro-summary-heading"><%= format_currency(@sales_invoice.metadata['tcs_amount'].to_f, precision: 2, symbol: nil) %></strong>
+            </div>
+          <% end %>
           <div class="col-6 col-md-2">
             Grand Total
             <strong class="d-block bmro-summary-heading"><%= format_currency(@sales_invoice.metadata['base_grand_total'].to_f, precision: 2, symbol: nil) %></strong>

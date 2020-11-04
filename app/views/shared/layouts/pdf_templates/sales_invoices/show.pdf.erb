@@ -362,7 +362,7 @@
                       </td>
                     </tr>
                   <% end if record.metadata['ItemLine'].present? %>
-                  <% if record.company.check_company_so_total_amount(record) %>
+                  <% if record.company.check_company_total_amount(record) && (record.metadata['tcs_amount'].present? && record.metadata['tcs_amount'].to_f != 0.0) %>
                     <tr class="pdf-table-total-row-tcs">
                       <td align="center" valign="top">
                         <span></span></td>
@@ -407,7 +407,7 @@
                         </td>
                       <% end %>
                       <td align="right" valign="top">
-                        <b><span><%= number_to_currency((record.calculate_tcs_amount), precision: 2, unit: '') %></span></b>
+                        <b><span><%= number_to_currency((record.metadata['tcs_amount'].to_f), precision: 2, unit: '') %></span></b>
                       </td>
                     </tr>
                   <% end %>
@@ -431,7 +431,7 @@
                     <td align="center" valign="top">
                       <span></span></td>
                     <td align="right" valign="top">
-                      <b><span><%= number_to_currency((record.metadata['base_grand_total'].to_f - record.metadata['base_tax_amount'].to_f) / record.metadata['base_to_order_rate'].to_f, precision: 2, unit: '') %></span></b>
+                      <b><span><%= number_to_currency(record.rows.map { |row| row.metadata['row_total'] }.sum.to_f, precision: 2, unit: '') %></span></b>
                     </td>
                     <td align="center" valign="top">
                       <span></span></td>
@@ -454,16 +454,9 @@
                         <b><span><%= number_to_currency(((record.metadata['base_tax_amount'].to_f / record.metadata['base_to_order_rate'].to_f) / 2), precision: 2, unit: '') %></span></b>
                       </td>
                     <% end %>
-                    <%# if record.company.check_company_so_total_amount(record) %>
-<!--                      <td align="right" valign="top">-->
-                        <%# tcs_amount = (record.metadata['base_grand_total'].to_f / record.metadata['base_to_order_rate'].to_f) + record.calculate_tcs_amount %>
-<!--                        <b><span><%#= number_to_currency(tcs_amount, precision: 2, unit: '') %></span></b>-->
-<!--                      </td>-->
-                    <%# else %>
                     <td align="right" valign="top">
                       <b><span><%= number_to_currency((record.metadata['base_grand_total'].to_f / record.metadata['base_to_order_rate'].to_f), precision: 2, unit: '') %></span></b>
                     </td>
-                    <%# end %>
                   </tr>
 
                   </tbody>
