@@ -57,8 +57,6 @@ class Services::Callbacks::SalesInvoices::Create < Services::Callbacks::Shared::
               else
                 params['ItemLine'].each do |remote_row|
                   invoice.rows.where(sku: remote_row['sku']).first_or_initialize do |row|
-                    tcs_amount_row = remote_row['LineTaxJurisdictions'].select{ |tax_jurisdiction| tax_jurisdiction['JurisdictionType'] == 8 }
-                    remote_row['tcs_amount'] = tcs_amount_row.present? ? tcs_amount_row[0]['TaxAmount'] : 0.0
                     row.assign_attributes(
                       quantity: remote_row['qty'],
                       metadata: remote_row
