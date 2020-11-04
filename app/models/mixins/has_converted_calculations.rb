@@ -19,8 +19,7 @@ module Mixins::HasConvertedCalculations
     end
 
     def tcs_amount
-      (calculated_total_for_tcs_without_service.to_f * (0.075 / 100)).round(2)
-      # ((calculated_total_for_tcs_without_service.to_f / inquiry_currency.conversion_rate) * (0.075 / 100))
+      (calculated_total_for_tcs_without_service.to_f * (0.075 / 100))
     end
 
     def converted_total_tax_with_tcs
