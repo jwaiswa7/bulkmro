@@ -41,13 +41,13 @@ class Resources::SalesInvoice < Resources::ApplicationResource
             company = sales_invoice.company
             tcs_applicable = company.check_company_total_amount(sales_invoice)
             if tcs_applicable && product.is_service != true
-              tax_remote_row = remote_row['LineTaxJurisdictions'].select{ |tax_jurisdiction| tax_jurisdiction['JurisdictionType'] != 8 }
-              tcs_amount_row = remote_row['LineTaxJurisdictions'].select{ |tax_jurisdiction| tax_jurisdiction['JurisdictionType'] == 8 }
+              tax_remote_row = remote_row['LineTaxJurisdictions'].select { |tax_jurisdiction| tax_jurisdiction['JurisdictionType'] != 8 }
+              tcs_amount_row = remote_row['LineTaxJurisdictions'].select { |tax_jurisdiction| tax_jurisdiction['JurisdictionType'] == 8 }
               tcs_amount = tcs_amount_row.present? ? tcs_amount_row[0]['TaxAmount'] : 0.0
-              if remote_row["TaxCode"].include?("IG")
+              if remote_row['TaxCode'].include?('IG')
                 tax_amount = tax_remote_row[0]['TaxAmountFC'].to_f != 0 ? tax_remote_row[0]['TaxAmountFC'].to_f : tax_remote_row[0]['TaxAmount'].to_f
               else
-                tax_amount = (tax_remote_row[0]['TaxAmountFC'].to_f != 0 ? tax_remote_row[0]['TaxAmountFC'].to_f : tax_remote_row[0]['TaxAmount'].to_f)*2
+                tax_amount = (tax_remote_row[0]['TaxAmountFC'].to_f != 0 ? tax_remote_row[0]['TaxAmountFC'].to_f : tax_remote_row[0]['TaxAmount'].to_f) * 2
               end
             else
               tax_amount = remote_row['TaxTotal'].to_f != 0 ? remote_row['TaxTotal'].to_f : remote_row['TaxTotal'].to_f
@@ -112,7 +112,6 @@ class Resources::SalesInvoice < Resources::ApplicationResource
   end
 
   def self.build_metadata(remote_response)
-
     remote_rows = remote_response['DocumentLines']
     remote_rows_arr = []
 
@@ -137,13 +136,13 @@ class Resources::SalesInvoice < Resources::ApplicationResource
       quantity = remote_row['Quantity'].to_f
 
       if company_total_amount.present? && company_total_amount > 5000000.0
-        tax_remote_row = remote_row['LineTaxJurisdictions'].select{ |tax_jurisdiction| tax_jurisdiction['JurisdictionType'] != 8 }
-        tcs_amount_row = remote_row['LineTaxJurisdictions'].select{ |tax_jurisdiction| tax_jurisdiction['JurisdictionType'] == 8 }
+        tax_remote_row = remote_row['LineTaxJurisdictions'].select { |tax_jurisdiction| tax_jurisdiction['JurisdictionType'] != 8 }
+        tcs_amount_row = remote_row['LineTaxJurisdictions'].select { |tax_jurisdiction| tax_jurisdiction['JurisdictionType'] == 8 }
         tcs_amount = tcs_amount_row.present? ? tcs_amount_row[0]['TaxAmount'] : 0.0
-        if remote_row["TaxCode"].include?("IG")
+        if remote_row['TaxCode'].include?('IG')
           tax_amount = tax_remote_row[0]['TaxAmountFC'].to_f != 0 ? tax_remote_row[0]['TaxAmountFC'].to_f : tax_remote_row[0]['TaxAmount'].to_f
         else
-          tax_amount = (tax_remote_row[0]['TaxAmountFC'].to_f != 0 ? tax_remote_row[0]['TaxAmountFC'].to_f : tax_remote_row[0]['TaxAmount'].to_f)*2
+          tax_amount = (tax_remote_row[0]['TaxAmountFC'].to_f != 0 ? tax_remote_row[0]['TaxAmountFC'].to_f : tax_remote_row[0]['TaxAmount'].to_f) * 2
         end
       else
         tax_amount = remote_row['NetTaxAmountFC'].to_f != 0 ? remote_row['NetTaxAmountFC'].to_f : remote_row['NetTaxAmount'].to_f
