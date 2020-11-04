@@ -64,7 +64,7 @@ let onSupplierChange = (container, reset) => {
 let selectContact = (company_id,attribute) => {
     console.log('attribute:- '+attribute)
     $.ajax({
-        url: Routes.get_contact_overseers_companies_path(),
+        url: Routes.get_contacts_overseers_companies_path(),
         data: {attribute_id: company_id, attribute: attribute},
         contentType: "application/json; charset=utf-8",
         dataType: "json",

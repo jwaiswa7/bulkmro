@@ -140,7 +140,7 @@ class Overseers::CompaniesController < Overseers::BaseController
     render json: {account_id: @company.account.id, account_name: @company.account.name}
   end
 
-  def get_contact
+  def get_contacts
     if params['attribute'] == 'company'
       contact = Company.find(params['attribute_id']).default_contact
     else

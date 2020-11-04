@@ -69,7 +69,7 @@ class Overseers::CompanyPolicy < Overseers::ApplicationPolicy
     manager_or_sales? || cataloging? || logistics? || admin?
   end
 
-  def get_contact?
+  def get_contacts?
     sales? || admin?
   end
 end

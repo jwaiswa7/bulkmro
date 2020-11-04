@@ -728,7 +728,7 @@ Rails.application.routes.draw do
         get 'export_filtered_records'
         get 'company_report'
         get 'export_company_report'
-        get 'get_contact'
+        get 'get_contacts'
       end
       member do
         get 'render_rating_form'
