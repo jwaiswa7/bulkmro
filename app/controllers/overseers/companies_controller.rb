@@ -141,7 +141,6 @@ class Overseers::CompaniesController < Overseers::BaseController
   end
 
   def get_contact
-    authorize_acl :company
     if params['attribute'] == 'company'
       contact = Company.find(params['attribute_id']).default_contact
     else

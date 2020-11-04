@@ -658,22 +658,4 @@ class Services::Shared::Migrations::AclMigrations < Services::Shared::BaseServic
     acl_resource = AclResource.new
     acl_resource.update_acl_resource_cache
   end
-
-
-  def create_stock_po_ajax_resource
-    role_name = ['Admin-Leadership Team', 'admin']
-    acl_resources = {
-        'company': %w(get_contact)
-    }
-    acl_resources.each do |key, val|
-      val.each do |action_name|
-        acl_resource = AclResource.where(resource_model_name: key, resource_action_name: action_name).first_or_create!
-        # update role
-        acl_roles = AclRole.where(role_name: role_name)
-        acl_roles.each do |acl_role|
-          update_role_resource(acl_role, acl_resource.id)
-        end
-      end
-    end
-  end
 end

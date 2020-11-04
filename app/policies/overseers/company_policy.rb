@@ -70,6 +70,6 @@ class Overseers::CompanyPolicy < Overseers::ApplicationPolicy
   end
 
   def get_contact?
-    true
+    sales? || admin?
   end
 end
