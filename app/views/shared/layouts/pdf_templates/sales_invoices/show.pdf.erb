@@ -407,7 +407,7 @@
                         </td>
                       <% end %>
                       <td align="right" valign="top">
-                        <b><span><%= number_to_currency((record.calculate_tcs_amount), precision: 2, unit: '') %></span></b>
+                        <b><span><%= number_to_currency((record.metadata['tcs_amount'].to_f), precision: 2, unit: '') %></span></b>
                       </td>
                     </tr>
                   <% end %>

@@ -24,8 +24,8 @@ class Resources::SalesInvoice < Resources::ApplicationResource
 
           billing_address = sales_invoice.inquiry.billing_company.addresses.where(remote_uid: remote_response['PayToCode']).first || sales_invoice.inquiry.billing_address
           shipping_address = sales_invoice.inquiry.shipping_company.addresses.where(remote_uid: remote_response['ShipToCode']).first || sales_invoice.inquiry.shipping_address
-
-          sales_invoice.update_attributes!(metadata: metadata, billing_address: billing_address, shipping_address: shipping_address)
+          sales_invoice.update_column(:metadata, metadata)
+          sales_invoice.update_attributes!(billing_address: billing_address, shipping_address: shipping_address)
           remote_rows.each do |remote_row|
             # is_kit = remote_row['TreeType'] == 'iSalesTree' ? true : false
             unit_price = remote_row['Price'].to_f
