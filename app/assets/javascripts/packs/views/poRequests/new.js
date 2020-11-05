@@ -16,6 +16,14 @@ const newAction = () => {
         let reset = false;
         onSupplierChange(this, reset);
     });
+
+    $('form').on('change', 'select[name*=contact_id]', function (e) {
+        let reset = true;
+        onContactChange(this, reset);
+    }).find('select[name*=contact_id]').each(function (e) {
+        let reset = false;
+        onContactChange(this, reset);
+    });
     updateRowTotal();
 
 }
@@ -43,12 +51,47 @@ let onSupplierChange = (container, reset) => {
         if (reset) {
             $('form').find('select[name*=bill_from_id]').val(null).trigger("change");
             $('form').find('select[name*=ship_from_id]').val(null).trigger("change");
-            $('form').find('select[name*=contact_id]').val(null).trigger("change");
+            // $('form').find('select[name*=contact_id]').val(null).trigger("change");
         }
         $('form').find('select[name*=bill_from_id]').attr('data-source', Routes.autocomplete_overseers_company_addresses_path(optionSelected.val())).select2('destroy');
         $('form').find('select[name*=ship_from_id]').attr('data-source', Routes.autocomplete_overseers_company_addresses_path(optionSelected.val())).select2('destroy');
-        $('form').find('select[name*=contact_id]').attr('data-source', Routes.autocomplete_overseers_company_contacts_path(optionSelected.val())).select2('destroy');
+        $('form').find('select[name*=contact_id]').attr('data-source', Routes.autocomplete_overseers_company_contacts_path(optionSelected.val()));
+        selectContact(optionSelected.val(),'company')
+        select2s();
+    }
+};
 
+let selectContact = (company_id,attribute) => {
+    console.log('attribute:- '+attribute)
+    $.ajax({
+        url: Routes.get_contacts_overseers_companies_path(),
+        data: {attribute_id: company_id, attribute: attribute},
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function success(data) {
+            if(attribute =='company'){
+                var option = new Option(data.contact_name, data.contact_id, true, true);
+                $('form').find('select[name*=contact_id]').append(option)
+            }
+            if(data.contact_email){
+                $('form').find('input[name*=contact_email]').val(data.contact_email).trigger('change');
+            }else{
+                $('form').find('input[name*=contact_email]').val('').trigger('change');
+            }
+            if(data.contact_mobile){
+                $('form').find('input[name*=contact_phone]').val(data.contact_mobile).trigger('change');
+            }else{
+                $('form').find('input[name*=contact_phone]').val('').trigger('change');
+            }
+        },
+    })
+};
+
+
+let onContactChange = (container, reset) => {
+    let optionSelected = $("option:selected", container);
+    if (optionSelected.exists() && optionSelected.val() !== '') {
+        selectContact(optionSelected.val(),'contact')
         select2s();
     }
 };
