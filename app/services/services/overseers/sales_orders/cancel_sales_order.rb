@@ -31,7 +31,7 @@ class Services::Overseers::SalesOrders::CancelSalesOrder < Services::Shared::Bas
     sales_order['remote_status'] = sales_order_params['remote_status']
     if sales_order.save
       company = sales_order.company
-      company_so_amount = company.company_so_total_amounts.where(financial_year: Company.current_financial_year).last
+      company_so_amount = company.company_transactions_amounts.where(financial_year: Company.current_financial_year).last
       company_so_amount.decrement_total_amount(sales_order.calculated_total_with_tax)
     end
     { status: 'success', message: 'Sales Order Cancelled Successfully' }
