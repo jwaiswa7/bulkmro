@@ -127,7 +127,7 @@ class Resources::SalesInvoice < Resources::ApplicationResource
       order_number = m.match(input)[3]
     end
 
-    company = Company.acts_as_customer.find_by_name(remote_response['CardName'])
+    company = Company.acts_as_customer.find_by_remote_uid(remote_response['CardCode'])
     company_total_amount = company.get_company_total_amount
     remote_rows.each do |remote_row|
       unit_price = remote_row['Price'].to_f
