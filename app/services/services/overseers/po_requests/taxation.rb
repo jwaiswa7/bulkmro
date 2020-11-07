@@ -36,10 +36,23 @@ class Services::Overseers::PoRequests::Taxation < Services::Shared::BaseService
   end
 
   def to_remote_s
+    debugger
     if is_igst
-      'IG@%g' % ('%.2f' % tax_rate.tax_percentage)
+      if bill_to.company.check_company_total_amount(sales_quote) && bill_to.company.pan.present? && !is_service
+        'IG%gT' % ('%.2f' % tax_rate.tax_percentage) + 0.1.to_s
+      elsif bill_to.company.check_company_total_amount(sales_quote) && !(bill_to.company.pan.present?) && !is_service
+        'IG%gT' % ('%.2f' % tax_rate.tax_percentage) + 1.to_s
+      else
+        'IG@%g' % ('%.2f' % tax_rate.tax_percentage)
+      end
     else
-      'CSG@%g' % ('%.2f' % tax_rate.tax_percentage)
+      if bill_to.company.check_company_total_amount(sales_quote) && bill_to.company.pan.present?
+        'CS%gT' % ('%.2f' % tax_rate.tax_percentage) + 0.1.to_s
+      elsif bill_to.company.check_company_total_amount(sales_quote) && !(bill_to.company.pan.present?)
+        'CS%gT' % ('%.2f' % tax_rate.tax_percentage) + 1.to_s
+      else
+        'CSG@%g' % ('%.2f' % tax_rate.tax_percentage)
+      end
     end
   end
 

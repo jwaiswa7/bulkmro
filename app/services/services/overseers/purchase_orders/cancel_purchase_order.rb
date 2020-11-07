@@ -29,6 +29,11 @@ class Services::Overseers::PurchaseOrders::CancelPurchaseOrder < Services::Share
     purchase_order.po_request.status = 'Cancelled'
     purchase_order.save
     purchase_order.po_request.save!
+    company = purchase_order.company
+    if company
+      company_po_amount = company.company_transactions_amounts.where(financial_year: Company.current_financial_year).last
+      company_po_amount.decrement_total_amount(purchase_order.calculated_total_with_tax_with_or_without_tcs) if company_po_amount.present?
+    end
     { status: 'success', message: 'Purchase Order Cancelled Successfully' }
   end
 

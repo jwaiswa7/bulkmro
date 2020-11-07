@@ -1,6 +1,6 @@
 class Overseers::Inquiries::PurchaseOrdersController < Overseers::Inquiries::BaseController
   before_action :set_purchase_order, only: [:show, :relationship_map, :get_relationship_map_json]
-  before_action :set_purchase_order_items, only: [:show]
+  # before_action :set_purchase_order_items, only: [:show]
 
   def index
     @model_name = 'purchase_orders'
@@ -71,7 +71,7 @@ class Overseers::Inquiries::PurchaseOrdersController < Overseers::Inquiries::Bas
       @purchase_order = @inquiry.purchase_orders.find(params[:id])
     end
 
-    def set_purchase_order_items
-      Resources::PurchaseOrder.set_multiple_items([@purchase_order.po_number])
-    end
+    # def set_purchase_order_items
+    #   Resources::PurchaseOrder.set_multiple_items([@purchase_order.po_number])
+    # end
 end

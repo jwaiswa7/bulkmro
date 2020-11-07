@@ -310,7 +310,7 @@
       <div class="bmro-dotted-line bmro-dotted-mt0"></div>
       <div class="card-footer bmro-summary-footer bmro-summary-product-bottom">
         <div class="form-row bmro-summary-footer-padding">
-          <div class="col-6 col-md-3">
+          <div class="col-6 col-md-2">
             Products
             <strong class="d-block bmro-summary-heading"><%= @purchase_order.rows.count %></strong>
           </div>
@@ -319,20 +319,28 @@
             <strong class="d-block bmro-summary-heading"><%= format_currency(@purchase_order.calculated_total, symbol: nil) %></strong>
           </div>
           <% if (@metadata[:PoTaxRate].to_s.include? "IG") || (@metadata[:ItemLine][0][:PopTaxRate].to_s.include? "IG") %>
-            <div class="col-6 col-md-3 bmro-border-left">
+            <div class="col-6 col-md-2 bmro-border-left">
               Tax Amt
               <strong class="d-block bmro-summary-heading"><%= format_currency(@purchase_order.calculated_total_tax, symbol: nil) %></strong>
             </div>
           <% else %>
-            <div class="col-6 col-md-3 bmro-border-left">
+            <div class="col-6 col-md-2 bmro-border-left">
               Tax Amt
               <strong class="d-block bmro-summary-heading"><%= format_currency(@purchase_order.calculated_total_tax / 2, symbol: nil) %></strong>
             </div>
           <% end %>
-          <div class="col-6 col-md-3 bmro-border-left">
-            Grand Total
-            <strong class="d-block bmro-summary-heading"><%= format_currency(@purchase_order.calculated_total_with_tax, symbol: nil) %></strong>
-          </div>
+          <% if @purchase_order.company.check_company_total_amount(@purchase_order) %>
+            <div class="col-6 col-md-2 bmro-border-left">
+              TCS Amt @0.075%
+              <strong class="d-block bmro-summary-heading"><%= format_currency(@purchase_order.calculate_tcs_amount.to_f, precision: 2, symbol: nil) %></strong>
+            </div>
+          <% else %>
+            <div class="col-6 col-md-3 bmro-border-left">
+              Grand Total
+              <strong class="d-block bmro-summary-heading"><%= format_currency(@purchase_order.calculated_total_with_tax_with_or_without_tcs, symbol: nil) %></strong>
+            </div>
+          <% end %>
+          
         </div>
       </div>
       <div class="bmro-dotted-line bmro-dotted-mt0"></div>
