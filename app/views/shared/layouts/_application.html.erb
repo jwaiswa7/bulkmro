@@ -53,15 +53,14 @@
                     <i class="fal fa-times"></i>
                   </button>
                 </div>
-                <% elsif message_type == 'error'  %>
-                  <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                    <%= message %>
-                    <button class="close" data-dismiss="alert" aria-label="Close">
-                      <i class="fal fa-times"></i>
-                    </button>
-                  </div>
-                <% end %>
-              <% %>
+              <% elsif message_type == 'error'  %>
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                  <%= message %>
+                  <button class="close" data-dismiss="alert" aria-label="Close">
+                    <i class="fal fa-times"></i>
+                  </button>
+                </div>
+              <% end %>
             <% end %>
           </div>
         </div>

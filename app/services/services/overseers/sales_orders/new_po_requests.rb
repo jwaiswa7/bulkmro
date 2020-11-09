@@ -16,7 +16,7 @@ class Services::Overseers::SalesOrders::NewPoRequests < Services::Shared::BaseSe
         rescue
           if !row.supplier.addresses.present?
             error = 'Supplier address is not present'
-          elsif row.supplier.contacts.present?
+          elsif !row.supplier.contacts.present?
             error = 'Supplier contacts is not present'
           else
             error = "Something went wrong, please check your supplier's contact or address"
