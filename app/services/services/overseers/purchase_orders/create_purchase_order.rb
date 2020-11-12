@@ -46,7 +46,7 @@ class Services::Overseers::PurchaseOrders::CreatePurchaseOrder < Services::Share
         status: 'Supplier PO: Created Not Sent',
         purchase_order: @purchase_order
       )
-      if @purchase_order.save(po_request)
+      if @purchase_order.save_and_sync(po_request)
         comments = po_request.comments.build(created_by_id: params[:overseer].id, updated_by_id: params[:overseer].id)
         comments.message = "Purchase Order ##{@purchase_order.po_number} Approved by #{params[:overseer]}"
         comments.save!

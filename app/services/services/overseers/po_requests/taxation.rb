@@ -6,6 +6,7 @@ class Services::Overseers::PoRequests::Taxation < Services::Shared::BaseService
     @ship_from = po_request.ship_from
     @bill_to = po_request.bill_to
     @ship_to = po_request.ship_to
+    @purchase_order = po_request.purchase_order
   end
 
   def call
@@ -36,19 +37,18 @@ class Services::Overseers::PoRequests::Taxation < Services::Shared::BaseService
   end
 
   def to_remote_s
-    debugger
     if is_igst
-      if bill_to.company.check_company_total_amount(sales_quote) && bill_to.company.pan.present? && !is_service
+      if bill_from&.company&.check_company_total_amount(purchase_order) && bill_from&.company&.pan.present? && !is_service
         'IG%gT' % ('%.2f' % tax_rate.tax_percentage) + 0.1.to_s
-      elsif bill_to.company.check_company_total_amount(sales_quote) && !(bill_to.company.pan.present?) && !is_service
+      elsif bill_from&.company&.check_company_total_amount(purchase_order) && !(bill_from&.company&.pan.present?) && !is_service
         'IG%gT' % ('%.2f' % tax_rate.tax_percentage) + 1.to_s
       else
         'IG@%g' % ('%.2f' % tax_rate.tax_percentage)
       end
     else
-      if bill_to.company.check_company_total_amount(sales_quote) && bill_to.company.pan.present?
+      if bill_from&.company&.check_company_total_amount(purchase_order) && bill_from&.company&.pan.present?
         'CS%gT' % ('%.2f' % tax_rate.tax_percentage) + 0.1.to_s
-      elsif bill_to.company.check_company_total_amount(sales_quote) && !(bill_to.company.pan.present?)
+      elsif bill_from&.company&.check_company_total_amount(purchase_order) && !(bill_from&.company&.pan.present?)
         'CS%gT' % ('%.2f' % tax_rate.tax_percentage) + 1.to_s
       else
         'CSG@%g' % ('%.2f' % tax_rate.tax_percentage)
@@ -64,5 +64,5 @@ class Services::Overseers::PoRequests::Taxation < Services::Shared::BaseService
     tax_rate.tax_percentage / 2 if !is_igst
   end
 
-  attr_accessor :po_request, :po_request_row, :bill_to, :ship_to, :ship_from, :bill_from, :tax_code, :tax_rate, :is_service, :is_sez, :is_cgst_sgst, :is_igst
+  attr_accessor :po_request, :po_request_row, :bill_to, :ship_to, :ship_from, :bill_from, :tax_code, :tax_rate, :is_service, :is_sez, :is_cgst_sgst, :is_igst, :purchase_order
 end
