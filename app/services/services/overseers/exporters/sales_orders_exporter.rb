@@ -16,6 +16,7 @@ class Services::Overseers::Exporters::SalesOrdersExporter < Services::Overseers:
         'Order Total Amount',
         'Order Status',
         'Inside Sales',
+        'Approved By',
         'Outside Sales',
         'Sales Manager',
         'Quote Type',
@@ -30,7 +31,7 @@ class Services::Overseers::Exporters::SalesOrdersExporter < Services::Overseers:
 
   def build_csv
     @export_time['creation'] = Time.now
-    ExportMailer.export_notification_mail(@export_name,true,@export_time).deliver_now
+    # ExportMailer.export_notification_mail(@export_name,true,@export_time).deliver_now
     if @ids.present?
       records = model.where(id: @ids).remote_approved.order_not_deleted.where.not(sales_quote_id: nil).order(mis_date: :desc)
     else
@@ -52,6 +53,7 @@ class Services::Overseers::Exporters::SalesOrdersExporter < Services::Overseers:
         gt_inc: ('%.2f' % sales_order.calculated_total_with_tax if sales_order.inquiry.present?),
         status: sales_order.remote_status,
         inside_sales: sales_order.inside_sales_owner.try(:full_name),
+        approved_by: sales_order.approval.present? && sales_order.approval.created_by_id.present? ? sales_order.approval.created_by.to_s : '-',
         outside_sales: sales_order.outside_sales_owner.try(:full_name),
         sales_manager: inquiry.sales_manager.full_name,
         quote_type: inquiry.try(:quote_category) || '',
