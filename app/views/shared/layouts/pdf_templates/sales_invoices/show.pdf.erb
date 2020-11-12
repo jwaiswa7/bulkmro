@@ -321,7 +321,7 @@
                       <td align="center" valign="top">
                         <span><%= item.mpn %></span></td>
                       <td align="left" valign="top">
-                        <span><%= item.name %></span></td>
+                        <span><%= item.description.present? ? item.description : item.name %></span></td>
                       <td align="center" valign="top">
                         <span><%= item.brand %></span></td>
                       <td align="center" valign="top">
