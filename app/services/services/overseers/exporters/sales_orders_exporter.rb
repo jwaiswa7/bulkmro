@@ -31,7 +31,7 @@ class Services::Overseers::Exporters::SalesOrdersExporter < Services::Overseers:
 
   def build_csv
     @export_time['creation'] = Time.now
-    # ExportMailer.export_notification_mail(@export_name,true,@export_time).deliver_now
+    ExportMailer.export_notification_mail(@export_name,true,@export_time).deliver_now
     if @ids.present?
       records = model.where(id: @ids).remote_approved.order_not_deleted.where.not(sales_quote_id: nil).order(mis_date: :desc)
     else
