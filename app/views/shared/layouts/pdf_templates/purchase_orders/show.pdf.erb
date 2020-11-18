@@ -312,7 +312,7 @@
                   <td align="center" valign="top"><span></span></td>
                   <td align="right" style="text-align: right;" valign="top"><b><span></span></b></td>
                   <td align="center" valign="top"><span></span></td>
-                  <% if (locals[:metadata][:PoTaxRate].to_s.include? "IG") || (item.metadata['PopTaxRate'].to_s.include? "IG") %>
+                  <% if (locals[:metadata][:PoTaxRate].to_s.include? "IG") || (locals[:metadata][:ItemLine][0][:PopTaxRate].to_s.include? "IG") %>
                     <td align="center" valign="top"><span></span></td>
                     <td align="right" style="text-align: right;" valign="top"><b><span></span></b>
                     </td>
