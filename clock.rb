@@ -7,7 +7,7 @@ require 'sidekiq'
 require 'rake'
 
 configure do |config|
-  config[:tz] = "Asia/Kolkata"
+  config[:tz] = 'Asia/Kolkata'
   config[:max_threads] = 5
   config[:thread] = true
 end
@@ -50,7 +50,7 @@ every(1.day, 'reset_indices', at: '02:00') do
   # end
 end
 
-every(1.day, 'add_companies_total_amount_records', at: '00:30', :if => lambda { |t| t.day == 1 && t.month == 4 }) do
+every(1.day, 'add_companies_total_amount_records', at: '00:30', if: lambda { |t| t.day == 1 && t.month == 4 }) do
   puts 'For adding customer company total amounts'
   customer_service = Services::Shared::Migrations::AddCompanyTotalAmountFinancialYearwise.new
   customer_service.customer_companies_calculate_total_so_amount
