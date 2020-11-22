@@ -25,8 +25,8 @@ class Services::Customers::CustomerOrders::GeneratePunchoutOrder < Services::Sha
       end
     end
 
-    customer_order.create_approval(contact: company.account_manager_contact)
-    customer_order.comments.create(customer_order_id: customer_order.id, contact_id: company.account_manager_contact.id, message: 'Approved.', show_to_customer: true)
+    customer_order.create_approval(contact: contact)
+    customer_order.comments.create(contact_id: contact, message: 'Approved.', show_to_customer: false)
 
     cart.destroy
   end
