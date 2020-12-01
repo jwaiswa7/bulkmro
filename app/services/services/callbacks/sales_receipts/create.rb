@@ -63,10 +63,9 @@ class Services::Callbacks::SalesReceipts::Create < Services::Callbacks::Shared::
         end
 
         if params['p_invoice_no'].present?
-          params['p_invoice_no'].each do |si_payment|
-            sales_invoice = SalesInvoice.find_by_invoice_number(si_payment['invoice_number'])
+          params['p_invoice_no'].split(',').each do |si_payment|
+            sales_invoice = SalesInvoice.find_by_invoice_number(si_payment)
             if sales_invoice.present?
-
               # create sales receipt rows
               sales_receipt.rows.where(sales_invoice: sales_invoice).first_or_create! do |sales_receipt_row|
                 sales_receipt_row.assign_attributes(amount_received: si_payment['amount_received'])
@@ -82,6 +81,7 @@ class Services::Callbacks::SalesReceipts::Create < Services::Callbacks::Shared::
               elsif receivable_amount == received_amount
                 payment_status = 'Fully Paid'
               end
+              sales_receipt.update_attributes!(sales_invoice: sales_invoice)
               sales_invoice.update_attributes!(payment_status: payment_status)
             end
           end
