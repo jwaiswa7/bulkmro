@@ -22,8 +22,8 @@ class SalesInvoice < ApplicationRecord
   has_many :packages, class_name: 'SalesPackage', inverse_of: :sales_invoice
   has_many :rows, class_name: 'SalesInvoiceRow', inverse_of: :sales_invoice
   has_many :email_messages
-  has_many :sales_receipts
   has_many :sales_receipt_rows
+  has_many :sales_receipts, through: :sales_receipt_rows
   has_many :pod_rows, dependent: :destroy
   accepts_nested_attributes_for :pod_rows, reject_if: lambda { |attributes|
     if attributes[:id].present?

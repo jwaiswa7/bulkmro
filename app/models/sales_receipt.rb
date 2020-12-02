@@ -3,12 +3,12 @@ class SalesReceipt < ApplicationRecord
   update_index('sales_receipts#sales_receipt') { self }
   has_many :rows, class_name: 'SalesReceiptRow', dependent: :destroy
 
-  belongs_to :sales_invoice, required: false
   belongs_to :company, required: false
   belongs_to :account, required: false
   belongs_to :sales_order, required: false
   belongs_to :currency, required: false
   has_many :sales_receipt_rows
+  has_many :sales_invoices, through: :sales_receipt_rows
 
   scope :with_includes, -> { includes(:company, :sales_order, :sales_invoice, :currency) }
   scope :with_amount_by_invoice, -> { where(payment_type: 'Against Invoice') }
