@@ -10,7 +10,7 @@ class SalesReceipt < ApplicationRecord
   has_many :sales_receipt_rows
   has_many :sales_invoices, through: :sales_receipt_rows
 
-  scope :with_includes, -> { includes(:company, :sales_order, :sales_invoice, :currency) }
+  scope :with_includes, -> { includes(:company, :sales_order, :sales_invoices, :currency) }
   scope :with_amount_by_invoice, -> { where(payment_type: 'Against Invoice') }
   scope :with_amount_on_account, -> { where(payment_type: 'On Account') }
   scope :total_received_amount, -> { where(payment_type: 'On Account').or(SalesReceipt.where(payment_type: 'against invoice')) }
