@@ -43,7 +43,7 @@ class Services::Customers::Finders::CustomerProducts < Services::Customers::Find
       multi_match: {
         query: query,
         operator: 'and',
-        fields: %w[brand^4 name^3 sku^3 category],
+        fields: %w[brand^4 category^4 name^3 sku^3],
         minimum_should_match: '100%'
       }
     )
