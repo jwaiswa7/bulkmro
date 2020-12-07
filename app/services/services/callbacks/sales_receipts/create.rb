@@ -5,22 +5,23 @@ class Services::Callbacks::SalesReceipts::Create < Services::Callbacks::Shared::
       company = Company.find_by_remote_uid!(params['cmp_id'])
       currency = Currency.find_by_name(params['p_amount_currency'])
       account = company.present? ? company.account : nil
+      amount_received = params['p_amount_received'].split(',').map(&:to_f).reduce(:+)
       payment_type = nil
 
-      if params['p_amount_received'].to_f == 0 && params['on_account'].to_f > 0 && params['reconciled_amount'].to_f == 0
+      if amount_received.to_f == 0 && params['on_account'].to_f > 0 && params['reconciled_amount'].to_f == 0
         total_amount_received = params['on_account'].to_f
         payment_type = 'On Account'
-      elsif params['p_amount_received'].to_f == 0 && params['on_account'].to_f > 0 && params['reconciled_amount'].to_f > 0
+      elsif amount_received.to_f == 0 && params['on_account'].to_f > 0 && params['reconciled_amount'].to_f > 0
         total_amount_received = params['on_account'].to_f
         payment_type = 'Reconciled Against Invoice'
-      elsif params['p_amount_received'].to_f > 0 && params['on_account'].to_f == 0 && params['reconciled_amount'].to_f == 0
-        total_amount_received = params['p_amount_received'].to_f
+      elsif amount_received.to_f > 0 && params['on_account'].to_f == 0 && params['reconciled_amount'].to_f == 0
+        total_amount_received = amount_received.to_f
         payment_type = 'Against Invoice'
-      elsif params['p_amount_received'].to_f > 0 && params['on_account'].to_f > 0 && params['reconciled_amount'].to_f == 0
-        total_amount_received = params['on_account'].to_f + params['p_amount_received'].to_f
+      elsif amount_received.to_f > 0 && params['on_account'].to_f > 0 && params['reconciled_amount'].to_f == 0
+        total_amount_received = params['on_account'].to_f + amount_received.to_f
         payment_type = 'On Account and Against Invoice'
-      elsif params['p_amount_received'].to_f > 0 && params['on_account'].to_f > 0 && params['reconciled_amount'].to_f > 0
-        total_amount_received = params['on_account'].to_f + params['p_amount_received'].to_f
+      elsif amount_received.to_f > 0 && params['on_account'].to_f > 0 && params['reconciled_amount'].to_f > 0
+        total_amount_received = params['on_account'].to_f + amount_received.to_f
         payment_type = 'On Account and Against Invoice'
       else
         total_amount_received = 0.0
@@ -63,13 +64,17 @@ class Services::Callbacks::SalesReceipts::Create < Services::Callbacks::Shared::
         end
 
         if params['p_invoice_no'].present?
-          params['p_invoice_no'].each do |si_payment|
-            sales_invoice = SalesInvoice.find_by_invoice_number(si_payment['invoice_number'])
-            if sales_invoice.present?
+          invoices_hash = {}
+          params['p_invoice_no'].split(',').each_with_index do |value, index|
+            invoices_hash[value] = params['p_amount_received'].split(',')[index]
+          end
 
+          invoices_hash.each do |invoice_number, amount|
+            sales_invoice = SalesInvoice.find_by_invoice_number(invoice_number)
+            if sales_invoice.present?
               # create sales receipt rows
               sales_receipt.rows.where(sales_invoice: sales_invoice).first_or_create! do |sales_receipt_row|
-                sales_receipt_row.assign_attributes(amount_received: si_payment['amount_received'])
+                sales_receipt_row.assign_attributes(amount_received: amount)
               end
 
               # update sales invoice payment status
@@ -82,6 +87,7 @@ class Services::Callbacks::SalesReceipts::Create < Services::Callbacks::Shared::
               elsif receivable_amount == received_amount
                 payment_status = 'Fully Paid'
               end
+
               sales_invoice.update_attributes!(payment_status: payment_status)
             end
           end
