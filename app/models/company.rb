@@ -7,18 +7,18 @@ class Company < ApplicationRecord
   include Mixins::HasManagers
   include Mixins::HasPaymentCollections
 
-  update_index('companies#company') {self}
-  update_index('contacts#contact') {self.contacts}
+  update_index('companies#company') { self }
+  update_index('contacts#contact') { self.contacts }
   pg_search_scope :locate, against: [:name], associated_against: {}, using: {tsearch: {prefix: true}}
 
   attr_accessor :account_name, :acc_type
   belongs_to :account
-  belongs_to :default_company_contact, -> (record) {where(company_id: record.id)}, class_name: 'CompanyContact', foreign_key: :default_company_contact_id, required: false
+  belongs_to :default_company_contact, -> (record) { where(company_id: record.id) }, class_name: 'CompanyContact', foreign_key: :default_company_contact_id, required: false
   has_one :default_contact, through: :default_company_contact, source: :contact
   belongs_to :default_payment_option, class_name: 'PaymentOption', foreign_key: :default_payment_option_id, required: false
-  belongs_to :default_billing_address, -> (record) {where(company_id: record.id)}, class_name: 'Address', foreign_key: :default_billing_address_id, required: false
-  belongs_to :default_shipping_address, -> (record) {where(company_id: record.id)}, class_name: 'Address', foreign_key: :default_shipping_address_id, required: false
-  belongs_to :logistics_owner, -> (record) {where(role: 'logistics')}, class_name: 'Overseer', foreign_key: 'logistics_owner_id', required: false
+  belongs_to :default_billing_address, -> (record) { where(company_id: record.id) }, class_name: 'Address', foreign_key: :default_billing_address_id, required: false
+  belongs_to :default_shipping_address, -> (record) { where(company_id: record.id) }, class_name: 'Address', foreign_key: :default_shipping_address_id, required: false
+  belongs_to :logistics_owner, -> (record) { where(role: 'logistics') }, class_name: 'Overseer', foreign_key: 'logistics_owner_id', required: false
   belongs_to :industry, required: false
   has_many :banks, class_name: 'CompanyBank', inverse_of: :company
   has_many :company_contacts, dependent: :destroy
@@ -56,7 +56,7 @@ class Company < ApplicationRecord
   has_many :supplied_products, through: :purchase_orders, source: :products
   has_many :supplied_brands, through: :supplied_products, source: :brand
   has_many :supplier_rfqs, foreign_key: :supplier_id
-
+  has_many :company_transactions_amounts
 
   has_many :sales_receipts
   has_many :payment_collections
@@ -68,7 +68,7 @@ class Company < ApplicationRecord
   has_one_attached :logo
   belongs_to :company_creation_request, optional: true
 
-  scope :with_invoices, -> {includes(:invoices).where.not(sales_invoices: { id: nil })}
+  scope :with_invoices, -> { includes(:invoices).where.not(sales_invoices: {id: nil}) }
 
 
   enum company_type: {
@@ -100,10 +100,10 @@ class Company < ApplicationRecord
   delegate :account_type, :is_customer?, :is_supplier?, to: :account
   alias_attribute :gst, :tax_identifier
 
-  scope :with_includes, -> {includes(:addresses, :inquiries, :contacts, :invoices, :final_sales_orders, :final_sales_quotes)}
-  scope :acts_as_supplier, -> {left_outer_joins(:account).where('accounts.account_type = ?', Account.account_types[:is_supplier]).order(name: :asc)}
-  scope :acts_as_customer, -> {left_outer_joins(:account).where('accounts.account_type = ?', Account.account_types[:is_customer]).order(name: :asc)}
-  scope :is_customer_active, -> { Company.acts_as_customer.where(is_active: true)}
+  scope :with_includes, -> { includes(:addresses, :inquiries, :contacts, :invoices, :final_sales_orders, :final_sales_quotes) }
+  scope :acts_as_supplier, -> { left_outer_joins(:account).where('accounts.account_type = ?', Account.account_types[:is_supplier]).order(name: :asc) }
+  scope :acts_as_customer, -> { left_outer_joins(:account).where('accounts.account_type = ?', Account.account_types[:is_customer]).order(name: :asc) }
+  scope :is_customer_active, -> { Company.acts_as_customer.where(is_active: true) }
   validates_presence_of :name
   validates :credit_limit, numericality: {greater_than_or_equal_to: 0}, allow_nil: true
   validates_presence_of :pan
@@ -125,6 +125,8 @@ class Company < ApplicationRecord
 
   after_initialize :set_defaults, if: :new_record?
 
+  after_create :set_company_transaction_record
+
   def set_defaults
     self.company_type ||= :private_limited
     self.priority ||= :non_strategic
@@ -134,6 +136,20 @@ class Company < ApplicationRecord
     self.default_billing_address ||= set_default_company_billing_address
     self.default_shipping_address ||= set_default_company_shipping_address
     self.logistics_owner ||= default_logistics_owner
+  end
+
+  def set_company_transaction_record
+    financial_year = Company.current_financial_year
+    if self.present?
+      unless self.company_transactions_amounts.where(financial_year: financial_year).present?
+        total_amount = 0.0
+        begin
+          self.company_transactions_amounts.create(financial_year: financial_year, total_amount: total_amount, amount_reached_to_date: Time.now)
+        rescue Exception => e
+          puts e.message
+        end
+      end
+    end
   end
 
   def syncable_identifiers
@@ -185,7 +201,7 @@ class Company < ApplicationRecord
   end
 
   def generate_catalog(overseer)
-    inquiry_products = Inquiry.includes(:inquiry_products, :products).where(company_id: self.id).map {|i| i.inquiry_products}.flatten
+    inquiry_products = Inquiry.includes(:inquiry_products, :products).where(company_id: self.id).map { |i| i.inquiry_products }.flatten
     inquiry_products.each do |inquiry_product|
       if inquiry_product.product.synced?
         CustomerProduct.where(company_id: self.id, product_id: inquiry_product.product_id).first_or_create do |customer_product|
@@ -240,15 +256,15 @@ class Company < ApplicationRecord
   end
 
   def cancel
-    self.inquiries.map {|i| i.sales_invoices.map {|s| s.status.where(status: 'Cancelled')}.size}
+    self.inquiries.map { |i| i.sales_invoices.map { |s| s.status.where(status: 'Cancelled') }.size }
   end
 
   def invoice_margin
-    self.invoices.map {|s| s.inquiry.final_sales_quote.calculated_total_margin_percentage.to_f if s.inquiry.final_sales_quote.present?}.flatten.compact
+    self.invoices.map { |s| s.inquiry.final_sales_quote.calculated_total_margin_percentage.to_f if s.inquiry.final_sales_quote.present? }.flatten.compact
   end
 
   def order_margin
-    self.inquiries.map {|i| i.final_sales_orders.map {|s| s.calculated_total_margin_percentage} if i.final_sales_orders.present?}.flatten.compact
+    self.inquiries.map { |i| i.final_sales_orders.map { |s| s.calculated_total_margin_percentage } if i.final_sales_orders.present? }.flatten.compact
   end
 
   def account_manager_contact
@@ -291,7 +307,7 @@ class Company < ApplicationRecord
         inquiry.sales_orders.remote_approved.each do |so|
           confirmed_orders += 1
           confirmed_orders_total_value += so.converted_total_with_tax
-          so.invoices.each do | si |
+          so.invoices.each do |si|
             confirmed_invoices += 1
             confirmed_invoices_total_value += si.metadata['base_grand_total'].to_f
           end
@@ -305,5 +321,44 @@ class Company < ApplicationRecord
           confirmed_invoices_total_value: confirmed_invoices_total_value
       }
     end
+  end
+
+  def self.current_financial_year_start
+    current_date = Date.today
+    current_month = current_date.month.to_i
+    if current_month >= 4
+      current_year = current_date.year
+      financial_year_start = Date.new(current_year, 04, 01)
+    else
+      current_year = current_date.year - 1
+      financial_year_start = Date.new(current_year, 04, 01)
+    end
+    financial_year_start
+  end
+
+  def self.current_financial_year_end
+    current_date = Date.today
+    current_year = current_date.year + 1
+    financial_year_end = Date.new(current_year, 03, 31)
+    financial_year_end
+  end
+
+  def self.current_financial_year
+    "#{current_financial_year_start.year}-#{current_financial_year_end.year}"
+  end
+
+  def check_company_total_amount(record)
+    company_amount = self.company_transactions_amounts.where(financial_year: Company.current_financial_year).last
+    tcs_applied_from = Date.new(2020, 10, 01).beginning_of_day
+    if company_amount.present? && tcs_applied_from <= record.created_at
+      company_amount.total_amount.to_f > 5000000.0
+    else
+      false
+    end
+  end
+
+  def get_company_total_amount
+    company_amount = self.company_transactions_amounts.where(financial_year: Company.current_financial_year).last
+    company_amount.total_amount.to_f if company_amount.present?
   end
 end

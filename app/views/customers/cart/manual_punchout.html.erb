@@ -1,0 +1,38 @@
+<div class="col-12">
+  <%= simple_form_for(:cxml, :url => @endpoint, :method => :post) do |f| %>
+
+    <div class="row flex-lg-row-reverse">
+      <div class="col-lg-3">
+        
+      </div>
+      <div class="col-lg-9">
+        <div class="card mt-2 mt-lg-0">
+          <div class="card-body py-2">
+            <div class="text-left">
+              <label class="form-control-label text-capitalize text">Url</label>
+              <p class="font-weight-bold"><%= @endpoint %></p>
+            </div>
+            <p></p>
+            <div class="text-left">
+              <%= f.input :data, as: :text, :class => 'form-control', :input_html => {'rows' => 10, name: 'cXML-urlencoded', value: @data}, required: false%>
+            </div>
+          </div>
+          <div class="card-footer">
+            <div class="form-row">
+              <div class="col-md-12">
+                <div class="form-row">
+                  <div class="col-md-12 mt-2 mt-md-0">
+                    <%= button_tag(type: "submit", class: "btn btn-success btn-block") do %>
+                      <i class="fal fa-shopping-cart mr-1"></i>Punchout
+                    <% end %>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+  <% end %>
+  </div>
+</div>
+

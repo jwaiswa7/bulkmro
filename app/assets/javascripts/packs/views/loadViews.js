@@ -72,6 +72,8 @@ import documentCreations from "./documentCreations/init";
 
 import checkout from "./checkout/init";
 
+import cart from "./cart/init";
+
 // Image Reader
 
 import imageReaders from "./imageReaders/init"
@@ -149,6 +151,7 @@ let loader = {
     exports: exports,
     supplierRfqs: supplierRfqs,
     rfq: rfq,
+    cart: cart,
     deliveryChallans: deliveryChallans
 };
 

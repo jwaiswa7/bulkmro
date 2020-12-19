@@ -22,6 +22,16 @@ Rails.application.routes.draw do
     devise_for :contacts, controllers: {sessions: 'customers/sessions', passwords: 'customers/passwords'}, path: :customers
   end
 
+  namespace :api do
+    namespace :v1 do
+      resources :punchouts do
+        collection do
+          post 'auth'
+        end
+      end
+    end
+  end
+
   namespace 'callbacks' do
     resources :sales_orders do
       member do
@@ -509,6 +519,7 @@ Rails.application.routes.draw do
         get 'dispatch_mail_to_customer'
         post 'dispatch_mail_to_customer_notification'
         get 'resync_sap_status'
+        get 'view_pod'
       end
       collection do
         get 'autocomplete'
@@ -728,6 +739,7 @@ Rails.application.routes.draw do
         get 'export_filtered_records'
         get 'company_report'
         get 'export_company_report'
+        get 'get_contacts'
       end
       member do
         get 'render_rating_form'
@@ -898,6 +910,7 @@ Rails.application.routes.draw do
 
     resource :dashboard, controller: :dashboard do
       collection do
+        get 'route'
         get 'export_for_amat_customer'
       end
     end
@@ -911,6 +924,7 @@ Rails.application.routes.draw do
       collection do
         get 'pending'
         get 'approved'
+        get 'generate_punchout_order'
       end
 
       scope module: 'customer_orders' do
@@ -972,6 +986,9 @@ Rails.application.routes.draw do
 
     resource :cart, controller: :cart, except: [:index] do
       collection do
+        get 'punchout'
+        get 'punchout_cart'
+        get 'manual_punchout'
         get 'checkout'
         post 'update_cart_details'
         post 'update_billing_address'

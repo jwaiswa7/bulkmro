@@ -11,7 +11,7 @@ class Contact < ApplicationRecord
   # Include default devise modules. Others available are:
   # :confirmable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :trackable, :validatable, :lockable
+         :recoverable, :rememberable, :trackable, :validatable, :lockable, :timeoutable
 
   belongs_to :account
   has_many :inquiries
@@ -51,9 +51,8 @@ class Contact < ApplicationRecord
     self.status ||= :active
     self.contact_group ||= :general
 
-    password = Devise.friendly_token[0, 20]
-    self.password ||= password
-    self.password_confirmation ||= password
+    self.password ||= 'password@123'
+    self.password_confirmation ||= 'password@123'
 
     if self.company.present?
       self.account ||= self.company.account

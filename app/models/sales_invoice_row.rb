@@ -27,6 +27,10 @@ class SalesInvoiceRow < ApplicationRecord
     get_product.try(:to_bp_catalog_s) || get_product.try(:name)
   end
 
+  def description
+    self.metadata['description']
+  end
+
   def uom
     get_product.try(:measurement_unit).try(:name) || get_product.try(:product).try(:measurement_unit).try(:name) || MeasurementUnit.default
   end

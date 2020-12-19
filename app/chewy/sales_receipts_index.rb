@@ -6,10 +6,6 @@ class SalesReceiptsIndex < BaseIndex
     field :company_id, value: -> (record) { record.company_id if record.company_id.present? }
     field :account_id, value: -> (record) { record.company.account.id if record.company_id.present? }
     field :company_alias, value: -> (record) { record.company.account.alias if record.company_id.present? }
-    field :invoice_id, value: -> (record) { record.sales_invoice_id if record.sales_invoice_id.present? }
-    field :invoice_number, value: -> (record) { record.sales_invoice.invoice_number if record.sales_invoice_id.present? }, type: 'integer'
-    field :invoice_number_string, value: -> (record) { record.sales_invoice.invoice_number.to_s if record.sales_invoice_id.present? }, analyzer: 'substring'
-    field :invoice_date, value: -> (record) { record.sales_invoice.created_at if record.sales_invoice_id.present? }, type: 'date'
     field :receipt_date, value: -> (record) { record.payment_received_date if record.payment_received_date.present? }, type: 'date'
     field :company, value: -> (record) { record.company.to_s if record.company_id.present? }, analyzer: 'substring'
     field :created_by_id, value: -> (record) { record.created_by_id if record.created_by_id.present? }
@@ -27,6 +23,6 @@ class SalesReceiptsIndex < BaseIndex
   end
 
   def self.fields
-    [:invoice_number_string, :reference_number, :company_alias, :company, :payment_type_string, :payment_method_string, :currency_name]
+    [:reference_number, :company_alias, :company, :payment_type_string, :payment_method_string, :currency_name]
   end
 end

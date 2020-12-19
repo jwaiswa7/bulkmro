@@ -39,7 +39,14 @@ class Services::Customers::Finders::CustomerProducts < Services::Customers::Find
   def perform_query(query)
     query = query[0, 35]
 
-    indexed_records = index_klass.query(multi_match: { query: query, operator: 'and', fields: %w[sku^3 name brand category], minimum_should_match: '100%' }).order(sort_definition)
+    indexed_records = index_klass.query(
+      multi_match: {
+        query: query,
+        operator: 'and',
+        fields: %w[brand^4 category^4 name^3 sku^3],
+        minimum_should_match: '100%'
+      }
+    )
 
     if current_company.present?
       indexed_records = indexed_records.filter(filter_by_value('company_id', current_company.id))

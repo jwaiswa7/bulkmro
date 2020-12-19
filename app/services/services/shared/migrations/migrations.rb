@@ -4995,4 +4995,68 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       end
     end
   end
+
+  def create_tsl_contacts
+    company = Company.find ('PwXtDz')
+    service = Services::Shared::Spreadsheets::CsvImporter.new('tsl_user_email.csv', 'seed_files')
+    service.loop(nil) do |x|
+      company.contacts.where(email: x.get_column('email')).first_or_create do |contact|
+        contact.first_name = x.get_column('first_name')
+        contact.last_name = x.get_column('last_name')
+        contact.mobile = 9999999999
+        contact.account_id = company.account.id
+        contact.password = 123456
+        contact.password_confirmation = 123456
+      end
+    end
+  end
+
+  def create_tsl_products
+    company = Company.find ('PwXtDz')
+    product_ids = []
+    if company.present?
+      service = Services::Shared::Spreadsheets::CsvImporter.new('tsl_customer_products.csv', 'seed_files')
+
+      service.loop do |product_row|
+        product_name = product_row.get_column('name')
+        hsn = product_row.get_column('hsn')
+        tax_percentage = product_row.get_column('tax_percentage').to_d
+        brand = product_row.get_column('brand')
+        unit_of_measurement = product_row.get_column('uom')
+        customer_product_unit_price = product_row.get_column('price')
+        quantity = product_row.get_column('moq')
+        technical_description = product_row.get_column('technical_description')
+        customer_material_code = product_row.get_column('customer_material_code')
+        customer_uom = product_row.get_column('customer_uom')
+        lead_time = product_row.get_column('lead_time').strip[0..1]
+
+        if product_name.present? && (product_name != "#N/A")
+          product = Product.where(name: product_name).first_or_initialize do |pro|
+            pro.tax_code = TaxCode.where('code LIKE ?', hsn).where(is_service: false).first || TaxCode.where(code: '62160010', is_service: false).first
+            pro.tax_rate = TaxRate.where(tax_percentage: tax_percentage).first || TaxRate.first
+            pro.brand = Brand.find_by_name(brand) || Brand.find_by_name('BULKMRO APPROVED')
+            pro.category = Category.find(1)
+            if Product.where(sku: pro.sku).present?
+              pro.sku = Services::Resources::Shared::UidGenerator.product_sku([pro.sku])
+            end
+            pro.measurement_unit = MeasurementUnit.find_by_name(unit_of_measurement)
+          end
+
+          if product.save_and_sync
+            product.create_approval(comment: product.comments.create!(overseer: Overseer.default, message: 'Tata Steel punch out, preapproved'), overseer: Overseer.default) if product.approval.blank?
+            customer_product = company.customer_products.build(product_id: product.id,
+              category: product.category, name: product.name, brand: product.brand,
+              sku: product.sku, unit_selling_price: customer_product_unit_price,
+              customer_price: customer_product_unit_price, tax_rate: product.tax_rate,
+              moq: quantity, tax_code: product.tax_code, measurement_unit: product.measurement_unit,
+              technical_description: technical_description, customer_product_sku: customer_material_code,
+              customer_uom: customer_uom, lead_time: lead_time
+            )
+            customer_product.save(validate: false)
+          end
+          product_ids << product.id
+        end
+      end
+    end
+  end
 end

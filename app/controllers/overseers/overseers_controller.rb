@@ -50,6 +50,10 @@ class Overseers::OverseersController < Overseers::BaseController
         if params[:menu_checked_ids].present?
           checked_ids = checked_ids + params[:menu_checked_ids]
         end
+        acl_role_name = acl_role.role_name.gsub(/( )/, '_')
+        if Overseer.roles.keys.include? acl_role_name.downcase
+          @overseer.update_attribute(:role, acl_role_name.downcase)
+        end
 
         @overseer.update_attribute(:acl_resources, checked_ids.uniq.to_json)
         @overseer.update_attribute(:acl_role_id, acl_role.id)

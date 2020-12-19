@@ -53,22 +53,33 @@ const editAcl = () => {
             $.ajax(Routes.get_role_resources_overseers_acl_role_path(role_id, {format: "json"}),   // request url
                 {
                     beforeSend: function () {
-                        $('.fa-spinner-third').show()
+                        $('.tree-loader').show()
                         $('#tree').hide()
+                        $('#menu_tree').hide()
+
+                        $('.tree-loader').empty();
+                        var loader = "<div class=\"sales-loader\"><div class=\"sprint-loader-wrapper\"><i class=\"sprint-loader\"></i></div></div>";
+                        $('.tree-loader').append(loader);
+                        $('.sales-loader').show();
                     },
                     success: function (data, status, xhr) {// success callback function
                         tree.uncheckAll();
+                        menu_tree.uncheckAll();
+
                         $.each(data, function (index, value) {
                             if (typeof tree.getNodeById(value) !== "undefined") {
                                 tree.check(tree.getNodeById(value))
+                            }else if(typeof menu_tree.getNodeById(value) !== "undefined"){
+                                menu_tree.check(menu_tree.getNodeById(value))
                             }
                         });
                         $('.fa-spinner-third').hide()
                         $('#tree').show()
                     },
                     complete: function () {
-                        $('.fa-spinner-third').hide()
+                        $('.sales-loader').hide()
                         $('#tree').show()
+                        $('#menu_tree').show()
                     },
                     error: function (xhr) { // if error occured
                         alert("Error occured.please try again");
