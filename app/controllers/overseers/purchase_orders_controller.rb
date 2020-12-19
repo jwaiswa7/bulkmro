@@ -324,6 +324,7 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
   def cancelled_purchase_order
     authorize_acl @purchase_order
     @status = Services::Overseers::PurchaseOrders::CancelPurchaseOrder.new(@purchase_order, purchase_order_params.merge(status: 'Cancelled')).call
+
     if @status.key?(:empty_message)
       render json: {error: 'Cancellation Message is Required'}, status: 500
     elsif @status[:status] == 'success'
