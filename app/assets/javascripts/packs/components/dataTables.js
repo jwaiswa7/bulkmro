@@ -233,10 +233,10 @@ let setup = () => {
                 processing: '<i class="sprint-loader"></i>' +
                     '<span class="sr-only">Loading...</span>',
                 paginate: {
-                    first: '<i class="fal fa-arrow-to-left"></i>',
-                    previous: '<i class="fal fa-angle-left"></i>',
-                    next: '<i class="fal fa-angle-right"></i>',
-                    last: '<i class="fal fa-arrow-to-right"></i>'
+                    first: '<i class="fa fa-arrow-to-left"></i>',
+                    previous: '<i class="fa fa-angle-left"></i>',
+                    next: '<i class="fa fa-angle-right"></i>',
+                    last: '<i class="fa fa-arrow-to-right"></i>'
                 }
             },
 
