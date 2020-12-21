@@ -1236,7 +1236,7 @@ a.bmro-click-toggle.collapsed:after{
     display: -webkit-flex;
 }
 .bmro-card .form-row{
-    height: 52vh;
+    //height: 52vh;
     overflow: auto;
 }
 
@@ -4470,4 +4470,4 @@ td .media.chat-item{
 /* Only FireFox */
 .select2-results__options, .bmro-card .form-row {scrollbar-color: #0064a7 #8ea5b5;}
 /* View Scrollbar */
-.select2-results__options, .bmro-card .form-row {overflow-y: scroll;overflow-x: hidden;}
+//.select2-results__options, .bmro-card .form-row {overflow-y: scroll;overflow-x: hidden;}
