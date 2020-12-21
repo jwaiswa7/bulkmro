@@ -248,9 +248,6 @@
               <span data-toggle="tooltip" title="Tax Rate">Total<br>
               (<%= @delivery_challan.inquiry.currency.name %>)</span>
             </th>
-            <th class="no-sort">
-              <span data-toggle="tooltip" title="Total Freight">T. Freight</span>
-            </th>
           <% end %>
         </tr>
         </thead>
@@ -320,9 +317,6 @@
               <td>
                 <span><%= number_to_currency(item.converted_total_selling_price_with_tax.round(2), precision: 2, unit: '') %></span>
               </td>
-              <td>
-                <span><%= format_currency(item.sales_order_row.freight_cost_subtotal) %></span>
-              </td>
             <% end %>
           </tr>
         <% end %>
@@ -332,33 +326,53 @@
     <div class="card-footer bmro-summary-footer bmro-summary-product-bottom">
       <% if @delivery_challan.display_rates.present? && @delivery_challan.sales_order.present? %>
         <div class="form-row bmro-summary-footer-padding">
-          <div class="col-6 col-md-2">
+          <div class="col-6 col-md-3">
             Products
             <strong class="d-block bmro-summary-heading"><%= @delivery_challan.rows.count %></strong>
           </div>
-          <div class="col-6 col-md-4">
-            Total Freight
-            <strong class="d-block bmro-summary-heading"><%= format_currency(@delivery_challan.sales_order.calculated_freight_cost_total) %></strong>
-          </div>
-          <div class="col-6 col-md-2 mt-2 mt-md-0">
+          <div class="col-6 col-md-3 mt-2 mt-md-0">
             Subtotal
             <strong class="d-block bmro-summary-heading"><%= format_currency(@delivery_challan.converted_total_with_tax.to_f - @delivery_challan.converted_total_tax.to_f, precision: 2, symbol: nil) %></strong>
           </div>
-          <div class="col-6 col-md-2">
+          <div class="col-6 col-md-3">
             Total Tax Amt
             <strong class="d-block bmro-summary-heading"><%= format_currency(@delivery_challan.converted_total_tax, precision: 2, symbol: nil) %></strong>
           </div>
-          <div class="col-6 col-md-2">
+          <div class="col-6 col-md-3">
             Grand Total
             <strong class="d-block bmro-summary-heading"><%= format_currency(@delivery_challan.converted_total_with_tax.to_f, precision: 2, symbol: nil) %></strong>
           </div>
       <% end %>
       </div>
     </div>
-    <div class="card-body bmro-bg">
-
-    </div>
-  </div>
+    <% if @delivery_challan.comments.persisted.size > 0 %>
+      <div class="card">
+        <div class="card-body">
+          <div class="flex-fill">
+            <h6 class="text-uppercase text-black-50 mb-1">Delivery Challan History</h6>
+          </div>
+          <div class="chats">
+            <% @delivery_challan.comments.each do |comment| %>
+              <div class="media chat-item comments-wrap w-100">
+                <div class="media-body">
+                  <div class="chat-item-title">
+                    <span class="chat-item-author"><%= comment.author.full_name if comment.author.present? %>
+                      <span class="mr-1"><strong><span class="badge badge-secondary"><%= comment.author_role %></span></strong></span>
+                    </span>
+                  </div>
+                  <div class="chat-item-body">
+                    <%= simple_format comment.message.gsub(/\\r\\n/, "\n") %>
+                  </div>
+                  <div class="mt-2">
+                    <%= format_times_ago(comment.created_at) + ' on ' + format_date_with_time(comment.created_at) %>
+                  </div>
+                </div>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    <% end %>
 
   <%# end %>
 

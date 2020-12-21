@@ -3,20 +3,25 @@
 
   <div class="card bmro-card">
     <div class="card-body">
+      <%= f.hidden_field :inward_dispatch_id, values: f.object.inward_dispatch_id %>
+      <%= f.hidden_field :created_from, values: f.object.created_from %>
+      <%= f.hidden_field :inquiry_id, values: f.object.inquiry_id if f.object.inquiry_id.present? %>
+      <%= f.hidden_field :purpose, value: @delivery_challan.purpose if ['SalesOrder', 'InwardDispatch'].include?(params[:created_from]) %>
+      <%= f.hidden_field :sales_order_id, value: f.object.sales_order_id if ['SalesOrder'].include?(params[:created_from]) %>
       <div>
         <h6 class="text-uppercase bmro-form-heading text-black-50 mb-1">Primary Details</h6>
         <div class="form-row">
           <div class="col-6">
-            <%= f.input :inquiry_id, as: :select, collection: selected_option_or_nil(f, :inquiry), input_html: {id: 'dc_inquiry_select', class: 'select2-ajax bmro-form-input bmro-dropdown-icon', :'data-source' => autocomplete_overseers_inquiries_path, label: "Inquiries"}, required: true %>
+            <%= f.input :inquiry_id, as: :select, collection: selected_option_or_nil(f, :inquiry), input_html: {id: 'dc_inquiry_select', class: 'select2-ajax bmro-form-input bmro-dropdown-icon', :'data-source' => autocomplete_without_so_confirmed_overseers_inquiries_path(encoded: true), label: "Inquiries"}, required: true, disabled: f.object.inquiry_id.present? %>
           </div>
 
           <div class="col-6">
-            <%= f.input :purpose, collection: enum_to_collection(DeliveryChallan.purposes), required: true, input_html: {id: 'dc_purpose', class: 'select2-single bmro-form-input bmro-dropdown-icon'}, selected: @delivery_challan.purpose %>
+            <%= f.input :purpose, collection: enum_to_collection(DeliveryChallan.purposes), required: true, input_html: {id: 'dc_purpose', class: 'select2-single bmro-form-input bmro-dropdown-icon'}, selected: @delivery_challan.purpose, disabled: ['SalesOrder', 'InwardDispatch'].include?(params[:created_from]) %>
           </div>
         </div>
         <div class="form-row">
           <div class="col-6">
-            <%= f.input :sales_order_id, as: :select, collection: selected_option_or_nil(f, :sales_order), input_html: {id: 'dc_sales_order_select', class: 'select2-ajax bmro-form-input bmro-dropdown-icon disabled', label: "Sales Orders"} %>
+            <%= f.input :sales_order_id, as: :select, collection: selected_option_or_nil(f, :sales_order), input_html: {id: 'dc_sales_order_select', class: 'select2-ajax bmro-form-input bmro-dropdown-icon disabled', label: "Sales Orders"}, disabled: ['SalesOrder'].include?(params[:created_from]) %>
           </div>
         </div>
       </div>

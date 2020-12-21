@@ -22,8 +22,8 @@ json.data (@inward_dispatches) do |inward_dispatch|
                           concat content_tag :i, nil, class: ['bmro-icon-table bmro-icon-comment'].join
                         end
                       end,
-                      if is_authorized(:delivery_challan, 'create')
-                        row_action_button_without_fa(new_overseers_delivery_challan_path(po: inward_dispatch.purchase_order), 'bmro-plus-circle-icon', 'New Delivery Challan', 'success', target: :_blank)
+                      if is_authorized(:delivery_challan, 'create') && (policy(inward_dispatch).create_new_dc?)
+                        row_action_button_without_fa(new_overseers_delivery_challan_path(inward_dispatch_id: inward_dispatch.id, inquiry_id: inward_dispatch.purchase_order.inquiry_id, created_from: inward_dispatch.class), 'bmro-plus-circle-icon', 'New Delivery Challan', 'success', target: :_blank)
                       end
                   ].join(' '),
                   inward_dispatch.ar_invoice_list.map.with_index { |ar_invoice_request, index| link_to(ar_invoice_request.ar_invoice_number || "# #{index + 1}", overseers_ar_invoice_request_path(ar_invoice_request), target: '_blank') }.compact.join(' <br>'),

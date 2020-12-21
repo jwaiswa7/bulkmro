@@ -3,6 +3,7 @@ class InwardDispatchRow < ApplicationRecord
   belongs_to :purchase_order_row
   belongs_to :product
   has_one :ar_invoice_row
+  has_many :delivery_challan_rows
 
   validates_uniqueness_of :purchase_order_row_id, scope: :inward_dispatch
   validates_numericality_of :pickup_quantity, greater_than: 0

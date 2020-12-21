@@ -22,50 +22,50 @@ class FieldModifiedMessage < BaseFunction
     def for_text_fields(record, field, product)
       if product.present?
         if record.send("#{field}_was").present?
-          @messages.push("For product #{product}, #{field.titleize} changed from #{record.send("#{field}_was")} to #{record.send("#{field}")}")
+          @messages.push("<b> For product #{product}, #{field.titleize} changed from </b> #{record.send("#{field}_was")} <b> to </b> #{record.send("#{field}")}".html_safe)
         else
-          @messages.push("For product #{product}, #{field.titleize} Set to #{record.send("#{field}")}")
+          @messages.push("<b> For product #{product}, #{field.titleize} Set to </b> #{record.send("#{field}")}".html_safe)
         end
       else
         if record.send("#{field}_was").present?
-          @messages.push("#{field.titleize} Changed from #{record.send("#{field}_was")} to #{record.send("#{field}")}")
+          @messages.push("<b> #{field.titleize} Changed from </b> #{record.send("#{field}_was")} <b> to </b> #{record.send("#{field}")}".html_safe)
         else
-          @messages.push("#{field.titleize} Set to #{record.send("#{field}")}")
+          @messages.push("<b> #{field.titleize} Set to </b> #{record.send("#{field}")}".html_safe)
         end
       end
     end
 
     def for_associations(record, field)
-      model =
-          if field == 'logistics_owner_id'
-            'Overseer'
-          elsif field == 'bill_from_id' || field == 'ship_from_id' || field == 'bill_to_id' || field == 'ship_to_id'
-            'Address'
-          else
-            field.split('_id')[0].camelcase
-          end
+      model = case field
+      when 'logistics_owner_id'
+        'Overseer'
+      when 'bill_from_id', 'ship_from_id', 'bill_to_id', 'ship_to_id', 'supplier_bill_from_id', 'supplier_ship_from_id', 'customer_bill_from_id', 'customer_ship_from_id'
+        'Address'
+      else
+        field.split('_id')[0].camelcase
+      end
 
       field_is = model.constantize.find(record.send("#{field}")).to_s
       if record.send("#{field}_was").present?
         field_was = model.constantize.find(record.send("#{field}_was")).to_s
-        @messages.push("#{field.titleize} Changed from #{field_was} to #{field_is}")
+        @messages.push("<b> #{field.titleize} Changed from </b> #{field_was} <b> to </b> #{field_is}".html_safe)
       else
-        @messages.push("#{field.titleize} Set to #{field_is}")
+        @messages.push("<b> #{field.titleize} Set to </b> #{field_is}".html_safe)
       end
     end
 
     def for_date_fields(record, field, product)
       if product.present?
         if record.send("#{field}_was").present?
-          @messages.push("For product #{product}, #{field.titleize} changed from #{record.send("#{field}_was")} to #{record.send("#{field}")}")
+          @messages.push("<b> For product #{product}, #{field.titleize} changed from </b> #{record.send("#{field}_was")} <b> to </b> #{record.send("#{field}")}".html_safe)
         else
-          @messages.push("For product #{product}, #{field.titleize} Set to #{record.send("#{field}")}")
+          @messages.push("<b> For product #{product}, #{field.titleize} Set to </b> #{record.send("#{field}")}".html_safe)
         end
       else
         if record.send("#{field}_was").present?
-          @messages.push("#{field.titleize} Changed from #{record.send("#{field}_was").try(:strftime, "%d-%b-%Y")} to #{record.send("#{field}").try(:strftime, "%d-%b-%Y")}")
+          @messages.push("<b> #{field.titleize} Changed from </b> #{record.send("#{field}_was").try(:strftime, "%d-%b-%Y")} <b> to </b> #{record.send("#{field}").try(:strftime, "%d-%b-%Y")}".html_safe)
         else
-          @messages.push("#{field.titleize} Set to #{record.send("#{field}").try(:strftime, "%d-%b-%Y")}")
+          @messages.push("<b> #{field.titleize} Set to </b> #{record.send("#{field}").try(:strftime, "%d-%b-%Y")}".html_safe)
         end
       end
     end

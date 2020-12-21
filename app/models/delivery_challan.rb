@@ -1,4 +1,8 @@
 class DeliveryChallan < ApplicationRecord
+
+  COMMENTS_CLASS = 'DeliveryChallanComment'
+  
+  include Mixins::HasComments
   include Mixins::CanBeStamped
   include Mixins::HasConvertedCalculations
 
@@ -9,6 +13,7 @@ class DeliveryChallan < ApplicationRecord
   belongs_to :sales_order, required: false
   belongs_to :purchase_order, required: false
   belongs_to :ar_invoice_request, required: false
+  belongs_to :inward_dispatch, required: false
   belongs_to :customer_bill_from, class_name: 'Address', required: false
   belongs_to :customer_ship_from, class_name: 'Address', required: false
   belongs_to :supplier_bill_from, class_name: 'Warehouse', required: false
@@ -19,7 +24,7 @@ class DeliveryChallan < ApplicationRecord
   has_one_attached :customer_request_attachment
   scope :with_includes, -> { includes(:sales_order, :purchase_order, :inquiry, :ar_invoice_request, :created_by, :updated_by) }
 
-  accepts_nested_attributes_for :rows, reject_if: lambda { |attributes| (attributes['quantity'].blank? || attributes['quantity'].to_f < 0) && attributes['id'].blank? }, allow_destroy: true
+  accepts_nested_attributes_for :rows, allow_destroy: true, reject_if: :all_blank
 
   enum reason: {
     'Urgent Delivery of Goods and AR Invoice not ready': 10,
