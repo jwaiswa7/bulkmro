@@ -16,13 +16,13 @@
 <% end %>
 
 
-<div class="col-lg-12 bmro-table-layout">
+<div class="col-lg-12 bmro-table-layout delivery-challan">
   <% content_for :header_row do %>
     <% if is_authorized(:delivery_challan, 'can_create_ar_invoice') %>
-      <th class="sort desktop text-right" width="70px">
+      <th class="no-sort all desktop bmro-selectp text-right dc-checkbox" width="px">
         <div class="custom-control custom-checkbox">
           <input type="checkbox" class="custom-control-input" name="all_inward_dispatches" id="all_inward_dispatches">
-          <label class="custom-control-label" for="all_inward_dispatches">Select All</label>
+          <label class="custom-control-label" for="all_inward_dispatches"></label>
         </div>
       </th>
     <%else %>

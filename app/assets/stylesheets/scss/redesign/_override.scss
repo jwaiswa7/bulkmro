@@ -4605,3 +4605,15 @@ div.nobreak {
 .delivery-challan-product-form .heading label{
   font-weight: bold;
 }
+
+.delivery-challan .table td:nth-child(2) a span{
+  display: none !important;
+}
+
+.delivery-challan thead .custom-control-label {
+  display: none !important;
+}
+
+.delivery-challan .dc-checkbox {
+  width: 2em;
+}

@@ -664,7 +664,7 @@ class Services::Shared::Migrations::AclMigrations < Services::Shared::BaseServic
   def set_acl_for_delivery_challan
     role_name = ['Admin', 'Logistics']
     acl_resources_for_targets = {
-        'delivery_challan': %w(index index_delivery_challans new create next_step preview edit update show relationship_map get_relationship_map_json)
+        'delivery_challan': %w(index index_delivery_challans new create next_step preview edit update show relationship_map get_relationship_map_json can_create_ar_invoice)
     }
     acl_resources_for_targets.each do |key, val|
       val.each do |action_name|
