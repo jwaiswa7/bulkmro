@@ -4,6 +4,12 @@ class Services::Shared::Migrations::AddLatestMeasurementUnits < Services::Shared
     service.loop(nil) do |x|
       unit_code = x.get_column('Unit Code')
       unit_desc = x.get_column('Unit Description')
+      MeasurementUnit.where("DATE(created_at) < ?", Date.new(2020,12,31)).each do |uc|
+        if unit_code == uc.name.to_s
+          uc.name = uc.name.humanize
+          uc.save
+        end
+      end
       MeasurementUnit.create(name: unit_code,description: unit_desc)
     end
   end
