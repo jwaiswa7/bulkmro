@@ -26,7 +26,7 @@
       </div>
       <hr/>
       <div class="col-6 col-md-4">
-        <%= f.association :measurement_unit, wrapper: :custom_multi_select, required: false %>
+        <%= f.association :measurement_unit, collection: MeasurementUnit.new_uom, wrapper: :custom_multi_select, required: false %>
       </div>
       <div class="col-6 col-md-4">
         <%= f.input :moq, label: 'MoQ' %>

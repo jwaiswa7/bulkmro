@@ -141,7 +141,7 @@
                           <%= row.hidden_field :total_selling_price, "data-bind": "", disabled: true %>
                           <%= row.hidden_field :total_selling_price_with_tax, "data-bind": "", disabled: true %>
                           <div class="col-md-2"><%= row.association :lead_time_option, wrapper: :custom_multi_select %></div>
-                          <div class="col-md-2"><%= row.association :measurement_unit, wrapper: :custom_multi_select, required: true %></div>
+                          <div class="col-md-2"><%= row.association :measurement_unit, collection: MeasurementUnit.new_uom, wrapper: :custom_multi_select, required: true %></div>
                           <%= link_to_remove_association row, {class: 'btn btn-danger align-self-center d-none', wrapper_class: 'simple-row', "data-v": "", "data-v-on:click": "dropRow(_index_)"} do %>
                             Hide
                           <% end %>
