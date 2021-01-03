@@ -5,6 +5,8 @@ class MeasurementUnit < ApplicationRecord
 
   pg_search_scope :locate, against: [:name], associated_against: {}, using: { tsearch: { prefix: true } }
 
+  scope :new_uom, -> {where('created_at > ?', '2021-01-01 00:00:00')}
+
   has_many :products
 
   def to_s

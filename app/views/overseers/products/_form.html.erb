@@ -22,7 +22,7 @@
       </div>
       <div class="form-row">
         <div class="col-12 col-md-6">
-          <%= f.association :measurement_unit, include_blank: false, input_html: {class: 'select2-single bmro-form-input bmro-dropdown-icon'} %>
+          <%= f.association :measurement_unit, collection: MeasurementUnit.new_uom, include_blank: false, input_html: {class: 'select2-single bmro-form-input bmro-dropdown-icon'} %>
         </div>
         <div class="col-6 col-md-6">
           <%= f.association :brand, collection: selected_option_or_nil(f, :brand), include_blank: 'Select a brand', input_html: {class: 'select2-ajax bmro-form-input bmro-dropdown-icon', :'data-source' => autocomplete_overseers_brands_path} %>
