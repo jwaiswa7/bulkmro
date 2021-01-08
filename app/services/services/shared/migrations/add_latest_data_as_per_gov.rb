@@ -30,15 +30,14 @@ class Services::Shared::Migrations::AddLatestDataAsPerGov < Services::Shared::Mi
         remote_uid = x.get_column('Internal Key')
         is_active = true
         new_hsn.push(x)
-        TaxCode.create(remote_uid: remote_uid, code: code, description: desc, is_service: is_service, tax_percentage: tax_percentage, is_active: is_active )
+        TaxCode.create(remote_uid: remote_uid, code: code, description: desc, is_service: is_service, tax_percentage: tax_percentage, is_active: is_active)
       else
         existing_match.push(existing_tax_code)
-        existing_tax_code.created_at =  Time.now
+        existing_tax_code.created_at = Time.now
         existing_tax_code.save
       end
     end
     puts "existing_match - #{existing_match.count}"
     puts "new_hsn - #{new_hsn.count}"
   end
-
 end
