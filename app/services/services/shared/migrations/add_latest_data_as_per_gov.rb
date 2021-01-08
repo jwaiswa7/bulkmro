@@ -16,9 +16,11 @@ class Services::Shared::Migrations::AddLatestDataAsPerGov < Services::Shared::Mi
 
   def add_tax_code
     service = Services::Shared::Spreadsheets::CsvImporter.new('new_hsn_from_gov.csv', 'seed_files_3')
+    existing_match = []
+    new_hsn = []
     service.loop(nil) do |x|
       code = x.get_column('Code')
-      existing_tax_code = TaxCode.where(code: code)
+      existing_tax_code = TaxCode.where(code: code).last
       if !existing_tax_code.present?
         desc = x.get_column('Description')
         is_service = false
@@ -27,9 +29,16 @@ class Services::Shared::Migrations::AddLatestDataAsPerGov < Services::Shared::Mi
         is_active = x.get_column('is_active')
         remote_uid = x.get_column('Internal Key')
         is_active = true
-        MeasurementUnit.create(remote_uid: remote_uid, code: code, description: desc, is_service: is_service, tax_percentage: tax_percentage, is_active: is_active )
+        new_hsn.push(x)
+        TaxCode.create(remote_uid: remote_uid, code: code, description: desc, is_service: is_service, tax_percentage: tax_percentage, is_active: is_active )
+      else
+        existing_match.push(existing_tax_code)
+        existing_tax_code.created_at =  Time.now
+        existing_tax_code.save
       end
     end
+    puts "existing_match - #{existing_match.count}"
+    puts "new_hsn - #{new_hsn.count}"
   end
 
 end
