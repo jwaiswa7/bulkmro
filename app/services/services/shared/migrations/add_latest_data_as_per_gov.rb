@@ -26,7 +26,6 @@ class Services::Shared::Migrations::AddLatestDataAsPerGov < Services::Shared::Mi
         is_service = false
         # default to be 18%
         tax_percentage = 18
-        is_active = x.get_column('is_active')
         remote_uid = x.get_column('Internal Key')
         is_active = true
         new_hsn.push(x)
