@@ -159,6 +159,16 @@ body{
     text-transform: capitalize!important;
     box-shadow: none!important;
 }
+.bmro-button .fa-plus-circle,
+.bmro-button-parent button .fa-plus-circle
+{
+  padding: 10px 18px;
+}
+.bmro-button .fa-redo-alt
+{
+  padding: 5px 15px;
+}
+
 .bmro-button:hover{
     background-color: #385372!important;
     color: #FFFFFF!important;
@@ -2139,8 +2149,8 @@ background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAaCAY
     padding-right: 6px;
 }
 .form-row.align-content-stretch{
-    margin-left: 10px;
-    padding-right: 7px;
+    margin-left: 0px;
+    padding-right: 0px;
     margin-top: 15px!important;
 }
 .rim.rim-bottom {
@@ -4228,9 +4238,9 @@ td .media.chat-item{
 .bmro-drop-arr{
     display: block;
     background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAMCAYAAABr5z2BAAAAAXNSR0IArs4c6QAAASNJREFUKBVjYKAQMOo4x+kx/v+9i+E/I9t/RoZ/DP+BLIb//xmAbCD5nxEkxgAU+A+kGRn/g9hA8h+Q+MfEyJzICHKAnnNU8r9//+eA2EQDRqbWK/uW1oANAGnScYqaBrQnkxgDgK7adGnvsgBGoIuYYBrYVXjyGRgYj8L4OGlGxmt8PJwxIM0gNXAXgDimXgkSP378PAP0rzSIjw4YGRjfszGymp7dt/AuTA7uApDA6W0LXjCysAQDjf0JUwCjgc7+y8DMEIasGSTHDFMAo1/evfRUQknvOdAVfjAxEM3ExFh0ee+y5chiIDaGASDBl/cvnxdT0hMHMk1BfKB/51/et6wKxEYHKF5AloQFKlDzcRl2YaJiB1k/mA0KVBDGkKCmAABUx1k+lWB0mwAAAABJRU5ErkJggg==');
-    background-size: 14px;
+    background-size: 11px;
     background-repeat: no-repeat;
-    background-position: right 1px bottom 8px;
+    background-position: right 1px bottom 11px;
 }
 .bmro-drop-arr::after{
     display: none;
@@ -4577,6 +4587,9 @@ td .media.chat-item{
     //overflow-y: scroll;
     overflow-x: hidden;
 }
+.bmro-bg .modal-body{
+  margin-right: 10px;
+}
 
 .bmro-container div.dataTables_wrapper div.dataTables_info{
     padding: .85em 0;
@@ -4588,6 +4601,7 @@ td .media.chat-item{
 
 .nested_payment_request_transactions .remove_nested_fields_link{
     margin: 35px 0;
+      position: relative;
 }
 
 .nested_fields .remove_nested_fields_link .form-group{
@@ -4618,7 +4632,7 @@ table.bmro-rfq-table .custom-control-label{
 }
 
 .bmro-card .card-body{
-    padding: 0.1rem 1rem 1rem;
+    //padding: 0.1rem 1rem 1rem;
 }
 
 .card .card-body img{
@@ -4635,7 +4649,7 @@ a.icon-title{
 }
 
 table.table.dataTable.table-bordered th{
-    padding: 10px 25px;
+    padding: 18px 25px;
 }
 
 .bmro-form-heading.btn-lg{
