@@ -8,6 +8,7 @@ class TaxCode < ApplicationRecord
   validates_presence_of :code, :remote_uid, :tax_percentage, :description
   validate :code_validation
   scope :with_includes, -> { includes(:products) }
+  scope :latest_taxcode, -> {where('created_at > ?', '2021-01-01 00:00:00')}
   after_initialize :set_defaults, if: :new_record?
   def set_defaults
     self.is_service ||= false
