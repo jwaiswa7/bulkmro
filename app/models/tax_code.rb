@@ -20,11 +20,13 @@ class TaxCode < ApplicationRecord
   end
 
   def code_validation
-    if is_service.present? && is_service && (code.length < 6 || code.length > 6)
-      errors.add(:code, 'must be 6 digit')
-    elsif !is_service.present? && !is_service && (code.length < 8 || code.length > 8)
-      errors.add(:code, 'must be 8 digit')
-    end
+    true
+    # below validation removed due to new gst code upload from 2021
+    # if is_service.present? && is_service && (code.length < 6 || code.length > 6)
+    #   errors.add(:code, 'must be 6 digit')
+    # elsif !is_service.present? && !is_service && (code.length < 8 || code.length > 8)
+    #   errors.add(:code, 'must be 8 digit')
+    # end
   end
 
   def to_s
