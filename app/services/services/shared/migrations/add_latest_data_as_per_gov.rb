@@ -39,4 +39,12 @@ class Services::Shared::Migrations::AddLatestDataAsPerGov < Services::Shared::Mi
     puts "existing_match - #{existing_match.count}"
     puts "new_hsn - #{new_hsn.count}"
   end
+
+  def update_chapter_code
+    tax_codes_with_chapter_nil = TaxCode.where(chapter: nil)
+    tax_codes_with_chapter_nil.each do |tax_code|
+      tax_code.chapter = tax_code.code.slice(0..3)
+      tax_code.save
+    end
+  end
 end
