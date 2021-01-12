@@ -47,4 +47,25 @@ class Services::Shared::Migrations::AddLatestDataAsPerGov < Services::Shared::Mi
       tax_code.save
     end
   end
+
+
+  def update_existing_hsn
+    service = Services::Shared::Spreadsheets::CsvImporter.new('existing_hsn_update.csv', 'seed_files_3')
+    existing_match = []
+    no_match = []
+    service.loop(nil) do |x|
+      code = x.get_column('SPRINT Code')
+      existing_tax_code = TaxCode.where(code: code).last
+      if existing_tax_code.present?
+        existing_match.push(existing_tax_code)
+        existing_tax_code.created_at = Time.now
+        existing_tax_code.save
+      else
+        no_match.push(code)
+      end
+    end
+    puts "existing_match - #{existing_match.count}"
+    puts "no_match - #{no_match.count}"
+    puts no_match.inspect
+  end
 end
