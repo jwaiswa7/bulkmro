@@ -211,9 +211,7 @@
             <th class="no-sort">
               <span data-toggle="tooltip" title="Subtotal">Subtotal</span>
             </th>
-            <th class="no-sort">
-              <span data-toggle="tooltip" title="Tax Rate">Tax Rate</span>
-            </th>
+
             <% if (@metadata[:PopTaxRate].to_s.include? "IG") || (@metadata[:ItemLine][0][:PopTaxRate].to_s.include? "IG") %>
               <th class="no-sort">
                 <span data-toggle="tooltip" title="Tax Rate">IGST Rate</span>
@@ -222,6 +220,9 @@
                 <span data-toggle="tooltip" title="Tax Rate">IGST Amt</span>
               </th>
             <% else %>
+              <th class="no-sort">
+                <span data-toggle="tooltip" title="Tax Rate">Tax Rate</span>
+              </th>
               <th class="no-sort">
                 <span data-toggle="tooltip" title="Tax Rate">CGST Rate</span>
               </th>
@@ -277,9 +278,7 @@
               <td align="right" valign="top">
                 <span><%= format_currency(item.total_selling_price, precision: 2, symbol: nil) %></span>
               </td>
-              <td>
-                <span><%= item.tax_rate.round(0) %>%</span>
-              </td>
+
               <% if (@metadata[:PoTaxRate].to_s.include? "IG") || (item.metadata['PopTaxRate'].to_s.include? "IG") %>
                 <td>
                   <span><%= item.tax_rate.round(0) %>%</span>
@@ -288,6 +287,9 @@
                   <span><%= format_currency(item.total_tax, precision: 2, symbol: nil) %></span>
                 </td>
               <% else %>
+                <td>
+                  <span><%= item.tax_rate.round(0) %>%</span>
+                </td>
                 <td>
                   <span><%= (item.tax_rate.to_f / 2) %>%</span></td>
                 <td align="right" valign="top">
