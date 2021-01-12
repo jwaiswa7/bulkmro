@@ -141,10 +141,10 @@ body{
 .bmro-nav-main div a.btn:hover{
     background-color: #f48500!important;
     color: #FFFFFF!important;
-    border: 2px solid #f48500;
+    border: 2px solid #f48500!important;
 }
 .bmro-button{
-    padding: 8px 10px!important;
+    padding: 8px 10px 7px!important;
     border: 2px solid #2C4159!important;
     border-radius: 2px!important;
     background-color: #2C4159;
@@ -220,6 +220,11 @@ body{
     width: 100%;
     margin-top: 30px;
 }
+.bmro-nav-main div a.btn{
+    padding: 10px 5px 7px;
+    margin-top: 0px;
+}
+
 .bmro-width-fl{
     width: 100%;
     float: left;
@@ -2611,9 +2616,9 @@ table.fixedHeader-floating{
 .fa-times{
     background-image:url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAaCAYAAACpSkzOAAAAAXNSR0IArs4c6QAAAq5JREFUSA29lltIFFEYx/+r+xhFQV5yxBAKQugGUnSlsMKHLLDElxKhBCN9qzDoKUiotwoFe4itHsILRGVCmBFdKBa6YkGluDjm5kNQ9Ji7zW/iLCud2Urb/WB3zpzz/b//fNeZ0LWeO9UJqSuZTDrKgoRCITdPagpDUl5W4jhFBVmgkdz4lDMam+gK4wkkC+bPywoRRkfGXMfzKjeSM6Lw3/gzNv5JtwYfKfpyWPGpL/ISrMLFC1W5ukK7qzZpaemSP5rJSPRjelodl3vUN3BfiURSy8pLtbFypW80NhFX981B9d6+p9rqbTrSuF/h/PxAwkAiSI6fPq/oq3eqWF6utpYGlTnFMwzF3Em1X4iop39IY9767KnWQLLAHOEJJPV7d6qj/cRvJDBCzFn9nh2+LpggsRKRE8KFJ80HapWXF5I7+VleK6TssGaPs+aD+3xdMGBtYiUi8eSEcBmSw8fOqP1ixCeDhDV7hgxdMGBtYs0R1UXiTU5KvIbevG6NBoaepGywrt6+QZwh6IIBaxMrESVsqgsQ5dx2tMHHGzJI2OPMSFlJkR5HX5vbGVdr6GZo/ONNOnE61OpRUcEi0SdGTE5MuNg3nqV7BYZGtonVIzr+w+i46BNkIj6lh89e+DnBMD9Cxx5nCLpgwNrESsRYodpoRirJKS7UpXMnUzkxOWOPM3TQBQPWJlYiZhdjZfj9qDqv9qXI0uPP2pB0Xun1dcEEzT1rjngiZhdj5fqNu3rz9mPGEcQDVa5a4WNs3rAXinT3J7euX2t98dmGKiWMkHhyQrgyDdWv377rwdPnCvQIY0zj1kP1qtm1JfWaMH1CZdbVVP2f1wRkCHFvaaz7dTPLf2sxzNJWRljOiMJembp8EmV8nDkceraZh27Yc6mJ7y4+ieZgLxAKCRw/AcCsQBEzelE6AAAAAElFTkSuQmCC');
      border: none;
-    padding: 13px 13px;
+    padding: 7px 13px;
     background-repeat: no-repeat;
-    float: left;
+    //float: left;
 }
 .fa-download{
     background-image:url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAaCAYAAACpSkzOAAAAAXNSR0IArs4c6QAAAchJREFUSA1jXLJ6m+c/BoZZ////l2GgAWBkZHzCxMCQxgKyREleWkZGQowG1jAwPHnxSubew6ezWEA+AVnCz8dDE4tAht598EQG6Cv6gMFrUUpJKwMIkwoGr49I9QlMPdE++vzlK8Pv339g+sBskBixgIUYhT9+/mLIq+1hEBESZPj1+xdYS1XHNIY3794zTO+oZOBgZyNoDFEWgQyyMzdimLdyM9zA+4+eMySF+xJlCUgT0UGXGOELNhhmE8gSkBixgCgfwQxDNhiZDZPHR5NkEcggUi2AWY7Voi9fvzMcPX2R4ecvSMTDFBOi2dnZGaxN9Bh4uDkxlGK1qLR5EsOVm3cxFBMjoKOuDEyJ5RhKsVoEssTOwpAhLsQLQwM+gUVrtjEcOnEeqxKsFoFUCvDxMqgry8PLtTk91Qzd05cwbNp1iOHw+llYDQPpwQVwWgTTYG9pCGMy6GurwtmkMrBaxM7GynDx6m2wD2AGgnwDA8hsmBiIBukB6cUGsFqUEO7DsGDlFoaHu55j04NTDGQJSC82gNWimCBPBhCmJiC6CKLUUrpZxAJqd4GaRJS6GJd+oNkMIDtYgF5KA7W7QE0iXIopEYc1IAG54YV6/Jq5aQAAAABJRU5ErkJggg==');
@@ -2940,7 +2945,7 @@ background-position: center;
    margin-right: 7px;
 }
 .bmro-instruction-heading{
-    width: 48.3%;
+    width: 53.3%;
     margin-top: 72px;
     background-color: #DFE5F0;
     border: 1px solid #E9EEF2;
@@ -3533,7 +3538,7 @@ background-color: #D4D8DF!important;
 }
 .bmro-set-size{
     margin-top: 2px;
-    padding: 5px 10px !important;
+    padding: 7px 10px !important;
 }
 .bmro-sales-order-th{
     width: 64px!important;
@@ -3773,7 +3778,7 @@ table.table.dataTable{
 .bmro-tras-border{
     background-size: 17px;
     padding: 14px;
-    margin-top: 7px;
+    margin-top: 3px;
     border: 2px solid #2c4159;
     background-position: center;
 }
@@ -3785,7 +3790,7 @@ table.table.dataTable{
     padding-right: 3px;
 }
 .bmro-ive-pen i{
-    padding: 10px 19px;
+    padding: 9.5px 19px;
 }
 .bmro-aparent-width{
     min-width: 88px;
@@ -3847,7 +3852,7 @@ td .icon-title.btn{
 }
 .bmro-new-padding{
     padding-bottom: 40px;
-    height: 60vh;
+    //height: 60vh;
 }
 .bmro-ld{
    color: #fff!important;    
@@ -4520,7 +4525,7 @@ td .media.chat-item{
 
 .modal-body{
   /* 100% = dialog height, 120px = header + footer */
-  max-height: calc(100% - 120px);
+  max-height: calc(100% - 50px);
   overflow-y: scroll;
   margin-bottom: 30px;
 }
@@ -4584,7 +4589,7 @@ td .media.chat-item{
 .bmro-card .form-row, 
 .custom-select,
 .bmro-bg .modal-body{
-    //overflow-y: scroll;
+    overflow: auto;
     overflow-x: hidden;
 }
 .bmro-bg .modal-body{
@@ -4605,13 +4610,15 @@ td .media.chat-item{
 }
 
 .nested_fields .remove_nested_fields_link .form-group{
-    height: 50px;
+    height: 37px;
     position: relative;
+   padding: 15px;
+  margin-top: 15px;   
 }
 
 .nested_fields .remove_nested_fields_link .fa-times{
-    position: absolute;
-    bottom: 0;
+    position: relative;
+    margin: 30px 0 0 ;
 }
 
 .col-3{
@@ -4631,8 +4638,8 @@ table.bmro-rfq-table .custom-control-label{
     top: 0;
 }
 
-.bmro-card .card-body{
-    //padding: 0.1rem 1rem 1rem;
+.open-modal-form .card.bmro-card .card-body{
+    padding: 1rem 0.5rem 0.5rem;
 }
 
 .card .card-body img{
@@ -4669,7 +4676,7 @@ table.table.dataTable.table-bordered th{
 }
 
 a.ml-md-1.btn.bmro-button.btn-success{
-    margin: 13px 0    
+    margin: 1px 0    
 }
 
 #company_bank_bank_id{ 
