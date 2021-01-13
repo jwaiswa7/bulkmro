@@ -220,9 +220,6 @@
             <th class="no-sort">
               <span data-toggle="tooltip" title="Subtotal">Subtotal</span>
             </th>
-            <th class="no-sort">
-              <span data-toggle="tooltip" title="Tax Rate">Tax Rate</span>
-            </th>
             <% if @sales_invoice.sales_order.sales_quote.tax_summary.strip == '0' ||
                 (@sales_invoice.sales_order.sales_quote.tax_summary.to_s.include? "IGST") %>
               <th class="no-sort">
@@ -232,6 +229,9 @@
                 <span data-toggle="tooltip" title="Tax Rate">IGST Amt</span>
               </th>
             <% else %>
+              <th class="no-sort">
+                <span data-toggle="tooltip" title="Tax Rate">Tax Rate</span>
+              </th>
               <th class="no-sort">
                 <span data-toggle="tooltip" title="Tax Rate">CGST Rate</span>
               </th>
@@ -288,9 +288,6 @@
               <td>
                 <span><%= format_currency(item.metadata['base_row_total'], precision: 2, symbol: nil) %></span>
               </td>
-              <td>
-                <span><%= item.tax_rate.round(0) %>%</span>
-              </td>
               <% if @sales_invoice.sales_order.sales_quote.tax_summary.strip == '0' ||
                   (@sales_invoice.sales_order.sales_quote.tax_summary.to_s.include? "IGST") %>
                 <td>
@@ -298,17 +295,16 @@
                 </td>
                 <td>
                   <span><%= format_currency(item.metadata['base_tax_amount'], precision: 2, symbol: nil) %></span>
-                  <%# igst_total_tax = item.metadata['base_row_total'].to_f * (item.metadata['base_tax_amount']/100).to_f %>
-<!--                  <span><%#= number_to_currency(igst_total_tax, precision: 2, unit: '') %></span>-->
                 </td>
               <% else %>
+                <td>
+                  <span><%= item.tax_rate.round(0) %>%</span>
+                </td>
                 <td>
                   <span><%= (item.tax_rate.round(0) / 2.0).to_f.round(2) %>%</span>
                 </td>
                 <td>
                   <span><%= format_currency((item.metadata['base_tax_amount'].to_f / 2), precision: 2, symbol: nil) %></span>
-                  <%# cgst_total_tax = item.metadata['base_row_total'].to_f * ((item.tax_rate.round(0) / 2.0)/100).to_f %>
-<!--                  <span><%#= number_to_currency(cgst_total_tax, precision: 2, unit: '') %></span>-->
                 </td>
                 <td>
                   <span><%= (item.tax_rate.round(0) / 2.0).to_f.round(2) %>%</span>
@@ -316,8 +312,6 @@
 
                 <td align="right" valign="top">
                   <span><%= format_currency((item.metadata['base_tax_amount'].to_f / 2), precision: 2, symbol: nil) %></span>
-                  <%# sgst_total_tax = item.metadata['base_row_total'].to_f * ((item.tax_rate.round(0) / 2.0)/100).to_f %>
-<!--                  <span><%#= number_to_currency(sgst_total_tax, precision: 2, unit: '') %></span>-->
                 </td>
                 </td>
               <% end %>
@@ -350,10 +344,10 @@
             Total Tax Amt
             <strong class="d-block bmro-summary-heading"><%= format_currency(@sales_invoice.metadata['base_tax_amount'].to_f, precision: 2, symbol: nil) %></strong>
           </div>
-          <% if @sales_invoice.company.check_company_total_amount(@sales_invoice) %>
+          <% if @sales_invoice.company.check_company_total_amount(@sales_invoice) && (@sales_invoice.metadata['tcs_amount'].present? && @sales_invoice.metadata['tcs_amount'].to_f != 0.0) %>
             <div class="col-6 col-md-2">
               TCS Amt @0.075%
-              <strong class="d-block bmro-summary-heading"><%= format_currency(@sales_invoice.calculate_tcs_amount.to_f, precision: 2, symbol: nil) %></strong>
+              <strong class="d-block bmro-summary-heading"><%= format_currency(@sales_invoice.metadata['tcs_amount'].to_f, precision: 2, symbol: nil) %></strong>
             </div>
           <% end %>
           <div class="col-6 col-md-2">

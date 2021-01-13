@@ -45,13 +45,17 @@ const modalSubmit = (modalId, buttonClassName) => {
             data: datastring,
             dataType: "json",
             success: function success(data) {
-                $(modalId).modal('hide');
                 if (data.success == 0) {
+                	$(modalId).modal('hide');
                     alert(data.message);
                 } else {
                     if (data.hasOwnProperty("url") && data.url != null) {
-                        window.location = data.url
+                    	if (data.notice != undefined) {
+                    		$(formSelector).find('.success').empty().html("<div class='p-1'>" + data.notice + "</div>");
+                    	}
+                        setTimeout(function(){ $(modalId).modal('hide'); window.location = data.url }, 1500);
                     } else {
+                    	$(modalId).modal('hide');
                         window.location.reload();
                     }
                 }

@@ -15,7 +15,7 @@ class Services::Shared::Migrations::AddCompanyTotalAmountFinancialYearwise < Ser
           record = company.company_transactions_amounts.build(financial_year: Company.current_financial_year, total_amount: sales_orders_total, amount_reached_to_date: tcs_applied_from)
           record.save
         rescue Exception => e
-          puts "sales_order company - #{record.company.to_s}---------#{e.message}"
+          puts "sales_order company - #{record.company}---------#{e.message}"
         end
       end
     end
@@ -36,7 +36,7 @@ class Services::Shared::Migrations::AddCompanyTotalAmountFinancialYearwise < Ser
           company_total_amount_record.total_amount = purchase_orders_total
           company_total_amount_record.save
         rescue Exception => e
-          puts "PO Company - #{company_total_amount_record.company.to_s}---------#{e.message}"
+          puts "PO Company - #{company_total_amount_record.company}---------#{e.message}"
         end
       end
     end

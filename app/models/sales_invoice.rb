@@ -22,8 +22,8 @@ class SalesInvoice < ApplicationRecord
   has_many :packages, class_name: 'SalesPackage', inverse_of: :sales_invoice
   has_many :rows, class_name: 'SalesInvoiceRow', inverse_of: :sales_invoice
   has_many :email_messages
-  has_many :sales_receipts
   has_many :sales_receipt_rows
+  has_many :sales_receipts, through: :sales_receipt_rows
   has_many :pod_rows, dependent: :destroy
   accepts_nested_attributes_for :pod_rows, reject_if: lambda { |attributes|
     if attributes[:id].present?
@@ -399,7 +399,8 @@ class SalesInvoice < ApplicationRecord
 
   def calculate_tcs_amount
     if self.company.check_company_total_amount(self)
-      ((self.metadata['base_subtotal_incl_tax'].to_f / self.metadata['base_to_order_rate'].to_f) * (0.075 / 100))
+      self.metadata['tcs_amount'].present? ? self.metadata['tcs_amount'].to_f : 0.0
+      # ((self.metadata['base_subtotal_incl_tax'].to_f / self.metadata['base_to_order_rate'].to_f) * (0.075 / 100))
     end
   end
 end

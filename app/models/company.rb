@@ -9,7 +9,7 @@ class Company < ApplicationRecord
 
   update_index('companies#company') { self }
   update_index('contacts#contact') { self.contacts }
-  pg_search_scope :locate, against: [:name], associated_against: {}, using: {tsearch: {prefix: true}}
+  pg_search_scope :locate, against: [:name], associated_against: {}, using: { tsearch: { prefix: true } }
 
   attr_accessor :account_name, :acc_type
   belongs_to :account
@@ -68,32 +68,31 @@ class Company < ApplicationRecord
   has_one_attached :logo
   belongs_to :company_creation_request, optional: true
 
-  scope :with_invoices, -> { includes(:invoices).where.not(sales_invoices: {id: nil}) }
-
+  scope :with_invoices, -> { includes(:invoices).where.not(sales_invoices: { id: nil }) }
 
   enum company_type: {
-      proprietorship: 10,
-      private_limited: 20,
-      contractor: 30,
-      trust: 40,
-      dealer_company: 50,
-      distributor: 60,
-      trader: 70,
-      manufacturing_company: 80,
-      wholesaler_stockist: 90,
-      service_provider: 100,
-      employee: 110
+    proprietorship: 10,
+    private_limited: 20,
+    contractor: 30,
+    trust: 40,
+    dealer_company: 50,
+    distributor: 60,
+    trader: 70,
+    manufacturing_company: 80,
+    wholesaler_stockist: 90,
+    service_provider: 100,
+    employee: 110
   }, _prefix: true
 
   enum priority: {
-      non_strategic: 10,
-      strategic: 20
+    non_strategic: 10,
+    strategic: 20
   }, _prefix: true
 
   enum nature_of_business: {
-      trading: 10,
-      manufacturer: 20,
-      dealer: 30
+    trading: 10,
+    manufacturer: 20,
+    dealer: 30
   }, _prefix: true
 
   delegate :mobile, :email, :telephone, to: :default_contact, allow_nil: true
@@ -105,7 +104,7 @@ class Company < ApplicationRecord
   scope :acts_as_customer, -> { left_outer_joins(:account).where('accounts.account_type = ?', Account.account_types[:is_customer]).order(name: :asc) }
   scope :is_customer_active, -> { Company.acts_as_customer.where(is_active: true) }
   validates_presence_of :name
-  validates :credit_limit, numericality: {greater_than_or_equal_to: 0}, allow_nil: true
+  validates :credit_limit, numericality: { greater_than_or_equal_to: 0 }, allow_nil: true
   validates_presence_of :pan
   validates_uniqueness_of :remote_uid, on: :update, allow_nil: true
   validate :validate_pan?
@@ -273,7 +272,7 @@ class Company < ApplicationRecord
 
   def total_open_inquiries
     Rails.cache.fetch([self, 'total_open_inquiries']) do
-      Inquiry.left_outer_joins(:sales_quotes).where('inquiries.company_id = ? AND inquiries.status NOT IN (?,?)', self.id, 9, 10).where(sales_quotes: {id: nil}).size
+      Inquiry.left_outer_joins(:sales_quotes).where('inquiries.company_id = ? AND inquiries.status NOT IN (?,?)', self.id, 9, 10).where(sales_quotes: { id: nil }).size
     end
   end
 
@@ -291,8 +290,8 @@ class Company < ApplicationRecord
         end
       end
       {
-          open_quotes: open_quotes,
-          total_value: total_value
+        open_quotes: open_quotes,
+        total_value: total_value
       }
     end
   end
@@ -315,10 +314,10 @@ class Company < ApplicationRecord
       end
 
       {
-          confirmed_orders: confirmed_orders,
-          confirmed_orders_total_value: confirmed_orders_total_value,
-          confirmed_invoices: confirmed_invoices,
-          confirmed_invoices_total_value: confirmed_invoices_total_value
+        confirmed_orders: confirmed_orders,
+        confirmed_orders_total_value: confirmed_orders_total_value,
+        confirmed_invoices: confirmed_invoices,
+        confirmed_invoices_total_value: confirmed_invoices_total_value
       }
     end
   end
@@ -338,7 +337,12 @@ class Company < ApplicationRecord
 
   def self.current_financial_year_end
     current_date = Date.today
-    current_year = current_date.year + 1
+    current_month = current_date.month.to_i
+    if current_month >= 4
+      current_year = current_date.year + 1
+    else
+      current_year = current_date.year
+    end
     financial_year_end = Date.new(current_year, 03, 31)
     financial_year_end
   end
@@ -348,12 +352,17 @@ class Company < ApplicationRecord
   end
 
   def check_company_total_amount(record)
-    company_so_amount = self.company_transactions_amounts.where(financial_year: Company.current_financial_year).last
+    company_amount = self.company_transactions_amounts.where(financial_year: Company.current_financial_year).last
     tcs_applied_from = Date.new(2020, 10, 01).beginning_of_day
-    if company_so_amount.present? && tcs_applied_from <= record.created_at
-      company_so_amount.total_amount.to_f > 5000000.0
+    if company_amount.present? && tcs_applied_from <= record.created_at
+      company_amount.total_amount.to_f > 5000000.0
     else
       false
     end
+  end
+
+  def get_company_total_amount
+    company_amount = self.company_transactions_amounts.where(financial_year: Company.current_financial_year).last
+    company_amount.total_amount.to_f if company_amount.present?
   end
 end
