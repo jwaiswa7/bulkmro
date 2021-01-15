@@ -310,7 +310,6 @@ class PurchaseOrder < ApplicationRecord
     self.po_request.present? ? self.po_request.rows.maximum(:lead_time).strftime('%d-%b-%Y') : Date.parse(self.metadata['PoDate']).strftime('%d-%b-%Y')
   end
 
-
   def get_freight
     product_ids = Product.where(sku: Settings.product_specific.freight).last.id
     if product_ids.present?
@@ -321,7 +320,20 @@ class PurchaseOrder < ApplicationRecord
       end
     end
   end
+
   def supplier_contact
      self.po_request.contact_phone if self.po_request.present? && self.po_request.contact_phone.present?
+  end
+
+  def calculate_tcs_amount
+    ((self.calculated_total_with_tax_for_tcs_applicable.to_f) * (0.075 / 100))
+  end
+
+  def calculated_total_with_tax_with_or_without_tcs
+    if self.company.check_company_total_amount(self)
+      calculated_total_with_tax_for_tcs_applicable + calculate_tcs_amount
+    else
+      calculated_total_with_tax
+    end
   end
 end

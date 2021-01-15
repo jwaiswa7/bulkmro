@@ -26,10 +26,13 @@ class Services::Overseers::PurchaseOrders::CancelPurchaseOrder < Services::Share
   def purchase_order_cancel(purchase_order, purchase_order_params)
     purchase_order.comments.build(message: "#{purchase_order_params['comments_attributes']['0']['message']}", created_by_id: purchase_order_params['created_by_id'])
     purchase_order.status = purchase_order_params['status']
+    purchase_order.po_request.status = 'Cancelled'
     purchase_order.save
-    if purchase_order.po_request.present?
-      purchase_order.po_request.status = 'Cancelled'
-      purchase_order.po_request.save!
+    purchase_order.po_request.save!
+    company = purchase_order.company
+    if company
+      company_po_amount = company.company_transactions_amounts.where(financial_year: Company.current_financial_year).last
+      company_po_amount.decrement_total_amount(purchase_order.calculated_total_with_tax_with_or_without_tcs) if company_po_amount.present?
     end
     { status: 'success', message: 'Purchase Order Cancelled Successfully' }
   end

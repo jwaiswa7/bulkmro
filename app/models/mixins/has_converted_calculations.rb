@@ -13,6 +13,23 @@ module Mixins::HasConvertedCalculations
     def calculated_total_with_tax
       rows.map { |row| row.total_selling_price_with_tax }.compact.sum.round(2)
     end
+
+    def calculated_total_with_tax_for_tcs_applicable
+      rows.map { |row| row.product.tcs_applicable ? row.total_selling_price_with_tax : 0 }.compact.sum.round(2)
+    end
+    
+    def calculated_total_for_tcs_without_service
+      rows.map { |row| row.total_selling_price_with_tax_tcs_applicable }.compact.sum.round(2)
+    end
+
+    def tcs_amount
+      (calculated_total_for_tcs_without_service.to_f * (0.075 / 100))
+    end
+
+    def converted_total_tax_with_tcs
+      (converted_total_with_tax.to_f + tcs_amount.to_f)
+    end
+
     def calculated_total_margin
       rows.map { |row| row.total_margin }.compact.sum.round(2)
     end
