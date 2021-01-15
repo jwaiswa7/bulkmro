@@ -352,17 +352,12 @@ class Company < ApplicationRecord
   end
 
   def check_company_total_amount(record)
-    company_amount = self.company_transactions_amounts.where(financial_year: Company.current_financial_year).last
+    company_so_amount = self.company_transactions_amounts.where(financial_year: Company.current_financial_year).last
     tcs_applied_from = Date.new(2020, 10, 01).beginning_of_day
-    if company_amount.present? && tcs_applied_from <= record.created_at
-      company_amount.total_amount.to_f > 5000000.0
+    if company_so_amount.present? && tcs_applied_from <= record.created_at
+      company_so_amount.total_amount.to_f > 5000000.0
     else
       false
     end
-  end
-
-  def get_company_total_amount
-    company_amount = self.company_transactions_amounts.where(financial_year: Company.current_financial_year).last
-    company_amount.total_amount.to_f if company_amount.present?
   end
 end

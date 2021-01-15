@@ -30,6 +30,7 @@ class SalesOrderRow < ApplicationRecord
   validates_uniqueness_of :sales_quote_row_id, scope: :sales_order_id
 
   after_initialize :set_defaults, if: :new_record?
+
   def set_defaults
     self.quantity ||= maximum_quantity if sales_quote_row.present?
   end
@@ -64,6 +65,12 @@ class SalesOrderRow < ApplicationRecord
 
   def total_selling_price_with_tax
     sales_quote_row.unit_selling_price_with_tax * self.quantity if sales_quote_row.present? && sales_quote_row.unit_selling_price.present?
+  end
+
+  def total_selling_price_with_tax_tcs_applicable
+    if sales_quote_row.product.tcs_applicable?
+      sales_quote_row.unit_selling_price_with_tax * self.quantity if sales_quote_row.present? && sales_quote_row.unit_selling_price.present?
+    end
   end
 
   def total_tax

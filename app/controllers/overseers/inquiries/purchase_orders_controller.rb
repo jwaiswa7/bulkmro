@@ -65,8 +65,6 @@ class Overseers::Inquiries::PurchaseOrdersController < Overseers::Inquiries::Bas
       end
     end
 
-
-
     def set_purchase_order
       @purchase_order = @inquiry.purchase_orders.find(params[:id])
     end

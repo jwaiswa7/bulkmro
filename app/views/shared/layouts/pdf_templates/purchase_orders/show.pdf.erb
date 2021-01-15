@@ -300,6 +300,35 @@
                   </td>
                 </tr>
               <% end %>
+              <% company = locals[:purchase_order].company %>
+              <% if company.check_company_total_amount(locals[:purchase_order]) %>
+                <tr class="pdf-table-total-row-tcs">
+                  <td align="center" valign="top"><span>&nbsp;</span></td>
+                  <td align="center" valign="top"><span><b><span>TCS Amt @0.075%</span></b></span></td>
+                  <td align="center" valign="top"><span></span></td>
+                  <td align="center" valign="top"><span></span></td>
+                  <td align="center" valign="top"><span></span></td>
+                  <td align="center" valign="top"><span></span></td>
+                  <td align="center" valign="top"><span></span></td>
+                  <td align="center" valign="top"><span></span></td>
+                  <td align="center" valign="top"><span></span></td>
+                  <td align="right" style="text-align: right;" valign="top"><b><span></span></b></td>
+                  <td align="center" valign="top"><span></span></td>
+                  <% if (locals[:metadata][:PoTaxRate].to_s.include? "IG") || (locals[:metadata][:ItemLine][0][:PopTaxRate].to_s.include? "IG") %>
+                    <td align="center" valign="top"><span></span></td>
+                    <td align="right" style="text-align: right;" valign="top"><b><span></span></b>
+                    </td>
+                  <% else %>
+                    <td align="center" valign="top"><span></span></td>
+                    <td align="right" style="text-align: right;" valign="top"><b><span></span></b></td>
+                    <td align="center" style="text-align: right;" valign="top"><span></span></td>
+                    <td align="right" style="text-align: right;" valign="top"><b><span></span></b></td>
+                  <% end %>
+                  <td align="right" style="font-size: 9px;text-align: right;border-bottom-right-radius: 5px;" valign="top">
+                    <b><span><%= format_currency(locals[:purchase_order].calculate_tcs_amount, precision: 2, symbol: '') %></span></b>
+                  </td>
+                </tr>
+              <% end %>
               <tr class="pdf-table-total-row">
                 <td align="center" valign="top">
                   <span></span>
