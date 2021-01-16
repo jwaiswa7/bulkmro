@@ -116,7 +116,7 @@ class SalesQuote < ApplicationRecord
 
   def calculate_tcs_amount
     company = self.company
-    if company.check_company_so_total_amount(self)
+    if company.check_company_total_amount(self)
       ((self.converted_total_with_tax.to_f) * (0.075 / 100))
     end
   end
