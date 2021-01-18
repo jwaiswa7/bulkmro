@@ -17,7 +17,7 @@ class Services::Shared::Migrations::AddLatestDataAsPerGov < Services::Shared::Mi
 
   # to upload new hsn, new_hsn_from_gov.csv should be run from below function
   # new_sac_code.csv
-  #remaining_hsn_codes.csv
+  # remaining_hsn_codes.csv
   def add_tax_code
     service = Services::Shared::Spreadsheets::CsvImporter.new('remaining_hsn_codes.csv', 'seed_files_3')
     existing_match = []
