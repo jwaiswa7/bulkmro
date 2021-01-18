@@ -373,16 +373,9 @@
                     <b><span><%= format_currency((record.converted_total_tax / 2), precision: 2, symbol: '') %></span></b>
                   </td>
                 <% end %>
-                <% if record.company.check_company_total_amount(record) %>
-                  <td align="right" valign="top">
-                    <% total_with_tcs = (record.converted_total_with_tax) + record.calculate_tcs_amount %>
-                    <b><span><%= number_to_currency(total_with_tcs, precision: 2, unit: '') %></span></b>
-                  </td>
-                <% else %>
-                  <td align="right" valign="top">
-                    <b><span><%= number_to_currency(record.converted_total_with_tax, precision: 2, unit: '') %></span></b>
-                  </td>
-                <% end %>
+                <td align="right" style="font-size: 9px;text-align: right;border-bottom-right-radius: 5px;" valign="top">
+                  <b><span><%= format_currency(record.converted_total_tax_with_tcs, precision: 2, symbol: '') %></span></b>
+                </td>
               </tr>
 
               </tbody>
