@@ -16,10 +16,11 @@ class Services::Shared::Migrations::AddLatestDataAsPerGov < Services::Shared::Mi
 
 
   # to upload new hsn, new_hsn_from_gov.csv should be run from below function
-  # new_sac_code.csv
+  # new_sac_codes.csv
   # remaining_hsn_codes.csv
-  def add_tax_code
-    service = Services::Shared::Spreadsheets::CsvImporter.new('remaining_hsn_codes.csv', 'seed_files_3')
+  # new_hsn_codes.csv
+  def add_tax_code(sheet)
+    service = Services::Shared::Spreadsheets::CsvImporter.new(sheet, 'seed_files_3')
     existing_match = []
     new_hsn = []
     service.loop(nil) do |x|
@@ -36,6 +37,13 @@ class Services::Shared::Migrations::AddLatestDataAsPerGov < Services::Shared::Mi
         TaxCode.create(remote_uid: remote_uid, code: code, description: desc, is_service: is_service, tax_percentage: tax_percentage, is_active: is_active)
       else
         existing_match.push(existing_tax_code)
+        existing_tax_code.description = x.get_column('Description')
+        existing_tax_code.is_service = false
+        # # default to be 18%
+        existing_tax_code.tax_percentage = 18
+        existing_tax_code.remote_uid = x.get_column('Internal Key')
+        existing_tax_code.is_active = true
+        existing_tax_code.chapter = existing_tax_code.code.slice(0..3)
         existing_tax_code.created_at = Time.now
         existing_tax_code.save
       end
