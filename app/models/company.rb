@@ -360,4 +360,9 @@ class Company < ApplicationRecord
       false
     end
   end
+
+  def get_company_total_amount
+    company_amount = self.company_transactions_amounts.where(financial_year: Company.current_financial_year).last
+    company_amount.total_amount.to_f if company_amount.present?
+  end
 end
