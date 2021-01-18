@@ -27,7 +27,7 @@ class Services::Shared::Migrations::AddLatestDataAsPerGov < Services::Shared::Mi
       existing_tax_code = TaxCode.where(code: code).last
       if !existing_tax_code.present?
         desc = x.get_column('Description')
-        is_service = true
+        is_service = false
         # default to be 18%
         tax_percentage = 18
         remote_uid = x.get_column('Internal Key')
