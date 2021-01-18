@@ -28,7 +28,7 @@ class Overseers::TaxCodesController < Overseers::BaseController
   end
 
   def index
-    @tax_codes = ApplyDatatableParams.to(TaxCode.all, params)
+    @tax_codes = ApplyDatatableParams.to(TaxCode.latest_taxcode, params)
     # service = Services::Overseers::Finders::TaxCodes.new(params)
     # service.call
     # @indexed_taxcodes = service.indexed_records
