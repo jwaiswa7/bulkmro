@@ -273,23 +273,23 @@
 
                   <% if (locals[:metadata][:PoTaxRate].to_s.include? "IG") || (item.metadata['PopTaxRate'].to_s.include? "IG") %>
                     <td align="center" valign="top">
-                      <span><%= item.tax_rate.round(0) %>%</span>
+                      <span><%= item.po_request_tax_rate %>%</span>
                     </td>
                     <td align="right" valign="top">
                       <span><%= number_to_currency(item.total_tax, precision: 2, unit: '') %></span>
                     </td>
                   <% else %>
                     <td align="center" valign="top">
-                      <span><%= item.tax_rate.round(0) %>%</span>
+                      <span><%= item.po_request_tax_rate %>%</span>
                     </td>
                     <td align="center" valign="top">
-                      <span><%= number_to_currency((item.tax_rate.to_f / 2), precision: 2, unit: '') %>%</span>
+                      <span><%= number_to_currency((item.po_request_tax_rate.to_f / 2), precision: 2, unit: '') %>%</span>
                     </td>
                     <td align="right" valign="top">
                       <span><%= number_to_currency(item.total_tax / 2, precision: 2, unit: '') %></span>
                     </td>
                     <td align="center" valign="top">
-                      <span><%= number_to_currency((item.tax_rate.to_f / 2), precision: 2, unit: '') %>%</span>
+                      <span><%= number_to_currency((item.po_request_tax_rate.to_f / 2), precision: 2, unit: '') %>%</span>
                     </td>
                     <td align="center" valign="top">
                       <span><%= number_to_currency(item.total_tax / 2, precision: 2, unit: '') %><br></span>
