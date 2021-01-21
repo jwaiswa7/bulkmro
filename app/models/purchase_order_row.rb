@@ -7,6 +7,8 @@ class PurchaseOrderRow < ApplicationRecord
   before_destroy :decrease_product_count
   belongs_to :po_request_row, required: false
 
+  delegate :measurement_unit, to: :po_request_row, allow_nil: true
+
 
   def increase_product_count
     product = self.get_product
