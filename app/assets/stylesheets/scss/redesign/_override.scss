@@ -84,7 +84,7 @@ body{
     width: 950px;
     float: left;
     padding-top: 55px;
-    padding-left: 100px;
+    padding-left: 50px;
     box-sizing: border-box;  
 }
 .bmro-card-header{
@@ -594,8 +594,8 @@ a.bmro-list-button{
 .bmro-product-bottom{
     width:100%;
     float:left;
-    padding-left: 100px;
-    padding-right: 100px;
+    padding-left: 50px;
+    padding-right: 50px;
     padding-bottom: 15px;
 }
 .bmro-inventory-color{
@@ -1606,16 +1606,22 @@ table.dataTable thead .sorting:before, table.dataTable thead .sorting:after, tab
     color: #687686;   
     opacity: unset!important;
     font-weight: 500;
-    top: 18px;
+    top: 35%;
 }
+
 table.table.dataTable.table-bordered th:first-child{
     width: 102.406px;
 }
+
 .form-group label{
     color: #687686;
     font-size: 12px;
     font-weight: 500;
 }
+.customer_order_comment_message.form-group label{
+  margin: 10px 0;
+}
+
 .bmro-card-body-pt{
     padding-top: 0px;
 }
@@ -2507,6 +2513,14 @@ table.fixedHeader-floating{
     background-position: center;
     background-size: 20px;
 }
+.fa-plus-circle-inquiry{
+      background-image:url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAaCAYAAACpSkzOAAAAAXNSR0IArs4c6QAAAndJREFUSA29ll1Ik2EUx/+bu4yiIFv5ymJQEEJFMAiKIrDCiyywZDcVgggGehVJRFcRQnRVoCBBWF2EU4jKgrAiKAgG0QcW9DE2nDW8CIouc2u/N16Z67yztO3Axvue9/zP/zkfz3mewI3EvZa8NFQoFBxVQQKBQDYodYUgiUYaHCdcXwUaKZubcVKZ6aEQkUCyYvmyqhDh9FM66xSjqo3UjCj0N/Gkpz7rzsRTJV9OKjfzVcUCa83qlYptbdKB5p1a37huQTcViX7OzmrgakJj9x8rny9oQ7RRO2KbXaeZ6ZxGbk9o9O5DtbXs0YmOIwrV1fkS+hJBcurcJSVfvVPTxqhO9xxXxFk7z1Em+0X9l4eVGH+kdPH5wtleXzLfGhEJJPFD+zTQ3/cHCYwQ8y1+cK9rC8ZPTCJqQrqIpPtom4LBwBy+8+R58fOEb93HDru2YMBaYhJReGpCukpJLAfosMEWDFhLTCK6i8KX18Ry4OmwBQPWErMZaGGvuwCVpooGKNdduXjG1UUawnqWfO0+l/+ZEZUb/cs7e8wSM6Jw/SqxTzzxVsy7F12pzrMDw0a2xIyIHf8hNSUvTRawXIctGLCWmESMFTqJzUgnLSTYYAsGrCUmEbOLsTL5PqXB62PzyEhZadogGbw26tqC8Zt7Zo1YEbOLsXLz1gO9efux4ghiQbEtm1yMFQ26wPDIeGH39m3mwWcNVVoYofDUhHRVGqrfvv/Qk+cv5BsRzpjGvZ1xte7fNXdMePuEzmxvbf4/xwRkCHnv6Wj//bLIf7MZFumrIqxmRCHuXVyJKi5nCR+Lvjn6s6FiSF3cu7gSLcGfLxQSOH4ByA0ISiXOmakAAAAASUVORK5CYII=');
+    border: none;
+    padding: 8px 13px;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 27px;
+}
 .bmro-plus-circle-icon{
       background-image:url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAaCAYAAACpSkzOAAAAAXNSR0IArs4c6QAAAndJREFUSA29ll1Ik2EUx/+bu4yiIFv5ymJQEEJFMAiKIrDCiyywZDcVgggGehVJRFcRQnRVoCBBWF2EU4jKgrAiKAgG0QcW9DE2nDW8CIouc2u/N16Z67yztO3Axvue9/zP/zkfz3mewI3EvZa8NFQoFBxVQQKBQDYodYUgiUYaHCdcXwUaKZubcVKZ6aEQkUCyYvmyqhDh9FM66xSjqo3UjCj0N/Gkpz7rzsRTJV9OKjfzVcUCa83qlYptbdKB5p1a37huQTcViX7OzmrgakJj9x8rny9oQ7RRO2KbXaeZ6ZxGbk9o9O5DtbXs0YmOIwrV1fkS+hJBcurcJSVfvVPTxqhO9xxXxFk7z1Em+0X9l4eVGH+kdPH5wtleXzLfGhEJJPFD+zTQ3/cHCYwQ8y1+cK9rC8ZPTCJqQrqIpPtom4LBwBy+8+R58fOEb93HDru2YMBaYhJReGpCukpJLAfosMEWDFhLTCK6i8KX18Ry4OmwBQPWErMZaGGvuwCVpooGKNdduXjG1UUawnqWfO0+l/+ZEZUb/cs7e8wSM6Jw/SqxTzzxVsy7F12pzrMDw0a2xIyIHf8hNSUvTRawXIctGLCWmESMFTqJzUgnLSTYYAsGrCUmEbOLsTL5PqXB62PzyEhZadogGbw26tqC8Zt7Zo1YEbOLsXLz1gO9efux4ghiQbEtm1yMFQ26wPDIeGH39m3mwWcNVVoYofDUhHRVGqrfvv/Qk+cv5BsRzpjGvZ1xte7fNXdMePuEzmxvbf4/xwRkCHnv6Wj//bLIf7MZFumrIqxmRCHuXVyJKi5nCR+Lvjn6s6FiSF3cu7gSLcGfLxQSOH4ByA0ISiXOmakAAAAASUVORK5CYII=');
     border: none;
@@ -2945,7 +2959,7 @@ background-position: center;
    margin-right: 7px;
 }
 .bmro-instruction-heading{
-    width: 53.3%;
+    width: 48.3%;
     margin-top: 72px;
     background-color: #DFE5F0;
     border: 1px solid #E9EEF2;
@@ -4364,6 +4378,13 @@ td .media.chat-item{
   top: 0;
   z-index: 1020;
 }
+.sticky-top{
+  position: fixed;
+  top: 0;
+  z-index: 1020;
+    width: 100%;
+}
+
 .layout-body-wrapper{
   position: relative;
   top: 3rem;
@@ -4681,4 +4702,27 @@ a.ml-md-1.btn.bmro-button.btn-success{
 
 #company_bank_bank_id{ 
     height: 38px;
+}
+
+.outward_dispatches {
+  position: relative;
+  top: 40px;
+  left: 25px;
+}
+.outward_dispatches a.icon-title {
+  position: relative;
+  top: -10px;
+  left: 0px;
+}
+
+.tab-content > .tab-pane .flex-lg-row-reverse .col-lg-10{
+  padding: 0;
+}
+
+.currency-conversion_rate  select.form-control {
+  height: 40px;
+}
+.sap-status .fa-ban {
+  position: relative;
+  top: 8px;
 }

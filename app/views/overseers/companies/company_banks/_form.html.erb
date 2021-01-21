@@ -6,6 +6,8 @@
     <%= f.hidden_field :action_name, value: action_name %>
     <%= f.hidden_field :ifsc_code_id %>
     <%= render 'shared/snippets/form_errors', f: f %>
+  <div class="card mb-2">
+    <div class="card-body py-2">
     <div class="form-row">
       <div class="col-12">
         <%= f.input :company, disabled: true %>
@@ -83,7 +85,8 @@
         </div>
       </div>
     </div>
-
+  </div>
+</div>
     <%= action_button(action_name, @company_bank) %>
   <% end %>
 </div>

@@ -4,6 +4,7 @@
   <%= simple_form_for([:overseers, @company, @customer_product], :html => {:class => 'needs-validation', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
     <%= render 'shared/snippets/form_errors', f: f %>
     <%= f.hidden_field :company_id %>
+    <div class="bmro-card bmro-card-padding">
     <div class="form-row">
       <div class="col-6 col-md-6">
         <%= f.input :company, as: :string, disabled: true %>
@@ -81,4 +82,5 @@
     <%= action_button(action_name, @customer_product) %>
     </div>
   <% end %>
+</div>
 </div>

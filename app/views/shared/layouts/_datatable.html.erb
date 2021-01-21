@@ -53,6 +53,7 @@
   <% end %>
 </div>
 <section class="pb-4 pb-lg-5">
+<div class="table-responsive">
   <table class="datatable table table-bordered table-hover dt-responsive bmro-datatable-style
    <% if content_for?(:wrap_whitespace) %> wrap-whitespace
    <% end %>"  <% if !content_for?(:can_not_searched) %>data-search="Enter search term/keywords"<% end %>
@@ -77,4 +78,5 @@
     <%= yield %>
     </tbody>
   </table>
+    </div>
 </section>
