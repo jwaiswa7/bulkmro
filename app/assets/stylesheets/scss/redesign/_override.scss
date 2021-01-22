@@ -4699,6 +4699,9 @@ table.table.dataTable.table-bordered th{
 a.ml-md-1.btn.bmro-button.btn-success{
     margin: 1px 0    
 }
+.nested_sales_invoice_pod_rows a.ml-md-1.btn.bmro-button.btn-success{
+    margin: 13px 0    
+}
 
 #company_bank_bank_id{ 
     height: 38px;
@@ -4726,3 +4729,5 @@ a.ml-md-1.btn.bmro-button.btn-success{
   position: relative;
   top: 8px;
 }
+#inventoryModal  .modal-content
+{background-color: #fff; position: relative; letter-spacing: 2px; }
