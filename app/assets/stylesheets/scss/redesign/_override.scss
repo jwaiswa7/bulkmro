@@ -4283,13 +4283,13 @@ td .media.chat-item{
 .bmro-dispatch-btn{
     width: 47%;
     margin-top: 0px!important;
-    margin-left: 20px;
+    margin-left: 0px;
     float: left;
 }
 .bmro-dispatch-prod-btn{
     width: 47%;
     float: left;
-    margin-left: 20px;
+    margin-left: 0px;
 }
 .bmro-margin-login{
     margin-left: auto!important;
@@ -4627,14 +4627,14 @@ td .media.chat-item{
 
 .nested_payment_request_transactions .remove_nested_fields_link{
     margin: 35px 0;
-      position: relative;
+    position: relative;
 }
 
 .nested_fields .remove_nested_fields_link .form-group{
     height: 37px;
     position: relative;
-   padding: 15px;
-  margin-top: 15px;   
+    padding: 15px;
+    margin-top: 15px;   
 }
 
 .nested_fields .remove_nested_fields_link .fa-times{
@@ -4685,7 +4685,7 @@ table.table.dataTable.table-bordered th{
 }
 
 .product_comment_message{
-    margin:  10px 0;
+    margin: 10px 0;
 }
 
 .modal .dataTables_wrapper{
@@ -4697,6 +4697,7 @@ table.table.dataTable.table-bordered th{
 }
 
 a.ml-md-1.btn.bmro-button.btn-success{
+    top: 5px;
     margin: 1px 0    
 }
 .nested_sales_invoice_pod_rows a.ml-md-1.btn.bmro-button.btn-success{
@@ -4708,26 +4709,29 @@ a.ml-md-1.btn.bmro-button.btn-success{
 }
 
 .outward_dispatches {
-  position: relative;
-  top: 40px;
-  left: 25px;
+    position: relative;
+    top: 40px;
+    left: 25px;
 }
 .outward_dispatches a.icon-title {
-  position: relative;
-  top: -10px;
-  left: 0px;
+    position: relative;
+    top: -10px;
+    left: 0px;
 }
 
 .tab-content > .tab-pane .flex-lg-row-reverse .col-lg-10{
-  padding: 0;
+    padding: 0;
 }
 
 .currency-conversion_rate  select.form-control {
-  height: 40px;
+    height: 40px;
 }
 .sap-status .fa-ban {
-  position: relative;
-  top: 8px;
+    position: relative;
+    top: 8px;
 }
-#inventoryModal  .modal-content
-{background-color: #fff; position: relative; letter-spacing: 2px; }
+#inventoryModal .modal-content{
+    background-color: #fff; 
+    position: relative; 
+    letter-spacing: 2px; 
+}

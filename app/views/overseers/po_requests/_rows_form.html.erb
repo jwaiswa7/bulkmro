@@ -191,8 +191,8 @@
     </div>
   </div>
   <div class="bmro-border-dashed"></div>
-  <div class="form-row ml-1">
-    <div class="col-12 col-md-2 mt-4 custom-control custom-checkbox">
+  <div class="form-row">
+    <div class="col-12 col-md-2 mt-4 ml-3 custom-control custom-checkbox">
       <input type="checkbox" class="custom-control-input select-all-checkboxes" name="all_lead_dates" id=<%="all_lead_dates_#{supplier_index}"%>>
       <label class="custom-control-label" for=<%="all_lead_dates_#{supplier_index}"%>>Select All</label>
     </div>
@@ -215,7 +215,7 @@
     <%= po_request_row.hidden_field :measurement_unit_id, value: po_request_row.object.measurement_unit_id || MeasurementUnit.default.id %>
     <%= po_request_row.hidden_field :brand_id %>
     <div class="form-row po-request-row bmro-product-slide-on target-scroll" id="Product">
-      <div class="col-7 col-md-7 mb-1 ml-2">
+      <div class="col-7 col-md-7 mb-1 ml-3">
         <span class="custom-control custom-checkbox d-inline pl-0">
           <%= check_box_tag 'po_request_row[]', po_request_row.object.id, false, id: "po_request_row_id_#{supplier_index}_#{@supplier_product_index}", class: 'custom-control-input', 'data-parent-div-id': "supplier-parent-div-#{supplier_index}"  %>
           <label class="custom-control-label" for="<%= "po_request_row_id_#{supplier_index}_#{@supplier_product_index}" %>"></label>
