@@ -1,6 +1,6 @@
 <%= provide :container_fluid, true %>
 <div class="col-lg-12">
-  <section class="pt-3 pt-lg-4 pb-2">
+  <section class="pt-3 pt-lg-2 pb-2">
     <div class="d-md-flex justify-content-between">
       <h3 class="display-5 d-flex align-items-center bmro-form-heading">
         <a href="<%= overseers_account_path(@company.account) %>"><img src="https://ui-avatars.com/api/?size=128&name=<%= @company.account.name %>&rounded=true&font-size=0.5&background=0D8ABC&color=fff" height="35" class="pr-2"/></a><%= @company.name %>
@@ -14,7 +14,7 @@
     </div>
   </section>
 
-  <section class="mb-3">
+  <section class="mb-1">
     <div class="card">
       <div class="form-row">
         <div class="col-lg-12">
@@ -288,7 +288,7 @@
     </div>
 
     <% if @company.legacy_metadata.present? && (@company.legacy_metadata["sup_mail"] != "NULL" || @company.legacy_metadata["sup_tel"] != "NULL" || @company.legacy_metadata["sup_tel2"] != "NULL" || @company.legacy_metadata["sup_contact"] != "NULL") %>
-      <a class="btn btn-light bmro-button text-left btn-lg btn-block mt-1 mt-lg-4 bmro-ld" type="button" data-toggle="collapse" data-target="#dump">
+      <a class="btn btn-light bmro-button text-left btn-lg btn-block mt-1 mt-lg-3 bmro-ld" type="button" data-toggle="collapse" data-target="#dump">
         Legacy Data
       </a>
 

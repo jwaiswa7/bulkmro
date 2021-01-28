@@ -17,7 +17,7 @@ body{
     float: left;
     position: sticky;
     top: 48px;
-    padding-top: 22px;
+    padding-top: 10px;
     z-index: 100;
     margin-bottom: 0px;
     background-color: #f0f2f6 !important;
@@ -4734,4 +4734,8 @@ a.ml-md-1.btn.bmro-button.btn-success{
     background-color: #fff; 
     position: relative; 
     letter-spacing: 2px; 
+}   
+.main-container > .container:last-child, .main-container > .container-fluid:last-child {
+
+    padding-bottom: 2rem;
 }
