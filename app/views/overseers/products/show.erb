@@ -212,19 +212,38 @@
                 <%= row_action_button(edit_overseers_inquiry_path(inquiry_product.inquiry), 'pencil', 'Edit Inquiry', 'warning') %>
               <% end %>
             </td>
-            <td><%= inquiry_product.inquiry.inquiry_number %></td>
-            <td data-toggle="tooltip" title="(<%= inquiry_product.inquiry.company.account.alias %>) <%= inquiry_product.inquiry.company.account.name %>">(<%= inquiry_product.inquiry.company.account.alias %>
-              ) <%= inquiry_product.inquiry.company.account.name.truncate(25) %></td>
-
-            <td data-toggle="tooltip" title="(<%= inquiry_product_supplier.supplier.account.alias %>) <%= inquiry_product_supplier.supplier.name %>">(<%= inquiry_product_supplier.supplier.account.alias %>
-              ) <%= inquiry_product_supplier.supplier.name.truncate(25) %></td>
+            <td><%= link_to inquiry_product.inquiry.inquiry_number, edit_overseers_inquiry_path(inquiry_product.inquiry) %></td>
+            <td data-toggle="tooltip" title="<%= inquiry_product.inquiry.buyer_name_with_alias %>">
+              <%= link_to inquiry_product.inquiry.buyer_name_with_alias, overseers_company_path(inquiry_product.inquiry.company) %>
+            </td>
+            <td data-toggle="tooltip" title="<%= inquiry_product_supplier.supplier_name_with_alias %>">
+              <%= link_to inquiry_product_supplier.supplier_name_with_alias, overseers_company_path(inquiry_product_supplier.supplier) %>
+            </td>
             <td>
               <%= format_star(inquiry_product_supplier.supplier.rating) %>
             </td>
-            <td><%= format_currency(inquiry_product_supplier.try(:unit_cost_price)) %></td>
-            <td><%= format_currency(inquiry_product_supplier.final_sales_quote_row.try(:unit_selling_price)) %></td>
-            <td><%= format_succinct_date(inquiry_product.inquiry.quotation_date) %></td>
-            <td><%= format_succinct_date(inquiry_product.final_sales_order.try(:sent_at)) %></td>
+            <td><%= conditional_link(format_currency(inquiry_product_supplier.try(:unit_cost_price)), edit_suppliers_overseers_inquiry_path(inquiry_product.inquiry), inquiry_product_supplier.try(:unit_cost_price).present?) %></td>
+            <td>
+              <% if inquiry_product_supplier.final_sales_quote_row.present? %>
+                <%= link_to format_currency(inquiry_product_supplier.final_sales_quote_row.try(:unit_selling_price)), overseers_inquiry_sales_quote_path(inquiry_product.inquiry, inquiry_product_supplier.final_sales_quote) %>
+              <% else %>
+                <%= format_currency(inquiry_product_supplier.final_sales_quote_row.try(:unit_selling_price)) %>
+              <% end %>
+            </td>
+            <td>
+              <% if inquiry_product.inquiry.quotation_date.present? %>
+                <%= link_to format_succinct_date(inquiry_product.inquiry.quotation_date), edit_overseers_inquiry_path(inquiry_product.inquiry) %>
+              <% else %>
+                <%= format_succinct_date(inquiry_product.inquiry.quotation_date) %>
+              <% end %>
+            </td>
+            <td>
+              <% if inquiry_product.final_sales_order.present? %>
+                <%= link_to format_succinct_date(inquiry_product.final_sales_order.try(:sent_at)), overseers_inquiry_sales_orders_path(inquiry_product.inquiry) %>
+              <% else %>
+                <%= format_succinct_date(inquiry_product.final_sales_order.try(:sent_at)) %>
+              <% end %>
+            </td>
           </tr>
         <% end %>
       <% end %>
