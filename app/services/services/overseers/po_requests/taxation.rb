@@ -36,23 +36,26 @@ class Services::Overseers::PoRequests::Taxation < Services::Shared::BaseService
     end
   end
 
+  #tcs_for_po
   def to_remote_s
     if is_igst
-      if bill_from&.company&.check_company_total_amount(purchase_order) && bill_from&.company&.pan.present? && !is_service
-        'IG%gT' % ('%.2f' % tax_rate.tax_percentage) + 0.1.to_s
-      elsif bill_from&.company&.check_company_total_amount(purchase_order) && !(bill_from&.company&.pan.present?) && !is_service
-        'IG%gT' % ('%.2f' % tax_rate.tax_percentage) + 1.to_s
-      else
-        'IG@%g' % ('%.2f' % tax_rate.tax_percentage)
-      end
+      # if bill_from&.company&.check_company_total_amount(purchase_order) && bill_from&.company&.pan.present? && !is_service
+      #   'IG%gT' % ('%.2f' % tax_rate.tax_percentage) + 0.1.to_s
+      # elsif bill_from&.company&.check_company_total_amount(purchase_order) && !(bill_from&.company&.pan.present?) && !is_service
+      #   'IG%gT' % ('%.2f' % tax_rate.tax_percentage) + 1.to_s
+      # else
+      #   'IG@%g' % ('%.2f' % tax_rate.tax_percentage)
+      # end
+      'IG@%g' % ('%.2f' % tax_rate.tax_percentage)
     else
-      if bill_from&.company&.check_company_total_amount(purchase_order) && bill_from&.company&.pan.present?
-        'CS%gT' % ('%.2f' % tax_rate.tax_percentage) + 0.1.to_s
-      elsif bill_from&.company&.check_company_total_amount(purchase_order) && !(bill_from&.company&.pan.present?)
-        'CS%gT' % ('%.2f' % tax_rate.tax_percentage) + 1.to_s
-      else
-        'CSG@%g' % ('%.2f' % tax_rate.tax_percentage)
-      end
+      # if bill_from&.company&.check_company_total_amount(purchase_order) && bill_from&.company&.pan.present?
+      #   'CS%gT' % ('%.2f' % tax_rate.tax_percentage) + 0.1.to_s
+      # elsif bill_from&.company&.check_company_total_amount(purchase_order) && !(bill_from&.company&.pan.present?)
+      #   'CS%gT' % ('%.2f' % tax_rate.tax_percentage) + 1.to_s
+      # else
+      #   'CSG@%g' % ('%.2f' % tax_rate.tax_percentage)
+      # end
+      'CSG@%g' % ('%.2f' % tax_rate.tax_percentage)
     end
   end
 
