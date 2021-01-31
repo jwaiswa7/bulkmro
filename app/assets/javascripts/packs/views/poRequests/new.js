@@ -17,10 +17,28 @@ const newAction = () => {
         let reset = false;
         onSupplierChange(this, reset);
     });
+
+    $('form').on('change', '.supplier-po-type',function () {
+        onPoTypeChange('.supplier-po-type');
+    });
+
     updateRowTotal();
     onSupplierPoTypeChange();
 
 }
+
+let onPoTypeChange = (container) => {
+    let optionSelected = $("option:selected", container);
+    let inquiryID = $('.supplier-po-type').data('inquiry-id')
+    if (optionSelected.exists() && optionSelected.val() == 'Drop Ship') {
+        $.get({
+            url: Routes.dropbox_ship_to_overseers_inquiry_po_requests_path(inquiryID),
+            data: {
+                drop_ship: true
+            }
+        });
+    }
+};
 
 let onProductChange = (container) => {
     let optionSelected = $("option:selected", container);

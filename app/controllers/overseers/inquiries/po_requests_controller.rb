@@ -65,6 +65,10 @@ class Overseers::Inquiries::PoRequestsController < Overseers::Inquiries::BaseCon
     end
   end
 
+  def dropbox_ship_to
+    params.merge(drop_ship: params['drop_ship'])
+  end
+
   private
 
     def po_request_params
