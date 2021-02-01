@@ -66,7 +66,10 @@ class Overseers::Inquiries::PoRequestsController < Overseers::Inquiries::BaseCon
   end
 
   def dropbox_ship_to
-    params.merge(drop_ship: params['drop_ship'])
+    if params['drop_ship']
+      inquiry = Inquiry.find_by(id: params[:inquiry_id])
+      render json: { address_id: inquiry.shipping_address.id, company_id: inquiry.company.id, address: inquiry.shipping_address.to_s }.to_json
+    end
   end
 
   private

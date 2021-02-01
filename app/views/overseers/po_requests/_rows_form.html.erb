@@ -104,8 +104,7 @@
             <%= f.association :bill_to, collection: Warehouse.where('is_active = ? AND series_code IS NOT ?', true, nil).with_includes.map {|warehouse| [warehouse.to_s, warehouse.id, {'data-warehouse' => warehouse.address.city_name.try(:strip) || 'N/A', 'data-warehouse-state' => warehouse.address.state.id, 'data-warehouse-city' => warehouse.address.city_name}]}, input_html: {class: 'select2-single bmro-form-input bmro-dropdown-icon', 'data-warehouse-list': Warehouse.all.map {|warehouse| [warehouse.address.state.id]}.uniq}, required: true %>
           </div>
           <div class="col-12 col-md-6 ship-to-select2">
-            <%#= f.association :ship_to, collection: Warehouse.all.with_includes.map {|warehouse| [warehouse.to_s, warehouse.id, {'data-warehouse' => warehouse.address.city_name.try(:strip) || 'N/A', 'data-warehouse-state' => warehouse.address.state.id, 'data-warehouse-city' => warehouse.address.city_name}]}, input_html: {class: 'select2-single bmro-dropdown-icon bmro-form-input ship-to-select2', 'data-warehouse-list': Warehouse.all.map {|warehouse| [warehouse.address.state.id]}.uniq}, required: true %>
-            <%= render 'ship_to_selectbox', f: f %>
+            <%= f.association :ship_to, collection: selected_option_or_nil(f, :ship_to), label_method: :to_s, input_html: {class: 'select2-ajax bmro-form-input', :'data-source' => autocomplete_overseers_warehouses_path()}, required: true %>
           </div>
         <% else %>
           <div class="col-12 col-md-6">
