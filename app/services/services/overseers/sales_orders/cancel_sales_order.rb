@@ -29,7 +29,11 @@ class Services::Overseers::SalesOrders::CancelSalesOrder < Services::Shared::Bas
     sales_order.comments.build(message: so_cancellation_reason, created_by_id: comment_attributes['created_by_id'], inquiry_id: comment_attributes['inquiry_id'])
     sales_order['status'] = sales_order_params['status']
     sales_order['remote_status'] = sales_order_params['remote_status']
-    sales_order.save
+    if sales_order.save
+      company = sales_order.company
+      company_so_amount = company.company_transactions_amounts.where(financial_year: Company.current_financial_year).last
+      company_so_amount.decrement_total_amount(sales_order.calculated_total_with_tax)
+    end
     { status: 'success', message: 'Sales Order Cancelled Successfully' }
   end
 

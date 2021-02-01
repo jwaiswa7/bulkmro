@@ -1,0 +1,42 @@
+<div class="col-lg-12">
+  <section class="mb-3 mt-2">
+    <h2 class="bmro-form-heading">Proof of Delivery for Invoice #<%= @invoice.invoice_number %></h2>
+    <div class="card bmro-card bmro-card-body-padding">
+      <div class="card-body bmro-bg bmro-border-none">
+        <table class="w-100 datatable table table-bordered dt-responsive dt-responsive wrap-whitespace mt-0 bmro-datatable-style bmro-new-table" style="width:100%;">
+          <thead>
+          <tr>
+            <th class="no-sort product-width-adjustment">Proof Of Delivery</th>
+            <th class="no-sort">Grn No.</th>
+            <th class="no-sort">Delivery Date.</th>
+            <th class="no-sort">POD Status.</th>
+          </tr>
+          </thead>
+          <tbody>
+          <% if @invoice.pod_rows.present? %>
+            <% @invoice.pod_rows.each do |pod| %>
+              <% pod.attachments.each do |attachment| %>
+                <td>
+                  <%= link_to url_for(attachment), class: 'btn btn-success btn-rounded align-self-center btn-block-sm-down ml-1 mb-md-0 mb-1', target: '_blank', :"data-toggle" => 'tooltip', :status => attachment.filename do %>
+                    <i class="fal fa-download"></i>
+                  <% end %>
+                  <span class="ml-2">
+                    <%= link_to attachment, target: '_blank' do %>
+                      <%= attachment.filename %>
+                    <% end if attachment.present? %>
+                    </span>
+                </td>
+                <td><%= pod.grn_no %></td>
+                <td><%= pod.delivery_date %></td>
+                <td><%= @invoice.pod_status %></td>
+                </tr>
+              <% end if pod.attachments.attached? %>
+            <% end %>
+          <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+</div>
+

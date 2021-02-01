@@ -4,11 +4,11 @@ class Overseers::TaxCodesController < Overseers::BaseController
 
   def autocomplete
     if params[:is_service].present? && params[:is_service] == 'true'
-      @tax_codes = ApplyParams.to(TaxCode.active.where('is_service = ?', params[:is_service]), params)
+      @tax_codes = ApplyParams.to(TaxCode.latest_taxcode.active.where('is_service = ?', params[:is_service]), params)
     elsif params[:is_service].present? && params[:is_service] == 'false'
-      @tax_codes = ApplyParams.to(TaxCode.active.where('is_service = ?', params[:is_service]), params)
+      @tax_codes = ApplyParams.to(TaxCode.latest_taxcode.active.where('is_service = ?', params[:is_service]), params)
     else
-      @tax_codes = ApplyParams.to(TaxCode.active, params)
+      @tax_codes = ApplyParams.to(TaxCode.latest_taxcode.active, params)
     end
     authorize_acl :tax_code
   end
@@ -16,7 +16,7 @@ class Overseers::TaxCodesController < Overseers::BaseController
   def autocomplete_for_product
     @product = Product.find(params[:product_id])
     @is_service = @product.try(:is_service) || false
-    @tax_codes = ApplyParams.to(TaxCode.active.where('is_service = ?', @is_service), params)
+    @tax_codes = ApplyParams.to(TaxCode.latest_taxcode.active.where('is_service = ?', @is_service), params)
     authorize_acl @tax_codes
 
     respond_to do |format|
@@ -28,7 +28,7 @@ class Overseers::TaxCodesController < Overseers::BaseController
   end
 
   def index
-    @tax_codes = ApplyDatatableParams.to(TaxCode.all, params)
+    @tax_codes = ApplyDatatableParams.to(TaxCode.latest_taxcode, params)
     # service = Services::Overseers::Finders::TaxCodes.new(params)
     # service.call
     # @indexed_taxcodes = service.indexed_records

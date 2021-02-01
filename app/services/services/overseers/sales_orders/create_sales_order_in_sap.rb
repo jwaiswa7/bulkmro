@@ -20,6 +20,9 @@ class Services::Overseers::SalesOrders::CreateSalesOrderInSap < Services::Shared
         order = ::Resources::Order.find(doc_id)
         if order.present?
           sales_order.update_attributes(remote_uid: order['DocEntry'])
+          company = sales_order.company
+          company_so_amount = company.company_transactions_amounts.where(financial_year: Company.current_financial_year).last
+          company_so_amount.increment_total_amount(sales_order.calculated_total_with_tax) if company_so_amount.present?
         end
         Services::Overseers::Inquiries::UpdateStatus.new(sales_order, :order_won).call
         comment = sales_order.inquiry.comments.create!(message: 'SAP Approved', overseer: overseer, sales_order: sales_order)

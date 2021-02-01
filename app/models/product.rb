@@ -74,6 +74,7 @@ class Product < ApplicationRecord
     self.is_service ||= false
     self.weight ||= 0.0
     self.sku ||= generate_sku
+    self.tcs_applicable ||= true
   end
 
   def generate_sku

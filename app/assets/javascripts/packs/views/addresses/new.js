@@ -31,6 +31,13 @@ const newAction = () => {
         var full_gst_cd = $('#gst_code_1').val()+$('#gst_code_2').val()+$('#gst_code_3').val()+$('#gst_code_4').val()+$('#gst_code_5').val()
         $('#address_gst').val(full_gst_cd);
     });
+
+
+    $('#address_pincode').on('change',function(){
+        if ($('#address_country_code').val() == 'IN'){
+            $(this).val($(this).val().replace(/[^0-9]/g, ""));
+        }
+    })
 }
 
 

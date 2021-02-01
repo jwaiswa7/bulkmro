@@ -4,9 +4,10 @@ include Clockwork
 require './config/environment'
 require 'active_support/time'
 require 'sidekiq'
+require 'rake'
 
 configure do |config|
-  config[:tz] = "Asia/Kolkata"
+  config[:tz] = 'Asia/Kolkata'
   config[:max_threads] = 5
   config[:thread] = true
 end
@@ -35,9 +36,13 @@ every(1.day, 'set_overseer_monthly_target', at: '00:10') do
 end
 
 every(1.day, 'refresh_indices', at: '01:30') do
-  GC.start
   Services::Shared::Chewy::RefreshIndices.new
+end
 
+every(1.day, 'reset_indices', at: '02:00') do
+  GC.start
+  Rails.application.class.load_tasks
+  Rake::Task['chewy:parallel:reset'].invoke
   # Dir[[Chewy.indices_path, '/*'].join()].map do |path|
   #   puts "Indexing #{path}"
   #   path.gsub('.rb', '').gsub('app/chewy/', '').classify.constantize.reset!
@@ -45,7 +50,17 @@ every(1.day, 'refresh_indices', at: '01:30') do
   # end
 end
 
-every(1.day, 'inquiry_product_inventory_update', at: '05:00') do
+every(1.day, 'add_companies_total_amount_records', at: '00:30', if: lambda { |t| t.day == 1 && t.month == 4 }) do
+  puts 'For adding customer company total amounts'
+  customer_service = Services::Shared::Migrations::AddCompanyTotalAmountFinancialYearwise.new
+  customer_service.customer_companies_calculate_total_so_amount
+
+  puts 'For adding supplier company total amounts'
+  supplier_service = Services::Shared::Migrations::AddCompanyTotalAmountFinancialYearwise.new
+  supplier_service.supplier_companies_calculate_total_po_amount
+end
+
+every(1.day, 'inquiry_product_inventory_update', at: '05:30') do
   service = Services::Resources::Products::UpdateRecentInquiryProductInventory.new
   service.call
 end if Rails.env.production?

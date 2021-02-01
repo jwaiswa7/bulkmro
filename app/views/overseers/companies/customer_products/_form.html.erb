@@ -14,14 +14,32 @@
       <div class="col-12">
         <%= f.input :name, required: false %>
       </div>
-      <div class="col-6 col-md-4">
+      <div class="col-12">
+        <%= f.input :technical_description, label: 'Technical Description', required: false %>
+      </div>
+      <hr/>
+      <div class="col-6">
         <%= f.input :sku, label: 'Material code', required: false %>
       </div>
+      <div class="col-6">
+        <%= f.input :customer_product_sku, label: "Customer's Material Code", required: false %>
+      </div>
+      <hr/>
       <div class="col-6 col-md-4">
-        <%= f.input :customer_price, label: 'Price' %>
+        <%= f.association :measurement_unit, collection: MeasurementUnit.new_uom, wrapper: :custom_multi_select, include_blank: false %>
       </div>
       <div class="col-6 col-md-4">
         <%= f.input :moq, label: 'MoQ' %>
+      </div>
+      <div class="col-6 col-md-4">
+        <%= f.input :customer_uom, label: "Customer's UOM" %>
+      </div>
+      <div class="col-6 col-md-4">
+        <%= f.input :lead_time, label: "Lead Time (Days)" %>
+      </div>
+      <hr/>
+      <div class="col-6 col-md-4">
+        <%= f.input :customer_price, label: 'Price' %>
       </div>
       <div class="col-6 col-md-4">
         <%= f.association :tax_code, collection: selected_option_or_nil(f, :tax_code), label_method: :to_s, include_blank: "Type to search", input_html: {class: 'select2-ajax', :'data-source' => autocomplete_for_product_overseers_tax_codes_path(product_id: ( f.object.product.present? ? f.object.product.id : nil))} %>
@@ -29,9 +47,7 @@
       <div class="col-6 col-md-4">
         <%= f.association :tax_rate, wrapper: :custom_multi_select, collection: TaxRate.all.map {|tax_rate| [tax_rate.to_s, tax_rate.id, {'data-tax_rate' => tax_rate.tax_percentage}]}, input_html: {"data-bind": ""} %>
       </div>
-      <div class="col-6 col-md-4">
-        <%= f.association :measurement_unit, wrapper: :custom_multi_select, required: false %>
-      </div>
+      
     </div>
 
     <div class="form-row">

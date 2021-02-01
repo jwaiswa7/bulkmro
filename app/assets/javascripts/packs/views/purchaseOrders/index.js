@@ -30,6 +30,7 @@ const cancel_purchase_order = () => {
             buttonClassName: '.confirm-cancel',
             this: $(this),
             title: '',
+            commentClass: '.message-required',
             redirectionLink: '/overseers/po_requests'
         }
         callAjaxFunction(json)

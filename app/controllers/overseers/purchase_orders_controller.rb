@@ -323,13 +323,15 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
 
   def cancelled_purchase_order
     authorize_acl @purchase_order
-    if @purchase_order.present?
-      @purchase_order.status = 'cancelled'
-      @purchase_order.po_request.status = 'Cancelled'
-      @purchase_order.save!
-      @purchase_order.po_request.save!
+    @status = Services::Overseers::PurchaseOrders::CancelPurchaseOrder.new(@purchase_order, purchase_order_params.merge(status: 'Cancelled')).call
+
+    if @status.key?(:empty_message)
+      render json: {error: 'Cancellation Message is Required'}, status: 500
+    elsif @status[:status] == 'success'
+      render json: {url: overseers_purchase_orders_path, notice: @status[:message]}, status: 200
+    elsif @status[:status] == 'failed'
+      render json: {error: @status[:message]}, status: 500
     end
-    render json: {sucess: 'Successfully updated ', url: overseers_purchase_orders_path}, status: 200
   end
 
   def render_modal_form
@@ -383,6 +385,7 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
           :supplier_dispatch_date,
           :followup_date,
           :logistics_owner_id,
+          :created_by_id,
           :revised_supplier_delivery_date,
           comments_attributes: [:id, :message, :created_by_id, :updated_by_id],
           attachments: []

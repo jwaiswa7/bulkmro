@@ -32,10 +32,24 @@
               </div>
             <% end %>
 
+            <% if @customer_product.technical_description.present? %>
+              <div class="col-12 mb-2">
+                <strong class="d-block">Technical Description</strong>
+                <%= @customer_product&.technical_description %>
+              </div>
+            <% end %>
+
             <% if @customer_product.sku? %>
               <div class="col-6 col-md-3 mb-2">
                 <strong class="d-block">BM Number</strong>
                 <%= @customer_product.sku %>
+              </div>
+            <% end %>
+
+            <% if @customer_product.customer_product_sku.present? %>
+              <div class="col-6 col-md-3 mb-2">
+                <strong class="d-block">Customer's Material Code </strong>
+                <%= @customer_product&.customer_product_sku %>
               </div>
             <% end %>
 
@@ -53,10 +67,10 @@
               </div>
             <% end %>
 
-            <% if @customer_product.moq? %>
+            <% if @customer_product.lead_time.present? %>
               <div class="col-6 col-md-3 mb-2">
-                <strong class="d-block">Minimum Ordered Quantity</strong>
-                <%= @customer_product.moq %>
+                <strong class="d-block">Lead Time (Days)</strong>
+                <%= @customer_product.lead_time %>
               </div>
             <% end %>
 
@@ -78,6 +92,13 @@
               <div class="col-6 col-md-3 mb-2">
                 <strong class="d-block">Measurement Unit</strong>
                 <%= @customer_product.measurement_unit.name %>
+              </div>
+            <% end %>
+
+            <% if @customer_product.customer_uom.present? %>
+              <div class="col-6 col-md-3 mb-2">
+                <strong class="d-block">Customer's UOM</strong>
+                <%= @customer_product.customer_uom %>
               </div>
             <% end %>
 

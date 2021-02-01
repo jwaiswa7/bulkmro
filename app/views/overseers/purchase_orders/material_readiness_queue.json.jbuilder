@@ -28,7 +28,7 @@ json.data (@purchase_orders) do |purchase_order|
                         row_action_button_without_fa(change_material_status_overseers_purchase_order_path(purchase_order), 'bmro-icon-table bmro-icon-peoplemate', 'Change Material Status', 'primary', :_blank)
                       end,
                       if is_authorized(purchase_order, 'index')
-                        link_to('', class: ['btn btn-sm btn-success comment-purchase_order'], 'data-model-id': purchase_order.id, title: 'Comment', remote: true) do
+                        link_to('', class: ['btn btn-sm btn-success comment-purchase_order'], 'data-model-id': purchase_order.id, title: 'Comment', 'data-title': 'Comment', remote: true) do
                           concat content_tag(:span, '')
                           concat content_tag :i, nil, class: ['fal fa-comment-lines'].join
                         end

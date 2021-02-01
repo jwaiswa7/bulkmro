@@ -4,12 +4,12 @@ class Customers::BaseController < ApplicationController
 
   layout 'customers/layouts/application'
 
-  before_action :authenticate_customers_contact!
+  before_action :authenticate_customers_contact!, except: [:route]
   before_action :set_paper_trail_whodunnit
-  after_action :verify_authorized
-  before_action :redirect_if_required
+  after_action :verify_authorized, except: [:route, :generate_punchout_order]
+  before_action :redirect_if_required, except: [:route]
 
-  helper_method :current_cart, :current_company
+  helper_method :current_cart, :current_company, :is_api_request?, :current_api_request
 
   private
 
@@ -80,6 +80,14 @@ class Customers::BaseController < ApplicationController
       if session[:current_company_id].present?
         @current_company ||= Company.find(session[:current_company_id])
       end
+    end
+
+    def is_api_request?
+      session[:api_request].present?
+    end
+
+    def current_api_request
+      is_api_request? ? ApiRequest.find(session[:api_request_id]) : nil
     end
 
     def pundit_user

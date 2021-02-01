@@ -2,9 +2,9 @@
   <section class="pt-3 pt-lg-4 pb-2 pb-lg-3">
     <div class="d-md-flex justify-content-between">
       <% if content_for?(:heading) %>
-        <h1 class="display-5 mb-1"><%= yield :heading %></h1>
+        <h1 class="display-5 mb-1 d-none"><%= yield :heading %></h1>
       <% else %>
-        <h1 class="display-5 mb-1"><%= current_model.humanize %></h1>
+        <h1 class="display-5 mb-1 d-none"><%= current_model.humanize %></h1>
       <% end unless content_for?(:hide_table_heading) %>
 
       <div class="d-none">
@@ -95,6 +95,7 @@
               <hr class="my-2">
               <p class="mb-0 text-small text-black-50">
                 <strong class="d-block"><%= customer_product.best_brand.name if customer_product.best_brand.present? %></strong>
+                <strong class="d-block"><%= customer_product.best_category.name if customer_product.best_category.present? %></strong>
                 <em>MOQ - <%= customer_product.moq %></em><br>
                 <em>Instock Qty
                   - <%= customer_product.product.stocks.sum(&:instock).to_i if customer_product.product.present? %></em><br>

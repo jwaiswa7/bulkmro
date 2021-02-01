@@ -2,7 +2,9 @@ json.data (@sales_quotes) do |sales_quote|
   json.array! [
                   [
                       row_action_button(customers_quote_path(sales_quote), 'eye', 'View Quote', 'info', :_blank),
-                      row_action_button(customers_quote_path(sales_quote, format: :pdf), 'file-pdf', 'Download Quote', 'dark', :_blank)
+                      if !is_api_request?
+                        row_action_button(customers_quote_path(sales_quote, format: :pdf), 'file-pdf', 'Download Quote', 'dark', :_blank)
+                      end
                   ].join(' '),
                   sales_quote.inquiry.inquiry_number,
                   format_date(sales_quote.created_at),

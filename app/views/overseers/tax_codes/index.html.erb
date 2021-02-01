@@ -1,4 +1,5 @@
-<% provide :can_be_directly_created, true %>
+
+<% provide :can_be_directly_created, current_overseer.admin? %>
 <% provide :can_be_ajaxed, true %>
 
 
