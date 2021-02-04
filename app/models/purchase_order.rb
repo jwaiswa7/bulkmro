@@ -324,16 +324,16 @@ class PurchaseOrder < ApplicationRecord
   def supplier_contact
      self.po_request.contact_phone if self.po_request.present? && self.po_request.contact_phone.present?
   end
-
-  def calculate_tcs_amount
-    ((self.calculated_total_with_tax_for_tcs_applicable.to_f) * (0.075 / 100))
-  end
-
-  def calculated_total_with_tax_with_or_without_tcs
-    if self.company.check_company_total_amount(self)
-      calculated_total_with_tax_for_tcs_applicable + calculate_tcs_amount
-    else
-      calculated_total_with_tax
-    end
-  end
+  # tcs_for_po
+  # def calculate_tcs_amount
+  #   ((self.calculated_total_with_tax_for_tcs_applicable.to_f) * (0.075 / 100))
+  # end
+  #
+  # def calculated_total_with_tax_with_or_without_tcs
+  #   if self.company.check_company_total_amount(self)
+  #     calculated_total_with_tax_for_tcs_applicable + calculate_tcs_amount
+  #   else
+  #     calculated_total_with_tax
+  #   end
+  # end
 end
