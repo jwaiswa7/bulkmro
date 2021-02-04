@@ -271,7 +271,7 @@
                     <span><%= number_to_currency(item.total_selling_price, precision: 2, unit: '') %></span>
                   </td>
 
-                  <% if (locals[:metadata][:PoTaxRate].to_s.include? "IG") || (item.metadata['PopTaxRate'].to_s.include? "IG") %>
+                  <% if (locals[:metadata][:PopTaxRate].to_s.include? "IG") || (locals[:metadata][:ItemLine][0][:PopTaxRate].to_s.include? "IG") %>
                     <td align="center" valign="top">
                       <span><%= item.po_request_tax_rate %>%</span>
                     </td>
