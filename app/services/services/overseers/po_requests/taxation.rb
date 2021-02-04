@@ -16,14 +16,14 @@ class Services::Overseers::PoRequests::Taxation < Services::Shared::BaseService
     @is_service = po_request_row.try(:product).try(:is_service) # || tax_code.is_service
 
     @is_cgst_sgst = if (bill_to.address.present? && bill_to.address.country_code == 'IN') && bill_from.present? && ship_from.present?
-          if is_service
-            ship_from.state == bill_to.address.state
-          else
-            bill_from.state == bill_to.address.state
-          end
-        else
-          false
-        end
+      if is_service
+        ship_from.state == bill_to.address.state
+      else
+        bill_from.state == bill_to.address.state
+      end
+    else
+      false
+    end
 
     @is_igst = !is_cgst_sgst
   end
@@ -36,7 +36,7 @@ class Services::Overseers::PoRequests::Taxation < Services::Shared::BaseService
     end
   end
 
-  #tcs_for_po
+  # tcs_for_po
   def to_remote_s
     if is_igst
       # if bill_from&.company&.check_company_total_amount(purchase_order) && bill_from&.company&.pan.present? && !is_service

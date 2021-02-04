@@ -58,7 +58,7 @@ class Services::Overseers::PurchaseOrders::CreatePurchaseOrder < Services::Share
             inquiry
         )
         series.increment_last_number
-        #tcs_for_po
+        # tcs_for_po
         # company = @purchase_order&.company
         # if company
         #   company_po_amount = company.company_transactions_amounts.where(financial_year: Company.current_financial_year).last
