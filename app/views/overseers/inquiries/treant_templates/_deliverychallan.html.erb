@@ -1,0 +1,20 @@
+<a class="card text-black-50 sales-quote" target="_blank" href="/overseers/delivery_challans/delivery_challan.to_params>">
+  <div class="card-header p-1 text-center text-black">
+    <strong>Delivery Challan</strong>
+  </div>
+  <div class="card-body p-1 text-center text-black">
+    <div>
+      #<%= delivery_challan.delivery_challan_number %>
+    </div>
+<!--    <hr class="my-1">-->
+    <%#= delivery_challan.product_line_item %>
+<!--    <hr class="my-1">-->
+<!--    <div>-->
+      <%#= format_currency(delivery_challan.converted_total) %>
+<!--    </div>-->
+    <hr class="my-1">
+    <div>
+      <%= format_date(delivery_challan.created_at) %>
+    </div>
+  </div>
+</a>
