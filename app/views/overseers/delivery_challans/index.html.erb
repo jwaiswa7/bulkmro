@@ -1,0 +1,87 @@
+<% provide :container_fluid, true %>
+<% provide :can_be_directly_created, policy(:delivery_challan).new? %>
+<% provide :can_be_ajaxed, true %>
+<% provide :wrap_whitespace, true %>
+
+<%# if Settings.reports.show_summary %>
+<!--<div class="col-lg-12">-->
+<%#= render partial: "shared/layouts/summary", locals: {klass: Inquiry, statuses: Inquiry.statuses, alias_name: ''} %>
+<!--</div>-->
+<%# end %>
+
+<% provide :heading_buttons do %>
+  <button type="button" id="create_ar_invoice" class=" btn btn-success btn-rounded align-self-center btn-block-sm-down ml-1 mb-md-0 mb-1">
+    <i class="fal fa-check mr-1"></i>Create AR Invoice Request
+  </button>
+<% end %>
+
+
+<div class="col-lg-12 bmro-table-layout delivery-challan">
+  <% content_for :header_row do %>
+    <% if is_authorized(:delivery_challan, 'can_create_ar_invoice') %>
+      <th class="no-sort all desktop bmro-selectp text-right dc-checkbox" width="35px">
+        <div class="custom-control custom-checkbox">
+          <input type="checkbox" class="custom-control-input" name="all_inward_dispatches" id="all_inward_dispatches">
+          <label class="custom-control-label" for="all_inward_dispatches"></label>
+        </div>
+      </th>
+    <%else %>
+      <th class="no-sort all bmro-material-queue checkbox" width="70px"></th>
+    <% end %>
+    <th class="no-sort all" width="98px">Quick Action
+    <th class="sort all text-right" width="78px" data-name="delivery_challan_number">DC Number</th>
+    <th class="sort all text-right" width="78px" data-name="inquiry_number">Inquiry Number</th>
+    <th class="no-sort text-right" width="88px" data-name="order_number">Order Number</th>
+    <th class="no-sort desktop" width="88px">DC Qty</th>
+    <th class="no-sort desktop" width="88px">Order Qty</th>
+    <th class="sort desktop text-left" width="75px">DC Dates</th>
+    <th class="no-sort desktop text-left" width="130px" data-name="company_id">Company</th>
+    <th class="no-sort desktop text-left" width="130px">Billing Contact</th>
+    <th class="no-sort desktop text-left" width="130px">Shipping Contact</th>
+    <th class="no-sort desktop text-left" width="130px" data-name="created_by_id">DC Created By</th>
+  <% end %>
+
+  <% content_for :filter_row do %>
+    <td data-filter="false"></td>
+    <td data-filter="false"></td>
+    <td data-filter="false"></td>
+    <td data-filter="false"></td>
+    <td data-filter="false"></td>
+    <td data-filter="false"></td>
+    <td data-filter="false"></td>
+    <td data-filter="false"></td>
+    <td data-filter="ajax"></td>
+    <td data-filter="false"></td>
+    <td data-filter="false"></td>
+    <td data-filter="dropdown"></td>
+  <% end %>
+
+
+  <%= render layout: 'shared/layouts/datatable' do %>
+  <% end %>
+</div>
+<div class="modal fade" id="arInvoiceStatusModal">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">AR Invoice Creation</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="error bg-danger text-white mb-3 px-1 rounded"></div>
+        <div class="modal-body" style="padding: 0px 1.5rem;">
+          <div class="mb-2 form-group">
+            <strong>You not able to create AR Invoice Request because SO #<span id="order_number"></span> not sync with SAP.</strong>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-danger btn-block" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="open-modal-form"></div>
