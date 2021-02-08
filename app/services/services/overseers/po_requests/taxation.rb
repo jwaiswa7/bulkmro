@@ -17,7 +17,7 @@ class Services::Overseers::PoRequests::Taxation < Services::Shared::BaseService
 
     @is_cgst_sgst = if (bill_to.address.present? && bill_to.address.country_code == 'IN') && bill_from.present? && ship_from.present?
       if is_service
-        ship_from.state == bill_to.address.state
+        bill_from.state == ship_to.address.state
       else
         bill_from.state == bill_to.address.state
       end

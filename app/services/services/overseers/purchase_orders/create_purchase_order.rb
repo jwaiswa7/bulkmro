@@ -188,7 +188,7 @@ class Services::Overseers::PurchaseOrders::CreatePurchaseOrder < Services::Share
         UnitMsr: row.measurement_unit.name,
         WhsCode: row.po_request.ship_to.remote_uid,
         PopPriceHt: row.unit_price.to_f,
-        PopTaxRate: row.tax_rate.to_s.gsub('.0%', '').gsub('GST ', 'CSG@'),
+        PopTaxRate: row.taxation.to_remote_s,
         PopDiscount: row.discount_percentage,
         PriceBefDi: 0.0,
         PopOrderNum: po_request.sales_order.present? ? po_request.sales_order.order_number : '',
