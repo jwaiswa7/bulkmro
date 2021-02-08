@@ -39,7 +39,7 @@ class Services::Overseers::SalesQuotes::Taxation < Services::Shared::BaseService
 
   def to_remote_s
     if is_sez
-      'IG0T0.1'
+      'IG@%g' % ('%.2f' % tax_rate.tax_percentage)
     elsif is_igst
       if bill_to.company.check_company_total_amount(sales_quote) && bill_to.company.pan.present? && !is_service
         # 'IG@%g' % ('%.2f' % tax_rate.tax_percentage)
