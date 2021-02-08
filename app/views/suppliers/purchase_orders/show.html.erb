@@ -264,6 +264,12 @@
             <strong class="d-block"><%= format_currency(@purchase_order.calculated_total_tax / 2, symbol: nil) %></strong>
           </div>
         <%end %>
+        <%# if @purchase_order.company.check_company_total_amount(@purchase_order) %>
+<!--          <div class="col-6 col-md-2">-->
+<!--            TCS Amt @0.075%-->
+<!--            <strong class="d-block bmro-summary-heading"><%#= format_currency(@purchase_order.calculate_tcs_amount.to_f, precision: 2, symbol: nil) %></strong>-->
+<!--          </div>-->
+        <%# end %>
         <div class="col-6 col-md-3">
           Grand Total
           <strong class="d-block"><%= format_currency(@purchase_order.calculated_total_with_tax, symbol: nil) %></strong>

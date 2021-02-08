@@ -292,7 +292,58 @@
                   </td>
                 </tr>
               <% end %>
-
+              <% company = record.company %>
+              <% if company.check_company_total_amount(record) %>
+                <tr class="pdf-table-total-row-tcs">
+                  <td align="center" valign="top">
+                    <span>&nbsp;</span></td>
+                  <td align="center" valign="top">
+                    <span><b><span>TCS Amt @0.075%</span></b></span></td>
+                  <td align="center" valign="top">
+                    <span></span></td>
+                  <td align="center" valign="top">
+                    <span></span></td>
+                  <td align="center" valign="top">
+                    <span></span></td>
+                  <td align="center" valign="top">
+                    <span></span></td>
+                  <td align="center" valign="top">
+                    <span></span></td>
+                  <td align="center" valign="top">
+                    <span></span></td>
+                  <td align="center" valign="top">
+                    <span></span></td>
+                  <td align="center" valign="top">
+                    <span></span></td>
+                  <td align="right" style="text-align: right;" valign="top">
+                    <b><span></span></b>
+                  </td>
+                  <td align="center" valign="top">
+                    <span></span></td>
+                  <% if record.tax_summary.strip == '0' ||
+                      (record.tax_summary.to_s.include? "IGST") %>
+                    <td align="center" valign="top">
+                      <span></span></td>
+                    <td align="right" style="text-align: right;" valign="top">
+                      <b><span></span></b>
+                    </td>
+                  <% else %>
+                    <td align="center" style="font-size: 9px; border-right: 1px solid #3c3c3c;" valign="top">
+                      <span></span></td>
+                    <td align="right" style="text-align: right;" valign="top">
+                      <b><span></span></b>
+                    </td>
+                    <td align="center" style="text-align: right;" valign="top">
+                      <span></span></td>
+                    <td align="right" style="text-align: right;" valign="top">
+                      <b><span></span></b>
+                    </td>
+                  <% end %>
+                  <td align="right" valign="top">
+                    <b><span><%= number_to_currency(record.calculate_tcs_amount, precision: 2, unit: '') %></span></b>
+                  </td>
+                </tr>
+              <% end %>
               <tr class="pdf-table-total-row">
                 <td align="center" valign="top">
                   <span>&nbsp;</span></td>
@@ -321,26 +372,31 @@
                   <span></span></td>
                 <% if record.tax_summary.strip == '0' ||
                     (record.tax_summary.to_s.include? "IGST") %>
-                  <td align="center" valign="top">
-                    <span></span></td>
+                  <td align="center" valign="top"><span></span></td>
                   <td align="right" style="text-align: right;" valign="top">
                     <b><span><%= number_to_currency(record.converted_total_tax, precision: 2, unit: '') %></span></b>
                   </td>
                 <% else %>
-                  <td align="center" style="font-size: 9px; border-right: 1px solid #3c3c3c;" valign="top">
-                    <span></span></td>
+                  <td align="center" style="font-size: 9px; border-right: 1px solid #3c3c3c;" valign="top"><span></span></td>
                   <td align="right" style="text-align: right;" valign="top">
                     <b><span><%= number_to_currency(record.converted_total_tax / 2, precision: 2, unit: '') %></span></b>
                   </td>
-                  <td align="center" style="text-align: right;" valign="top">
-                    <span></span></td>
+                  <td align="center" style="text-align: right;" valign="top"><span></span></td>
                   <td align="right" style="text-align: right;" valign="top">
                     <b><span><%= number_to_currency(record.converted_total_tax / 2, precision: 2, unit: '') %></span></b>
                   </td>
                 <% end %>
-                <td align="right" valign="top">
-                  <b><span><%= number_to_currency(record.converted_total_with_tax, precision: 2, unit: '') %></span></b>
-                </td>
+
+                <% if company.check_company_total_amount(record) %>
+                  <td align="right" valign="top">
+                    <% total_with_tcs = (record.converted_total_with_tax) + record.calculate_tcs_amount %>
+                    <b><span><%= number_to_currency(total_with_tcs, precision: 2, unit: '') %></span></b>
+                  </td>
+                <% else %>
+                  <td align="right" valign="top">
+                    <b><span><%= number_to_currency(record.converted_total_with_tax, precision: 2, unit: '') %></span></b>
+                  </td>
+                <% end %>
               </tr>
 
               </tbody>

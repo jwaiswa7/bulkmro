@@ -593,4 +593,8 @@ class Inquiry < ApplicationRecord
     calculated_total = self.final_sales_quotes.present? ? self.final_sales_quotes.map(&:calculated_total).compact.sum : (self.sales_quotes.present? ? self.sales_quotes.last.calculated_total : 0)
     ((1 - (calculated_total_cost / calculated_total)) * 100).round(2) if calculated_total > 0
   end
+
+  def buyer_name_with_alias
+    "(#{company.account.alias}) #{company.account.name.truncate(25)}"
+  end
 end

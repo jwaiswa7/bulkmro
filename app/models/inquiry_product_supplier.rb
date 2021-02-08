@@ -54,4 +54,8 @@ class InquiryProductSupplier < ApplicationRecord
   def latest_pq_received_date
     self.supplier_rfq.updated_at if self.supplier_rfq.present? && self.supplier_rfq.supplier_quote_submitted == true
   end
+
+  def supplier_name_with_alias
+    "(#{supplier.account.alias}) #{supplier.name.truncate(25)}"
+  end
 end
