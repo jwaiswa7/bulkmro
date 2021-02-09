@@ -25,7 +25,7 @@ json.data (@purchase_orders) do |purchase_order|
                         row_action_button(dispatch_from_supplier_delayed_overseers_po_request_email_messages_path(purchase_order.po_request), 'envelope', 'Dispatch from Supplier Delayed', 'success', :_blank)
                       end,
                       if is_authorized(purchase_order, 'change_material_status') && policy(purchase_order).change_material_status?
-                        row_action_button_without_fa(change_material_status_overseers_purchase_order_path(purchase_order), 'bmro-icon-table bmro-icon-peoplemate', 'Change Material Status', 'primary', :_blank)
+                        row_action_button_without_fa(change_material_status_overseers_purchase_order_path(purchase_order,is_manual: true), 'bmro-icon-table bmro-icon-peoplemate', 'Change Material Status', 'primary', :_blank)
                       end,
                       if is_authorized(purchase_order, 'index')
                         link_to('', class: ['btn btn-sm btn-success comment-purchase_order'], 'data-model-id': purchase_order.id, title: 'Comment', 'data-title': 'Comment', remote: true) do
