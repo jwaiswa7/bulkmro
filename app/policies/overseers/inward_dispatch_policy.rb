@@ -51,7 +51,7 @@ class Overseers::InwardDispatchPolicy < Overseers::ApplicationPolicy
   end
 
   def create_ar_invoice?
-    if record.sales_order.present?
+    if (record.sales_order.present? && !record.delivery_challans.present?)
       product_ids = SalesOrderRow.where(sales_order_id: record.sales_order_id).pluck(:product_id)
       so_rows = record.rows.where(product_id: product_ids)
       if so_rows.present?
@@ -63,5 +63,17 @@ class Overseers::InwardDispatchPolicy < Overseers::ApplicationPolicy
       delivered_quantity = ArInvoiceRequestRow.where(product_id: record.rows.pluck(:product_id),ar_invoice_request_id: ar_invoices.pluck(:id)).sum(&:delivered_quantity)
       total_quantity != delivered_quantity
     end
+  end
+
+  def create_new_dc?
+    total_quantity = 0
+    inward_dispatch_delivered_quantities = record.rows.sum(&:delivered_quantity)
+    if record.delivery_challans.present?
+      record.delivery_challans.each do |dc|
+        total_quantity += dc.rows.sum(&:quantity)
+      end
+    end
+
+    total_quantity < inward_dispatch_delivered_quantities
   end
 end

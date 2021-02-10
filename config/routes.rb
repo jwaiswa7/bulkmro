@@ -61,6 +61,17 @@ Rails.application.routes.draw do
 
   namespace 'overseers' do
     get '/docs/*page' => 'docs#index'
+    resources :delivery_challans do
+      collection do
+        get 'next_step'
+      end
+
+      member do
+        get 'preview'
+        get 'relationship_map'
+        get 'get_relationship_map_json'
+      end
+    end
     resources :payment_collection_emails
     resources :attachments
     resources :review_questions
@@ -572,6 +583,7 @@ Rails.application.routes.draw do
         get 'regret_inquiry_request_queue'
         get 'new_from_customer_order'
         get 'autocomplete'
+        get 'autocomplete_without_so_confirmed'
         get 'index_pg'
         get 'smart_queue'
         get 'next_inquiry_step'

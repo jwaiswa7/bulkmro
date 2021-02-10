@@ -1,4 +1,4 @@
-class Services::Resources::Shared:: UidGenerator < Services::Shared::BaseService
+class Services::Resources::Shared::UidGenerator < Services::Shared::BaseService
   def self.inquiry_number
     # Generates in Postgres sequences
   end
@@ -41,6 +41,20 @@ class Services::Resources::Shared:: UidGenerator < Services::Shared::BaseService
 
   def self.online_order_number(id)
     (id + 100000)
+  end
+
+  def self.generate_dc_number(id)
+    current_year = Date.today.year % 100
+    next_year = Date.today.next_year.year % 100
+    previous_record = DeliveryChallan.where("id < ?", id).last
+    if previous_record
+      if previous_record.delivery_challan_number.present?
+        series = previous_record.delivery_challan_number.scan(/\d+/)&.first&.to_i + 1
+        "DC-#{series}/#{current_year}-#{next_year}"
+      end
+    else
+      "DC-101/#{current_year}-#{next_year}"
+    end
   end
 
   attr_accessor :sales_quote
