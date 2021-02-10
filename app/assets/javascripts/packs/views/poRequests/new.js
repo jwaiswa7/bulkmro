@@ -26,39 +26,9 @@ const newAction = () => {
         onContactChange(this, reset);
     });
 
-    $('form').on('change', '.supplier-po-type',function () {
-        onPoTypeChange('.supplier-po-type');
-    });
-
     updateRowTotal();
     onSupplierPoTypeChange();
-
 }
-
-let onPoTypeChange = (container) => {
-    let optionSelected = $("option:selected", container);
-    let inquiryID = $('.supplier-po-type').data('inquiry-id');
-    let shipToElem = $('form').find('select[name*=ship_to_id]');
-    shipToElem.empty();
-    if (optionSelected.exists() && optionSelected.val() == 'Drop Ship') {
-        $.get({
-            url: Routes.dropbox_ship_to_overseers_inquiry_po_requests_path(inquiryID),
-            data: {
-                drop_ship: true,
-                inquiry_id: inquiryID
-            },
-            success: function (response) {
-                shipToElem.attr('data-source', Routes.autocomplete_overseers_company_addresses_path(response.company_id)).select2('destroy');
-                select2s();
-                var option = new Option(response.address, response.address_id, true, true);
-                shipToElem.append(option).trigger('change');
-            }
-        });
-    }else {
-        shipToElem.attr('data-source', Routes.autocomplete_overseers_warehouses_path()).select2('destroy');
-        select2s();
-    }
-};
 
 let onProductChange = (container) => {
     let optionSelected = $("option:selected", container);
