@@ -113,27 +113,11 @@
           <div class="col-12 col-md-6">
             <%= f.association :ship_from, collection: Address.with_includes.where(:company => f.object.supplier).map {|supplier_address| [supplier_address.to_s, supplier_address.id, {'data-supplier-state' => supplier_address.state.try(:id) || '', 'data-city-name' => supplier_address.city_name}]}, input_html: {class: 'select2-single bmro-dropdown-icon bmro-form-input'}, required: true %>
           </div>
-          <div id="drop-ship-address-<%= f.object.supplier_id %>" class="form-row col-12 hide">
-            <!-- # this div is for drop ship address selection-->
-            <div class="col-12 col-md-6">
-              <% bill_to_addresses = Address.where(id: f.object.inquiry.billing_address.id) %>
-              <% billing_addresses = bill_to_addresses.map {|address| [address.to_s, address.id, {'data-warehouse' => address.city_name.try(:strip) || 'N/A', 'data-warehouse-state' => address.try(:state).try(:id), 'data-warehouse-city' => address.try(:city_name)}]} %>
-              <%= f.association :bill_to, collection: billing_addresses, input_html: {class: 'select2-single bmro-form-input bmro-dropdown-icon'}, required: true, selected: f.object.inquiry.billing_address.id %>
-            </div>
-            <div class="col-12 col-md-6">
-              <% ship_to_addresses = Address.where(id: f.object.inquiry.shipping_address.id) %>
-              <% shipping_addresses = ship_to_addresses.map {|address| [address.to_s, address.id, {'data-warehouse' => address.city_name.try(:strip) || 'N/A', 'data-warehouse-state' => address.try(:state).try(:id), 'data-warehouse-city' => address.try(:city_name)}]} %>
-              <%= f.association :ship_to, collection: shipping_addresses, input_html: {class: 'select2-single bmro-form-input bmro-dropdown-icon'}, selected: f.object.inquiry.shipping_address.id %>
-            </div>
+          <div class="col-12 col-md-6">
+            <%= f.association :bill_to, collection: Warehouse.where('is_active = ? AND series_code IS NOT ?', true, nil).with_includes.map {|warehouse| [warehouse.to_s, warehouse.id, {'data-warehouse' => warehouse.address.city_name.try(:strip) || 'N/A', 'data-warehouse-state' => warehouse.address.state.id, 'data-warehouse-city' => warehouse.address.city_name}]}, input_html: {class: 'select2-single bmro-form-input bmro-dropdown-icon', 'data-warehouse-list': Warehouse.all.map {|warehouse| [warehouse.address.state.id]}.uniq}, required: true %>
           </div>
-          <div id="warehouse-addresses-<%= f.object.supplier_id %>" class="form-row col-12 hide">
-            <!-- # this div is for non drop ship address selection(warehouse addresses)-->
-            <div class="col-12 col-md-6">
-              <%= f.association :bill_to, collection: Warehouse.all.with_includes.map {|warehouse| [warehouse.to_s, warehouse.address.id, {'data-warehouse' => warehouse.address.city_name.try(:strip) || 'N/A', 'data-warehouse-state' => warehouse.address.state.id, 'data-warehouse-city' => warehouse.address.city_name}]}, input_html: {class: 'select2-single bmro-form-input bmro-dropdown-icon', 'data-warehouse-list': Warehouse.all.map {|warehouse| [warehouse.address.state.id]}.uniq, 'data-parsley-regular': 'regular', 'data-parsley-locations': [f.object.inquiry.bill_from.address.city_name, f.object.inquiry.shipping_address.city_name, f.object.inquiry.bill_from.address.state.id].join(',')}, required: true, selected: f.object.bill_to_id %>
-            </div>
-            <div class="col-12 col-md-6">
-              <%= f.association :ship_to, collection: Warehouse.all.with_includes.map {|warehouse| [warehouse.to_s, warehouse.address.id, {'data-warehouse' => warehouse.address.city_name.try(:strip) || 'N/A', 'data-warehouse-state' => warehouse.address.state.id, 'data-warehouse-city' => warehouse.address.city_name}]}, input_html: {class: 'select2-single bmro-form-input bmro-dropdown-icon', 'data-warehouse-list': Warehouse.all.map {|warehouse| [warehouse.address.state.id]}.uniq, 'data-parsley-regular': 'regular', 'data-parsley-locations': [f.object.inquiry.bill_from.address.city_name, f.object.inquiry.shipping_address.city_name, f.object.inquiry.bill_from.address.state.id].join(',')}, required: true, selected: f.object.ship_to_id %>
-            </div>
+          <div class="col-12 col-md-6 ship-to-select2">
+            <%= f.association :ship_to, collection: selected_option_or_nil(f, :ship_to), label_method: :to_s, input_html: {class: 'select2-ajax bmro-form-input', :'data-source' => autocomplete_overseers_warehouses_path()}, required: true %>
           </div>
         <% end %>
         <div id="warehouse-div" data-warehouse-id=""></div>
@@ -228,7 +212,7 @@
     <%= po_request_row.hidden_field :product_id %>
     <%= po_request_row.hidden_field :tax_code_id %>
     <%= po_request_row.hidden_field :tax_rate_id %>
-    <%= po_request_row.hidden_field :measurement_unit_id, value: po_request_row.object.measurement_unit_id || MeasurementUnit.default.id %>
+    <%= po_request_row.hidden_field :measurement_unit_id, value: po_request_row.object.measurement_unit_id || MeasurementUnit.default&.id %>
     <%= po_request_row.hidden_field :brand_id %>
     <div class="form-row po-request-row bmro-product-slide-on target-scroll" id="Product">
       <div class="col-7 col-md-7 mb-1 ml-2">
@@ -277,7 +261,7 @@
           </div>
 
           <div class="col-12 col-md-2">
-            <%= po_request_row.input :measurement_unit, value: po_request_row.object.measurement_unit || MeasurementUnit.default.name, disabled: true, input_html: { class: 'bmro-form-input' } %>
+            <%= po_request_row.input :measurement_unit, value: po_request_row.object.measurement_unit || MeasurementUnit.default&.name, disabled: true, input_html: { class: 'bmro-form-input' } %>
           </div>
         </div>
       </div>
