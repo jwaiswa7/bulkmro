@@ -68,5 +68,6 @@ json.columnFilters [
                    ]
 
 json.recordsTotal @companies.model.all.count
-json.recordsFiltered @indexed_companies.total_count
+# json.recordsFiltered @indexed_companies.total_count
+json.recordsFiltered @companies.total_count
 json.draw params[:draw]
