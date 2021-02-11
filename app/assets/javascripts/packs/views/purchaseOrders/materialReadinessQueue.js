@@ -1,10 +1,12 @@
+import bindSummaryBox from '../common/bindSummaryBox'
 import updateSummaryBox from "../common/updateSummaryBox";
 import updateLogisticsOwner from "./updateLogisticsOwner"
 import removeHrefExport from '../common/removeHrefExport';
 import commanComment from "../common/commanComment";
 
 const materialReadinessQueue = () => {
-    bindSummaryBox(".summary_box");
+    bindSummaryBox(".summary_box", '.status-filter')
+    bindSummaryBox1();
     updateSummaryBox();
     // aggregateSummaryBox();
     updateLogisticsOwner();
@@ -12,7 +14,7 @@ const materialReadinessQueue = () => {
     commanComment('purchase_order','purchase_orders');
 };
 
-let bindSummaryBox = (classname) => {
+let bindSummaryBox1 = (classname) => {
     $(classname).on('click', function (e) {
         // let value = $(this).data('value'); .toLowerCase()
         var keyup_event = $.Event("keyup");
