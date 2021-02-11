@@ -24,7 +24,7 @@ let bindSummaryBox = (classname) => {
         return false;
     });
 };
-
+// ---
 let aggregateSummaryBox = () => {
     let table = $('.datatable').DataTable();
     let currencyName =  camelize($('body').data().currencyName)
