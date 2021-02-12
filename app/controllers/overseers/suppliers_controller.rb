@@ -15,14 +15,16 @@ class Overseers::SuppliersController < Overseers::BaseController
   end
 
   def customized_index
-    base_filter = {
-        base_filter_key: 'is_supplier',
-        base_filter_value: true
-    }
-    service = Services::Overseers::Finders::Companies.new(params.merge(base_filter))
-    service.call
-    @indexed_companies = service.indexed_records
-    @companies = service.records.active
+    # base_filter = {
+    #     base_filter_key: 'is_supplier',
+    #     base_filter_value: true
+    # }
+    # service = Services::Overseers::Finders::Companies.new(params.merge(base_filter))
+    # service.call
+    # @indexed_companies = service.indexed_records
+    # @companies = service.records.active
+    @companies = ApplyDatatableParams.to(Company.acts_as_supplier.active, params)
+    @indexed_companies = @companies
     authorize_acl @companies
 
     render 'customized_index'
