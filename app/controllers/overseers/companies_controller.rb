@@ -7,7 +7,6 @@ class Overseers::CompaniesController < Overseers::BaseController
     service.call
     @indexed_companies = service.indexed_records
     @companies = service.records
-
     authorize_acl @companies
   end
 
@@ -30,6 +29,7 @@ class Overseers::CompaniesController < Overseers::BaseController
       @account = Account.new
       @company = Company.new(overseer: current_overseer)
     end
+
     authorize_acl @company
   end
 
