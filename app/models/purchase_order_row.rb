@@ -7,6 +7,8 @@ class PurchaseOrderRow < ApplicationRecord
   before_destroy :decrease_product_count
   belongs_to :po_request_row, required: false
 
+  delegate :measurement_unit, to: :po_request_row, allow_nil: true
+
 
   def increase_product_count
     product = self.get_product
@@ -70,7 +72,8 @@ class PurchaseOrderRow < ApplicationRecord
   end
 
   def unit_selling_price_with_tax
-    self.unit_selling_price + (self.unit_selling_price * (self.applicable_tax_percentage || 0))
+    # self.unit_selling_price + (self.unit_selling_price * (self.applicable_tax_percentage || 0))
+    self.unit_selling_price + ((self.unit_selling_price/100) * (self.po_request_tax_rate))
   end
 
   def total_tax
@@ -111,5 +114,9 @@ class PurchaseOrderRow < ApplicationRecord
 
   def get_product_id
     self.get_product.present? ? self.get_product.id : self.product_id
+  end
+
+  def po_request_tax_rate
+    self.po_request_row.tax_rate.tax_percentage
   end
 end

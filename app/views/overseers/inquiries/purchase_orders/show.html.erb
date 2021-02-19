@@ -211,9 +211,7 @@
             <th class="no-sort">
               <span data-toggle="tooltip" title="Subtotal">Subtotal</span>
             </th>
-            <th class="no-sort">
-              <span data-toggle="tooltip" title="Tax Rate">Tax Rate</span>
-            </th>
+
             <% if (@metadata[:PopTaxRate].to_s.include? "IG") || (@metadata[:ItemLine][0][:PopTaxRate].to_s.include? "IG") %>
               <th class="no-sort">
                 <span data-toggle="tooltip" title="Tax Rate">IGST Rate</span>
@@ -222,6 +220,9 @@
                 <span data-toggle="tooltip" title="Tax Rate">IGST Amt</span>
               </th>
             <% else %>
+              <th class="no-sort">
+                <span data-toggle="tooltip" title="Tax Rate">Tax Rate</span>
+              </th>
               <th class="no-sort">
                 <span data-toggle="tooltip" title="Tax Rate">CGST Rate</span>
               </th>
@@ -266,7 +267,7 @@
                 </span>
               </td>
               <td>
-                <span><%= item.uom  %></span>
+                <span><%= item.measurement_unit  %></span>
               </td>
               <td>
                 <span><%= number_to_currency(item.quantity, precision: 2, unit: '') %></span>
@@ -277,24 +278,25 @@
               <td align="right" valign="top">
                 <span><%= format_currency(item.total_selling_price, precision: 2, symbol: nil) %></span>
               </td>
-              <td>
-                <span><%= item.tax_rate.round(0) %>%</span>
-              </td>
-              <% if (@metadata[:PoTaxRate].to_s.include? "IG") || (item.metadata['PopTaxRate'].to_s.include? "IG") %>
+
+              <% if (@metadata[:PopTaxRate].to_s.include? "IG") || (@metadata[:ItemLine][0][:PopTaxRate].to_s.include? "IG") %>
                 <td>
-                  <span><%= item.tax_rate.round(0) %>%</span>
+                  <span><%= item.po_request_tax_rate %>%</span>
                 </td>
                 <td align="right" valign="top">
                   <span><%= format_currency(item.total_tax, precision: 2, symbol: nil) %></span>
                 </td>
               <% else %>
                 <td>
-                  <span><%= (item.tax_rate.to_f / 2) %>%</span></td>
+                  <span><%= item.po_request_tax_rate %>%</span>
+                </td>
+                <td>
+                  <span><%= (item.po_request_tax_rate.to_f / 2) %>%</span></td>
                 <td align="right" valign="top">
                   <span><%= format_currency(item.total_tax / 2, precision: 2, symbol: nil) %></span>
                 </td>
                 <td>
-                  <span><%= (item.tax_rate.to_f / 2) %>%</span></td>
+                  <span><%= (item.po_request_tax_rate.to_f / 2) %>%</span></td>
                 <td>
                   <span><%= format_currency(item.total_tax / 2, precision: 2, symbol: nil) %><br></span>
                 </td>
@@ -329,6 +331,12 @@
               <strong class="d-block bmro-summary-heading"><%= format_currency(@purchase_order.calculated_total_tax / 2, symbol: nil) %></strong>
             </div>
           <% end %>
+          <%# if @purchase_order.company.check_company_total_amount(@purchase_order) %>
+<!--            <div class="col-6 col-md-2 bmro-border-left">-->
+<!--              TCS Amt @0.075%-->
+<!--              <strong class="d-block bmro-summary-heading"><%#= format_currency(@purchase_order.calculate_tcs_amount.to_f, precision: 2, symbol: nil) %></strong>-->
+<!--            </div>-->
+          <%# end %>
           <div class="col-6 col-md-3 bmro-border-left">
             Grand Total
             <strong class="d-block bmro-summary-heading"><%= format_currency(@purchase_order.calculated_total_with_tax, symbol: nil) %></strong>

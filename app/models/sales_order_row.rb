@@ -13,6 +13,7 @@ class SalesOrderRow < ApplicationRecord
   has_one :ar_invoice_request_row, class_name: 'ArInvoiceRequestRow'
   has_one :product, through: :inquiry_product
   has_many :po_request_rows
+  has_many :delivery_challan_rows
 
   delegate :unit_cost_price_with_unit_freight_cost, :unit_selling_price, :converted_unit_selling_price, :margin_percentage, :unit_freight_cost, :freight_cost_subtotal, :converted_unit_cost_price_with_unit_freight_cost, :converted_unit_selling_price, :converted_margin_percentage, :converted_unit_freight_cost, :converted_freight_cost_subtotal, :tax_type, to: :sales_quote_row, allow_nil: true
   delegate :sr_no, to: :inquiry_product, allow_nil: true
@@ -30,6 +31,7 @@ class SalesOrderRow < ApplicationRecord
   validates_uniqueness_of :sales_quote_row_id, scope: :sales_order_id
 
   after_initialize :set_defaults, if: :new_record?
+
   def set_defaults
     self.quantity ||= maximum_quantity if sales_quote_row.present?
   end
@@ -64,6 +66,12 @@ class SalesOrderRow < ApplicationRecord
 
   def total_selling_price_with_tax
     sales_quote_row.unit_selling_price_with_tax * self.quantity if sales_quote_row.present? && sales_quote_row.unit_selling_price.present?
+  end
+
+  def total_selling_price_with_tax_tcs_applicable
+    if sales_quote_row.product.tcs_applicable?
+      sales_quote_row.unit_selling_price_with_tax * self.quantity if sales_quote_row.present? && sales_quote_row.unit_selling_price.present?
+    end
   end
 
   def total_tax

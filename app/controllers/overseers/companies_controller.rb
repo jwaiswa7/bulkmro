@@ -29,6 +29,7 @@ class Overseers::CompaniesController < Overseers::BaseController
       @account = Account.new
       @company = Company.new(overseer: current_overseer)
     end
+
     authorize_acl @company
   end
 

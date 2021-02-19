@@ -50,6 +50,7 @@ class SalesOrder < ApplicationRecord
   has_many :ar_invoice_requests
   has_many :ar_invoice_request_rows, through: :ar_invoice_request
   has_many :email_messages
+  has_many :delivery_challans
   belongs_to :billing_address, class_name: 'Address', dependent: :destroy, required: false
   belongs_to :shipping_address, class_name: 'Address', dependent: :destroy, required: false
 
@@ -381,5 +382,12 @@ class SalesOrder < ApplicationRecord
 
   def is_invoices_cancelled
     self.invoices.pluck(:status).all?('Cancelled')
+  end
+
+  def calculate_tcs_amount
+    company = self.company
+    if company.check_company_total_amount(self)
+      ((self.converted_total_with_tax.to_f) * (0.075 / 100))
+    end
   end
 end

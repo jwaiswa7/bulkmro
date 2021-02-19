@@ -8,6 +8,7 @@ class TaxCode < ApplicationRecord
   validates_presence_of :code, :remote_uid, :tax_percentage, :description
   validate :code_validation
   scope :with_includes, -> { includes(:products) }
+  scope :latest_taxcode, -> {where('created_at > ?', '2021-01-01 00:00:00')}
   after_initialize :set_defaults, if: :new_record?
   def set_defaults
     self.is_service ||= false
@@ -19,11 +20,13 @@ class TaxCode < ApplicationRecord
   end
 
   def code_validation
-    if is_service.present? && is_service && (code.length < 6 || code.length > 6)
-      errors.add(:code, 'must be 6 digit')
-    elsif !is_service.present? && !is_service && (code.length < 8 || code.length > 8)
-      errors.add(:code, 'must be 8 digit')
-    end
+    true
+    # below validation removed due to new gst code upload from 2021
+    # if is_service.present? && is_service && (code.length < 6 || code.length > 6)
+    #   errors.add(:code, 'must be 6 digit')
+    # elsif !is_service.present? && !is_service && (code.length < 8 || code.length > 8)
+    #   errors.add(:code, 'must be 8 digit')
+    # end
   end
 
   def to_s

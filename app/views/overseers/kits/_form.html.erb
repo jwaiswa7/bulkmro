@@ -37,7 +37,7 @@
 
         <div class="form-row">
           <div class="col-12 col-md-4">
-            <%= product.association :measurement_unit, include_blank: false, input_html: {class: 'select2-single bmro-form-label bmro-form-input bmro-dropdown-icon'} %>
+            <%= product.association :measurement_unit, collection: MeasurementUnit.new_uom, include_blank: false, input_html: {class: 'select2-single bmro-form-label bmro-form-input bmro-dropdown-icon'} %>
           </div>
           <div class="col-6 col-md-4">
             <%= product.association :brand, collection: selected_option_or_nil(product, :brand), input_html: {class: 'select2-ajax bmro-form-input bmro-form-label bmro-dropdown-icon', :'data-source' => autocomplete_overseers_brands_path}, :required => true %>

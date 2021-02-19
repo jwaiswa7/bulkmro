@@ -305,11 +305,11 @@
               <span class="bmro-summary-data bmro-summary-padding"> Products</span>
               <strong class="d-block bmro-summary-heading bmro-summary-padding"><%= sales_order.rows.size %></strong>
             </div>
-            <div class="col-6 col-md-2 bmro-border-left bmrotf-width">
+            <div class="col-6 col-md-1 bmro-border-left bmrotf-width">
               <span class="bmro-summary-data bmro-summary-padding">Total Freight</span>
               <strong class="d-block bmro-summary-heading bmro-summary-padding"><%= format_currency(sales_order.calculated_freight_cost_total, symbol: sales_order.currency_sign) %></strong>
             </div>
-            <div class="col-6 col-md-2 bmro-border-left">
+            <div class="col-6 col-md-1 bmro-border-left">
               <span class="bmro-summary-data bmro-summary-padding"> Cost</span>
               <strong class="d-block bmro-summary-heading bmro-summary-padding"><%= format_currency(sales_order.converted_total_cost, symbol: sales_order.currency_sign) %></strong>
             </div>
@@ -319,16 +319,20 @@
                 (<%= sales_order.calculated_total_margin_percentage %>%)</strong>
             </div>
             <div class="col-6 col-md-2 mt-2 mt-md-0 bmro-border-left">
-              <span class="bmro-summary-data bmro-summary-padding"> Selling Price (E. tax)</span>
+              <span class="bmro-summary-data bmro-summary-padding"> Selling Price(E. tax)</span>
               <strong class="d-block bmro-summary-heading bmro-summary-padding"><%= format_currency(sales_order.converted_total, symbol: sales_order.currency_sign) %></strong>
             </div>
             <div class="col-6 col-md-1 mt-2 mt-md-0 bmro-border-left bmrotax-width">
               <span class="bmro-summary-data bmro-summary-padding"> Tax</span>
               <strong class="d-block bmro-summary-heading bmro-summary-padding"><%= format_currency(sales_order.converted_total_tax, symbol: sales_order.currency_sign) %></strong>
             </div>
+            <div class="col-6 col-md-1 mt-2 mt-md-0 bmro-border-left">
+              <span class="bmro-summary-data bmro-summary-padding"> TCS Amount</span>
+              <strong class="d-block bmro-summary-heading bmro-summary-padding"><%= format_currency(sales_order.tcs_amount, symbol: sales_order.currency_sign) %></strong>
+            </div>
             <div class="col-6 col-md-2 mt-2 mt-md-0 bmro-border-left">
               <span class="bmro-summary-data bmro-summary-padding"> Selling Price (I. tax)</span>
-              <strong class="d-block bmro-summary-heading bmro-summary-padding"><%= format_currency(sales_order.converted_total_with_tax, symbol: sales_order.currency_sign) %></strong>
+              <strong class="d-block bmro-summary-heading bmro-summary-padding"><%= format_currency(sales_order.converted_total_tax_with_tcs, symbol: sales_order.currency_sign) %></strong>
             </div>
           </div>
         </div>

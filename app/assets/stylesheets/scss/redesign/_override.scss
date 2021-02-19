@@ -4639,7 +4639,7 @@ td .media.chat-item{
 
 .nested_fields .remove_nested_fields_link .fa-times{
     position: relative;
-    margin: 30px 0 0 ;
+    margin: 30px 25px 5px ;
 }
 
 .col-3{
@@ -4677,7 +4677,9 @@ a.icon-title{
 }
 
 table.table.dataTable.table-bordered th{
-    padding: 8px 25px;
+    padding: 8px 15px;
+    white-space: normal!important;
+
 }
 
 .bmro-form-heading.btn-lg{
@@ -4696,8 +4698,10 @@ table.table.dataTable.table-bordered th{
     margin-top: 3px;
 }
 
-a.ml-md-1.btn.bmro-button.btn-success{
-    top: 5px;
+a.ml-md-1.btn.bmro-button.btn-success,
+a.ml-1.btn.bmro-button.btn-outline-danger
+{
+    //top: 5px;
     margin: 1px 0    
 }
 .nested_sales_invoice_pod_rows a.ml-md-1.btn.bmro-button.btn-success{
@@ -4738,4 +4742,193 @@ a.ml-md-1.btn.bmro-button.btn-success{
 .main-container > .container:last-child, .main-container > .container-fluid:last-child {
 
     padding-bottom: 2rem;
+}
+.dc-buttons {
+	padding: 8px 10px !important;
+	border: 2px solid #2C4159 !important;
+	border-radius: 2px !important;
+	background-color: #2C4159!important;
+	color: #FFFFFF!important;
+	font-family: 'Inter UI', sans-serif;
+	-webkit-font-smoothing: antialiased;
+	font-size: 13px !important;
+	font-weight: 600 !important;
+	letter-spacing: -0.5px;
+	line-height: 16px !important;
+	outline: none !important;
+	text-transform: capitalize !important;
+	box-shadow: none !important;
+}
+
+ // start DeliveryChallan show page pdf view css
+.address-blocks .heading {
+  background: #d3d3d3;
+  border: 1px solid;
+  border-radius: 5px;
+  padding-top: 1px;
+  padding-bottom: 1px;
+  text-align: center;
+  font-size: 11px;
+}
+
+.address-blocks .heading-left {
+  float: left;
+  width: 49%;
+}
+
+.address-blocks .heading-right {
+  float: right;
+  width: 49%;
+}
+
+.address-wrapper {
+  margin-top: 10px;
+  vertical-align: top;
+  padding: 4px 10px;
+  border: 1px solid;
+  border-radius: 5px;
+  text-align: left;
+  height: 140px;
+  font-size: 11px;
+  line-height: 1.3;
+}
+
+.address-wrapper-left {
+  float: left;
+  width: 98%;
+}
+
+.address-wrapper-right {
+  float: right;
+  width: 98%;
+}
+
+.address-section-holder {
+  width: 47%;
+}
+
+.address-section-gap {
+  width: 6%;
+}
+.pdf-table {
+  width: 100%;
+  border-radius: 5px;
+  border: 1px solid #3c3c3c;
+  border-collapse: separate;
+  text-align: center
+}
+
+.pdf-table, .pdf-table th, .pdf-table td {
+  color: #000;
+}
+
+.pdf-table thead {
+  background: #d3d3d3;
+}
+
+.pdf-table tr th {
+  padding: 3px;
+  border-right: 1px solid #3c3c3c;
+  border-bottom: 1px solid #3c3c3c;
+  font-size: 10px;
+}
+
+.pdf-table tr th:first-child {
+  border-top-left-radius: 5px;
+}
+
+.pdf-table tr th:last-child {
+  border-top-right-radius: 5px;
+  border-right: none;
+}
+
+.pdf-table tr td {
+  padding: 3px 3px 0;
+  border-right: 1px solid #3c3c3c;
+  border-bottom: 1px solid #3c3c3c;
+  font-size: 9px;
+  vertical-align: middle;
+}
+
+.pdf-table tr td:last-child {
+  border-right: none;
+}
+
+.pdf-table tr.pdf-table-total-row {
+  background: #d3d3d3;
+}
+
+.pdf-table tr.pdf-table-total-row td {
+  border-bottom: none;
+}
+
+.pdf-table tr.pdf-table-total-row td:first-child {
+  border-bottom-left-radius: 5px;
+}
+
+.pdf-table tr.pdf-table-total-row td:last-child {
+  border-bottom-right-radius: 5px;
+}
+
+div.alwaysbreak {
+  page-break-before: always;
+}
+
+div.nobreak:before {
+  clear: both;
+}
+
+div.nobreak {
+  page-break-inside: avoid;
+}
+
+.information-section {
+
+}
+
+.information-section .heading {
+  background: #d3d3d3;
+  border: 1px solid;
+  border-radius: 5px;
+  padding-top: 1px;
+  padding-bottom: 1px;
+  text-align: center;
+}
+
+.information-section .content-section {
+  border: 1px solid;
+  border-radius: 5px;
+
+}
+
+.information-section .content-section  .content-with-border{
+  border-top: 1px solid #3c3c3c;
+}
+
+.information-section .content-section .content {
+  width: 25%;
+  padding-left: 10px;
+  font-size: 10px;
+}
+// end DeliveryChallan show page pdf view css
+
+
+.delivery-challan-product-form .heading{
+  padding-bottom: 1em;
+}
+
+.delivery-challan-product-form .heading label{
+  font-weight: bold;
+}
+
+.delivery-challan .table td:nth-child(2) a span{
+  display: none !important;
+}
+
+.delivery-challan thead .custom-control-label {
+  display: none !important;
+}
+
+.delivery-challan .dc-checkbox {
+  width: 2em;
 }

@@ -39,11 +39,25 @@ class Services::Overseers::SalesQuotes::Taxation < Services::Shared::BaseService
 
   def to_remote_s
     if is_sez
-      'IG@0'
-    elsif is_igst
       'IG@%g' % ('%.2f' % tax_rate.tax_percentage)
+    elsif is_igst
+      if bill_to.company.check_company_total_amount(sales_quote) && bill_to.company.pan.present? && !is_service
+        # 'IG@%g' % ('%.2f' % tax_rate.tax_percentage)
+        'IG%gT' % ('%.2f' % tax_rate.tax_percentage) + 0.1.to_s
+      elsif bill_to.company.check_company_total_amount(sales_quote) && !(bill_to.company.pan.present?) && !is_service
+        'IG%gT' % ('%.2f' % tax_rate.tax_percentage) + 1.to_s
+      else
+        'IG@%g' % ('%.2f' % tax_rate.tax_percentage)
+      end
     else
-      'CSG@%g' % ('%.2f' % tax_rate.tax_percentage)
+      if bill_to.company.check_company_total_amount(sales_quote) && bill_to.company.pan.present? && !is_service
+        # 'IG@%g' % ('%.2f' % tax_rate.tax_percentage)
+        'CS%gT' % ('%.2f' % tax_rate.tax_percentage) + 0.1.to_s
+      elsif bill_to.company.check_company_total_amount(sales_quote) && !(bill_to.company.pan.present?) && !is_service
+        'CS%gT' % ('%.2f' % tax_rate.tax_percentage) + 1.to_s
+      else
+        'CSG@%g' % ('%.2f' % tax_rate.tax_percentage)
+      end
     end
   end
 

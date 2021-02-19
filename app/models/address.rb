@@ -20,6 +20,8 @@ class Address < ApplicationRecord
   has_one :sales_order, as: :shipping_address, dependent: :nullify
   has_one :po_request, as: :bill_to
   has_one :po_request, as: :ship_to
+  has_one :delivery_challan, as: :customer_bill_from, dependent: :nullify
+  has_one :delivery_challan, as: :customer_ship_from, dependent: :nullify
 
   has_one_attached :gst_proof
   has_one_attached :cst_proof
