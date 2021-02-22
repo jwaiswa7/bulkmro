@@ -637,6 +637,7 @@ Rails.application.routes.draw do
         resources :po_requests do
           collection do
             post 'preview_stock'
+            get 'dropbox_ship_to'
           end
         end
 

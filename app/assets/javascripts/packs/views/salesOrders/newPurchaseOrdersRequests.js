@@ -1,3 +1,4 @@
+import onSupplierPoTypeChange from "../poRequests/onSupplierPoTypeChange"
 import updateRowTotal from "../poRequests/updateRowTotal"
 import validatePoRequestAddresses from "../poRequests/validatePoRequestAddresses"
 import validatePoRequestContacts from "../poRequests/validatePoRequestContacts"
@@ -27,6 +28,7 @@ const newPurchaseOrdersRequests = () => {
         })
     })
     // validatePoRequestAddresses();
+    onSupplierPoTypeChange();
     validatePoRequestContacts();
     updateRowTotal();
 
