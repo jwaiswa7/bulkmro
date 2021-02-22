@@ -106,6 +106,9 @@ body{
     border-radius: 0px !important;
     border-bottom:none;
 }
+.bmro-card hr{
+  margin-top: 10px;
+}
 .bmro-card-footer{
     width: 100%;
     float: left; 
@@ -342,6 +345,12 @@ a.bmro-list-button{
     font-weight: 500;
     font-size: 13px;
 }
+.form-group textarea.form-control{
+    border-width: 2px!important;
+    border-style: solid;
+    border-color: rgb(236, 238, 242);
+}
+
 .form-group input.form-control:focus{
     border-color: #2C4159!important;
 }
@@ -426,8 +435,13 @@ a.bmro-list-button{
 }
 .select2-container--bootstrap .form-control{
     border-color:#eceef2!important;
-
 }
+
+.select2-container--bootstrap .select2-selection.form-control{
+    padding: 8px 8px 8px 8px;
+    height: auto;
+}
+
 .bmro-form-input:focus{
     border-color: #2C4159;
 }
@@ -1510,7 +1524,7 @@ table.table.dataTable.table-bordered th, table.table.dataTable.table-bordered td
     border-bottom: none;
     border-left: none; 
     padding: 8px 8px;
-    vertical-align: middle;
+    vertical-align: top;
 }
 // table.table.dataTable.table-bordered td:nth-child(8){
     //word-break: break-word;
@@ -1530,7 +1544,7 @@ table.table.dataTable.table-bordered th{
 table.table.dataTable.table-bordered th:first-child{
     width: 98px;
     display: table-cell;
-    padding: 20px 10px;
+    padding: 15px 10px;
 }
 table.table.dataTable.table-bordered td:first-child{
     border-left: 1px solid #E0E2E7;
@@ -1580,6 +1594,8 @@ li.paginate_button{
 }
 .custom-select{
     background-size: 0px;
+    padding: 8px 8px 8px 8px;
+    height: auto;
 }
 .paginate_button.previous a{
     font-size: 21px;
@@ -4633,13 +4649,13 @@ td .media.chat-item{
 .nested_fields .remove_nested_fields_link .form-group{
     height: 37px;
     position: relative;
-    padding: 15px;
-    margin-top: 15px;   
+    padding: 15px 15px 15px 0; 
+    margin-top: 18px;   
 }
 
 .nested_fields .remove_nested_fields_link .fa-times{
     position: relative;
-    margin: 30px 25px 5px ;
+    margin: 30px 25px 5px 0;
 }
 
 .col-3{
@@ -4677,9 +4693,9 @@ a.icon-title{
 }
 
 table.table.dataTable.table-bordered th{
-    padding: 8px 15px;
+    padding: 15px 25px;
     white-space: normal!important;
-
+  vertical-align: top;
 }
 
 .bmro-form-heading.btn-lg{

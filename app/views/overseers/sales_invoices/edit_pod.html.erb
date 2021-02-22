@@ -32,15 +32,15 @@
         <div class="col-12 col-md-3">
           <%= pod.input :delivery_date, label: "Delivery Date", as: :string,required: true, input_html: {:'data-toggle' => 'datepicker',class: 'bmro-form-input'} %>
         </div>
-        <div class="col-1">
+        <div class="col-12 col-md-3">
+          <%= pod.input :grn_no, label: "Grn No",required: true %>
+        </div>
+        <div class="col-md-1">
           <%= pod.remove_nested_fields_link do %>
-            <div class="form-group align-self-center flex-grow-1 ml-2">
+            <div class="form-group align-self-center flex-grow-1" data-toggle="tooltip" title="Remove Row">
               <i class="far fa-times text-danger"></i>
             </div>
           <% end if is_authorized(pod.object, 'destroy') && policy(pod.object).destroy? %>
-        </div>
-        <div class="col-12 col-md-3">
-          <%= pod.input :grn_no, label: "Grn No",required: true %>
         </div>
       </div>
     <% end %>
