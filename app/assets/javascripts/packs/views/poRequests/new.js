@@ -1,3 +1,4 @@
+import onSupplierPoTypeChange from "./onSupplierPoTypeChange"
 import updateRowTotal from "./updateRowTotal"
 import select2s from "../../components/select2s";
 
@@ -24,8 +25,9 @@ const newAction = () => {
         let reset = false;
         onContactChange(this, reset);
     });
-    updateRowTotal();
 
+    updateRowTotal();
+    onSupplierPoTypeChange();
 }
 
 let onProductChange = (container) => {
@@ -48,6 +50,12 @@ let onProductChange = (container) => {
 let onSupplierChange = (container, reset) => {
     let optionSelected = $("option:selected", container);
     if (optionSelected.exists() && optionSelected.val() !== '') {
+        let supplierId = parseInt(optionSelected.val());
+        let warehouseAddressElement = $('form').find('div[id*=warehouse-addresses]').attr('id', 'warehouse-addresses-'+supplierId);
+        let dropShipAddressElement = $('form').find('div[id*=drop-ship-address]').attr('id', 'drop-ship-address-'+supplierId);
+        warehouseAddressElement.find('select').attr('required', false);
+        warehouseAddressElement.find('select').attr('disabled', true);
+        onSupplierPoTYpeChangeStock(supplierId, warehouseAddressElement, dropShipAddressElement);
         if (reset) {
             $('form').find('select[name*=bill_from_id]').val(null).trigger("change");
             $('form').find('select[name*=ship_from_id]').val(null).trigger("change");
@@ -94,6 +102,36 @@ let onContactChange = (container, reset) => {
         selectContact(optionSelected.val(),'contact')
         select2s();
     }
+};
+
+let onSupplierPoTYpeChangeStock = (supplierId, warehouseAddElement, dropShipAddressElement) => {
+
+    $('form').on('change', 'select[name*=supplier_po_type]', function (e) {
+
+        let supplierPoType = parseInt($(this).val());
+        let warehouseAddressElement = warehouseAddElement.find('select');
+        let dropshipAddressElement = dropShipAddressElement.find('select');
+
+        if (supplierPoType == 'Drop Ship') {
+            $('#warehouse-addresses-'+supplierId).hide();
+            warehouseAddressElement.attr('disabled', true);
+            warehouseAddressElement.attr('required', false);
+
+            $('#drop-ship-address-'+supplierId).show();
+            dropshipAddressElement.removeAttr('disabled');
+            dropshipAddressElement.attr('required', true);
+        } else {
+            $('#warehouse-addresses-'+supplierId).show();
+            warehouseAddressElement.removeAttr('disabled');
+            warehouseAddressElement.attr('required', true);
+
+            $('#drop-ship-address-'+supplierId).hide();
+            dropshipAddressElement.attr('disabled', true);
+            dropshipAddressElement.attr('required', false);
+        }
+
+    });
+
 };
 
 export default newAction

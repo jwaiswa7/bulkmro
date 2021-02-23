@@ -17,6 +17,8 @@ class PoRequest < ApplicationRecord
   accepts_nested_attributes_for :rows, allow_destroy: true
   belongs_to :bill_to, class_name: 'Warehouse', foreign_key: :bill_to_id
   belongs_to :ship_to, class_name: 'Warehouse', foreign_key: :ship_to_id
+  # belongs_to :bill_to, class_name: 'Address', foreign_key: :bill_to_id
+  # belongs_to :ship_to, class_name: 'Address', foreign_key: :ship_to_id
   has_one :account, through: :inquiry
 
   belongs_to :bill_from, -> (record) { where(company_id: record.supplier.id) }, class_name: 'Address', foreign_key: :bill_from_id
