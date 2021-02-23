@@ -218,7 +218,12 @@ class PurchaseOrder < ApplicationRecord
   end
 
   def calculated_total_with_tax
-    (rows.map {|row| row.total_selling_price_with_tax || 0}.sum.round(2)) + self.metadata['LineTotal'].to_f + self.metadata['TaxSum'].to_f
+    each_row_total_with_tax = rows.map {|row| (row.total_selling_price_with_tax || 0) if row.po_request_row.present? }
+    if each_row_total_with_tax.present?
+      (each_row_total_with_tax.compact.sum.round(2)) + self.metadata['LineTotal'].to_f + self.metadata['TaxSum'].to_f
+    else
+      0
+    end
   end
 
   def calculated_total_without_tax
