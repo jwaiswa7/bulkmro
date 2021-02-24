@@ -44,14 +44,14 @@ class Services::Overseers::SalesQuotes::Taxation < Services::Shared::BaseService
     elsif is_igst
       if tcs_applicable?
         # 'IG@%g' % ('%.2f' % tax_rate.tax_percentage)
-        'IG%gT' % ('%.2f' % tax_rate.tax_percentage) + 0.1.to_s
+        'IG%gT' % ('%.2f' % tax_rate.tax_percentage) + percentage_as_per_pan
       else
         'IG@%g' % ('%.2f' % tax_rate.tax_percentage)
       end
     else
       if tcs_applicable?
         # 'IG@%g' % ('%.2f' % tax_rate.tax_percentage)
-        'CS%gT' % ('%.2f' % tax_rate.tax_percentage) + 0.1.to_s
+        'CS%gT' % ('%.2f' % tax_rate.tax_percentage) + percentage_as_per_pan
       else
         'CSG@%g' % ('%.2f' % tax_rate.tax_percentage)
       end
@@ -72,6 +72,15 @@ class Services::Overseers::SalesQuotes::Taxation < Services::Shared::BaseService
 
     def tcs_applicable?
       bill_to.company.check_company_total_amount(sales_quote)
+    end
+
+    def percentage_as_per_pan
+      percentage = bill_to.company.pan.present? ? percentage_as_per_date : 1
+      percentage.to_s
+    end
+
+    def percentage_as_per_date
+      Time.now < Time.parse('31 March, 2021').end_of_day ? 0.075 : 0.1
     end
 
     def sez_taxcode_as_per_sap
