@@ -2,20 +2,23 @@ class Services::Shared::Migrations::AddCompanyTotalAmountFinancialYearwise < Ser
   def customer_companies_calculate_total_so_amount
     Company.acts_as_customer.includes(:account).includes(:sales_orders).each do |company|
       start_date = Company.current_financial_year_start
-      end_date = Company.current_financial_year_end
+      # end_date = Company.current_financial_year_end
       company_total_amount_record = CompanyTransactionsAmount.where(financial_year: Company.current_financial_year, company_id: company.id)
       unless company_total_amount_record.present?
         if Date.today == start_date
           sales_orders_total = 0.0
-        else
-          sales_orders_total = company.sales_orders.where(created_at: start_date..end_date).where(status: 'Approved').map(&:calculated_total_with_tax).compact.sum
-        end
-        tcs_applied_from = Date.new(2020, 10, 01)
-        begin
-          record = company.company_transactions_amounts.build(financial_year: Company.current_financial_year, total_amount: sales_orders_total, amount_reached_to_date: tcs_applied_from)
-          record.save
-        rescue Exception => e
-          puts "sales_order company - #{record.company}---------#{e.message}"
+          tcs_applied_from = start_date
+        # else
+        #   sales_orders_total = company.sales_orders.where(created_at: start_date..end_date).where(status: 'Approved').map(&:calculated_total_with_tax).compact.sum
+        #   tcs_applied_from = Date.new(2020, 10, 01)
+
+          begin
+            record = company.company_transactions_amounts.build(financial_year: Company.current_financial_year, total_amount: sales_orders_total, amount_reached_to_date: tcs_applied_from)
+            record.save
+          rescue Exception => e
+            puts "sales_order company - #{record.company}---------#{e.message}"
+          end
+
         end
       end
     end
