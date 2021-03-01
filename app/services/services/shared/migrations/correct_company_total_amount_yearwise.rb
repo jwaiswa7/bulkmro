@@ -11,9 +11,8 @@ class Services::Shared::Migrations::CorrectCompanyTotalAmountYearwise < Services
         company_total_amount_record.total_amount = sales_orders_total
         company_total_amount_record.save
       end
-
     end
-    puts 'Total companies with wrong values : '+total_wrong_companies.count.inspect
-    puts 'Total companies with wrong values array : '+total_wrong_companies.inspect
+    puts 'Total companies with wrong values : ' + total_wrong_companies.count.inspect
+    puts 'Total companies with wrong values array : ' + total_wrong_companies.inspect
   end
 end
