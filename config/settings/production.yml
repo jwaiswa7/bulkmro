@@ -152,3 +152,7 @@ aggregator:
   address: ''
   country: 'India'
   country_code: 'IN'
+
+tcs:
+  tcs_threshold: 5000000
+  tcs_rate: 0.075

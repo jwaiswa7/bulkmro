@@ -135,7 +135,7 @@ class Resources::SalesInvoice < Resources::ApplicationResource
       product = Product.find_by_sku(sku)
       quantity = remote_row['Quantity'].to_f
 
-      if company_total_amount.present? && company_total_amount > 5000000.0
+      if company_total_amount.present? && company_total_amount > (Settings.tcs.tcs_threshold).to_f
         tax_remote_row = remote_row['LineTaxJurisdictions'].select { |tax_jurisdiction| tax_jurisdiction['JurisdictionType'] != 8 }
         tcs_amount_row = remote_row['LineTaxJurisdictions'].select { |tax_jurisdiction| tax_jurisdiction['JurisdictionType'] == 8 }
         tcs_amount = tcs_amount_row.present? ? tcs_amount_row[0]['TaxAmount'] : 0.0

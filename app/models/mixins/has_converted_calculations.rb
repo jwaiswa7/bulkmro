@@ -23,7 +23,7 @@ module Mixins::HasConvertedCalculations
     end
 
     def tcs_amount
-      (calculated_total_for_tcs_without_service.to_f * (0.075 / 100))
+      (calculated_total_for_tcs_without_service.to_f * ((Settings.tcs.tcs_rate).to_f / 100))
     end
 
     def converted_total_tax_with_tcs
