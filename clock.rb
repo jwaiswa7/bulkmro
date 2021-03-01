@@ -55,9 +55,9 @@ every(1.day, 'add_companies_total_amount_records', at: '00:30', if: lambda { |t|
   customer_service = Services::Shared::Migrations::AddCompanyTotalAmountFinancialYearwise.new
   customer_service.customer_companies_calculate_total_so_amount
 
-  puts 'For adding supplier company total amounts'
-  supplier_service = Services::Shared::Migrations::AddCompanyTotalAmountFinancialYearwise.new
-  supplier_service.supplier_companies_calculate_total_po_amount
+  # puts 'For adding supplier company total amounts'
+  # supplier_service = Services::Shared::Migrations::AddCompanyTotalAmountFinancialYearwise.new
+  # supplier_service.supplier_companies_calculate_total_po_amount
 end
 
 every(1.day, 'inquiry_product_inventory_update', at: '05:30') do
