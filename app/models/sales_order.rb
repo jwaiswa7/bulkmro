@@ -387,7 +387,7 @@ class SalesOrder < ApplicationRecord
   def calculate_tcs_amount
     company = self.company
     if company.check_company_total_amount(self)
-      ((self.converted_total_with_tax.to_f) * ((Settings.tcs.tcs_rate).to_i / 100))
+      ((self.converted_total_with_tax.to_f) * ((Settings.tcs.tcs_rate).to_f / 100))
     end
   end
 end

@@ -1,7 +1,7 @@
 class CompanyTransactionsAmount < ApplicationRecord
   belongs_to :company
   def increment_total_amount(amount)
-    threshold_amount = (Settings.tcs.tcs_threshold).to_i
+    threshold_amount = (Settings.tcs.tcs_threshold).to_f
     total_amount = self.total_amount.to_f
     total_amount = total_amount + amount.to_f
     if total_amount >= threshold_amount

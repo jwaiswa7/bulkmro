@@ -355,7 +355,7 @@ class Company < ApplicationRecord
     company_so_amount = self.company_transactions_amounts.where(financial_year: Company.current_financial_year).last
     tcs_applied_from = Date.new(2020, 10, 01).beginning_of_day
     if company_so_amount.present? && tcs_applied_from <= record.created_at
-      company_so_amount.total_amount.to_f > (Settings.tcs.tcs_threshold).to_i
+      company_so_amount.total_amount.to_f > (Settings.tcs.tcs_threshold).to_f
     else
       false
     end
