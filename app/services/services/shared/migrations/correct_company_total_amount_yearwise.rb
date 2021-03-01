@@ -14,5 +14,6 @@ class Services::Shared::Migrations::CorrectCompanyTotalAmountYearwise < Services
 
     end
     puts 'Total companies with wrong values : '+total_wrong_companies.count.inspect
+    puts 'Total companies with wrong values array : '+total_wrong_companies.inspect
   end
 end
