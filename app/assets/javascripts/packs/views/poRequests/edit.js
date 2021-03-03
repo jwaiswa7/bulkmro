@@ -1,4 +1,3 @@
-import onSupplierPoTypeChange from "./onSupplierPoTypeChange";
 import validatePoRequestAddresses from "./validatePoRequestAddresses"
 import updateOnContactSelect from "./updateOnContactSelect";
 import updateRowTotal from "./updateRowTotal"
@@ -81,7 +80,6 @@ const edit = () => {
     $('select[name*=stock_status]').trigger('change');
 
     // validatePoRequestAddresses();
-    onSupplierPoTypeChange();
     updateRowTotal();
     updateOnContactSelect();
     validateLeadDate();
