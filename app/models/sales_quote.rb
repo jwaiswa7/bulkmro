@@ -124,13 +124,13 @@ class SalesQuote < ApplicationRecord
 
   def check_company_total_amount
     if self.metadata.present?
-        company_so_amount = self.metadata['company_total']
+      company_so_amount = self.metadata['company_total']
     else
       company_so_amount = self.company.company_transactions_amounts.where(financial_year: Company.current_financial_year).last.total_amount
     end
     tcs_applied_from = Date.new(2020, 10, 01).beginning_of_day
     if company_so_amount.present? && tcs_applied_from <= self.created_at
-        company_so_amount.to_f > (Settings.tcs.tcs_threshold).to_f
+      company_so_amount.to_f > (Settings.tcs.tcs_threshold).to_f
     else
       false
     end
