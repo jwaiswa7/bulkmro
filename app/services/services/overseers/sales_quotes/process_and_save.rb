@@ -19,6 +19,11 @@ class Services::Overseers::SalesQuotes::ProcessAndSave < Services::Shared::BaseS
       end
       sales_quote.supplier_rfq_ids = sales_quote.rows.map { |sq_row| sq_row.inquiry_product_supplier.supplier_rfq_id }.compact if sales_quote.id.nil?
 
+
+      sales_orders_total = sales_quote.company.company_transactions_amounts.where(financial_year: Company.current_financial_year).last.total_amount
+      sales_quote.metadata = { company_total: sales_orders_total }
+
+
       if sales_quote.sent_at.present?
         sales_quote.save_and_sync
         remote_uid = SalesQuote.maximum('remote_uid') + 1
