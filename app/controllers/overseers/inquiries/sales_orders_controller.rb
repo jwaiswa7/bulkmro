@@ -298,6 +298,9 @@ class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseCo
     end
 
     def save_and_confirm
+      sales_orders_total = @sales_order.company.company_transactions_amounts.where(financial_year: Company.current_financial_year).last.total_amount
+      @sales_order.legacy_metadata = { company_total: sales_orders_total }
+
       if @sales_order.save
         redirect_to new_confirmation_overseers_inquiry_sales_order_path(@inquiry, @sales_order), notice: flash_message(@inquiry, action_name)
       else

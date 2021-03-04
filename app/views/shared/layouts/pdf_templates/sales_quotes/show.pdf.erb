@@ -292,8 +292,7 @@
                   </td>
                 </tr>
               <% end %>
-              <% company = record.company %>
-              <% if company.check_company_total_amount(record) %>
+              <% if record.check_company_total_amount %>
                 <tr class="pdf-table-total-row-tcs">
                   <td align="center" valign="top">
                     <span>&nbsp;</span></td>
@@ -387,7 +386,7 @@
                   </td>
                 <% end %>
 
-                <% if company.check_company_total_amount(record) %>
+                <% if record.check_company_total_amount %>
                   <td align="right" valign="top">
                     <% total_with_tcs = (record.converted_total_with_tax) + record.calculate_tcs_amount %>
                     <b><span><%= number_to_currency(total_with_tcs, precision: 2, unit: '') %></span></b>

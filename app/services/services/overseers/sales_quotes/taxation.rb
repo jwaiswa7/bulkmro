@@ -39,22 +39,19 @@ class Services::Overseers::SalesQuotes::Taxation < Services::Shared::BaseService
 
   def to_remote_s
     if is_sez
-      'IG@%g' % ('%.2f' % tax_rate.tax_percentage)
+      sez_taxcode_as_per_sap
+      # 'IG@%g' % ('%.2f' % tax_rate.tax_percentage)
     elsif is_igst
-      if bill_to.company.check_company_total_amount(sales_quote) && bill_to.company.pan.present? && !is_service
+      if tcs_applicable?
         # 'IG@%g' % ('%.2f' % tax_rate.tax_percentage)
-        'IG%gT' % ('%.2f' % tax_rate.tax_percentage) + 0.1.to_s
-      elsif bill_to.company.check_company_total_amount(sales_quote) && !(bill_to.company.pan.present?) && !is_service
-        'IG%gT' % ('%.2f' % tax_rate.tax_percentage) + 1.to_s
+        'IG%gT' % ('%.2f' % tax_rate.tax_percentage) + percentage_as_per_pan
       else
         'IG@%g' % ('%.2f' % tax_rate.tax_percentage)
       end
     else
-      if bill_to.company.check_company_total_amount(sales_quote) && bill_to.company.pan.present? && !is_service
+      if tcs_applicable?
         # 'IG@%g' % ('%.2f' % tax_rate.tax_percentage)
-        'CS%gT' % ('%.2f' % tax_rate.tax_percentage) + 0.1.to_s
-      elsif bill_to.company.check_company_total_amount(sales_quote) && !(bill_to.company.pan.present?) && !is_service
-        'CS%gT' % ('%.2f' % tax_rate.tax_percentage) + 1.to_s
+        'CS%gT' % ('%.2f' % tax_rate.tax_percentage) + percentage_as_per_pan
       else
         'CSG@%g' % ('%.2f' % tax_rate.tax_percentage)
       end
@@ -70,4 +67,22 @@ class Services::Overseers::SalesQuotes::Taxation < Services::Shared::BaseService
   end
 
   attr_accessor :sales_quote, :sales_quote_row, :bill_to, :ship_to, :ship_from, :bill_from, :tax_code, :tax_rate, :is_service, :is_sez, :is_cgst_sgst, :is_igst
+
+  private
+
+    def tcs_applicable?
+      bill_to.company.check_company_total_amount(sales_quote)
+    end
+
+    def percentage_as_per_pan
+      (bill_to.company.pan.present? ? 0.1 : 1).to_s
+    end
+
+    def sez_taxcode_as_per_sap
+      if tcs_applicable?
+        'IG0T0.1'
+      else
+        'IG@0'
+      end
+    end
 end
