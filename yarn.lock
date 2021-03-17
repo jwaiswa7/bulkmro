@@ -2743,10 +2743,9 @@ dateformat@^2.0.0:
   resolved "https://registry.yarnpkg.com/dateformat/-/dateformat-2.2.0.tgz#4065e2013cf9fb916ddfd82efb506ad4c6769062"
   integrity sha1-QGXiATz5+5Ft39gu+1Bq1MZ2kGI=
 
-daterangepicker@^3.0.3:
-  version "3.0.5"
-  resolved "https://registry.yarnpkg.com/daterangepicker/-/daterangepicker-3.0.5.tgz#97180f233cf9c222cd0767b9c37c2926976d633a"
-  integrity sha512-BoVV+OjVARWNE15iF+3Y2QIMioAD2UODHvJwIq+NtG0vxh61dXRmOMXlw2dsvxS8KY4n5uvIcBfIPiEiiGJcBg==
+"daterangepicker@https://github.com/bulkmro/daterangepicker":
+  version "3.1.0"
+  resolved "https://github.com/bulkmro/daterangepicker#dd1847829f22ab270c0c1fa6eb1f10aaf513b810"
   dependencies:
     jquery ">=1.10"
     moment "^2.9.0"
