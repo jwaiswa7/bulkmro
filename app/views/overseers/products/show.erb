@@ -185,7 +185,7 @@
   </section>
 
   <% if @product.inquiry_products.any? && is_authorized(@product, 'sku_purchase_history') && policy(@product).sku_purchase_history? %>
-    <div class="d-md-flex justify-content-between mt-5">
+    <div class="d-md-flex justify-content-between mt-0">
       <h3 class="display-5 mb-1">Purchase History</h3>
     </div>
     <p class="mt-md-1 d-none d-md-block mb-2">
