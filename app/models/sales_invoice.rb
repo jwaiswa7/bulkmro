@@ -17,6 +17,7 @@ class SalesInvoice < ApplicationRecord
   has_one :company, through: :inquiry
   has_one :ar_invoice_request
   has_one :invoice_request
+  has_one :credit_note
 
   has_many :receipts, class_name: 'SalesReceipt', inverse_of: :sales_invoice
   has_many :packages, class_name: 'SalesPackage', inverse_of: :sales_invoice

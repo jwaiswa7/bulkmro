@@ -18,6 +18,12 @@
       </div>
     <% end %>
 
+    <% if content_for?(:credit_note_sync) && is_authorized(current_model.singularize.downcase, 'resync_credit_note_from_sap') %>
+      <div class="d-none d-md-inline-block align-top">
+        <%= link_to "Resync AR Credit Note", resync_credit_note_from_sap_overseers_credit_notes_path, class: "btn btn-rounded bmro-button btn-dark bmro-button" %>
+      </div>
+    <% end %>
+
     <% if content_for?(:can_be_searched_or_created) && is_authorized(current_model.singularize.downcase,'search_or_create') %>
       <div class="d-none d-md-inline-block align-top">
         <%= simple_form_for(:document_creation, :url => overseers_document_creations_path, class: 'd-flex', :method => :post) do |f| %>

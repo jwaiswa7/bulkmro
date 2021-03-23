@@ -25,6 +25,10 @@ every(30.minutes, 'resync_remote_requests') do
   end
 end if Rails.env.production?
 
+every(1.hour, 'resync_credit_note') do
+  Resources::CreditNote.create_from_sap
+end if Rails.env.production?
+
 every(1.hour, 'adjust_dynos') do
   Services::Shared::Heroku::DynoAdjuster.new
 end if Rails.env.production?

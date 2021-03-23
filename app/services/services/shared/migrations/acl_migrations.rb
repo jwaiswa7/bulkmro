@@ -427,6 +427,20 @@ class Services::Shared::Migrations::AclMigrations < Services::Shared::BaseServic
     acl_resource.update_acl_resource_cache
   end
 
+  def credit_note_acl
+    acl_for_credit_note = {
+        'credit_note': %w(index resync_credit_note_from_sap)
+      }
+    acl_for_credit_note.each do |key, val|
+      val.each do |action_name|
+        acl_resource = AclResource.where(resource_model_name: key, resource_action_name: action_name).first_or_create!
+        AclRole.all.each do |acl_role|
+          update_role_resource(acl_role, acl_resource.id)
+        end
+      end
+    end
+  end
+
   # function for applying acl to outward ques
   def assign_action_of_outward_que_to_overseer
     role_name = 'Logistics'

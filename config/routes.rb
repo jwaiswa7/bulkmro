@@ -52,6 +52,13 @@ Rails.application.routes.draw do
         patch 'update'
       end
     end
+
+    resources :credit_notes do
+      member do
+        patch 'update'
+      end
+    end
+
     post '1de9b0a30075ae8c303eb420c103c320', to: 'image_readers#update'
     resources :purchase_orders
     resources :products
@@ -527,6 +534,12 @@ Rails.application.routes.draw do
         get 'export_rows'
         get 'export_for_logistics'
         get 'export_filtered_records'
+      end
+    end
+
+    resources :credit_notes, only: %w(index) do
+      collection do
+        get 'resync_credit_note_from_sap'
       end
     end
 
