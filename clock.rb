@@ -25,7 +25,7 @@ every(30.minutes, 'resync_remote_requests') do
   end
 end if Rails.env.production?
 
-every(1.hour, 'resync_credit_note') do
+every(1.day, 'resync_credit_note', at: '00:30') do
   Resources::CreditNote.create_from_sap
 end if Rails.env.production?
 

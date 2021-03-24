@@ -2,7 +2,7 @@ class CreditNotesIndex < BaseIndex
   statuses = SalesInvoice.statuses
 
   define_type CreditNote.all.with_includes do
-    field :id
+    field :id, type: 'integer'
     field :memo_number, value: -> (record) { record.memo_number.to_i }, type: 'integer'
     field :memo_amount, value: -> (record) { record.memo_amount.to_f }, type: 'float'
     field :memo_date, value: -> (record) { record.memo_date.to_date }, type: 'date'

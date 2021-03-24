@@ -3,7 +3,7 @@ class SalesInvoicesIndex < BaseIndex
   opportunity_type = Inquiry.opportunity_types
 
   define_type SalesInvoice.all.with_includes do
-    field :id
+    field :id, type: 'integer'
     field :sales_order_id, value: -> (record) { record.sales_order.id if record.sales_order.present? }
     field :sales_order_number, value: -> (record) { record.sales_order.order_number.to_i if record.sales_order.present? }, type: 'long'
     field :invoice_number, value: -> (record) { record.invoice_number.to_i }, type: 'integer'
