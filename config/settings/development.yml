@@ -95,14 +95,6 @@ sap:
   ATTACHMENT_USERNAME: 'sapuser'
   ATTACHMENT_PASSWORD: ''
 
-credit_note:
-  ENDPOINT: 'https://35.200.244.135:50000/b1s/v1/Login'
-  DATABASE: 'SBODEMOUS'
-  USERNAME: 'manager'
-  PASSWORD: '1234'
-  ATTACHMENT_ENDPOINT: 'https://35.200.244.135:50000'
-  ATTACHMENT_API: '35.200.244.135:50000/b1s/v1/CreditNotes'
-
 accounts:
   arn_number_2018: 'AD275180000794'
   arn_number_2019: 'AD2704190070474'
