@@ -11,7 +11,8 @@ class Services::Callbacks::CreditNotes::Create < Services::Callbacks::Shared::Ba
         credit_note.save!
         return_response('AR Credit Note created successfully.')
       end
-      sales_invoice.update_attributes(status: 'Credit Note Issued')
+      status = sales_invoice.rows.count == credit_note.metadata['lineItems'].count ? 209 : 208
+      sales_invoice.update_attributes(status: status)
     else
       return_response('AR Sales Invoice not present.', 0)
     end

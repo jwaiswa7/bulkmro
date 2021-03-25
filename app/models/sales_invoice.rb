@@ -55,15 +55,15 @@ class SalesInvoice < ApplicationRecord
       'Delivered: GRN Delayed': 205,
       'Material Ready For Dispatch': 206,
       'Material Rejected': 207,
-      'Credit Note Issued': 208
+      'Credit Note Issued: Partial': 208,
+      'Credit Note Issued: Full': 209
   }
 
   enum main_summary_status: {
       # AR Invoice
       'Invoiced': 1,
       'Paid': 2,
-      'Material Ready for Dispatch': 206,
-      'Credit Note Issued': 208
+      'Material Ready for Dispatch': 206
   }, _suffix: true
 
   enum delay_reason: {
