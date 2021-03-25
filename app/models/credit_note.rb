@@ -19,4 +19,12 @@ class CreditNote < ApplicationRecord
   def matched_row_total_tax
     matched_rows.map { |row| (row.metadata['base_tax_amount'].to_f * row.sales_invoice.metadata['base_to_order_rate'].to_f) }.sum.round(2)
   end
+
+  def matched_row_total
+    matched_rows.map { |row| (row.metadata['base_row_total'].to_f * row.sales_invoice.metadata['base_to_order_rate'].to_f) }.sum.round(2)
+  end
+
+  def calculated_total_with_tax
+    (matched_row_total.to_f + matched_row_total_tax.to_f).round(2)
+  end
 end

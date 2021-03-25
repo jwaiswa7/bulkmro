@@ -54,14 +54,16 @@ class SalesInvoice < ApplicationRecord
       'Delivered: GRN Pending': 204,
       'Delivered: GRN Delayed': 205,
       'Material Ready For Dispatch': 206,
-      'Material Rejected': 207
+      'Material Rejected': 207,
+      'Credit Note Issued': 208
   }
 
   enum main_summary_status: {
       # AR Invoice
       'Invoiced': 1,
       'Paid': 2,
-      'Material Ready for Dispatch': 206
+      'Material Ready for Dispatch': 206,
+      'Credit Note Issued': 208
   }, _suffix: true
 
   enum delay_reason: {
@@ -119,7 +121,7 @@ class SalesInvoice < ApplicationRecord
   end
 
   def serialized_billing_address
-    billing_address || sales_order.inquiry.billing_address
+    billing_address || sales_order.inquiry&.billing_address
   end
 
   def serialized_shipping_address
@@ -131,11 +133,19 @@ class SalesInvoice < ApplicationRecord
   end
 
   def calculated_total
-    rows.map { |row| (row.metadata['base_row_total'].to_f * row.sales_invoice.metadata['base_to_order_rate'].to_f) }.sum.round(2)
+    if credit_note.present?
+      credit_note.matched_row_total
+    else
+      rows.map { |row| (row.metadata['base_row_total'].to_f * row.sales_invoice.metadata['base_to_order_rate'].to_f) }.sum.round(2)
+    end
   end
 
   def calculated_total_tax
-    rows.map { |row| (row.metadata['base_tax_amount'].to_f * row.sales_invoice.metadata['base_to_order_rate'].to_f) }.sum.round(2)
+    if credit_note.present?
+      credit_note.matched_row_total_tax
+    else
+      rows.map { |row| (row.metadata['base_tax_amount'].to_f * row.sales_invoice.metadata['base_to_order_rate'].to_f) }.sum.round(2)
+    end
   end
 
   def calculated_total_with_tax

@@ -25,5 +25,6 @@ class CreditNotesIndex < BaseIndex
     field :inquiry_number_string, value: -> (record) { record.sales_invoice.inquiry.inquiry_number.to_s if record.sales_invoice.inquiry.present? }, analyzer: 'substring'
     field :created_at, value: ->(record) { record.created_at.to_date if record.created_at.present? }, type: 'date'
     field :updated_at, type: 'date'
+    field :potential_value, value: -> (record) { record&.calculated_total_with_tax }, type: 'double'
   end
 end
