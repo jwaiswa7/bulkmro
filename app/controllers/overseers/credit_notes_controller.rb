@@ -22,7 +22,7 @@ class Overseers::CreditNotesController < Overseers::BaseController
     @arn_date = service.arn_date
     @arn_number = service.arn_number
     @bill_from_warehouse = service.bill_from_warehouse
-    
+
     respond_to do |format|
       format.pdf do
         render_pdf_for @credit_note, pagination: false
