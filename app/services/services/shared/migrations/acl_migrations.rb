@@ -429,7 +429,7 @@ class Services::Shared::Migrations::AclMigrations < Services::Shared::BaseServic
 
   def credit_note_acl
     acl_for_credit_note = {
-        'credit_note': %w(index resync_credit_note_from_sap)
+        'credit_note': %w(index resync_credit_note_from_sap show)
       }
     acl_for_credit_note.each do |key, val|
       val.each do |action_name|

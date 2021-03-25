@@ -1,8 +1,8 @@
 json.data (@credit_notes) do |credit_note|
   json.array! [
                   [
-                    if is_authorized(credit_note.sales_invoice, 'show') && policy(credit_note.sales_invoice).show? && credit_note.sales_invoice.inquiry.present?
-                      row_action_button(overseers_inquiry_sales_invoice_path(credit_note.sales_invoice.inquiry, credit_note.sales_invoice, stamp: 1, format: :pdf), 'file-alt', 'Original with Signature', 'success', :_blank, 'get', '', false, 'O')
+                    if is_authorized(credit_note, 'show') && policy(credit_note).show? && credit_note.sales_invoice.inquiry.present?
+                      row_action_button(overseers_credit_note_path(credit_note, format: :pdf), 'file-alt', 'Original with Signature', 'success', :_blank, 'get', '', false, 'O')
                     end
                   ].join(' '),
                   credit_note.memo_number,
