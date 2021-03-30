@@ -22,7 +22,7 @@ class Resources::CreditNote < Resources::ApplicationResource
     remote_rows_arr = []
 
     company = Company.acts_as_customer.find_by_remote_uid(remote_response['CardCode'])
-    company_total_amount = company.get_company_total_amount
+    company_total_amount = company&.get_company_total_amount
     remote_rows.each do |remote_row|
       unit_price = remote_row['Price'].to_f
       sku = remote_row['ItemCode']
