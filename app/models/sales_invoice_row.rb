@@ -19,6 +19,10 @@ class SalesInvoiceRow < ApplicationRecord
     get_product.try(:best_tax_code).try(:chapter)
   end
 
+  def tax_code_six_digits
+    get_product.try(:best_tax_code).to_s[0..5]
+  end
+
   def mpn
     get_product.try(:product).try(:mpn) || get_product.try(:mpn)
   end

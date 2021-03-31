@@ -13,6 +13,10 @@ class SalesShipmentRow < ApplicationRecord
     get_product.tax_code.chapter
   end
 
+  def tax_code_six_digits
+    get_product.try(:best_tax_code).to_s[0..5]
+  end
+
   def name
     get_product.to_bp_catalog_s
   end

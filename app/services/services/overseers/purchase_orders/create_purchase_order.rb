@@ -182,7 +182,7 @@ class Services::Overseers::PurchaseOrders::CreatePurchaseOrder < Services::Share
 
   def set_product_data(row, index)
     {
-        PopHsn: row.tax_code.chapter.present? ? row.tax_code.chapter : row.tax_code.code[0..3],
+        PopHsn: row.tax_code.code,
         PopQty: row.quantity.to_f,
         Linenum: index,
         UnitMsr: row.measurement_unit.name,

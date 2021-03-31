@@ -272,7 +272,7 @@
               </td>
             <% end %>
             <td>
-              <span><%= item.sales_quote_row.present? ? item.sales_quote_row.tax_code.to_s : item.product.tax_code.to_s %></span>
+              <span><%= item.sales_quote_row.tax_code_six_digits %></span>
             </td>
             <td>
               <span><%= item.product.present? ? item.product.measurement_unit.to_s : '' %></span>

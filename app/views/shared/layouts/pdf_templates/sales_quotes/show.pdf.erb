@@ -255,7 +255,7 @@
                   <td align="center">
                     <span><%= item.product.brand.to_s %></span></td>
                   <td align="left">
-                    <span><%= item.best_tax_code.try(:chapter) %></span></td>
+                    <span><%= item.tax_code_six_digits if item.best_tax_code.present? %></span></td>
                   <td align="center">
                     <span><%= item.lead_time_option.to_s %></span></td>
                   <td align="center">
