@@ -249,7 +249,7 @@
                   <td align="center" valign="top">
                     <span><%= item.sales_quote_row.product.brand.to_s %></span></td>
                   <td align="left" valign="top">
-                    <span><%= item.best_tax_code.chapter if item.best_tax_code.present? %></span></td>
+                    <span><%= item.tax_code_six_digits if item.best_tax_code.present? %></span></td>
                   <td align="center" valign="top">
                     <span><%= item.sales_quote_row.try(:measurement_unit) || item.sales_quote_row.product.try(:measurement_unit) || MeasurementUnit.default %></span>
                   <td align="center" valign="top">

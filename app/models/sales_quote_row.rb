@@ -93,6 +93,10 @@ class SalesQuoteRow < ApplicationRecord
     self.tax_code || self.product.best_tax_code
   end
 
+  def tax_code_six_digits
+    best_tax_code.code[0..5]
+  end
+
   def best_tax_rate
     self.tax_rate || self.product.best_tax_rate
   end

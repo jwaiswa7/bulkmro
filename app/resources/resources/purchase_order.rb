@@ -99,7 +99,7 @@ class Resources::PurchaseOrder < Resources::ApplicationResource
       tax_code = TaxCode.find_by_remote_uid(row['HSNEntry'].to_i)
       product = Product.find_by_sku(row['ItemCode'])
       remote_row_obj = {
-          'PopHsn' => tax_code.try(:chapter),
+          'PopHsn' => tax_code.try(:code),
           'PopQty' => row['Quantity'],
           'Linenum' => row['LineNum'],
           'UnitMsr' => row['UoMCode'],

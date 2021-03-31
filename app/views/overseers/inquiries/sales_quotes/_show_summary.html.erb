@@ -209,7 +209,7 @@
               <span><%= format_currency(row.converted_total_selling_price_with_tax,symbol:sales_quote.currency_sign) %></span>
             </td>
             <td>
-              <span><%= row.best_tax_code.chapter %></span>
+              <span><%= row.tax_code_six_digits if row.best_tax_code.present? %></span>
             </td>
             <td>
               <span><%= row.best_tax_rate.tax_percentage.to_s + '%' %></span>

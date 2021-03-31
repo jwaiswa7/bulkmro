@@ -30,6 +30,10 @@ class PurchaseOrderRow < ApplicationRecord
     end
   end
 
+  def tax_code_six_digits
+    show_tax_code.to_s[0..5]
+  end
+
   def sku
     get_product.sku if get_product.present?
   end
