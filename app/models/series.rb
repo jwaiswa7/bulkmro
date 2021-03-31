@@ -28,7 +28,12 @@ class Series < ApplicationRecord
       'Journal Vouchers': 19,
       'Inventory Transfer Request': 20,
       'Inventory Transfer': 21,
-      'Goods Issue': 22
+      'Goods Issue': 22,
+      'Delivery Cancel': 23,
+      'GRPO Cancel':24,
+      'Goods Return':25,
+      'Goods Receipt': 26,
+      'A/P Invoice Cancel':27
   }
 
   def create_first_number

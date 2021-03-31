@@ -4,7 +4,7 @@ class Services::Shared::Migrations::SoPoMigrations < Services::Shared::Migration
   #s.set_warehouse_series
 
   def set_warehouse_series
-    service = Services::Shared::Spreadsheets::CsvImporter.new('document_series2020.csv', 'seed_files_3')
+    service = Services::Shared::Spreadsheets::CsvImporter.new('document_series2021.csv', 'seed_files_3')
     data_not_done = []
     service.loop(nil) do |x|
       p x.get_column('period_ document_type')
