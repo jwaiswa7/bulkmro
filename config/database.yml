@@ -7,7 +7,7 @@ default: &default
   password: 123456
 development:
   <<: *default
-  database: sprint_dev_april
+  database: sprint_dev
 test:
   <<: *default
   database: sprint_test

@@ -10,7 +10,7 @@ class CreditNotesIndex < BaseIndex
     field :invoice_number, value: -> (record) { record.sales_invoice&.invoice_number&.to_i }, type: 'integer'
     field :invoice_number_string, value: -> (record) { record.sales_invoice&.invoice_number&.to_s }, analyzer: 'substring'
     field :invoice_date, value: -> (record) { record.sales_invoice&.mis_date }, type: 'date'
-    field :invoice_amount, value: -> (record) { record.sales_invoice&.try(:[], :metadata).try(:[], "base_grand_total") }, type: 'float'
+    field :invoice_amount, value: -> (record) { record.sales_invoice&.try(:[], :metadata).try(:[], 'base_grand_total') }, type: 'float'
     field :inquiry, value: -> (record) { record.sales_invoice&.inquiry&.inquiry_number }, type: 'integer'
     field :account_id, value: -> (record) { record.sales_invoice&.inquiry&.company&.account_id if record.sales_invoice&.inquiry&.present? }, type: 'integer'
     field :account_string, value: -> (record) { record.sales_invoice&.inquiry&.company&.account&.to_s if record.sales_invoice&.inquiry&.present? }, analyzer: 'substring'
