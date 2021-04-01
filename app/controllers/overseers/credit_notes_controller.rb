@@ -30,6 +30,11 @@ class Overseers::CreditNotesController < Overseers::BaseController
     end
   end
 
+  def search_or_create
+    Resources::CreditNote.search_or_create(params['credit_note']['memo_number'])
+    redirect_to overseers_credit_notes_path
+  end
+
   private
 
     def set_credit_note

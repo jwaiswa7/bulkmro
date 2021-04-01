@@ -10,7 +10,7 @@ class Resources::CreditNote < Resources::ApplicationResource
 
     return unless validated_response['value'].present?
 
-    if next_page.present? && !pages.include?(next_page)
+    if next_page.present?
       SaveAndSyncCreditNoteJob.perform_later(next_page)
     end
 
@@ -20,6 +20,26 @@ class Resources::CreditNote < Resources::ApplicationResource
       service.call
       next
     end
+  end
+
+  def self.search_or_create(memo_number)
+    response = custom_find(memo_number)
+    metadata = build_metadata(response)
+    service = Services::Callbacks::CreditNotes::Create.new(metadata, nil)
+    service.call
+  end
+
+  def self.custom_find(doc_num)
+    response = get("/#{collection_name}?$filter=DocNum eq #{doc_num}")
+    log_request(:get, 'Invoice - #{doc_num}', is_find: true)
+    validated_response = get_validated_response(response)
+    log_response(validated_response)
+
+    if validated_response['value'].present?
+      remote_record = validated_response['value'][0]
+    end
+
+    remote_record
   end
 
   def self.build_metadata(remote_response)
