@@ -1,4 +1,5 @@
 document_type,Branch,series_name,first_number,last_number,period_indicator,length
+Sales Quotation,All Warehouses,LWP 2021,102100001,,FY2021-22,9
 Sales Order,Maharashtra,LWP 2021,102100001,102199999,FY2021-22,9
 Sales Order,Maharashtra,PUN 2021,102200001,102299999,FY2021-22,9
 Sales Order,Gujarat,AMD 2021,102300001,102399999,FY2021-22,9
