@@ -3,8 +3,8 @@ default: &default
   host: localhost
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
   timeout: 50000
-  username: surf
-  password: root
+  username: rails
+  password: 123456
 development:
   <<: *default
   database: sprint_dev_april
