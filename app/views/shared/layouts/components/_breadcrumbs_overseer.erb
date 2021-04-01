@@ -18,6 +18,17 @@
       </div>
     <% end %>
 
+    <% if content_for?(:credit_note_can_be_created) && is_authorized(current_model.singularize.downcase, 'search_or_create') %>
+      <div class="d-none d-md-inline-block align-top">
+        <%= simple_form_for(:credit_note, :url => search_or_create_overseers_credit_notes_path, class: 'd-flex', :method => :post) do |f| %>
+          <div class="mr-2 d-md-inline-block align-top">
+            <%= f.input :memo_number, as: :integer, input_html: { value: session[:number], class: 'bmro-form-input' }, label: false, placeholder: "Enter AR Credit Note Memo #" %>
+          </div>
+          <%= f.submit "Request from SAP", class: "btn btn-rounded bmro-button btn-dark bmro-button" %>
+        <% end %>
+      </div>
+    <% end %>
+
     <% if content_for?(:credit_note_sync) && is_authorized(current_model.singularize.downcase, 'resync_credit_note_from_sap') %>
       <div class="d-none d-md-inline-block align-top">
         <%= link_to "Resync AR Credit Note", resync_credit_note_from_sap_overseers_credit_notes_path, class: "btn btn-rounded bmro-button btn-dark bmro-button" %>

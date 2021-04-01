@@ -3,11 +3,16 @@ class Resources::CreditNote < Resources::ApplicationResource
     :DocNum
   end
 
-  def self.create_from_sap
-    response = get("/#{collection_name}")
+  def self.create_from_sap(next_page_url = nil)
+    response = get("/#{collection_name}#{next_page_url}")
     validated_response = get_validated_response(response)
+    next_page = validated_response['odata.nextLink']&.gsub('/b1s/v1/CreditNotes', '')
 
     return unless validated_response['value'].present?
+
+    if next_page.present? && !pages.include?(next_page)
+      SaveAndSyncCreditNoteJob.perform_later(next_page)
+    end
 
     validated_response['value'].each do |sap_credit_memo|
       metadata = self.build_metadata(sap_credit_memo)
