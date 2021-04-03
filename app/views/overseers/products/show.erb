@@ -184,7 +184,7 @@
     </div>
   </section>
 
-  <% if @product.inquiry_products.any? && is_authorized(@product, 'sku_purchase_history') && policy(@product).sku_purchase_history? %>
+  <% if @product.inquiry_products.any? && is_authorized(@product, 'sku_purchase_history') && policy(@product).sku_purchase_history? && (@product.sku != Settings.product_specific.freight) %>
     <div class="d-md-flex justify-content-between mt-5">
       <h3 class="display-5 mb-1">Purchase History</h3>
     </div>
