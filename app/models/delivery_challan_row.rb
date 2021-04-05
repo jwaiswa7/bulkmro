@@ -11,7 +11,9 @@ class DeliveryChallanRow < ApplicationRecord
   validates_numericality_of :quantity, greater_than: 0, allow_nil: true
 
   def total_selling_price
-    sales_quote_row.unit_selling_price * self.quantity if sales_quote_row.present? && sales_quote_row.unit_selling_price.present?
+    sales_quote_row.present? && sales_quote_row.unit_selling_price.present? ?
+      sales_quote_row.unit_selling_price * self.quantity :
+      self.unit_selling_price * self.quantity
   end
 
   def converted_unit_selling_price
@@ -23,7 +25,9 @@ class DeliveryChallanRow < ApplicationRecord
   end
 
   def unit_selling_price_with_tax
-    sales_quote_row.unit_selling_price + (sales_quote_row.unit_selling_price * sales_quote_row.applicable_tax_percentage) if sales_quote_row.present?
+    sales_quote_row.present? ?
+      sales_quote_row.unit_selling_price + (sales_quote_row.unit_selling_price * sales_quote_row.applicable_tax_percentage) :
+      unit_selling_price + (unit_selling_price * applicable_tax_percentage)
   end
 
   def total_selling_price_with_tax
@@ -96,4 +100,27 @@ class DeliveryChallanRow < ApplicationRecord
     end
   end
 
+  def applicable_tax_percentage
+    if legacy_applicable_tax_percentage.present? && legacy_applicable_tax_percentage > 0
+      legacy_applicable_tax_percentage / 100
+    else
+      if self.persisted? && self.delivery_challan.inquiry.is_sez?
+        0
+      else
+        self.best_tax_rate ? self.best_tax_rate.tax_percentage / 100.0 : 0
+      end
+    end
+  end
+
+  def best_tax_rate
+    self.product.best_tax_rate
+  end
+
+  def conversion_rate
+    if self.delivery_challan.inquiry_currency.present?
+      self.delivery_challan.inquiry_currency.conversion_rate
+    else
+      1
+    end
+  end
 end

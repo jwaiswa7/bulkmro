@@ -143,7 +143,7 @@ class Overseers::DeliveryChallansController < Overseers::BaseController
         :display_rates,
         :display_stamp,
         :created_from,
-        rows_attributes: [:id, :product_id, :sr_no, :quantity, :total_quantity, :inquiry_product_id, :sales_order_row_id, :inward_dispatch_row_id, :_destroy]
+        rows_attributes: [:id, :product_id, :sr_no, :quantity, :total_quantity, :inquiry_product_id, :sales_order_row_id, :inward_dispatch_row_id, :unit_selling_price, :_destroy]
       )
     end
 end

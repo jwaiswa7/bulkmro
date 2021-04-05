@@ -248,6 +248,32 @@
               <span data-toggle="tooltip" title="Tax Rate">Total<br>
               (<%= @delivery_challan.inquiry.currency.name %>)</span>
             </th>
+          <% elsif @delivery_challan.display_rates.present? && @delivery_challan.Sample? %>
+            <th class="no-sort">
+              <span data-toggle="tooltip" title="Unit Price">Unit Price</span>
+            </th>
+            <th class="no-sort">
+              <span data-toggle="tooltip" title="Subtotal">Subtotal</span>
+            </th>
+            <th class="no-sort">
+              <span data-toggle="tooltip" title="Tax Rate">Tax Rate</span>
+            </th>
+            <th class="no-sort">
+              <span data-toggle="tooltip" title="Tax Rate">CGST Rate</span>
+            </th>
+            <th class="no-sort">
+              <span data-toggle="tooltip" title="Tax Rate">CGST Amt</span>
+            </th>
+            <th class="no-sort">
+              <span data-toggle="tooltip" title="Tax Rate">SGST Rate</span>
+            </th>
+            <th class="no-sort">
+              <span data-toggle="tooltip" title="Tax Rate">SGST Amt</span>
+            </th>
+            <th class="no-sort">
+              <span data-toggle="tooltip" title="Tax Rate">Total<br>
+              (<%= @delivery_challan.inquiry.currency.name %>)</span>
+            </th>
           <% end %>
         </tr>
         </thead>
@@ -272,7 +298,7 @@
               </td>
             <% end %>
             <td>
-              <span><%= item.sales_quote_row.tax_code_six_digits %></span>
+              <span><%= item.sales_quote_row&.tax_code_six_digits %></span>
             </td>
             <td>
               <span><%= item.product.present? ? item.product.measurement_unit.to_s : '' %></span>
@@ -314,6 +340,33 @@
                   <span><%= number_to_currency(item.converted_total_tax / 2, precision: 2, unit: '') %></span>
                 </td>
               <% end %>
+              <td>
+                <span><%= number_to_currency(item.converted_total_selling_price_with_tax.round(2), precision: 2, unit: '') %></span>
+              </td>
+            <% elsif @delivery_challan.display_rates.present? && @delivery_challan.Sample? %>
+              <td>
+                <span><%= number_to_currency(item.converted_unit_selling_price, precision: 2, unit: '') %></span>
+              </td>
+              <td>
+                <span><%= number_to_currency(item.converted_total_selling_price, precision: 2, unit: '') %></span>
+              </td>
+              <td>
+                <span><%= item.applicable_tax_percentage * 100 %>%</span>
+              </td>
+              <td>
+              <span><%= item.best_tax_rate.tax_percentage / 2 if item.best_tax_rate.present? %>
+                %</span>
+              </td>
+              <td>
+                <span><%= number_to_currency(item.converted_total_tax.to_f / 2, precision: 2, unit: '') %></span>
+              </td>
+              <td>
+              <span><%= item.best_tax_rate.tax_percentage / 2 if item.best_tax_rate.present? %>
+                %</span>
+              </td>
+              <td>
+                <span><%= number_to_currency(item.converted_total_tax / 2, precision: 2, unit: '') %></span>
+              </td>
               <td>
                 <span><%= number_to_currency(item.converted_total_selling_price_with_tax.round(2), precision: 2, unit: '') %></span>
               </td>
