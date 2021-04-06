@@ -16,7 +16,7 @@ class Overseers::DeliveryChallanPolicy < Overseers::ApplicationPolicy
   def relationship_map?
     all_roles?
   end
-  
+
   def create_ar_invoice?
     if record.sales_order.present?
       # debugger if record.delivery_challan_number = 'DC-115/20-21'
