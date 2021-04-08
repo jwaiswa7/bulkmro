@@ -13,6 +13,10 @@ class Services::Overseers::SalesOrders::CreateSalesOrderInSap < Services::Shared
       year = year - 1 if date.month < 4
       series_name = sales_order.sales_quote.bill_from.series_code + ' ' + year.to_s
       series = Series.where(document_type: 'Sales Order', series_name: series_name)
+      while SalesOrder.where(order_number: series.first.last_number).present? do
+        series.first.increment_last_number
+        series = Series.where(document_type: 'Sales Order', series_name: series_name)
+      end
       if series.present? && sales_order.status != 'Approved'
         sales_order.update_attributes(remote_status: :'Supplier PO: Request Pending', status: :'Approved', mis_date: Date.today, order_number: series.first.last_number)
         series.first.increment_last_number
