@@ -212,7 +212,7 @@
               <span><%= row.tax_code_six_digits if row.best_tax_code.present? %></span>
             </td>
             <td>
-              <span><%= row.best_tax_rate.tax_percentage.to_s + '%' %></span>
+              <span><%= (row.applicable_tax_percentage * 100 ).to_s + '%' %></span>
             </td>
           </tr>
         <% end %>
