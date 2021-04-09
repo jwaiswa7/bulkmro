@@ -225,7 +225,7 @@ class Inquiry < ApplicationRecord
   }
   scope :won, -> {where(status: :'Order Won')}
   scope :live, -> {where.not(status: :'Order Lost').where.not(status: :'Regret')}
-  scope :without_so, -> {where.not(status: ['Order Won', 'SO Rejected by Sales Manager', 'Rejected by Accounts',
+  scope :without_so, -> {where.not(status: ['SO Rejected by Sales Manager', 'Rejected by Accounts',
        'Hold by Accounts', 'Order Lost', 'Regret', 'Regret Request']).order(id: :desc)}
   attr_accessor :force_has_sales_orders, :common_supplier_id, :select_all_products, :select_all_suppliers, :inquiry_from
 
