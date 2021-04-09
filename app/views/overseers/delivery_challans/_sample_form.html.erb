@@ -82,8 +82,7 @@
         </div>
         <div class="form-row">
           <div class="col-12 col-md-6">
-            <%= f.hidden_field :reason, value: f.object.reason %>
-            <%= f.input :reason, as: :select, collection: enum_to_collection(DeliveryChallan.reasons, alphabetical: false), required: true, input_html: {id: 'dc_reasons', class: 'select2-single bmro-form-input bmro-dropdown-icon'}, disabled: true%>
+            <%= f.input :reason, as: :select, collection: enum_to_collection(DeliveryChallan.reasons, alphabetical: false), required: true, input_html: {id: 'dc_reasons', class: 'select2-single bmro-form-input bmro-dropdown-icon'} %>
           </div>
           <div class="col-12 col-md-6">
             <%= f.input :goods_type, label: "Type of Goods Movement",collection: enum_to_collection(DeliveryChallan.goods_types), required: true, input_html: {class: 'select2-single bmro-form-input bmro-dropdown-icon'} %>
@@ -99,13 +98,9 @@
           </div>
         </div>
         <div class="form-row">
-          <% if f.object.sales_order.present? %>
-            <div class="col-4">
-              <%= f.input :display_rates, :wrapper => :vertical_collection_inline, as: :radio_buttons, label: 'Display Rates', required: true %>
-            </div>
-          <% else %>
-            <%= f.hidden_field :display_rates, value: false %>
-          <% end %>
+          <div class="col-4">
+            <%= f.input :display_rates, :wrapper => :vertical_collection_inline, as: :radio_buttons, label: 'Display Rates', required: true %>
+          </div>
 
           <div class="col-4">
             <%= f.input :display_gst_pan, :wrapper => :vertical_collection_inline, as: :radio_buttons, label: 'Display GST & PAN', required: true %>
@@ -142,6 +137,9 @@
             </th>
             <th class="no-sort">
               <span data-toggle="tooltip" title="Quantity">Quantity</span>
+            </th>
+            <th class="no-sort">
+              <span data-toggle="tooltip" title="Price">Price</span>
             </th>
             <% if f.object.rows.size > 1 %>
               <th class="no-sort">
@@ -182,6 +180,11 @@
                 <td>
                   <span>
                     <%= row.input :quantity, :label => false, placeholder: row.object.get_quantity_for_sample_flow((params[:action] == 'edit') ? params[:action] : nil), input_html: {:'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => '', max: row.object.get_quantity_for_sample_flow((params[:action] == 'edit') ? params[:action] : nil), min: 1} %>
+                  </span>
+                </td>
+                <td>
+                  <span>
+                    <%= row.input :unit_selling_price, :label => false, placeholder: number_to_currency(row.object.unit_selling_price, precision: 2, unit: ''), input_html: {:'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => '', max: number_to_currency(row.object.unit_selling_price, precision: 2, unit: ''), min: 1} %>
                   </span>
                 </td>
                 <% if f.object.rows.size > 1 %>

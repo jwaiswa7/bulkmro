@@ -1,5 +1,4 @@
 class Series < ApplicationRecord
-
   pg_search_scope :locate, against: [:document_type, :series_name], using: {tsearch: {prefix: true}}
 
   # after_save :create_first_number
@@ -30,10 +29,10 @@ class Series < ApplicationRecord
       'Inventory Transfer': 21,
       'Goods Issue': 22,
       'Delivery Cancel': 23,
-      'GRPO Cancel':24,
-      'Goods Return':25,
+      'GRPO Cancel': 24,
+      'Goods Return': 25,
       'Goods Receipt': 26,
-      'A/P Invoice Cancel':27
+      'A/P Invoice Cancel': 27
   }
 
   def create_first_number

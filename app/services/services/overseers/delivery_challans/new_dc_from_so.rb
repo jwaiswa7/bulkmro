@@ -41,7 +41,6 @@ class Services::Overseers::DeliveryChallans::NewDcFromSo < Services::Shared::Bas
         customer_order_date: inquiry&.customer_order_date,
         overseer: overseer,
         purpose: params[:purpose],
-        reason: 40,
         sales_order_date: (sales_order&.mis_date if sales_order.present?),
         created_from: params[:created_from]
       )
