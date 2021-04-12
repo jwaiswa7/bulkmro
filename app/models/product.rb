@@ -183,4 +183,8 @@ class Product < ApplicationRecord
   def has_images?
     self.best_images.attached?
   end
+
+  def uom
+    measurement_unit&.name || MeasurementUnit.default
+  end
 end

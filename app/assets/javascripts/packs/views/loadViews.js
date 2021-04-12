@@ -67,6 +67,8 @@ import suppliers from  './suppliers/init'
 
 import companyReviews from './companyReviews/init'
 
+import creditNotes from './creditNotes/init'
+
 // Document Creation
 import documentCreations from "./documentCreations/init";
 
@@ -152,7 +154,8 @@ let loader = {
     supplierRfqs: supplierRfqs,
     rfq: rfq,
     cart: cart,
-    deliveryChallans: deliveryChallans
+    deliveryChallans: deliveryChallans,
+    creditNotes: creditNotes
 };
 
 // Imports
