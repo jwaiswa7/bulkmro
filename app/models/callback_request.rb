@@ -17,6 +17,7 @@ class CallbackRequest < ApplicationRecord
       'SalesReceipt': 30,
       'SalesInvoice': 40,
       'PurchaseOrder': 50,
-      'Session': 60
+      'Session': 60,
+      'CreditNote': 70
   }
 end

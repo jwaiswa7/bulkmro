@@ -3,7 +3,7 @@ class SalesInvoicesIndex < BaseIndex
   opportunity_type = Inquiry.opportunity_types
 
   define_type SalesInvoice.all.with_includes do
-    field :id
+    field :id, type: 'integer'
     field :sales_order_id, value: -> (record) { record.sales_order.id if record.sales_order.present? }
     field :sales_order_number, value: -> (record) { record.sales_order.order_number.to_i if record.sales_order.present? }, type: 'long'
     field :invoice_number, value: -> (record) { record.invoice_number.to_i }, type: 'integer'
@@ -27,9 +27,9 @@ class SalesInvoicesIndex < BaseIndex
     field :outside_sales_owner, value: -> (record) { record.inquiry.outside_sales_owner.to_s if record.inquiry.present? }, analyzer: 'substring'
     field :inside_sales_executive, value: -> (record) { record.inquiry.inside_sales_owner_id if record.inquiry.present? }
     field :outside_sales_executive, value: -> (record) { record.inquiry.outside_sales_owner_id if record.inquiry.present? }
-    field :billing_contact, value: -> (record) {record.inquiry.billing_contact.try(:name)}, analyzer: 'substring'
+    field :billing_contact, value: -> (record) {record.inquiry&.billing_contact.try(:name)}, analyzer: 'substring'
     field :billing_location, value: -> (record) {record.serialized_billing_address.to_multiline_s if record.serialized_billing_address.present?}, analyzer: 'substring'
-    field :shipping_contact, value: -> (record) {record.inquiry.shipping_contact.try(:name)}, analyzer: 'substring'
+    field :shipping_contact, value: -> (record) {record.inquiry&.shipping_contact.try(:name)}, analyzer: 'substring'
     field :mis_date, value: -> (record) { record.mis_date }, type: 'date'
     field :created_at, value: ->(record) { record.created_at.to_date if record.created_at.present? }, type: 'date'
     field :updated_at, type: 'date'

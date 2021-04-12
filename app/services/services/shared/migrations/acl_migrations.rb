@@ -427,6 +427,20 @@ class Services::Shared::Migrations::AclMigrations < Services::Shared::BaseServic
     acl_resource.update_acl_resource_cache
   end
 
+  def credit_note_acl
+    acl_for_credit_note = {
+        'credit_note': %w(index resync_credit_note_from_sap show search_or_create)
+      }
+    acl_for_credit_note.each do |key, val|
+      val.each do |action_name|
+        acl_resource = AclResource.where(resource_model_name: key, resource_action_name: action_name).first_or_create!
+        AclRole.all.each do |acl_role|
+          update_role_resource(acl_role, acl_resource.id)
+        end
+      end
+    end
+  end
+
   # function for applying acl to outward ques
   def assign_action_of_outward_que_to_overseer
     role_name = 'Logistics'
@@ -497,13 +511,13 @@ class Services::Shared::Migrations::AclMigrations < Services::Shared::BaseServic
     # update overseer resources
     Overseer.where(acl_role_id: acl_role.id).each do |overseer|
       # if overseer.acl_resources.present?
-        overseer_resources = ActiveSupport::JSON.decode(overseer.acl_resources)
-        new_resources = overseer_resources + ActiveSupport::JSON.decode(acl_role.role_resources)
-        new_resources = new_resources.map { |x| x.to_i }
-        new_resources = new_resources.sort { |x, y| (x <=> y) }
-        new_resources = new_resources.map { |x| x.to_s }
-        overseer.update_attribute(:acl_resources, new_resources.uniq.to_json)
-        puts overseer
+      overseer_resources = ActiveSupport::JSON.decode(overseer.acl_resources)
+      new_resources = overseer_resources + ActiveSupport::JSON.decode(acl_role.role_resources)
+      new_resources = new_resources.map { |x| x.to_i }
+      new_resources = new_resources.sort { |x, y| (x <=> y) }
+      new_resources = new_resources.map { |x| x.to_s }
+      overseer.update_attribute(:acl_resources, new_resources.uniq.to_json)
+      puts overseer
       # end
     end
   end
@@ -624,7 +638,7 @@ class Services::Shared::Migrations::AclMigrations < Services::Shared::BaseServic
   end
 
   def create_supplier_product_resources
-    role_name = ["Outside Sales Manager", "Outside Sales Executive", "Inside Sales and Logistic Manager", "Admin-Leadership Team", "Inside Sales Manager", "Inside Sales Executive",  "Outside Sales Team Leader", "Inside Sales Team Leader", "Admin"]
+    role_name = ['Outside Sales Manager', 'Outside Sales Executive', 'Inside Sales and Logistic Manager', 'Admin-Leadership Team', 'Inside Sales Manager', 'Inside Sales Executive',  'Outside Sales Team Leader', 'Inside Sales Team Leader', 'Admin']
     acl_resources_for_targets = {
         'supplier_product': %w(index show edit update destroy destroy_all)
     }
@@ -679,5 +693,4 @@ class Services::Shared::Migrations::AclMigrations < Services::Shared::BaseServic
     acl_resource = AclResource.new
     acl_resource.update_acl_resource_cache
   end
-
 end
