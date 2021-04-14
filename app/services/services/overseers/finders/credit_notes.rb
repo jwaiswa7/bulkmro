@@ -5,9 +5,9 @@ class Services::Overseers::Finders::CreditNotes < Services::Overseers::Finders::
 
   def all_records
     indexed_records = if current_overseer.present? && !current_overseer.allow_inquiries?
-      super.filter(filter_by_owner(current_overseer.self_and_descendant_ids).merge(filter_by_value('sales_invoice_present', true)))
+      super.filter(filter_by_owner(current_overseer.self_and_descendant_ids))
     else
-      super.filter(filter_by_value('sales_invoice_present', true))
+      super
     end
 
     if @status.present?
@@ -34,10 +34,10 @@ class Services::Overseers::Finders::CreditNotes < Services::Overseers::Finders::
   def perform_query(query_string)
     indexed_records = index_klass.query(multi_match: { query: query_string, operator: 'and', fields: %w[memo_number_string^3 memo_amount invoice_number_string^4 sales_order_number_string account_string company_string^5 status_string inquiry_number_string created_at memo_date] }).order(sort_definition)
 
-    indexed_records = indexed_records.filter(filter_by_value('sales_invoice_present', true))
+    indexed_records = indexed_records
 
     if current_overseer.present? && !current_overseer.allow_inquiries?
-      indexed_records = indexed_records.filter(filter_by_owner(current_overseer.self_and_descendant_ids).merge(filter_by_value('sales_invoice_present', true)))
+      indexed_records = indexed_records.filter(filter_by_owner(current_overseer.self_and_descendant_ids))
     end
 
     if @status.present?

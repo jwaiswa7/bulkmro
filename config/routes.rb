@@ -537,9 +537,10 @@ Rails.application.routes.draw do
       end
     end
 
-    resources :credit_notes, only: %w(index) do
+    resources :credit_notes, only: %w(index show) do
       collection do
         get 'resync_credit_note_from_sap'
+        post 'search_or_create'
       end
     end
 

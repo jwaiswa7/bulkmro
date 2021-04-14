@@ -17,8 +17,8 @@ class SalesInvoice < ApplicationRecord
   has_one :company, through: :inquiry
   has_one :ar_invoice_request
   has_one :invoice_request
-  has_one :credit_note
 
+  has_many :credit_notes
   has_many :receipts, class_name: 'SalesReceipt', inverse_of: :sales_invoice
   has_many :packages, class_name: 'SalesPackage', inverse_of: :sales_invoice
   has_many :rows, class_name: 'SalesInvoiceRow', inverse_of: :sales_invoice
@@ -54,7 +54,9 @@ class SalesInvoice < ApplicationRecord
       'Delivered: GRN Pending': 204,
       'Delivered: GRN Delayed': 205,
       'Material Ready For Dispatch': 206,
-      'Material Rejected': 207
+      'Material Rejected': 207,
+      'Credit Note Issued: Partial': 208,
+      'Credit Note Issued: Full': 209
   }
 
   enum main_summary_status: {
@@ -119,7 +121,7 @@ class SalesInvoice < ApplicationRecord
   end
 
   def serialized_billing_address
-    billing_address || sales_order.inquiry.billing_address
+    billing_address || sales_order.inquiry&.billing_address
   end
 
   def serialized_shipping_address
@@ -131,11 +133,19 @@ class SalesInvoice < ApplicationRecord
   end
 
   def calculated_total
-    rows.map { |row| (row.metadata['base_row_total'].to_f * row.sales_invoice.metadata['base_to_order_rate'].to_f) }.sum.round(2)
+    if credit_notes.present?
+      credit_notes.map(&:matched_row_total).sum
+    else
+      rows.map { |row| (row.metadata['base_row_total'].to_f * row.sales_invoice.metadata['base_to_order_rate'].to_f) }.sum.round(2)
+    end
   end
 
   def calculated_total_tax
-    rows.map { |row| (row.metadata['base_tax_amount'].to_f * row.sales_invoice.metadata['base_to_order_rate'].to_f) }.sum.round(2)
+    if credit_notes.present?
+      credit_notes.map(&:matched_row_total_tax).sum
+    else
+      rows.map { |row| (row.metadata['base_tax_amount'].to_f * row.sales_invoice.metadata['base_to_order_rate'].to_f) }.sum.round(2)
+    end
   end
 
   def calculated_total_with_tax
