@@ -3,7 +3,7 @@
   Online Orders
 <% end %>
 
-<div class="col-12">
+<div class="col-12 col-lg-12">
   <section class="pt-0 pt-lg-0 pb-2 pb-lg-3">
     <div class="d-md-flex justify-content-between">
       <h1 class="display-5 mb-1 bmro-form-heading">Order <%= format_id(@customer_order.online_order_number) %></h1>
@@ -16,7 +16,7 @@
   <div class="card mb-2">
     <%= render partial: 'shared/layouts/customer_order_templates/show', locals: {customer_order: @customer_order} %>
     <div class="col-lg-12">
-      <section class="pb-4 pb-lg-5">
+      <section class="pb-4 pb-lg-0">
         <div id="accordion">
           <div class="card mt-2">
             <a class="btn btn-light text-left text-black-50 btn-lg btn-block" type="button" data-toggle="collapse" data-target="#internal-comments">

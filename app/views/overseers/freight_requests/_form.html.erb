@@ -29,7 +29,7 @@
           </div>
         <% end %>
 
-        <div class="mt-3 card-alternative bmro-bg">
+        <div class="mt-0 card-alternative bmro-bg">
           <h6 class="text-uppercase text-black-50 mb-1 bmro-form-heading">Freight Details</h6>
           <% if is_authorized(@freight_request, 'edit_request') %>
             <div class="form-row">
@@ -91,8 +91,8 @@
           <% end %>
         </div>
         <% if is_authorized(@freight_request, 'edit_request') %>
-          <div class="mt-3">
-            <h6 class="text-uppercase text-black-50 mb-1">Delivery Data</h6>
+          <div class="mt-0">
+            <h6 class="text-uppercase text-black-50 mb-1 bmro-form-heading">Delivery Data</h6>
             <div class="form-row">
               <div class="col-3">
                 <%= f.input :weight, input_type: "number", input_html: { class: 'bmro-form-input' } %>
@@ -138,7 +138,7 @@
           </div>
         <% end %>
 
-        <div class="mt-3 card-alternative bmro-bg">
+        <div class="mt-0 card-alternative bmro-bg">
           <div class="form-row">
             <div class="col-12">
               <%= f.nested_fields_for :comments, f.object.comments.build(:overseer => current_overseer) do |freight_request_comment| %>
@@ -150,7 +150,7 @@
           </div>
         </div>
 
-        <div class="mt-3">
+        <div class="mt-0">
           <% if action_name.capitalize == "New" %>
             <%= button_tag(type: "submit", class: "btn btn-success btn-block bmro-button") do %>
               <i class="fal fa-plus-circle"></i> Create Freight Request

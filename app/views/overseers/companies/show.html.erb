@@ -1,6 +1,6 @@
 <%= provide :container_fluid, true %>
 <div class="col-lg-12">
-  <section class="pt-3 pt-lg-4 pb-2">
+  <section class="pt-3 pt-lg-2 pb-2">
     <div class="d-md-flex justify-content-between">
       <h3 class="display-5 d-flex align-items-center bmro-form-heading">
         <a href="<%= overseers_account_path(@company.account) %>"><img src="https://ui-avatars.com/api/?size=128&name=<%= @company.account.name %>&rounded=true&font-size=0.5&background=0D8ABC&color=fff" height="35" class="pr-2"/></a><%= @company.name %>
@@ -14,7 +14,7 @@
     </div>
   </section>
 
-  <section class="mb-3">
+  <section class="mb-1">
     <div class="card">
       <div class="form-row">
         <div class="col-lg-12">
@@ -288,7 +288,7 @@
     </div>
 
     <% if @company.legacy_metadata.present? && (@company.legacy_metadata["sup_mail"] != "NULL" || @company.legacy_metadata["sup_tel"] != "NULL" || @company.legacy_metadata["sup_tel2"] != "NULL" || @company.legacy_metadata["sup_contact"] != "NULL") %>
-      <a class="btn btn-light bmro-button text-left btn-lg btn-block mt-1 mt-lg-4 bmro-ld" type="button" data-toggle="collapse" data-target="#dump">
+      <a class="btn btn-light bmro-button text-left btn-lg btn-block mt-1 mt-lg-3 bmro-ld" type="button" data-toggle="collapse" data-target="#dump">
         Legacy Data
       </a>
 
@@ -558,6 +558,7 @@
       <% end %>
       <% if @company.is_customer? %>
         <div class="tab-pane fade" id="online-orders" role="tabpanel">
+            <div class="table-responsive">
           <% content_for :ajax_url, flush: true do %><%= overseers_company_customer_orders_path(@company) %>
           <% end %>
           <% content_for :header_row, flush: true do %>
@@ -582,6 +583,7 @@
             <a href="#"></a>
           <% end %>
           <%= render 'shared/layouts/internal_datatable', entity: @company, children: 'supplied products' %>
+            </div>
         </div>
       <% end %>
       <% if @company.is_customer? %>
@@ -640,9 +642,9 @@
           <%= render 'shared/layouts/internal_datatable', entity: @company, children: 'Fullfilled Order' %>
         </div>
         <div class="tab-pane fade" id="invoices" role="tabpanel">
+            <div class="table-responsive">
           <% content_for :ajax_url, flush: true do %><%= overseers_company_sales_invoices_path(company_id: @company.id) %>
           <% end %>
-
           <% content_for :header_row, flush: true do %>
             <th class="no-sort all" width="98px">Quick Actions</th>
             <th class="sort all text-right" data-name="invoice_number">Invoice #</th>
@@ -660,6 +662,7 @@
             <th class="sort desktop text-right" data-name="created_at">Created At</th>
           <% end %>
           <%= render 'shared/layouts/internal_datatable', entity: @company, children: 'Invoices' %>
+            </div>
         </div>
       <% end %>
     </div>
