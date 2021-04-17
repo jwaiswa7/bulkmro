@@ -474,9 +474,9 @@ a.bmro-list-button{
     white-space: nowrap;
     overflow: hidden; 
     float: left;
-    padding: 6px 8px 4px;
+    padding: 10px 8px 4px;
     color: #2C4159;
-    height: 58px;
+    height: 40px;
     opacity: unset;*/
 
     line-height: 1.65;
@@ -489,7 +489,7 @@ a.bmro-list-button{
     font-size: 13px;
     padding: 9px 8px 4px;
     color: #2C4159!important;
-    height: 40px;
+    height: 39px;
     opacity: unset;
     position: absolute;
     top: -5px;
@@ -1180,7 +1180,7 @@ a.bmro-click-toggle.collapsed:after{
     padding-top: 1px;
 }
 .custom-file{
-    top: 2px;
+    top: 5px;
     height: calc(2.9rem + 2px);
 }
 .bmro-invoice-boxes{
@@ -1370,7 +1370,7 @@ a.bmro-click-toggle.collapsed:after{
 .bmro-product-trash{
     width: 100%;
     float: left;
-    margin-top: 10px;
+    margin-top: 1px;
     background-size: 20px;
     padding: 14px 12px;
     background-repeat: no-repeat;
@@ -1763,7 +1763,7 @@ table.bmro-rfq-table tr th{
     overflow: inherit!important;
 }
 .bmro-chosen-height-parent .custom-file{
-    height: calc(1.9rem + 8px);
+    height: calc(2rem + 8px);
 }
 .bmro-trash-icon-p{
     background-size: 16px;
@@ -3825,11 +3825,23 @@ td .icon-title.btn{
 }
 .bmro-new-trash-border{
     border: 2px solid #2c4159;
-    padding: 16px 17px;
+    padding: 17px 17px;
     background-position: center;
+    top: 7px;
+    position: relative;
+}
+.fl-l{
+    float: left;
 }
 .bmro-new-margins{
-    margin-top: 12px;
+    margin-top: 7px;
+    border: 2px solid #ECEEF2 !important;
+    padding: 10px 10px !important;
+        float: left;
+
+}
+.bmro-new-trash-border{
+    padding: 16px 17px;
 }
 .bmro-mlsummaryh5{
     margin-left: 10px;
@@ -4523,7 +4535,7 @@ td .media.chat-item{
   float: left;
 }
 
-.dc-buttons {
+//.dc-buttons {
 .btn-success .fa{
    padding: 2px 10px;
    background-size: 16px;
@@ -5045,7 +5057,7 @@ table.table.dataTable.table-bordered th{
 }
 
 a.ml-md-1.btn.bmro-button.btn-success{
-    margin: 1px 0
+    margin: 1px
 }
 
 #company_bank_bank_id{
