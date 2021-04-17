@@ -26,9 +26,9 @@
 
                 <div class="form-group">
                   <% f.object.attachments.each do |attachment| %>
-                    <%= link_to url_for(attachment), class: 'ml-md-1 btn bmro-button btn-success bmro-new-margins', target: '_blank', :"data-toggle" => 'tooltip', :status => attachment.filename do %>
+                    <%= link_to url_for(attachment), class: ' btn bmro-button btn-success bmro-new-margins', target: '_blank', :"data-toggle" => 'tooltip', :status => attachment.filename do %>
                       <i class="bmro-download-icon"></i>
-                      <%= link_to overseers_attachment_path(attachment.id), class: 'btn btn-sm ml-1 mr-1 mr-md-0', method: :delete, data: {confirm: 'Are you sure?'}, :"data-toggle" => 'tooltip', :status => ['Delete', ' ', attachment.filename, '?'].join(''), required: true do %>
+                      <%= link_to overseers_attachment_path(attachment.id), class: 'btn btn-sm mr-md-0 p-15 fl-l p-0', method: :delete, data: {confirm: 'Are you sure?'}, :"data-toggle" => 'tooltip', :status => ['Delete', ' ', attachment.filename, '?'].join(''), required: true do %>
                         <i class="bmro-product-trash bmro-new-trash-border "></i>
                       <% end if attachment.present? && is_authorized(:attachment, 'destroy') %>
                     <% end %>
