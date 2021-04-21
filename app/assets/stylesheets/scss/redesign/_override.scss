@@ -3039,7 +3039,7 @@ background-image:url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYA
 .bmro-border-dashed{
     width: 100%;
     border-bottom: 2px dashed #C3CAD2;
-    margin-top: 1.5rem;
+    margin-top: 0.5rem;
     margin-bottom: 1.5rem;
 }
 .bmro-des-btn{
@@ -5091,7 +5091,7 @@ table.table.dataTable{
     width: 100%;
 }
 table.table.dataTable td{
-    white-space: normal;
+    //white-space: normal;
 }
 table.table.dataTable td {
   white-space: normal!important;
