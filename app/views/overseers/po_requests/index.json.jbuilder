@@ -1,9 +1,9 @@
 json.data (@po_requests) do |po_request|
   json.array! [
                   [
-                      if po_request.sales_order.present? && (is_authorized(po_request, 'edit')) && po_request.status != 'Cancelled'
+                      if po_request.sales_order.present? && (is_authorized(po_request, 'edit')) && po_request.status != 'Cancelled' && po_request.check_material_status?
                         row_action_button(edit_overseers_po_request_path(po_request), 'pencil', 'Edit PO Request', 'warning')
-                      elsif is_authorized(po_request, 'edit') && po_request.status != 'Cancelled'
+                      elsif is_authorized(po_request, 'edit') && po_request.status != 'Cancelled' && po_request.check_material_status?
                         row_action_button(edit_overseers_inquiry_po_request_path(po_request.inquiry, po_request), 'pencil', 'Edit PO Request', 'warning')
                       end,
                       if is_authorized(po_request, 'can_cancel') && policy(po_request).can_cancel?

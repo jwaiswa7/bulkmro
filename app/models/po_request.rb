@@ -199,4 +199,12 @@ class PoRequest < ApplicationRecord
   def to_s
     [readable_status, " ##{self.id}"].join
   end
+
+  def check_material_status?
+    if  (self.purchase_order.present? && self.purchase_order.material_status != 'Material Delivered')
+      true
+    else
+      false
+    end
+  end
 end

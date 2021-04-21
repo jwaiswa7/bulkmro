@@ -123,7 +123,7 @@
         </div>
         <% if params[:action] != 'confirm_delivery' %>
           <div class="card-body bmro-card-body-pt bmro-card-body-pb">
-            <div class="form-row ml-1">
+            <div class="form-row ml-3">
               <div class="col-12 col-md-2 custom-control custom-checkbox">
                 <input type="checkbox" class="custom-control-input" name="all_supplier_delivery_dates" id="all_supplier_delivery_dates">
                 <label class="custom-control-label" for="all_supplier_delivery_dates">Select All</label>
@@ -186,8 +186,8 @@
               </div>
             <% end %>
             <% if is_authorized(f.object, 'remove_products') && policy(f.object).remove_products? %>
-              <div class="col-1">
-                <div class="form-group mb-0 ml-4">
+              <div class="col-2">
+                <div class="form-group mb-0 ml-0">
                   <label>Remove Product</label>
                 </div>
               </div>
@@ -196,7 +196,7 @@
           <% if @inward_dispatch.rows.present? %>
             <%= f.nested_fields_for :rows, f.object.rows, wrapper_tag: :div do |row| %>
               <div class="form-row flex-row align-items-start inward-dispatch-row">
-                <div class="col-1 col-md-1 ml-2">
+                <div class="col-1 col-md-1 pl-4">
                   <span class="custom-control custom-checkbox d-inline pl-0">
                     <% if params[:action] != 'confirm_delivery' %>
                       <%= check_box_tag 'row[]', row.object.id, false, id: "row_id_#{row.object.id}", class: 'custom-control-input' %>
@@ -241,7 +241,7 @@
                   </div>
                 <% end %>
                 <% if is_authorized(f.object, 'remove_products') && policy(f.object).remove_products? %>
-                  <div class="col-6 col-md-1">
+                  <div class="col-6 col-md-2">
                     <%= row.remove_nested_fields_link '', class: 'btn btn-danger align-self-center delete_row bmro-button bmro-trash-icon bmro-remopro', wrapper_class: 'simple-row' if is_authorized(:inward_dispatch_row, 'destroy') %>
                   </div>
                 <% end %>
@@ -251,7 +251,7 @@
               <%= f.add_nested_fields_link :rows, 'Add Product', class: 'btn btn-success bmro-dispatch-prod-btn btn-outline-success btn-block mb-2 mb-md-0 bmro-button', role: 'button' %>
             <% end %>
           <% end %>
-          <%= button_tag(type: "submit", class: "btn btn-warning btn-block bmro-button bmro-dispatch-btn") do %>
+          <%= button_tag(type: "submit", class: "btn btn-warning btn-block bmro-button bmro-dispatch-btn ml-2") do %>
             <i class="fal fa-pen"></i> <%= submit_text(@inward_dispatch) %>
           <% end %>
         </div>
