@@ -166,11 +166,9 @@ body{
 .bmro-button-parent button .fa-plus-circle{
     padding: 10px 18px;
 }
-
 .bmro-button .fa-redo-alt{
     padding: 5px 15px;
 }
-
 .bmro-button:hover{
     background-color: #385372!important;
     color: #FFFFFF!important;
@@ -197,6 +195,12 @@ body{
     margin-bottom: 19px!important;
     width: 100%;
 }
+.tab-content
+.bmro-card
+.bmro-form-heading {    
+    margin-bottom: 0px!important;
+}
+
 .bmro-input-label{
     color: #687686;
     font-family: 'Inter UI', sans-serif;
