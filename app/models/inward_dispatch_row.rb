@@ -39,7 +39,7 @@ class InwardDispatchRow < ApplicationRecord
     previous_pickup_quantity = pickup_quantity_was || 0
     max_quantity = purchase_order_row.get_pickup_quantity + previous_pickup_quantity
 
-    errors.add(:pickup_quantity, " need to be less than or equal to #{max_quantity}") if pickup_quantity > max_quantity
+    errors.add(:pickup_quantity, " need to be less than or equal to #{max_quantity}") if pickup_quantity.to_f > max_quantity.to_f
   end
 
   def to_s
