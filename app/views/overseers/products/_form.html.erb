@@ -55,13 +55,14 @@
           <%= f.input :best_tax_code, input_html: { class: 'bmro-form-input bmro-dropdown-icon' }, disabled: true %>
         </div>
       </div>
-      <div class="col-12 col-md-12">
-        <div class="d-block d-md-flex align-items-end">
-          <div class="flex-grow-1">
-            <%= f.input :images, wrapper: :custom_file, input_html: {multiple: true}, label: 'Product Images' %>
+      <div class="form-row">
+        <div class="col-12 col-md-12">
+          <div class="d-block d-md-flex align-items-end">
+            <div class="flex-grow-1">
+              <%= f.input :images, wrapper: :custom_file, input_html: {multiple: true}, label: 'Product Images' %>
+            </div>
           </div>
         </div>
-      </div>
     </div>
     <div class="card-footer bmro-card-footer">
       <div class="form-row">
