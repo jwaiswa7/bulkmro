@@ -168,6 +168,8 @@ class Overseers::ArInvoiceRequestsController < Overseers::BaseController
   # Use callbacks to share common setup or constraints between actions.
   def set_ar_invoice_request
     @ar_invoice_request = ArInvoiceRequest.find(params[:id])
+    @inward_dispatches = InwardDispatch.where(id: @ar_invoice_request.inward_dispatch_ids)
+    @delivery_challans = DeliveryChallan.where(id: @ar_invoice_request.delivery_challan_ids)
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.
