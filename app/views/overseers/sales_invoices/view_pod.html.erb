@@ -20,7 +20,7 @@
                   <%= link_to url_for(attachment), class: 'btn btn-success btn-rounded align-self-center btn-block-sm-down ml-1 mb-md-0 mb-1', target: '_blank', :"data-toggle" => 'tooltip', :status => attachment.filename do %>
                     <i class="fal fa-download"></i>
                   <% end %>
-                  <span class="ml-2">
+                  <span class="ml-2 proof-delivery">
                     <%= link_to attachment, target: '_blank' do %>
                       <%= attachment.filename %>
                     <% end if attachment.present? %>
