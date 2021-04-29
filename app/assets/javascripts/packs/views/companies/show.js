@@ -14,10 +14,7 @@ const show = () => {
 }
 
 // select-optionn-len
-  $(".select-optionn-len").select2()({
-  templateResult: formatResult,
-  templateSelection: formatSelection
-});	
+  $(".select-optionn-len").select2()
 // select-optionn-len
 
 export default show;
