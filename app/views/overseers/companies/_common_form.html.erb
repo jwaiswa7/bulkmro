@@ -48,7 +48,7 @@
         <%= f.input :priority, wrapper: :custom_multi_select, input_html: { class: 'bmro-form-input bmro-bg bmro-dropdown-icon' } , as: :select, collection: enum_to_collection(Company.priorities), include_blank: false %>
       </div>
       <div class="col-6 col-md-4">
-        <%= f.association :default_payment_option, input_html: { class: 'bmro-form-input bmro-bg bmro-dropdown-icon' } , wrapper: :custom_multi_select, include_blank: 'Select a default' %>
+        <%= f.association :default_payment_option, input_html: { class: 'bmro-form-input bmro-bg bmro-dropdown-icon select-optionn-len' } , wrapper: :custom_multi_select, include_blank: 'Select a default' %>
       </div>
       <div class="col-6 col-md-4">
         <%= f.input :credit_limit ,input_html: { class: 'bmro-form-input bmro-bg' } %>
