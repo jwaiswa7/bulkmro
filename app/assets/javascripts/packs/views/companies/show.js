@@ -13,8 +13,8 @@ const show = () => {
 
 }
 
-// select-optionn-len
+// select optionn len
   $(".select-optionn-len").select2()
-// select-optionn-len
+// select optionn len
 
 export default show;
