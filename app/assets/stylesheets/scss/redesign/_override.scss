@@ -84,7 +84,7 @@ body{
     width: 950px;
     float: left;
     padding-top: 55px;
-    padding-left: 50px;
+   // padding-left: 50px;
     box-sizing: border-box;  
 }
 .bmro-card-header{
@@ -166,9 +166,11 @@ body{
 .bmro-button-parent button .fa-plus-circle{
     padding: 10px 18px;
 }
+
 .bmro-button .fa-redo-alt{
     padding: 5px 15px;
 }
+
 .bmro-button:hover{
     background-color: #385372!important;
     color: #FFFFFF!important;
@@ -195,12 +197,6 @@ body{
     margin-bottom: 19px!important;
     width: 100%;
 }
-.tab-content
-.bmro-card
-.bmro-form-heading {    
-    margin-bottom: 0px!important;
-}
-
 .bmro-input-label{
     color: #687686;
     font-family: 'Inter UI', sans-serif;
@@ -432,6 +428,18 @@ a.bmro-list-button{
   white-space: normal;
   text-overflow: inherit;
   word-wrap: break-word;
+}
+.card .select2-container--default .select2-selection--single{
+background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAAcCAYAAABsxO8nAAAAAXNSR0IArs4c6QAAAftJREFUOBHNlM8vA0EUx9/s4k+wbpSQiGyb9A/Q1I+DnoiQWKHOzjhKIyHhf5CI0Is4icRBqxFcXMQ2CBLlpgc3laA73luG3e3u7IGDSZPtvPedz7w3894A/NFQwzjR5NhsYyTWUi6ZpkwrBRHEAlhhjA9qLbFbGSwQJCBfUShhMF+QByIyksJqQAGQUJgL5AdhjFUYAP5AkaUpnBAAecbFA8CYgaR3ERbnoAKz1vXkuCFsdkQSSMrMZw/Ld+aF1hq9QtgQLhSbu86M6UkjxYHvCjJ9MR2KxIY47XqPMQKcZzlAnbAzBlXO6uPKcKJjDxeu/Tj8IeTH6La8aeJ8qZhbP1cLhQKfTg/vXD48NSOwHfU1kYhN6OtMkyls0cxl551+yGQySrxvotNllExiyXSXxP2fXL9Nza4JgmwfXq++WdVTvOLusASpDCx4PdN7jQWhVQWEcz6Fxga8uVEtoh/h7dwLkfPrqiUOCa0tqqL24M8KUsXH6qYpolewWvsdO9dE5orkS0hVDVyZLOY39qmr7SHrNxRofq1BEPNgM0uAbxBN9N7xOW5Zy/RfDDyzCkIavP3lhJDW9R7hoR1rbbEXXOhMsx51ouOxtT7TEZGIDV0gMhLM58xsfRCEnDUgMj6WiidemAwSCPLCwiCkDx3RHmPG+aSGLvit4AOV+RqTGNSXjQAAAABJRU5ErkJggg==);
+background-size: 10px 16px!important;
+background-position: right 9px top 8px;
+background-repeat: no-repeat;
+-webkit-appearance: none!important;
+appearance: none!important;
+height: 38px;
+padding: 5px 0 0 7px;
+font-size: 13px !important;
+border:2px solid #E9EEF2;
 }
 .form-group:focus span{
     border-color:#2c4159!important;
@@ -1551,6 +1559,12 @@ table.table.dataTable.table-bordered td:first-child{
 .table.table.dataTable.table-bordered td:first-child {
     padding: 5px 5px 5px ;
 }
+.proof-delivery
+{
+    float: left;
+    padding-top: 5px;
+}
+
 .bmro-datatable-style tbody tr td a.btn{
     margin-left: 2px;
     margin-bottom: 3px;
@@ -3109,7 +3123,7 @@ background-image:url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYA
     padding-bottom: 10px;
 }
 .bmro-trashdown-icon-height{
-    height: 37px!important;
+    height: 40px!important;
 }
 .bmro-parent-bg .bmro-float .bmro-collaps{
     background-color: #fff;
@@ -4697,7 +4711,7 @@ a.ml-1.btn.bmro-button.btn-outline-danger{
     margin: 1px 0
 }
 .nested_sales_invoice_pod_rows a.ml-md-1.btn.bmro-button.btn-success{
-    margin: 10px 0
+    margin: 13px 0
 }
 #company_bank_bank_id{
     height: 38px;
@@ -4929,28 +4943,21 @@ div.nobreak {
 .select2-results__options::-webkit-scrollbar,
 .bmro-card .form-row::-webkit-scrollbar,
 .custom-select::-webkit-scrollbar,
-.card-body .modal-body::-webkit-scrollbar{
+.bmro-bg .modal-body::-webkit-scrollbar{
     width: 10px;
  }
 
 .select2-results__options::-webkit-scrollbar-thumb,
 .bmro-card .form-row::-webkit-scrollbar-thumb,
 .custom-select::-webkit-scrollbar-thumb,
-.bmro-bg .modal-body::-webkit-scrollbar-thumb,
-.card-body .modal-body::-webkit-scrollbar-thumb
-{
-    background-color: #2C4159; 
-    background-clip: padding-box; 
-    border: 1px solid #2C4159; 
-    height: 10px;
+.bmro-bg .modal-body::-webkit-scrollbar-thumb{
+    background-color: #2C4159; background-clip: padding-box; border: 1px solid #2C4159; height: 10px;
 }
 
 .select2-results__options::-webkit-scrollbar-track,
 .bmro-card .form-row::-webkit-scrollbar-track,
 .custom-select::-webkit-scrollbar-track,
-.bmro-bg .modal-body::-webkit-scrollbar-track,
-.card-body .modal-body::-webkit-scrollbar-track
-{
+.bmro-bg .modal-body::-webkit-scrollbar-track{
     background-color: #8ea5b5;
     height: 10px;
 }
@@ -4964,21 +4971,15 @@ div.nobreak {
 .select2-results__options,
 .bmro-card .form-row,
 .custom-select,
-.bmro-bg .modal-body,
-.card-body .modal-body
-{
-    scrollbar-face-color: #0064a7; 
-    scrollbar-shadow-color: #8ea5b5; 
-    scrollbar-highlight-color: #8ea5b5;
+.bmro-bg .modal-body{
+    scrollbar-face-color: #0064a7; scrollbar-shadow-color: #8ea5b5; scrollbar-highlight-color: #8ea5b5;
 }
 
 /* Only FireFox */
 .select2-results__options,
 .bmro-card .form-row,
 .custom-select,
-.bmro-bg .modal-body,
-.card-body .modal-body
-{
+.bmro-bg .modal-body{
     scrollbar-color: #0064a7 #8ea5b5;
 }
 
@@ -4986,16 +4987,11 @@ div.nobreak {
 .select2-results__options,
 .bmro-card .form-row,
 .custom-select,
-.bmro-bg .modal-body,
-.card-body .modal-body
-{
+.bmro-bg .modal-body{
     overflow: auto;
     overflow-x: hidden;
 }
-
-.bmro-bg .modal-body,
-.card-body .modal-body
-{
+.bmro-bg .modal-body{
   margin-right: 10px;
 }
 
@@ -5107,6 +5103,7 @@ table.fixedHeader-floating {
   margin: 30px auto;
   padding: 3px 55px;
   position: relative;
+  box-shadow: 0 6px 22px rgba(0, 0, 0, 0.1);
 }
 table.table.dataTable{
     width: 100%;

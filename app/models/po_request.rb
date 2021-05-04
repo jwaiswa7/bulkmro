@@ -201,7 +201,7 @@ class PoRequest < ApplicationRecord
   end
 
   def check_material_status?
-    if  (self.purchase_order.present? && self.purchase_order.material_status != 'Material Delivered')
+    if  (self.purchase_order.present? && self.purchase_order.material_status != 'Material Delivered') || (self.purchase_order.invoice_request.present? && self.purchase_order.invoice_request.status == 'GRPO Request Rejected')
       true
     else
       false
