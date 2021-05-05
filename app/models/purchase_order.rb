@@ -187,8 +187,8 @@ class PurchaseOrder < ApplicationRecord
   end
 
   def billing_address
-    if self.metadata['PoSupBillFrom'].present? && self.metadata['PoSupNum'].present?
-      supplier = Company.find_by_remote_uid(self.metadata['PoSupNum'])
+    supplier = Company.find_by_remote_uid(self.metadata['PoSupNum'])
+    if self.metadata['PoSupBillFrom'].present? && self.metadata['PoSupNum'].present? && supplier.present?
       Address.find_by(remote_uid: self.metadata['PoSupBillFrom'], company_id: supplier.id)
     elsif self.metadata['PoSupBillFrom'].present?
       Address.find_by_remote_uid(self.metadata['PoSupBillFrom'])
@@ -198,8 +198,8 @@ class PurchaseOrder < ApplicationRecord
   end
 
   def shipping_address
-    if self.metadata['PoSupShipFrom'].present? && self.metadata['PoSupNum'].present?
-      supplier = Company.find_by_remote_uid(self.metadata['PoSupNum'])
+    supplier = Company.find_by_remote_uid(self.metadata['PoSupNum'])
+    if self.metadata['PoSupShipFrom'].present? && self.metadata['PoSupNum'].present? && supplier.present?
       Address.find_by(remote_uid: self.metadata['PoSupShipFrom'], company_id: supplier.id)
     elsif self.metadata['PoSupShipFrom'].present?
       Address.find_by_remote_uid(self.metadata['PoSupShipFrom'])
