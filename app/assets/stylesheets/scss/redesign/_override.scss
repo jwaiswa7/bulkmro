@@ -5114,3 +5114,13 @@ table.table.dataTable td{
 table.table.dataTable td {
   white-space: normal!important;
 }
+
+.gst-change {
+  margin-left: -2px; 
+}
+.gst-change:first-child {
+  margin-left:0px; 
+}
+.gst-change:focus {
+    z-index: 9999999;
+}
