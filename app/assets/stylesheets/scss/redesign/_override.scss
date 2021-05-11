@@ -121,6 +121,9 @@ body{
     width: 100%;
     float: left;
 }
+.card-body .card-footer{
+    padding: 1.5rem 0.3rem; 
+}
 .bmro-button-tras{
     background-color: #fff!important;
     color: #495057!important;
@@ -889,8 +892,8 @@ table.bmro-datatable-style{
 .bmro-invoice-heading{
     width: 100%;
     float: left;
-    margin-bottom: 25px;
-    margin-top: 15px;
+    margin-bottom: 0px;
+    margin-top: 5px;
 }
 .bmro-invoice-heading h4{
     color: #2C4159;
@@ -1764,6 +1767,10 @@ table.bmro-rfq-table tr th{
     padding: 0px!important;
     border: none;
 }
+.select2-selection__choice {
+    width: 23.4%;
+}
+
 .select2-selection__rendered .select2-search{
     background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAAcCAYAAABsxO8nAAAAAXNSR0IArs4c6QAAAftJREFUOBHNlM8vA0EUx9/s4k+wbpSQiGyb9A/Q1I+DnoiQWKHOzjhKIyHhf5CI0Is4icRBqxFcXMQ2CBLlpgc3laA73luG3e3u7IGDSZPtvPedz7w3894A/NFQwzjR5NhsYyTWUi6ZpkwrBRHEAlhhjA9qLbFbGSwQJCBfUShhMF+QByIyksJqQAGQUJgL5AdhjFUYAP5AkaUpnBAAecbFA8CYgaR3ERbnoAKz1vXkuCFsdkQSSMrMZw/Ld+aF1hq9QtgQLhSbu86M6UkjxYHvCjJ9MR2KxIY47XqPMQKcZzlAnbAzBlXO6uPKcKJjDxeu/Tj8IeTH6La8aeJ8qZhbP1cLhQKfTg/vXD48NSOwHfU1kYhN6OtMkyls0cxl551+yGQySrxvotNllExiyXSXxP2fXL9Nza4JgmwfXq++WdVTvOLusASpDCx4PdN7jQWhVQWEcz6Fxga8uVEtoh/h7dwLkfPrqiUOCa0tqqL24M8KUsXH6qYpolewWvsdO9dE5orkS0hVDVyZLOY39qmr7SHrNxRofq1BEPNgM0uAbxBN9N7xOW5Zy/RfDDyzCkIavP3lhJDW9R7hoR1rbbEXXOhMsx51ouOxtT7TEZGIDV0gMhLM58xsfRCEnDUgMj6WiidemAwSCPLCwiCkDx3RHmPG+aSGLvit4AOV+RqTGNSXjQAAAABJRU5ErkJggg==');
     background-size: 10px 16px!important;
@@ -5113,4 +5120,14 @@ table.table.dataTable td{
 }
 table.table.dataTable td {
   white-space: normal!important;
+}
+
+.gst-change {
+  margin-left: -2px; 
+}
+.gst-change:first-child {
+  margin-left:0px; 
+}
+.gst-change:focus {
+    z-index: 9999999;
 }
