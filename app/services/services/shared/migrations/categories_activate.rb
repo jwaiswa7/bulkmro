@@ -29,7 +29,7 @@ class Services::Shared::Migrations::CategoriesActivate < Services::Shared::Migra
       else
         @invalid_category_names << middle_category_name
       end
-    else
+    rescue
       @invalid_category_names << parent_category_name
     end
     puts @category_error
