@@ -1,7 +1,7 @@
 omniauth:
   google_oauth2:
-    client_id: 437566842365-vcp9slusvp36u0ecspiid8l7i2cn11mk.apps.googleusercontent.com
-    client_secret: GWp1x9HSiU7DPYFcbxYFa-g5
+    client_id: 912089915617-ucci09g0vq1qftaohocre79pk3isfehr.apps.googleusercontent.com
+    client_secret: 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
 
 email_messages:
   from: no-reply@bulkmro.com
@@ -10,25 +10,25 @@ email_messages:
   reply_to_name: Bulk MRO Support
 
 primary_bank:
-  name: Kotak Mahindra Bank Ltd
-  address: Aum Saheel Tower, Mumbai 400080.
+  name: ICICI Bank Limited
+  address: Trade World, B wing , Kamla mill compound, Mumbai
   account_name: Bulk MRO Industrial Supply Pvt. Ltd.
-  account_number: 9412329433
-  neft_code: KKBK0001411
-  swift_code: KKBKINBB
+  account_number: 032305003478
+  neft_code: ICIC0000396
+  swift_code: ICICINBBCTS
   currency_usd:
-    account_number: 9412666668
+    account_number: 032306000102 
   currency_gbp:
-    account_number: 9412666675
+    account_number: xxxxxxxxxxxx
   currency_eur:
-    account_number: 9412666682
+    account_number: 032306000101
 
 secondary_bank:
-  name: State Bank of India
-  address: Kalpa Taru - 39, Pedder Road, Mumbai 400026.
+  name: ICICI Bank Limited
+  address: D-16, South Extension, II, New Delhi 110049
   account_name: Bulk MRO Industrial Supply Pvt. Ltd.
-  account_number: 35924122136
-  neft_code: SBIN0000510
+  account_number: 039651000003
+  neft_code: ICIC0000396
 
 slack:
   bot_user_access_token: xoxb-395906857286-397063978996-v0clkA03XHgC2AZcsHm8F7cF
@@ -41,7 +41,7 @@ sendgrid:
   api_key: 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
   default_email: pradeep.ketkale@bulkmro.com
 
-domain: staging.bulkmro.com
+domain: sprint-staging.herokuapp.com
 
 gmail_smtp:
   address: "smtp.gmail.com"
@@ -111,3 +111,46 @@ acl:
 
 sales_order:
   default_manager_approved: true
+
+product_specific:
+  freight: BM00008
+
+company_specific:
+  company_id: [5]
+
+itops_mail:
+  user_mail: 'itops@bulkmro.com'
+  smtp_password: 'qtbhuetxezlcdvqg'
+
+#role id for role = "Account Manager" from AclRole table
+account_manager:
+  role_id: 26
+
+account_dashboard_task: '{
+  "charudatt.mhatre@bulkmro.com": ["GRPO Pending","AR Invoice requested"],
+  "pravin.ganekar@bulkmro.com":["GRPO Pending","AR Invoice requested","Pending AP Invoice","SO: Pending Accounts Approval"],
+  "ajay.kondal@bulkmro.com":["GRPO Pending","AR Invoice requested","Pending AP Invoice"],
+  "ruchika.tarve@bulkmro.com":["GRPO Pending","Pending AP Invoice"],
+  "soni.pathre@bulkmro.com":["GRPO Pending","Pending AP Invoice"],
+  "vijay.manjrekar@bulkmro.com":["GRPO Pending","AR Invoice requested","Pending AP Invoice","SO: Pending Accounts Approval"],
+  "akshay.jindal@bulkmro.com":["GRPO Pending","AR Invoice requested","Pending AP Invoice","SO: Pending Accounts Approval"]
+}'
+
+# For ACL role = "Inside Sales Manager" to give access create PO
+inside_sales_manager:
+  role_id: 15
+
+currency:
+  name: "₹"
+
+aggregator:
+  name: 'Bulk MRO Industrial Supply Pvt. Ltd.'
+  alias: 'Bulk MRO'
+  website: 'http://www.bulkmro.com/'
+  address: ''
+  country: 'India'
+  country_code: 'IN'
+
+tcs:
+  tcs_threshold: 5000000
+  tcs_rate: 0.075

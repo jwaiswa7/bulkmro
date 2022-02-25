@@ -1,6 +1,18 @@
 {
   "name": "bulkmro",
   "private": true,
+  "scripts": {
+    "build:test": "webpack --config config/webpack/test.js",
+    "build:production": "NODE_ENV=production webpack --config config/webpack/production.js",
+    "build:development": "webpack --config config/webpack/development.js"
+  },
+  "cacheDirectories": [
+    "node_modules"
+  ],
+  "engines": {
+    "node": "14.x",
+    "npm": ">=6.0.0"
+  },
   "dependencies": {
     "@rails/webpacker": "3.5",
     "animate.css": "^3.7.0",
