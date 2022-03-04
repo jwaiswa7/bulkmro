@@ -1,8 +1,7 @@
 # frozen_string_literal: true
 
 class ApplicationJob < ActiveJob::Base
-  include Sidekiq::Worker
-  sidekiq_options retry: 5, queue: 'high_priority'
+  queue_as :default
 
   def perform(service_name, *args)
     service_class = service_name.constantize
