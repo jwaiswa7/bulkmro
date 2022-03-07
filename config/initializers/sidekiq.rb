@@ -1,4 +1,4 @@
-Sidekiq.default_worker_options = { 'retry' => false }
+Sidekiq.default_worker_options = { 'retry' => 5 }
 
 Sidekiq.configure_server do |config|
   # Add chewy middleware from lib/sidekiq/chewy_middleware.rb
