@@ -1,7 +1,7 @@
 omniauth:
   google_oauth2:
-    client_id: 437566842365-vcp9slusvp36u0ecspiid8l7i2cn11mk.apps.googleusercontent.com
-    client_secret: GWp1x9HSiU7DPYFcbxYFa-g5
+    client_id: 912089915617-ucci09g0vq1qftaohocre79pk3isfehr.apps.googleusercontent.com
+    client_secret: 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
 
 email_messages:
   from: no-reply@bulkmro.com
@@ -14,7 +14,7 @@ primary_bank:
   address: Trade World, B wing , Kamla mill compound, Mumbai
   account_name: Bulk MRO Industrial Supply Pvt. Ltd.
   account_number: 032305003478
-  neft_code: ICIC0000396
+  neft_code: ICIC0000323
   swift_code: ICICINBBCTS
   currency_usd:
     account_number: 032306000102 
