@@ -261,7 +261,7 @@
           </div>
 
           <div class="col-12 col-md-2">
-            <%= po_request_row.input :measurement_unit, value: po_request_row.object.measurement_unit || MeasurementUnit.default&.name, disabled: true, input_html: { class: 'bmro-form-input' } %>
+            <%= po_request_row.association :measurement_unit, collection: MeasurementUnit.new_uom,  input_html: { class: 'bmro-form-input select2-single bmro-dropdown-icon' }, label_method: :to_s, include_blank: false, label: 'Unit of Measurement'%>
           </div>
         </div>
       </div>
