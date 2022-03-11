@@ -42,14 +42,18 @@
                   <span style="float:right">:</span>
                 </td>
                 <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
-                  <span></span>Mr. Ajay Rathod
+                  <span><%= locals[:purchase_order].inquiry.contact.full_name || "Mr. Ajay Rathod" %></span>
                 </td>
                 <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
                   <b><span>Contact #</span></b>
                   <span style="float:right">:</span>
                 </td>
                 <td align="left" colspan="6" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
-                  <span>+91-7977261810</span>
+                  <% if locals[:purchase_order].inquiry.contact.mobile || locals[:purchase_order].inquiry.contact.telephone %>
+                    <span><%= @inquiry.contact.phone %></span>
+                  <% else %>
+                    <span>+91-7977261810</span>
+                  <% end %>
                 </td>
               </tr>
               <tr>
