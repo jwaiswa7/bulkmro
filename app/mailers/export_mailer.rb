@@ -14,17 +14,18 @@ class ExportMailer < ApplicationMailer
   end
 
   def export_notification_mail(record, is_process_started,export_time)
-    @export = record
-    @process_status = is_process_started
-    @export_time = export_time
-    if @process_status == true
-      subject = "Export #{record.titleize} Started"
-    else
-      subject = "Export #{record.titleize} Completed"
-    end
+    # Commenting this code untill username and password issue is resolved.
+    # @export = record
+    # @process_status = is_process_started
+    # @export_time = export_time
+    # if @process_status == true
+    #   subject = "Export #{record.titleize} Started"
+    # else
+    #   subject = "Export #{record.titleize} Completed"
+    # end
 
-    email = mail(to: 'tech@bulkmro.com', subject: subject)
-    email.delivery_method.settings = Settings.gmail_smtp.to_hash
-    email.delivery_method.settings.merge!(user_name: Settings.itops_mail.user_mail, password: Settings.itops_mail.smtp_password)
+    # email = mail(to: 'tech@bulkmro.com', subject: subject)
+    # email.delivery_method.settings = Settings.gmail_smtp.to_hash
+    # email.delivery_method.settings.merge!(user_name: Settings.itops_mail.user_mail, password: Settings.itops_mail.smtp_password)
   end
 end
