@@ -50,7 +50,7 @@
                 </td>
                 <td align="left" colspan="6" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
                   <% if locals[:purchase_order].inquiry.inside_sales_owner.mobile || locals[:purchase_order].inquiry.inside_sales_owner.telephone %>
-                    <span><%= @inquiry.inside_sales_owner.phone %></span>
+                    <span><%= locals[:purchase_order].inquiry.inside_sales_owner.phone %></span>
                   <% else %>
                     <span>+91-7977261810</span>
                   <% end %>
