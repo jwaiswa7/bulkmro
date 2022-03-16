@@ -123,4 +123,24 @@ class PurchaseOrderRow < ApplicationRecord
   def po_request_tax_rate
     self.po_request_row.tax_rate.tax_percentage
   end
+
+  def po_request_bp_catalog_name
+    self.po_request_row&.bp_catalog_name
+  end
+
+  def po_request_bp_catalog_sku
+    self.po_request_row&.bp_catalog_sku
+  end
+
+  def po_request_description
+    if po_request_bp_catalog_name && po_request_bp_catalog_sku
+      "#{self.po_request_row.bp_catalog_name}, #{self.po_request_row.bp_catalog_sku}"
+    elsif po_request_bp_catalog_name
+      "#{self.po_request_row.bp_catalog_name}"
+    elsif po_request_bp_catalog_sku
+      "#{self.po_request_row.bp_catalog_sku}"
+    elsif self.product.present?
+      self.product.name
+    end
+  end
 end

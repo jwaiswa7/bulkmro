@@ -88,7 +88,7 @@ class Overseers::Inquiries::PoRequestsController < Overseers::Inquiries::BaseCon
           :delivery_type,
           :transport_mode,
           :supplier_id, :reason_to_stock, :estimated_date_to_unstock, :sales_order_id, :inquiry_id, :purchase_order_id,
-          rows_attributes: [:id, :sales_order_row_id, :_destroy, :status, :quantity, :tax_code_id, :tax_rate_id, :brand_id, :product_id, :discount_percentage, :unit_price, :lead_time, :converted_unit_selling_price, :product_unit_selling_price, :conversion],
+          rows_attributes: [:id, :sales_order_row_id, :_destroy, :status, :quantity, :tax_code_id, :tax_rate_id, :brand_id, :product_id, :discount_percentage, :unit_price, :lead_time, :converted_unit_selling_price, :product_unit_selling_price, :conversion, :bp_catalog_name, :bp_catalog_sku],
           comments_attributes: [:id, :message, :created_by_id, :updated_by_id],
           attachments: []
       )
