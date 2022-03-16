@@ -76,14 +76,11 @@ class Resources::Item < Resources::ApplicationResource
     end
 
 
-    # if record.is_kit
-    #   params.merge!(
-    #     InventoryItem: 'tNO',
-    #     ManageBatchNumbers: 'tNO',
-    #     PurchaseItem: 'tNO',
-    #     SalesItem: 'tYES'
-    #                 )
-    # end
+    if record.is_kit
+      params.merge!(
+        ManageBatchNumbers: 'tNO',
+                    )
+    end
 
     params
   end
