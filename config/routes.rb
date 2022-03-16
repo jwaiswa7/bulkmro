@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
   require 'sidekiq/web'
   post '/rate' => 'rater#create', :as => 'rate'
+  get '/faq', to: 'static_pages#faq'
   mount Maily::Engine, at: '/maily' if Rails.env.development?
   mount ActionCable.server, at: '/cable'
   authenticate :overseer, lambda { |u| u.admin? } do
