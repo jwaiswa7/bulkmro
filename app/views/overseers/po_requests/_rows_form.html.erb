@@ -287,6 +287,12 @@
           <div class="col-12 col-md-2">
             <%= po_request_row.input :lead_time, as: :string, input_html: {:'data-toggle' => 'datepicker', :'data-customer-committed-date' => !stock && f.object.sales_order.try(:customer_committed_date), :class => 'lead-time', class: 'bmro-form-input'}, label: 'Lead Date', required: true %>
           </div>
+          <div class="col-12 col-md-2">
+            <%= po_request_row.input :bp_catalog_name, as: :string, input_html: {class: 'bmro-form-input'}, label: 'Supplier Material Description' %>
+          </div>
+          <div class="col-12 col-md-2">
+            <%= po_request_row.input :bp_catalog_sku, as: :string, input_html: {class: 'bmro-form-input'}, label: 'Supplier Material Code' %>
+          </div>
 <!--           <% if stock || (f.object.rows.present? && f.object.rows.length > 1) %>
             <div class="col-12 col-md-1">
             <%= po_request_row.remove_nested_fields_link(class: 'btn form-group align-self-center flex-grow-1 bmro-des-btn') do %>
