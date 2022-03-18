@@ -33,7 +33,7 @@ class Overseers::PoRequestsController < Overseers::BaseController
   end
 
   def amended
-    @po_requests = filter_by_status(:amended)
+    @po_requests = filter_by_status(:amended_and_sent)
     authorize_acl @po_requests
 
     respond_to do |format|

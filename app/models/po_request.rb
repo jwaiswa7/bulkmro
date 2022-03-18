@@ -102,6 +102,7 @@ class PoRequest < ApplicationRecord
   scope :can_amend, -> { where(status: [:'Supplier PO: Created Not Sent']) }
   scope :under_amend, -> { where(status: [:'Supplier PO: Amendment Pending']) }
   scope :amended, -> { where(status: [:'Supplier PO: Amended']) }
+  scope :amended_and_sent, -> { where(status: [:'Supplier PO: Amended', :'Supplier PO Sent']) }
   scope :pending_stock_po, -> { where(stock_status: [:'Stock Requested']) }
   scope :completed_stock_po, -> { where(stock_status: [:'Stock Supplier PO Created']) }
   scope :stock_po, -> { where(stock_status: [:'Stock Requested', :'Stock Rejected', :'Stock Supplier PO Created', 'Supplier Stock PO: Amendment Pending', 'Supplier Stock PO: Amended']) }
