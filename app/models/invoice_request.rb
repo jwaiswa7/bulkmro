@@ -4,6 +4,7 @@ class InvoiceRequest < ApplicationRecord
   include Mixins::CanBeStamped
   include Mixins::HasComments
   update_index('inward_dispatches#inward_dispatch') { self.inward_dispatches }
+  update_index('invoice_requests#invoice_request') { self }
 
   pg_search_scope :locate, against: [:id, :grpo_number, :ap_invoice_number, :ar_invoice_number], associated_against: { sales_order: [:id, :order_number], inquiry: [:inquiry_number] }, using: { tsearch: { prefix: true } }
 
@@ -53,7 +54,7 @@ class InvoiceRequest < ApplicationRecord
       'Others': 100
   }
 
-
+  scope :with_includes, -> { includes(:created_by, :updated_by, :inquiry) }
   scope :grpo_pending, -> { where(status: :'GRPO Pending') }
   scope :ap_invoice_pending, -> { where(status: :'Pending AP Invoice') }
   scope :ar_invoice_pending, -> { where(status: :'Pending AR Invoice') }

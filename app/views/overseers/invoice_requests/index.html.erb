@@ -35,19 +35,19 @@
   <th class="no-sort desktop text-left" width="222px">Latest Comment</th>
 <% end %>
 
-<%# content_for :filter_row do %>
-<!--  <td data-filter="false"></td>-->
-<!--  <td data-filter="false"></td>-->
-<!--  <td data-filter="false"></td>-->
-<!--  <td data-filter="false"></td>-->
-<!--  <td data-filter="false"></td>-->
-<!--  <td data-filter="false"></td>-->
-<!--  <td data-filter="false"></td>-->
-<!--  <td data-filter="dropdown"></td>-->
-<!--  <td data-filter="false"></td>-->
-<!--  <td data-filter="false"></td>-->
-<!--  <td data-filter="false"></td>-->
-<%# end %>
+<%content_for :filter_row do %>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="dropdown"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+<% end %>
 
   <%= render layout: 'shared/layouts/datatable' do %>
   <% end %>
