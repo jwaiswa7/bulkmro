@@ -166,9 +166,9 @@
             </div>
             <div>
               <%= nav_dropdown_sub_item 'All Requests', overseers_invoice_requests_path, is_authorized(:invoice_request, 'index') %>
-              <%= nav_dropdown_sub_item 'Pending', pending_overseers_invoice_requests_path(:status => 'GRPO Pending'), is_authorized(:invoice_request, 'pending') %>
-              <%= nav_dropdown_sub_item 'Rejected', pending_overseers_invoice_requests_path(:status => 'GRPO Request Rejected'), is_authorized(:invoice_request, 'pending') %>
-              <%= nav_dropdown_sub_item 'Cancelled', cancelled_overseers_invoice_requests_path(:status => 'Cancelled GRPO'), is_authorized(:invoice_request, 'cancelled') %>
+              <%= nav_dropdown_sub_item 'Pending', overseers_invoice_requests_path(:status => 'GRPO Pending'), is_authorized(:invoice_request, 'pending') %>
+              <%= nav_dropdown_sub_item 'Rejected', overseers_invoice_requests_path(:status => 'GRPO Request Rejected'), is_authorized(:invoice_request, 'pending') %>
+              <%= nav_dropdown_sub_item 'Cancelled', overseers_invoice_requests_path(:status => 'Cancelled GRPO'), is_authorized(:invoice_request, 'cancelled') %>
             </div>
           </div>
           <div class="bmro-small-container">
@@ -177,10 +177,10 @@
             </div>
             <div>
               <%= nav_dropdown_sub_item 'All Requests', overseers_invoice_requests_path, is_authorized(:invoice_request, 'index') %>
-              <%= nav_dropdown_sub_item 'Pending', pending_overseers_invoice_requests_path(:status => 'Pending AP Invoice'), is_authorized(:invoice_request, 'show_pending_ap_invoice_queue') %>
-              <%= nav_dropdown_sub_item 'Completed', pending_overseers_invoice_requests_path(:status => 'Inward Completed'), is_authorized(:invoice_request, 'pending') %>
-              <%= nav_dropdown_sub_item 'Rejected', pending_overseers_invoice_requests_path(:status => 'AP Invoice Request Rejected'), is_authorized(:invoice_request, 'pending') %>
-              <%= nav_dropdown_sub_item 'Completed', completed_overseers_invoice_requests_path, is_authorized(:invoice_request, 'completed') %>
+              <%= nav_dropdown_sub_item 'Pending', overseers_invoice_requests_path(:status => 'Pending AP Invoice'), is_authorized(:invoice_request, 'show_pending_ap_invoice_queue') %>
+              <%= nav_dropdown_sub_item 'Completed', overseers_invoice_requests_path(:status => 'Inward Completed'), is_authorized(:invoice_request, 'pending') %>
+              <%= nav_dropdown_sub_item 'Rejected', overseers_invoice_requests_path(:status => 'AP Invoice Request Rejected'), is_authorized(:invoice_request, 'pending') %>
+              <%= nav_dropdown_sub_item 'Completed', overseers_invoice_requests_path(:status => 'Completed AR Invoice Request'), is_authorized(:invoice_request, 'completed') %>
             </div>
           </div>
           <div class="bmro-small-container">
@@ -260,9 +260,9 @@
             </div>
             <div>
               <%= nav_dropdown_sub_item 'All Requests', overseers_invoice_requests_path, is_authorized(:invoice_request, 'index') %>
-              <%= nav_dropdown_sub_item 'Pending', pending_overseers_invoice_requests_path(:status => 'GRPO Pending'), is_authorized(:invoice_request, 'pending') %>
-              <%= nav_dropdown_sub_item 'Rejected', pending_overseers_invoice_requests_path(:status => 'GRPO Request Rejected'), is_authorized(:invoice_request, 'pending') %>
-              <%= nav_dropdown_sub_item 'Cancelled', cancelled_overseers_invoice_requests_path(:status => 'Cancelled GRPO'), is_authorized(:invoice_request, 'cancelled') %>
+              <%= nav_dropdown_sub_item 'Pending', overseers_invoice_requests_path(:status => 'GRPO Pending'), is_authorized(:invoice_request, 'pending') %>
+              <%= nav_dropdown_sub_item 'Rejected', overseers_invoice_requests_path(:status => 'GRPO Request Rejected'), is_authorized(:invoice_request, 'pending') %>
+              <%= nav_dropdown_sub_item 'Cancelled', overseers_invoice_requests_path(:status => 'Cancelled GRPO'), is_authorized(:invoice_request, 'cancelled') %>
             </div>
           </div>
           <div class="bmro-small-container">
@@ -271,10 +271,10 @@
             </div>
             <div>
               <%= nav_dropdown_sub_item 'All Requests', overseers_invoice_requests_path, is_authorized(:invoice_request, 'index') %>
-              <%= nav_dropdown_sub_item 'Pending', pending_overseers_invoice_requests_path(:status => 'Pending AP Invoice'), is_authorized(:invoice_request, 'show_pending_ap_invoice_queue') %>
-              <%= nav_dropdown_sub_item 'Completed', pending_overseers_invoice_requests_path(:status => 'Inward Completed'), is_authorized(:invoice_request, 'pending') %>
-              <%= nav_dropdown_sub_item 'Rejected', pending_overseers_invoice_requests_path(:status => 'AP Invoice Request Rejected'), is_authorized(:invoice_request, 'pending') %>
-              <%= nav_dropdown_sub_item 'Completed', completed_overseers_invoice_requests_path, is_authorized(:invoice_request, 'completed') %>
+              <%= nav_dropdown_sub_item 'Pending', overseers_invoice_requests_path(:status => 'Pending AP Invoice'), is_authorized(:invoice_request, 'show_pending_ap_invoice_queue') %>
+              <%= nav_dropdown_sub_item 'Completed', overseers_invoice_requests_path(:status => 'Inward Completed'), is_authorized(:invoice_request, 'pending') %>
+              <%= nav_dropdown_sub_item 'Rejected', overseers_invoice_requests_path(:status => 'AP Invoice Request Rejected'), is_authorized(:invoice_request, 'pending') %>
+              <%= nav_dropdown_sub_item 'Completed', overseers_invoice_requests_path(:status => 'Completed AR Invoice Request'), is_authorized(:invoice_request, 'completed') %>
             </div>
           </div>
           <div class="bmro-small-container">

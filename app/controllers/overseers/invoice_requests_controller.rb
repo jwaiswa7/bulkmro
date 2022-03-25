@@ -1,72 +1,116 @@
 class Overseers::InvoiceRequestsController < Overseers::BaseController
   before_action :set_invoice_request, only: [:show, :edit, :update, :cancel_invoice_request, :render_cancellation_form, :render_comment_form, :render_modal_form, :add_comment]
 
-  def pending
-    invoice_requests =
-        if params[:status].present?
-          @status = params[:status]
-          InvoiceRequest.where(status: params[:status])
-        else
-          InvoiceRequest.all
-        end.order(id: :desc)
+  # def pending
+  #   invoice_requests =
+  #       if params[:status].present?
+  #         @status = params[:status]
+  #         InvoiceRequest.where(status: params[:status])
+  #       else
+  #         InvoiceRequest.all
+  #       end.order(id: :desc)
 
-    @invoice_requests = ApplyDatatableParams.to(invoice_requests, params)
-    authorize_acl @invoice_requests
+  #   @invoice_requests = ApplyDatatableParams.to(invoice_requests, params)
+  #   authorize_acl @invoice_requests
 
-    respond_to do |format|
-      format.json {render 'index'}
-      format.html {render 'index'}
-    end
-  end
+  #   respond_to do |format|
+  #     format.json {render 'index'}
+  #     format.html {render 'index'}
+  #   end
+  # end
 
-  def completed
-    @invoice_requests = ApplyDatatableParams.to(InvoiceRequest.all.ar_invoice_generated.order(id: :desc), params)
-    authorize_acl @invoice_requests
+  # def completed
+  #   @invoice_requests = ApplyDatatableParams.to(InvoiceRequest.all.ar_invoice_generated.order(id: :desc), params)
+  #   authorize_acl @invoice_requests
 
-    #####################################################################################################
-    ## Below code is for POD Summary on AR completed queue
-    #####################################################################################################
-    @completed = true
-    service = Services::Overseers::SalesInvoices::ProofOfDeliverySummary.new(params, current_overseer)
-    service.call
+  #   #####################################################################################################
+  #   ## Below code is for POD Summary on AR completed queue
+  #   #####################################################################################################
+  #   @completed = true
+  #   service = Services::Overseers::SalesInvoices::ProofOfDeliverySummary.new(params, current_overseer)
+  #   service.call
 
-    @invoice_over_month = service.invoice_over_month
-    @regular_pod_over_month = service.regular_pod_over_month
-    @route_through_pod_over_month = service.route_through_pod_over_month
-    @pod_over_month = @regular_pod_over_month.merge(@route_through_pod_over_month) {|key, regular_value, route_through_value| regular_value['doc_count'] + route_through_value['doc_count']}
-    #####################################################################################################
+  #   @invoice_over_month = service.invoice_over_month
+  #   @regular_pod_over_month = service.regular_pod_over_month
+  #   @route_through_pod_over_month = service.route_through_pod_over_month
+  #   @pod_over_month = @regular_pod_over_month.merge(@route_through_pod_over_month) {|key, regular_value, route_through_value| regular_value['doc_count'] + route_through_value['doc_count']}
+  #   #####################################################################################################
 
-    respond_to do |format|
-      format.json {render 'index'}
-      format.html {render 'index'}
-    end
-  end
+  #   respond_to do |format|
+  #     format.json {render 'index'}
+  #     format.html {render 'index'}
+  #   end
+  # end
 
-  def cancelled
-    invoice_requests =
-        if params[:status].present?
-          @status = params[:status]
-          InvoiceRequest.where(status: [params[:status], 'Cancelled'])
-        else
-          InvoiceRequest.all
-        end.order(id: :desc)
+  # def cancelled
+  #   invoice_requests =
+  #       if params[:status].present?
+  #         @status = params[:status]
+  #         InvoiceRequest.where(status: [params[:status], 'Cancelled'])
+  #       else
+  #         InvoiceRequest.all
+  #       end.order(id: :desc)
 
-    @invoice_requests = ApplyDatatableParams.to(invoice_requests, params)
-    authorize_acl @invoice_requests
+  #   @invoice_requests = ApplyDatatableParams.to(invoice_requests, params)
+  #   authorize_acl @invoice_requests
 
-    respond_to do |format|
-      format.json {render 'index'}
-      format.html {render 'index'}
-    end
-  end
+  #   respond_to do |format|
+  #     format.json {render 'index'}
+  #     format.html {render 'index'}
+  #   end
+  # end
+
+  # def index
+  #   @invoice_requests = ApplyDatatableParams.to(InvoiceRequest.all.order(id: :desc), params)
+  #   authorize_acl @invoice_requests
+  #   # @invoice_requests.pluck(:status)
+  #   @statuses = InvoiceRequest.statuses
+  #   @main_summary_statuses = InvoiceRequest.main_summary_statuses
+  # end
 
   def index
-    @invoice_requests = ApplyDatatableParams.to(InvoiceRequest.all.order(id: :desc), params)
-    authorize_acl @invoice_requests
-    # @invoice_requests.pluck(:status)
-    @statuses = InvoiceRequest.statuses
-    @main_summary_statuses = InvoiceRequest.main_summary_statuses
+    authorize_acl :payment_request
+
+    if params[:status].present?
+      @status = params[:status]
+    end
+
+    service = Services::Overseers::Finders::InvoiceRequests.new(params, current_overseer)
+    service.call
+
+    @indexed_invoice_requests = service.indexed_records    
+    @invoice_requests = service.records
+
+    status_service = Services::Overseers::Statuses::GetSummaryStatusBuckets.new(@indexed_invoice_requests, InvoiceRequest, main_summary_status: InvoiceRequest.main_summary_statuses)
+    status_service.call
+   #####################################################################################################
+     ## Below code is for POD Summary on AR completed queue
+   #####################################################################################################
+    if params[:status]=='Completed AR Invoice Request'
+       
+      @completed = true
+     service = Services::Overseers::SalesInvoices::ProofOfDeliverySummary.new(params.except(:status), current_overseer)
+     service.call
+
+     @invoice_over_month = service.invoice_over_month
+     @regular_pod_over_month = service.regular_pod_over_month
+     @route_through_pod_over_month = service.route_through_pod_over_month
+     @pod_over_month = @regular_pod_over_month.merge(@route_through_pod_over_month) {|key, regular_value, route_through_value| regular_value['doc_count'] + route_through_value['doc_count']}
+    end
+   #####################################################################################################
+
+    respond_to do |format|
+      format.html {
+        @statuses = InvoiceRequest.statuses
+        @main_summary_statuses = InvoiceRequest.main_summary_statuses
+      }
+      format.json do
+        @total_values = status_service.indexed_total_values
+        @statuses = status_service.indexed_statuses
+      end
+    end
   end
+
 
   def show
     authorize_acl @invoice_request
