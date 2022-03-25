@@ -38,6 +38,7 @@ json.data (@inquiries) do |inquiry|
       inquiry.margin_percentage,
       format_currency(inquiry.try(:potential_amount), show_symbol: false),
       format_currency(inquiry.final_sales_quote.try(:calculated_total), show_symbol: false),
+      inquiry.sales_manager.to_s,
       format_succinct_date(inquiry.created_at)
   ]
   columns = Hash[columns.collect.with_index { |item, index| [index, item] }]
