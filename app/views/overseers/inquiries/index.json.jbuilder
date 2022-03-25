@@ -62,6 +62,7 @@ json.columnFilters [
                        [],
                        [],
                        [],
+                       Overseer.managers.alphabetical.map { |s| { "label": s.full_name, "value": s.id.to_s } }.as_json,
                        []
                    ]
 
