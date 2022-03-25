@@ -41,6 +41,7 @@ class Services::Overseers::Exporters::InquiriesExporter < Services::Overseers::E
         company_alias: record.account.try(:name),
         company_name: record.company.try(:name),
         customer: record.contact.to_s,
+        key_acc_manager: record.sales_manager.try(:full_name),
         subject: record.subject,
         currency: record.currency.try(:name),
         potential_amount: record.potential_amount,
