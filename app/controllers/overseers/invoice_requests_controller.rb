@@ -71,9 +71,13 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
   def index
     authorize_acl :payment_request
 
+    if params[:status].present?
+      @status = params[:status]
+    end
+
     service = Services::Overseers::Finders::InvoiceRequests.new(params, current_overseer)
     service.call
-  
+
     @indexed_invoice_requests = service.indexed_records    
     @invoice_requests = service.records
 
