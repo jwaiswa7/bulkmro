@@ -133,11 +133,11 @@ class PurchaseOrderRow < ApplicationRecord
   end
 
   def po_request_description
-    if po_request_bp_catalog_name && po_request_bp_catalog_sku
+    if po_request_bp_catalog_name.present? && po_request_bp_catalog_sku.present?
       "#{self.po_request_row.bp_catalog_name}, #{self.po_request_row.bp_catalog_sku}"
-    elsif po_request_bp_catalog_name
+    elsif po_request_bp_catalog_name.present?
       "#{self.po_request_row.bp_catalog_name}"
-    elsif po_request_bp_catalog_sku
+    elsif po_request_bp_catalog_sku.present?
       "#{self.po_request_row.bp_catalog_sku}"
     elsif self.product.present?
       self.product.name
