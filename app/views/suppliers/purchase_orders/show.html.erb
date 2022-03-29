@@ -193,7 +193,7 @@
               <span></span>
             </td>
             <td>
-              <span><%= item.metadata['PopProductName'] %></span>
+              <span><%= item.po_request_description.present? ? item.po_request_description : item.metadata['PopProductName'] %></span>
             </td>
             <td>
               <span><%= item.product.brand %></span>
