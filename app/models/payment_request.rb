@@ -59,7 +59,13 @@ class PaymentRequest < ApplicationRecord
 
   enum request_owner: {
       'Logistics': 10,
-      'Accounts': 20
+      'Accounts': 20,
+      'Accounts Stage 2': 30
+  }
+
+  enum supplier_invoice_type: {
+      'Supplier Invoice': 10,
+      'Supplier Proforma Invoice': 20
   }
 
   scope :with_includes, -> {includes(:created_by, :updated_by, :inquiry)}
