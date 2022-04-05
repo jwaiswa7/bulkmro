@@ -38,7 +38,12 @@ class Warehouse < ApplicationRecord
       'AMB': 14,
       'HR': 15,
       'SHT': 16,
-      'AMD': 17
+      'AMD': 17,
+      'MUM': 18,
+      'GJ': 19,
+      'DL': 20, 
+      'CH': 21,
+      'KA': 22
   }
 
 
