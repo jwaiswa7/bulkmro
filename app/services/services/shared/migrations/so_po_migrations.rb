@@ -4,10 +4,10 @@ class Services::Shared::Migrations::SoPoMigrations < Services::Shared::Migration
   #s.set_warehouse_series
 
   def set_warehouse_series
-    service = Services::Shared::Spreadsheets::CsvImporter.new('document_series2021.csv', 'seed_files_3')
+    service = Services::Shared::Spreadsheets::CsvImporter.new('document_series_2022.csv', 'seed_files_3')
     data_not_done = []
     service.loop(nil) do |x|
-      p x.get_column('period_ document_type')
+      p x.get_column('document_type')
       series = Series.where(series_name: x.get_column('series_name'), document_type: x.get_column('document_type'),period_indicator: x.get_column('period_indicator')).last
       if !series.present? && (Series.document_types.keys.include? x.get_column('document_type'))
         s = Series.new(document_type: x.get_column('document_type'),

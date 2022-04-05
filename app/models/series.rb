@@ -32,7 +32,8 @@ class Series < ApplicationRecord
       'GRPO Cancel': 24,
       'Goods Return': 25,
       'Goods Receipt': 26,
-      'A/P Invoice Cancel': 27
+      'A/P Invoice Cancel': 27,
+      'A/P Invoice Bill of Supply': 28
   }
 
   def create_first_number
