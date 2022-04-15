@@ -19,7 +19,7 @@ class Services::Shared::Chewy::RemoveOutdatedIndices < Services::Shared::BaseSer
 
     data = ind_response.body
     indexes = data.split("\n")
-
+    indexes = indexes - [ 'companies' ]
     indexes.each_cons(2) do |index|
       curr_element = index[0]
       curr_element_type = curr_element.split(/(\d+)/).first.chop if curr_element.present?
