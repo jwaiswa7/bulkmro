@@ -25,6 +25,7 @@ class SalesQuote < ApplicationRecord
   has_many :unique_products, -> { uniq }, through: :rows, class_name: 'Product'
   has_many :email_messages, dependent: :destroy
 
+  TCS_APPLICABLE = false
   delegate :ship_from, :bill_from, :billing_address, :shipping_address, :is_sez, :quotation_uid, to: :inquiry
 
   scope :with_includes, -> { includes(:created_by, :updated_by, :parent, :inquiry) }

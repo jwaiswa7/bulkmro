@@ -282,7 +282,7 @@
                   </td>
                 </tr>
               <% end %>
-              <% if record.check_company_total_amount %>
+              <% if record.check_company_total_amount && SalesOrder::TCS_APPLICABLE %>
                 <tr class="pdf-table-total-row-tcs">
                   <td align="center" valign="top">
                     <span></span></td>
