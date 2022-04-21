@@ -5,6 +5,7 @@ class PaymentOption < ApplicationRecord
   include Mixins::CanBeActivated
 
   pg_search_scope :locate, against: [:name], associated_against: {}, using: { tsearch: { prefix: true } }
+  scope :active_options, -> { active.pluck(:name, :id) }
 
   has_many :companies
   has_many :inquiries

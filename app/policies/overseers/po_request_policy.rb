@@ -145,6 +145,10 @@ class Overseers::PoRequestPolicy < Overseers::ApplicationPolicy
     reject_purchase_order_modal?
   end
 
+  def can_edit_payment_option?
+    record.status != "Supplier PO Sent" || ['Inside Sales Manager','Admin','Inside Sales and Logistic Manager','Admin-Leadership Team','Inside Sales Team Leader','Account Manager'].include?(overseer.acl_role.role_name)
+  end
+
   class Scope
     attr_reader :overseer, :scope
 
