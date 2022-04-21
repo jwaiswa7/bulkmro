@@ -46,7 +46,7 @@ class Services::Resources::Shared::UidGenerator < Services::Shared::BaseService
   def self.generate_dc_number(id)
     current_year = Date.today.year % 100
     next_year = Date.today.next_year.year % 100
-    previous_record = DeliveryChallan.where("id < ?", id).last
+    previous_record = DeliveryChallan.where.not(delivery_challan_number: nil).last
     if previous_record
       if previous_record.delivery_challan_number.present?
         series = previous_record.delivery_challan_number.scan(/\d+/)&.first&.to_i + 1
