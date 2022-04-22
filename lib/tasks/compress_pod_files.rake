@@ -3,7 +3,7 @@ require 'zip'
 namespace :pod_files do
 
   task zip: :environment do
-    start_date = Date.parse("2022-02-15")
+    start_date = Date.parse("2022-03-15")
     end_date = Date.parse("2022-04-21")
     archive_directory_path = Rails.root.join('public', 'pod_files')
     archive_zip_path = Rails.root.join('public', 'pod_files.zip')
