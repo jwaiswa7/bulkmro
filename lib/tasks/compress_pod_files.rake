@@ -6,6 +6,7 @@ namespace :pod_files do
     start_date = Date.parse("2022-03-15")
     end_date = Date.parse("2022-04-21")
     archive_directory_path = Rails.root.join('public', 'pod_files')
+    Dir.mkdir(archive_directory_path) unless File.exists?(archive_directory_path)
     archive_zip_path = Rails.root.join('public', 'pod_files.zip')
 
     SalesInvoice.where(created_at: start_date..end_date).each do |sales_invoice|
