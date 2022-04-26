@@ -39,6 +39,19 @@ every(1.day, 'set_overseer_monthly_target', at: '00:10') do
   service.set_overseer_monthly_target
 end
 
+every(1.day, 'purchase_order_reindex', at: '00:50') do
+  # deletes old indexes/alias_index
+  require 'httparty'
+  auth = {username: "#{ENV['ELASTIC_USER_NAME']}", password: "#{ENV['ELASTIC_PASSWORD']}"}
+  HTTParty.delete("#{ENV['FOUNDELASTICSEARCH_URL']}/purchase_orders_*", basic_auth: auth)
+
+  # reindex
+  index_class = PurchaseOrdersIndex
+  if index_class <= BaseIndex
+    index_class.reset!
+  end
+end
+
 every(1.day, 'refresh_indices', at: '01:30') do
   Services::Shared::Chewy::RefreshIndices.new
 end
@@ -164,15 +177,4 @@ end
 #   service.verify
 # end if Rails.env.production?
 
-# every(1.day, 'purchase_order_reindex', at: '00:10') do
-#   # deletes old indexes/alias_index
-#   require 'httparty'
-#   auth = {username: "#{ENV['ELASTIC_USER_NAME']}", password: "#{ENV['ELASTIC_PASSWORD']}"}
-#   HTTParty.delete("#{ENV['FOUNDELASTICSEARCH_URL']}/purchase_orders_*", basic_auth: auth)
 
-#   # reindex
-#   index_class = PurchaseOrdersIndex
-#   if index_class <= BaseIndex
-#     index_class.reset!
-#   end
-# end
