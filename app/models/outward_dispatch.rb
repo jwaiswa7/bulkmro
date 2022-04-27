@@ -22,7 +22,9 @@ class OutwardDispatch < ApplicationRecord
       #
       # 'Material In Transit': 40,
       # 'Material Delivered Pending GRN': 50,
-      'Material Delivered': 60
+      'Material Delivered': 60,
+      'Delivery on Time': 70,
+      'Customer Promise Breached': 80 
   }
 
   enum logistics_partner: {
@@ -67,6 +69,16 @@ class OutwardDispatch < ApplicationRecord
     elsif self.saved_change_to_material_delivery_date? && material_delivery_date_before_last_save.present? && !self.material_delivery_date.present?
       self.status = 'Material Ready for Dispatch'
       self.save
+    end
+  end
+
+  def get_material_delivery_status
+    if self.material_delivery_date.present? && self.expected_date_of_delivery.present? && (self.material_delivery_date <= self.expected_date_of_delivery)
+      'Delivery on Time'
+    elsif self.material_delivery_date.present? && self.expected_date_of_delivery.present? && (self.material_delivery_date > self.expected_date_of_delivery)
+      'Customer Promise Breached'
+    else
+      nil
     end
   end
 

@@ -5,22 +5,25 @@ class Overseers::OutwardDispatchesController < Overseers::BaseController
   # GET /outward_dispatches.json
   def index
     authorize_acl :outward_dispatch
-    if params[:status].present?
-      base_filter = {
-          base_filter_key: 'status',
-
-          base_filter_value: OutwardDispatch.statuses[params[:status]]
-      }
-    end
-    service = Services::Overseers::Finders::OutwardDispatches.new(params.merge(base_filter), current_overseer)
+    
+    service = Services::Overseers::Finders::OutwardDispatches.new(params, current_overseer)
     service.call
-
-    @indexed_outward_dispatches = service.indexed_records
     @outward_dispatches = service.records
+    @indexed_outward_dispatches = service.indexed_records
+    @summary_records = service.get_summary_records(@indexed_outward_dispatches)
+
+    status_service = Services::Overseers::Statuses::GetSummaryStatusBuckets.new(@summary_records, OutwardDispatch, main_summary_status: OutwardDispatch.statuses)
+    status_service.call
 
     respond_to do |format|
-      format.json { render 'index' }
-      format.html { render 'index' }
+      format.html {
+        @statuses = OutwardDispatch.statuses
+        @main_summary_statuses = OutwardDispatch.statuses
+      }
+      format.json do
+        @total_values = status_service.indexed_total_values
+        @statuses = status_service.indexed_statuses
+      end
     end
   end
 

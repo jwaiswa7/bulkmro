@@ -35,8 +35,7 @@ json.data (@outward_dispatches) do |outward_dispatch|
                   ].join(' '),
                   outward_dispatch.packing_slips.map.with_index { |packing_slip, i| link_to("#{packing_slip.outward_dispatch.sales_invoice.invoice_number}-#{i + 1}", overseers_outward_dispatch_packing_slip_path(outward_dispatch, packing_slip), target: '_blank') }.compact.join(' '),
                   link_to(sales_invoice.inquiry.inquiry_number, edit_overseers_inquiry_path(sales_invoice.inquiry), target: '_blank'),
-                  link_to(sales_invoice.sales_order, overseers_inquiry_sales_order_path(sales_invoice.sales_order.inquiry, sales_invoice.sales_order),
-      target: '_blank'),
+                  link_to(sales_invoice.sales_order, overseers_inquiry_sales_order_path(sales_invoice.sales_order.inquiry, sales_invoice.sales_order), target: '_blank'),
                   link_to((sales_invoice.invoice_number || 'AR Invoice'), overseers_inquiry_sales_invoice_path(sales_invoice.inquiry, sales_invoice), target: '_blank'),
                   outward_dispatch.logistics_partner,
                   outward_dispatch.tracking_number,
@@ -74,6 +73,8 @@ json.columnFilters [
                        []
                    ]
 
-json.recordsTotal @indexed_outward_dispatches.count
-json.recordsFiltered @indexed_outward_dispatches.total_count
-json.draw params[:draw]
+                  json.recordsTotal @indexed_outward_dispatches.count
+                  json.recordsFiltered @indexed_outward_dispatches.total_count
+                  json.draw params[:draw]
+                  json.recordsSummary OutwardDispatch.statuses.map {|k, v| { status_id: v, 'label': k, 'size': @statuses[v] || 0 } }.as_json
+                  json.recordsMainSummary OutwardDispatch.statuses.map {|k, v| { status_id: v, 'label': k, 'size': @statuses[v] || 0 } }.as_json

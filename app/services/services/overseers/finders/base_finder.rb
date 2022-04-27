@@ -113,7 +113,7 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
       else
         indexed_records = indexed_records.filter(
           term: {
-              :"#{search_filter[:name] === "followup_status" && ['40', '50'].include?(search_filter[:search][:value])  ? 'committed_date_status' : search_filter[:name]}" => search_filter[:search][:value]
+              :"#{search_filter[:name] === "followup_status" && ['40', '50'].include?(search_filter[:search][:value])  ? 'committed_date_status' : search_filter[:name] === "material_delivery_status" && ['10', '20','60'].include?(search_filter[:search][:value]) ? 'status' : search_filter[:name]}" => search_filter[:search][:value]
           }
         ) if search_filter[:search][:value].present? && search_filter[:search][:value] != 'null'
       end
