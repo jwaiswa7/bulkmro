@@ -79,7 +79,7 @@
     <!--  </div>-->
 
     <div class="col-12 col-md-4">
-      <% if policy(@po_request).can_edit_payment_option? %>
+      <% if @po_request.nil? || @po_request.present? && policy(@po_request).can_edit_payment_option? %>
         <%= f.association :payment_option, :wrapper => :custom_multi_select, include_blank: 'Select Payment Terms', input_html: { class: 'bmro-form-input select2-single bmro-dropdown-icon' }, required: true, label: 'Payment Terms:', collection: PaymentOption.active_options %>
       <% else %>
         <%= f.input :payment_option, input_html: { value: @po_request.payment_option, class: 'bmro-form-input' }, label: 'Payment Terms:', disabled: true %>
