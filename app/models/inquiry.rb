@@ -305,7 +305,7 @@ class Inquiry < ApplicationRecord
       self.outside_sales_owner ||= self.company.outside_sales_owner if not_legacy?
       self.sales_manager ||= self.company.sales_manager if not_legacy?
       self.status ||= :'New Inquiry'
-      self.opportunity_type ||= :regular
+      self.opportunity_type ||= :route_through
       self.opportunity_source ||= :unsure
       self.quote_category ||= :bmro
       self.potential_amount ||= 0.0
