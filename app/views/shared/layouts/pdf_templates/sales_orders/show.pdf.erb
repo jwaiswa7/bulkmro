@@ -374,7 +374,11 @@
                   </td>
                 <% end %>
                 <td align="right" style="font-size: 9px;text-align: right;border-bottom-right-radius: 5px;" valign="top">
-                  <b><span><%= format_currency(record.converted_total_tax_with_tcs, precision: 2, symbol: '') %></span></b>
+                  <% if SalesOrder::TCS_APPLICABLE %>
+                    <b><span><%= format_currency(record.converted_total_tax_with_tcs, precision: 2, symbol: '') %></span></b>
+                  <% else %>
+                    <b><span><%= format_currency(record.converted_total_with_tax, precision: 2, symbol: '') %></span></b>
+                  <% end %>
                 </td>
               </tr>
 
