@@ -37,7 +37,7 @@ class Overseers::OutwardDispatches::PackingSlipsController < Overseers::BaseCont
   def add_packing
     @box_display = @outward_dispatch.packing_slips
     @packing_rows = []
-    rows_obj = @outward_dispatch.sales_invoice.rows.where.not(sku: Settings.product_specific.freight)
+    rows_obj = @outward_dispatch.sales_invoice.rows.where('sku != ? OR sku IS NULL',Settings.product_specific.freight)
     rows_obj.each do |row|
       if row.get_remaining_quantity > 0
         @packing_rows << row
