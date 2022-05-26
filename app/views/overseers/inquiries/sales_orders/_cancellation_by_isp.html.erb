@@ -15,8 +15,28 @@
               <%= sales_order.hidden_field :created_by_id %>
               <%= sales_order.hidden_field :inquiry_id, :value => @inquiry.id %>
               <%= sales_order.hidden_field :sales_order_id, :value => @sales_order.id %>
-              <%= sales_order.input :message, :wrapper => :custom_multi_select, as: :select, include_blank: 'Select Cancellation Reason', collection: enum_to_collection(SalesOrder.cancellation_reasons, keep_raw: true),  input_html: { class: 'select2-single bmro-form-input bmro-dropdown-icon cancellation-msg', required: true } %>
+              <%= sales_order.input :message, :placeholder => 'Type message', input_html: {'data-parsely-no-valid-feedback': '', class: 'cancellation-msg'}, required: true %>
             <% end %>
+            <div class="form-row">
+              <div class="col-12">
+                <div class="d-block d-md-flex align-items-end">
+                  <div class="flex-grow-1">
+                    <%= f.input :attachments, wrapper: :custom_file, input_html: {multiple: true}, label: 'Attachments' %>
+                  </div>
+
+                  <div class="form-group">
+                    <% f.object.attachments.each do |attachment| %>
+                      <%= link_to url_for(attachment), class: 'ml-md-1 btn btn-success bmro-button', target: '_blank', :"data-toggle" => 'tooltip', :status => attachment.filename do %>
+                        <i class="bmro-download-icon"></i>
+                        <%= link_to overseers_attachment_path(attachment.id), class: 'btn btn-outline-danger btn-sm ml-1 mr-1 mr-md-0 bmro-button', method: :delete, data: {confirm: 'Are you sure?'}, :"data-toggle" => 'tooltip', :status => ['Delete', ' ', attachment.filename, '?'].join(''), required: true do %>
+                          <i class="bmro-trash-icon"></i>
+                        <% end if attachment.present? && is_authorized(:attachment, 'destroy') %>
+                      <% end %>
+                    <% end if f.object.attachments.attached? %>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
           <div class="modal-footer">
             <% if policy(@sales_order).can_isp_cancel_so? %>
