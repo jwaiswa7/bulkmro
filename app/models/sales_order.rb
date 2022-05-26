@@ -53,6 +53,7 @@ class SalesOrder < ApplicationRecord
   has_many :delivery_challans
   belongs_to :billing_address, class_name: 'Address', dependent: :destroy, required: false
   belongs_to :shipping_address, class_name: 'Address', dependent: :destroy, required: false
+  has_many_attached :attachments
 
   TCS_APPLICABLE = false
   delegate :conversion_rate, to: :inquiry_currency
