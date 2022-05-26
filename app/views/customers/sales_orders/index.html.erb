@@ -7,7 +7,7 @@
   Orders
 <% end %>
 
-<% if !is_api_request? %>
+<% if !is_api_request? && Company::DISABLE_DOWNLOAD_COMPANIES.exclude?(current_company.name) %>
   <% provide :heading_buttons do %>
     <div class="btn-group">
       <% if current_company.id == 1847 %>
