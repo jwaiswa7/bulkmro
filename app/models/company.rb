@@ -68,6 +68,7 @@ class Company < ApplicationRecord
   has_one_attached :logo
   belongs_to :company_creation_request, optional: true
 
+  DISABLE_DOWNLOAD_COMPANIES = ["Henkel Adhesive Technologies India Pvt. Ltd."]
   scope :with_invoices, -> { includes(:invoices).where.not(sales_invoices: { id: nil }) }
 
   enum company_type: {
