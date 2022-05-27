@@ -45,5 +45,7 @@ class SalesInvoicesIndex < BaseIndex
     field :route_through_pod, value: -> (record) {record.mis_date if !record.has_attachment? && record.inquiry.present? && record.inquiry.opportunity_type == 'route_through' && record.status != 'Cancelled'}, type: 'date'
     field :opportunity_type, value: -> (record) {opportunity_type[record.inquiry.opportunity_type] if record.inquiry.present?}, type: 'integer'
     field :pod_type, value: -> (record) {(record.inquiry.opportunity_type != 'route_through' ? 40 : 70) if record.inquiry.present? && record.status != 'Cancelled' }, type: 'integer'
+    field :cp_ship_to_s, value: -> (record) { record.inquiry&.shipping_contact.try(:name) || record.inquiry&.billing_contact.try(:name) }, analyzer: 'substring'
+    field :cp_ship_to, value: -> (record) { record.inquiry&.shipping_contact_id || record.inquiry&.contact_id }, type: 'integer'
   end
 end
