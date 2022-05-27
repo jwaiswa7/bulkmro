@@ -70,6 +70,10 @@ azure:
   storage_access_key: bQHdNppONx0Tv5ye7jGxY+N437XWOjoBbrlQ6YY0nGT9TU3eb2Pjr7rzSFyxbAccCCKv8tEZJgBIY2ersM9Zbw==
   container: staging-sprint
 
+aws:
+  access_key_id: AKIA2AUMICL7OKIIMRN7
+  secret_access_key: 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
+
 msg91:
   sender_id: BLKMRO
   auth_key: 220892AIFjiJYI5b6d37f3
