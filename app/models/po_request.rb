@@ -64,6 +64,21 @@ class PoRequest < ApplicationRecord
       'Others': 80
   }
 
+  enum cancellation_reason: {
+    'Change in payment term': 1,
+    'Change in Inquiry': 2,
+    'Change in quantity': 3,
+    'Change in HSN/SAC': 4,
+    'Change in Supplier': 5,
+    'Change in Bill and Ship Address': 6,
+    'Change in Tax Rate': 7,
+    'Change in Unit Price': 8,
+    'Customer PO amended': 9,
+    'Customer PO cancelled': 10,
+    'Supplier refused to deliver': 11, 
+    'Other': 12
+  }
+
   enum po_request_type: {
       'Supplier': 10,
       'Stock': 20

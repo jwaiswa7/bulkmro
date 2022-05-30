@@ -1,0 +1,15 @@
+<div class="font-family: Arial; font-size: 14.5px;">
+  <p style="color: #555;">Dear <%= @po_request.inquiry.procurement_operations.parent.try(:full_name) %></p>
+  <p style="color: #555;">Request for PO Cancellation has been generated 
+  by <%= @overseer.full_name %> for Inquiry # <%= @po_request.inquiry.inquiry_number%> 
+  Purchase Order # <%= @po_request.purchase_order.metadata['PoNum'] %></p>
+  <p style="color: #555;">Reason for SO Cancellation: <b><%= @po_request.cancellation_reason %></b></p>
+  <%# <p style="color: #555;">Remarks:<br> <b><%= @po_request.cancellation_remarks </b></p> %>
+  <p style="color: #555;">Kindly review, make necessary changes and notify the same to Samruddhi Kulkarni at the earliest</p>
+  
+  <br/>
+  <p style="color: #555;">Regards,<br></p>
+  <p style="color: #555">
+    <%= @overseer.full_name %><br>
+  </p>
+</div>

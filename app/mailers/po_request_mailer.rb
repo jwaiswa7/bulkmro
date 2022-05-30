@@ -57,4 +57,11 @@ class PoRequestMailer < ApplicationMailer
     email = htmlized_email(email_message)
     email.delivery_method.settings.merge!(user_name: @overseer.email, password: @overseer.smtp_password)
   end
+
+  def cancel_po_request(email_message)
+    @overseer = email_message.overseer
+    @po_request = email_message.purchase_order.po_request
+    standard_email(email_message)
+  end
+
 end

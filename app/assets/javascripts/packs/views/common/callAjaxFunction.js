@@ -38,12 +38,15 @@ const callAjaxFunction = function(json){
 
 const modalSubmit = (modalId, buttonClassName) => {
     $(modalId).on('click', buttonClassName, function (event) {
-        var formSelector = "#" + $(this).closest('form').attr('id'), datastring = $(formSelector).serialize();
+        var formSelector = "#" + $(this).closest('form').attr('id'), form = $(formSelector)[0];
+        var formData = new FormData(form);
         $.ajax({
             type: "PATCH",
             url: $(formSelector).attr('action'),
-            data: datastring,
+            data: formData,
             dataType: "json",
+            processData: false,
+            contentType: false,
             success: function success(data) {
                 if (data.success == 0) {
                 	$(modalId).modal('hide');
