@@ -1,3 +1,6 @@
+require 'sendgrid-ruby'
+include SendGrid
+
 class Services::Shared::EmailMessages::BaseService < Services::Shared::BaseService
   def initialize
     @client = SendGrid::API.new(api_key: Settings.sendgrid.api_key)
@@ -63,6 +66,24 @@ class Services::Shared::EmailMessages::BaseService < Services::Shared::BaseServi
         recipient.email_messages.create!(to: recipient.email, body: response.body, from: Settings.email_messages.from, uid: response.headers['x-message-id'][0], metadata: response, subject: subject, from: Settings.email_messages.from, contact: contact[index], template_data: template_data) if response.present? && response.headers.present?
       end
     end
+  end
+
+  def send_po_request_cancel_email(email_message)
+    from = SendGrid::Email.new(email: email_message.from)
+    to = SendGrid::Email.new(email: email_message.to)
+    subject = email_message.subject
+    content = SendGrid::Content.new(type: 'text/html', value: email_message.body)
+    mail = SendGrid::Mail.new(from, subject, to, content)
+
+    email_message.files.each do |file|
+      attachment = Attachment.new
+      attachment.content = Base64.strict_encode64(file.download.to_s)
+      attachment.type = file.content_type
+      attachment.filename = file.filename.to_s
+      mail.add_attachment(attachment)
+    end
+
+    client.client.mail._('send').post(request_body: mail.to_json)
   end
 
   attr_accessor :client
