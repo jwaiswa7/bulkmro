@@ -39,11 +39,28 @@
   <th class="no-sort all text-left">Committed Delivery Date</th>
   <th class="no-sort all text-left">Price Details</th>
   <th class="no-sort all text-left" >Margin %</th>
-  <th class="no-sort desktop text-left">Statuses</th>
+  <th class="no-sort desktop text-left">Po Status</th>
+  <th class="no-sort desktop text-left">Email status</th>
   <th class="no-sort desktop text-left">Latest Comment</th>
   <th class="no-sort all text-left" data-name="sku" data-toggle="tooltip" title="Inside Sales & Procurement">IS&P</th>
   <th class="sort desktop text-left" data-name="created_at">Requested At</th>
   <th class="no-sort desktop text-left" data-name="updated_at">Updated At</th>
+<% end %>
+
+<% content_for :filter_row do %>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="dropdown"></td>
+  <td data-filter="dropdown"></td>
+  <td data-filter="false"></td>
+  <td data-filter="dropdown"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
 <% end %>
 
 <div class="col-lg-12">

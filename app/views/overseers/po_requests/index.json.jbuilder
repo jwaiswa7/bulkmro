@@ -63,7 +63,8 @@ json.data (@po_requests) do |po_request|
                   attribute_boxes([ { supplier: po_request.supplier_committed_date.present? ? po_request.supplier_committed_date : 'N / A' }, { customer: po_request.inquiry.customer_committed_date }]),
                   attribute_boxes([{ buying: po_request.buying_price }, { selling: po_request.selling_price }]),
                   attribute_boxes([{ margin: po_request.po_margin_percentage.to_s + '-' + po_request.po_margin.to_s  }, { overal: po_request.sales_order.present? ? po_request.sales_order.calculated_total_margin_percentage : 0 }]),
-                  attribute_boxes([{ po_status: status_badge(po_request.status) }, { email_status: status_badge(po_request.try(:purchase_order).try(:has_sent_email_to_supplier?) ? 'Supplier PO Sent' : 'Supplier PO: Not Sent to Supplier') }]),
+                  status_badge(po_request.status),
+                  status_badge(po_request.try(:purchase_order).try(:has_sent_email_to_supplier?) ? 'Supplier PO Sent' : 'Supplier PO: Not Sent to Supplier'),
                   if po_request.last_comment.present?
                     format_comment(po_request.last_comment, trimmed: true)
                   end,
@@ -74,6 +75,32 @@ json.data (@po_requests) do |po_request|
                   end,
               ]
 end
+
+json.columnFilters [
+  [],
+  [],
+  [],
+  [],
+  [],
+  [],
+  [],
+  PoRequest.statuses.map { |k, v| { "label": k, "value": v.to_s } }.as_json,
+  [{'label': 'Supplier PO Sent', 'value': 'Supplier PO Sent'},{'label': 'Supplier PO: Not Sent to Supplier', 'value': 'Supplier PO: Not Sent to Supplier'} ],
+  [],
+  Overseer.distinct.map(&:to_s).map { |o| {'label': o, value: o}},
+  [],
+  [],
+  [],
+  [],
+  [],
+  [],
+  [],
+  [],
+  [],
+  [],
+  [],
+  []
+]
 
 json.recordsTotal @po_requests.count
 json.recordsFiltered @po_requests.total_count
