@@ -43,7 +43,13 @@ class Overseers::PoRequestsController < Overseers::BaseController
   end
 
   def index
-    @po_requests = filter_by_status(:handled)
+    service = Services::Overseers::Finders::PoRequests.new(params)
+    service.call
+    @indexed_po_requests = service.indexed_records
+    @po_requests = service.records
+
+    byebug
+    # @po_requests = filter_by_status(:handled)
     authorize_acl @po_requests
   end
 

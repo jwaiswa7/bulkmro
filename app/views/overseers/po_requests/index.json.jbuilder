@@ -103,5 +103,5 @@ json.columnFilters [
 ]
 
 json.recordsTotal @po_requests.count
-json.recordsFiltered @po_requests.total_count
+json.recordsFiltered @indexed_po_requests.total_count
 json.draw params[:draw]
