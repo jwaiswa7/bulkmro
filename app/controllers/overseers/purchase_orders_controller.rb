@@ -324,9 +324,34 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
   def cancelled_purchase_order
     authorize_acl @purchase_order
     @status = Services::Overseers::PurchaseOrders::CancelPurchaseOrder.new(@purchase_order, purchase_order_params.merge(status: 'Cancelled')).call
-
-    if @status.key?(:empty_message)
-      render json: {error: 'Cancellation Message is Required'}, status: 500
+    
+    if @status.key?(:empty_message) || purchase_order_params[:can_notify_supplier].blank?
+      render json: {error: 'Please fill Required Data!'}, status: 500
+    elsif @status[:status] == 'success' && purchase_order_params[:can_notify_supplier] == 'true'
+      cc_addresses = []
+      cc_addresses << @purchase_order.inquiry.procurement_operations.try(:email) if @purchase_order.inquiry.procurement_operations.present?
+      cc_addresses << @purchase_order.inquiry.outside_sales_owner.try(:email) if @purchase_order.inquiry.outside_sales_owner.present?
+      cc_addresses << @purchase_order.inquiry.sales_manager.try(:email) if @purchase_order.inquiry.sales_manager.present?
+      cc_addresses << @purchase_order.logistics_owner.try(:email) if @purchase_order.logistics_owner.present?
+      @email_message = @purchase_order.email_messages.build(overseer: current_overseer , purchase_order: @purchase_order,cc: cc_addresses)
+      @email_message.assign_attributes(
+        to: @purchase_order.supplier.email,
+        from: @purchase_order.inquiry.procurement_operations.email,
+        subject: "Bulk MRO Industrial Supply Pvt Ltd. has cancelled the PO # #{@purchase_order.po_number} sent to #{@purchase_order.supplier.default_contact.full_name}",
+        body: PoRequestMailer.notify_supplier_of_cancel_purchase_order(@email_message).body.raw_source,
+      )
+      @metadata = @purchase_order.metadata.deep_symbolize_keys
+      @payment_terms = PaymentOption.find_by(remote_uid: @metadata[:PoPaymentTerms])
+      @metadata[:packing] = @purchase_order.get_packing(@metadata)
+      @supplier = get_supplier(@purchase_order, @purchase_order.rows.first.metadata['PopProductId'].to_i)
+      @email_message.files.attach(io: File.open(RenderPdfToFile.for(@purchase_order, locals: {inquiry: @purchase_order.inquiry, purchase_order: @purchase_order, metadata: @metadata, supplier: @supplier, payment_terms: @payment_terms})), filename: @purchase_order.filename(include_extension: true))
+      if @email_message.save
+        service = Services::Shared::EmailMessages::BaseService.new()
+        service.send_email_message_with_sendgrid(@email_message)
+        render json: {url: overseers_purchase_orders_path, notice: 'Email Message has been successfully sent '}, status: 200
+      else
+        render json: {error: {base: 'Something gone wrong. Please try again!'}}, status: 500
+      end
     elsif @status[:status] == 'success'
       render json: {url: overseers_purchase_orders_path, notice: @status[:message]}, status: 200
     elsif @status[:status] == 'failed'
@@ -387,6 +412,7 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
           :logistics_owner_id,
           :created_by_id,
           :revised_supplier_delivery_date,
+          :can_notify_supplier,
           comments_attributes: [:id, :message, :created_by_id, :updated_by_id],
           attachments: []
       )

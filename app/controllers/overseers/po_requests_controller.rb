@@ -200,7 +200,7 @@ class Overseers::PoRequestsController < Overseers::BaseController
       )
       if @email_message.save
         service = Services::Shared::EmailMessages::BaseService.new()
-        service.send_po_request_cancel_email(@email_message)
+        service.send_email_message_with_sendgrid(@email_message)
         render json: {success: 0, message: 'Email Message has been successfully sent '}, status: 200
       else
         render json: {error: {base: 'Something gone wrong. Please try again!'}}, status: 500

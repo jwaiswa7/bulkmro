@@ -68,13 +68,18 @@ class Services::Shared::EmailMessages::BaseService < Services::Shared::BaseServi
     end
   end
 
-  def send_po_request_cancel_email(email_message)
-    from = SendGrid::Email.new(email: email_message.from)
-    to = SendGrid::Email.new(email: email_message.to)
-    subject = email_message.subject
-    content = SendGrid::Content.new(type: 'text/html', value: email_message.body)
-    mail = SendGrid::Mail.new(from, subject, to, content)
-
+  def send_email_message_with_sendgrid(email_message)
+    mail = SendGrid::Mail.new
+    mail.from = Email.new(email: email_message.from)
+    mail.subject = email_message.subject
+    personalization = Personalization.new
+    personalization.add_to(Email.new(email: email_message.to)) 
+    email_message.cc.each do |cc|
+      personalization.add_cc(Email.new(email: cc))  
+    end  
+    
+    mail.add_personalization(personalization)
+    mail.add_content(Content.new(type: 'text/html', value: email_message.body))
     email_message.files.each do |file|
       attachment = Attachment.new
       attachment.content = Base64.strict_encode64(file.download.to_s)
