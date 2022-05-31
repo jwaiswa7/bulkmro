@@ -1,5 +1,6 @@
 class PurchaseOrder < ApplicationRecord
   COMMENTS_CLASS = 'PoComment'
+  attr_accessor :can_notify_supplier
 
   include Mixins::HasConvertedCalculations
   include Mixins::HasComments

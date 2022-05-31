@@ -64,4 +64,10 @@ class PoRequestMailer < ApplicationMailer
     standard_email(email_message)
   end
 
+  def notify_supplier_of_cancel_purchase_order(email_message)
+    @overseer = email_message.overseer
+    @purchase_order = email_message.purchase_order
+    standard_email(email_message)
+  end
+
 end
