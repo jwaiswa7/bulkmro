@@ -212,9 +212,7 @@ class Overseers::PoRequestsController < Overseers::BaseController
 
   def render_modal_form_by_isp
     authorize_acl @po_request
-    respond_to do |format|
-      format.html {render partial: 'cancel_porequest_by_isp'}
-    end
+    render(:partial => 'cancel_porequest_by_isp', :formats => [:html])
   end
 
   def add_comment
