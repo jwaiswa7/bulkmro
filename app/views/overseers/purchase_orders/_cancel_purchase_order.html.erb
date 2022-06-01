@@ -17,11 +17,12 @@
               <strong> Do you want to cancel this #<%= @purchase_order.po_number %> Purchase Order?</strong>
             </div>
             <%= f.nested_fields_for :comments, f.object.comments.build(:overseer => current_overseer) do |purchase_order| %>
-            <%= purchase_order.hidden_field :created_by_id %>
-            <%= purchase_order.hidden_field :purchase_order_id, :value => @purchase_order.id %>
-            <%= purchase_order.input :message, :placeholder => 'Type message', :required => true, input_html: {:'data-parsely-no-valid-feedback' => '', class: 'message-required'} %>
+              <%= purchase_order.hidden_field :created_by_id %>
+              <%= purchase_order.hidden_field :purchase_order_id, :value => @purchase_order.id %>
+              <%= purchase_order.input :message, :placeholder => 'Type message', :required => true, input_html: {:'data-parsely-no-valid-feedback' => '', class: 'message-required'} %>
             <% end %>
-          </div>
+            <%= f.input :can_notify_supplier, label: 'Notify Supplier?',:wrapper => :vertical_collection_inline, as: :radio_buttons, :required => true ,input: { class: 'message-required'}%>
+          </div>      
           <div class="modal-footer bmro-mfp">
             <div class="form-row">
               <div class="col-6">
