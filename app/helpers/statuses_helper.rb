@@ -219,6 +219,8 @@ module StatusesHelper
       'status-color-green'
     when 'Not Sync'
       'status-color-red'
+    when :'Supplier PO: Sent to Supplier'
+      'status-color-green'
     else
       'status-color-red'
     end

@@ -10,8 +10,8 @@ class Services::Overseers::Finders::PoRequests < Services::Overseers::Finders::B
       super
     end
 
-    if @status.present?
-      indexed_records = indexed_records.filter(filter_by_value(:status, @status))
+    if @base_filter.present?
+      indexed_records = indexed_records.filter(@base_filter)
     end
 
     if search_filters.present?
@@ -21,26 +21,17 @@ class Services::Overseers::Finders::PoRequests < Services::Overseers::Finders::B
     if range_filters.present?
       indexed_records = range_query(indexed_records)
     end
-
-    indexed_records = indexed_records.aggregations(aggregate_by_status('status_key'))
     indexed_records
   end
 
   def perform_query(query_string)
-    indexed_records = index_klass.query(
-      multi_match: {
-          query: query_string,
-          operator: 'and',
-          fields: index_klass.fields
-      }
-                                        ).order(sort_definition)
+    indexed_records = index_klass.query(multi_match: { query: query_string, operator: 'and ', fields: %w[ inquiry_number_string^3   po_request_string^3  supplier customer] }).order(sort_definition)
 
     if current_overseer.present? && !current_overseer.allow_inquiries?
       indexed_records = indexed_records.filter(filter_by_owner(current_overseer.self_and_descendant_ids))
     end
-
-    if @status.present?
-      indexed_records = indexed_records.filter(filter_by_value(:status, @status))
+    if @base_filter.present?
+      indexed_records = indexed_records.filter(@base_filter)
     end
 
     if search_filters.present?
@@ -50,7 +41,6 @@ class Services::Overseers::Finders::PoRequests < Services::Overseers::Finders::B
     if range_filters.present?
       indexed_records = range_query(indexed_records)
     end
-    indexed_records = indexed_records.aggregations(aggregate_by_status('status_key'))
     indexed_records
   end
 
