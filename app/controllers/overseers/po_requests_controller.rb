@@ -43,7 +43,10 @@ class Overseers::PoRequestsController < Overseers::BaseController
   end
 
   def index
-    @po_requests = filter_by_status(:handled)
+    service = Services::Overseers::Finders::PoRequests.new(params, current_overseer)
+    service.call
+    @indexed_po_requests = service.indexed_records
+    @po_requests = service.records
     authorize_acl @po_requests
   end
 
@@ -206,9 +209,7 @@ class Overseers::PoRequestsController < Overseers::BaseController
 
   def render_modal_form_by_isp
     authorize_acl @po_request
-    respond_to do |format|
-      format.html {render partial: 'cancel_porequest_by_isp'}
-    end
+    render(:partial => 'cancel_porequest_by_isp', :formats => [:html])
   end
 
   def add_comment

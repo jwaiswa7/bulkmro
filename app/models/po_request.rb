@@ -6,9 +6,10 @@ class PoRequest < ApplicationRecord
   include Mixins::HasConvertedCalculations
   include Mixins::GetOverallDate
 
+  update_index('po_requests#ppo_request') { self }
   update_index('purchase_orders#purchase_order') { purchase_order }
   update_index('customer_order_status_report#sales_order') { sales_order }
-
+  scope :with_includes, -> {includes(:inquiry)}
   pg_search_scope :locate, against: [:id], associated_against: { sales_order: [:id, :order_number], inquiry: [:inquiry_number, :customer_po_number], supplier: [:name], account: [:name] }, using: { tsearch: { prefix: true } }
   belongs_to :sales_order, required: false
   belongs_to :inquiry
@@ -45,6 +46,11 @@ class PoRequest < ApplicationRecord
       'Supplier PO: Amendment Pending': 50,
       'Supplier PO: Amended': 70,
       'Supplier PO Sent': 60
+  }
+
+  enum email_status: {
+    'Supplier PO: Not Sent to Supplier': 10,
+    'Supplier PO: Sent to Supplier': 20
   }
 
   enum supplier_po_type: {
