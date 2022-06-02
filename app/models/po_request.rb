@@ -6,7 +6,7 @@ class PoRequest < ApplicationRecord
   include Mixins::HasConvertedCalculations
   include Mixins::GetOverallDate
 
-  update_index('po_requests#ppo_request') { self }
+  update_index('po_requests#po_request') { self }
   update_index('purchase_orders#purchase_order') { purchase_order }
   update_index('customer_order_status_report#sales_order') { sales_order }
   scope :with_includes, -> {includes(:inquiry)}
