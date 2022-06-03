@@ -13,7 +13,7 @@ class SalesOrder < ApplicationRecord
   include DisplayHelper
   update_index('sales_orders#sales_order') { self }
   update_index('customer_order_status_report#sales_order') { self }
-  update_index('po_requests#po_request') { self.po_request if self.po_request.present? }
+  update_index('po_requests#po_request') { self.po_requests }
 
   pg_search_scope :locate, against: [:status, :id, :order_number], associated_against: {company: [:name], inquiry: [:inquiry_number, :customer_po_number]}, using: {tsearch: {prefix: true}}
   has_closure_tree(name_column: :to_s)
