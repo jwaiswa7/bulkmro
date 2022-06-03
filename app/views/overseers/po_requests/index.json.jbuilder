@@ -93,5 +93,9 @@ json.columnFilters [
 ]
 
 json.recordsTotal @po_requests.count
-json.recordsFiltered @indexed_po_requests.total_count
+if action_name == 'index'
+  json.recordsFiltered @indexed_po_requests.total_count
+else
+  json.recordsFiltered @po_requests.total_count
+end
 json.draw params[:draw]
