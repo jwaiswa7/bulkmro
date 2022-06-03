@@ -6,9 +6,9 @@
           <h5 class="modal-title">
             <% if purpose == "Reject" %>
               Reject PO Request
-          <% else %>
+            <% else %>
               Cancel PO Request
-          <% end %>
+            <% end %>
           </h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
@@ -21,8 +21,13 @@
               <%= f.input :rejection_reason, as: :select, collection: enum_to_collection(PoRequest.rejection_reasons, keep_raw: true, alphabetical: false), :include_blank => true %>
               <%= f.input :other_rejection_reason, input_html: {:'id' => 'other-rejection-reason'}, :disabled => true %>
               <%= f.hidden_field :status, :value => 'Supplier PO Request Rejected' %>
+            <% elsif purpose == "CancelByISP"  %>
+              <%= f.input :cancellation_reason, label: 'Reason for Cancellation', as: :select, collection: enum_to_collection(PoRequest.cancellation_reasons, keep_raw: true, alphabetical: false), :include_blank => true %>
+              <%= f.input :cancellation_remarks, label: 'Remarks', as: :text, :placeholder => 'Type Cancellation Reason', input_html: {:'data-parsely-no-valid-feedback' => ''}%>
+              <%= f.input :attachments, wrapper: :custom_file, input_html: { multiple: true}, label: 'Attachments' %>
+              <%= f.hidden_field :status, :value => '' %>
           <% else %>
-              <%= f.input :cancellation_reason, as: :text, :placeholder => 'Type Cancellation Reason', input_html: {:'data-parsely-no-valid-feedback' => ''} %>
+              <%= f.input :cancellation_reason, label: 'Reason for Cancellation', as: :select, collection: enum_to_collection(PoRequest.cancellation_reasons, keep_raw: true, alphabetical: false), :include_blank => true %>
               <%= f.hidden_field :status, :value => 'Cancelled' %>
           <% end %>
           </div>
