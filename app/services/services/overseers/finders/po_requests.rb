@@ -4,11 +4,18 @@ class Services::Overseers::Finders::PoRequests < Services::Overseers::Finders::B
   end
 
   def all_records
-    indexed_records = if current_overseer.present? && !current_overseer.allow_inquiries?
-      super.filter(filter_by_owner(current_overseer.self_and_descendant_ids))
-    else
+
+    indexed_records = if  current_overseer.present? && current_overseer.admin?
+      # if they are an admin, they can see all records
+      index_klass.all.order(sort_definition)
+    elsif current_overseer.present? && current_overseer.inside_sales_executive? 
+      # if they are an inside sales user, they can only see their own records
+      index_klass.filter(match: {inside_sales_owner_id: current_overseer.id}).order(sort_definition)
+    else 
       super
     end
+    
+
 
     if @base_filter.present?
       indexed_records = indexed_records.filter(@base_filter)
@@ -21,7 +28,7 @@ class Services::Overseers::Finders::PoRequests < Services::Overseers::Finders::B
     if range_filters.present?
       indexed_records = range_query(indexed_records)
     end
-    indexed_records
+    indexed_records    
   end
 
   def perform_query(query_string)
