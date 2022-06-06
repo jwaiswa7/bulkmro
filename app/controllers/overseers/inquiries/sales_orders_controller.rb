@@ -263,7 +263,7 @@ class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseCo
       @email_message = @sales_order.email_messages.build(overseer: current_overseer, inquiry: @inquiry, email_type: 'Request for SO Cancellation')
       if Settings.domain == 'sprint.bulkmro.com'
         from = @inquiry.inside_sales_owner.try(:email)
-        to = 'accounts@bulkmro.com'
+        to = ["accounts@bulkmro.com", "ajay.kondal@bulkmro.com", "charudatt.mhatre@bulkmro.com"] 
         cc = [@inquiry.company.try(:sales_manager).try(:email), @inquiry.inside_sales_owner.try(:email)]
         subject = "Request for SO Cancellation for Inquiry ##{@sales_order.inquiry.inquiry_number} Sales Order ##{@sales_order.order_number}"
       else
