@@ -405,6 +405,7 @@ class Overseers::SalesOrdersController < Overseers::BaseController
             :created_by_id,
             :updated_by_id,
             :message,
+            :cancellation_message,
             :inquiry_id,
         ]
             ],
