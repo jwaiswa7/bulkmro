@@ -32,21 +32,6 @@ const index = () => {
 
     });
 
-    $('.datatable').on('click', '.cancel-po_request_by_isp', function (e) {
-            var id = $(this).data('po-request-id')
-            var title = $(this).attr('data-id')
-
-            var json = {
-                url: "/overseers/po_requests/" + id + "/render_modal_form_by_isp",
-                modalId: '#cancelporequestbyisp',
-                className: '.open-modal-form',
-                buttonClassName: '.confirm-cancel',
-                this: $(this),
-                title: title
-            }
-            callAjaxFunction(json)
-    });
-
     commanComment('po-request','po_requests');
 
     $('.manualPo').unbind('click').bind('click',function () {

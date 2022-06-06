@@ -372,8 +372,6 @@ Rails.application.routes.draw do
         patch 'cancel_porequest'
         get 'render_comment_form'
         patch 'add_comment'
-        get 'render_modal_form_by_isp'
-        patch 'cancel_porequest_by_isp'
       end
     end
 

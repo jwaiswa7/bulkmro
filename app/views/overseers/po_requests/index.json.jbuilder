@@ -13,7 +13,7 @@ json.data (@po_requests) do |po_request|
                         end
                       end,
                       if is_authorized(po_request, 'can_cancel') && policy(po_request).can_cancel? && po_request.cancellation_reason.blank?
-                        link_to('', class: ['btn btn-sm btn-dark cancel-po_request_by_isp icon-title'], 'data-po-request-id': po_request.id,'data-id':'Cancel', title: 'Cancel By ISP', remote: true) do
+                        link_to('', class: ['btn btn-sm btn-dark cancel-po_request icon-title'], 'data-po-request-id': po_request.id,'data-id':'CancelByISP', title: 'Cancel By ISP', remote: true) do
                           concat content_tag(:span, '')
                           concat content_tag :i, nil, class: ['fal fa-ban'].join
                         end

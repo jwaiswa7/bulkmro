@@ -76,7 +76,7 @@ class Services::Shared::EmailMessages::BaseService < Services::Shared::BaseServi
     personalization.add_to(Email.new(email: email_message.to)) 
     email_message.cc.each do |cc|
       personalization.add_cc(Email.new(email: cc))  
-    end  
+    end if email_message.cc.present?
     
     mail.add_personalization(personalization)
     mail.add_content(Content.new(type: 'text/html', value: email_message.body))
@@ -86,7 +86,7 @@ class Services::Shared::EmailMessages::BaseService < Services::Shared::BaseServi
       attachment.type = file.content_type
       attachment.filename = file.filename.to_s
       mail.add_attachment(attachment)
-    end
+    end if email_message.files.present?
 
     client.client.mail._('send').post(request_body: mail.to_json)
   end
