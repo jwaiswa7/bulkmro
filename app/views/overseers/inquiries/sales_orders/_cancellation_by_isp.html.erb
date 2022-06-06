@@ -15,6 +15,7 @@
               <%= sales_order.hidden_field :created_by_id %>
               <%= sales_order.hidden_field :inquiry_id, :value => @inquiry.id %>
               <%= sales_order.hidden_field :sales_order_id, :value => @sales_order.id %>
+              <%= sales_order.input :cancellation_message, :wrapper => :custom_multi_select, as: :select, include_blank: 'Select Cancellation Reason', collection: enum_to_collection(SalesOrder.cancellation_reasons, keep_raw: true),  input_html: { class: 'select2-single bmro-form-input bmro-dropdown-icon cancellation-msg', required: true } %>
               <%= sales_order.input :message, :placeholder => 'Type message', input_html: {'data-parsely-no-valid-feedback': '', class: 'cancellation-msg'}, required: true %>
             <% end %>
             <div class="form-row">
