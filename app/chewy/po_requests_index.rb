@@ -5,13 +5,12 @@ class PoRequestsIndex < BaseIndex
     email_statuses = PoRequest.email_statuses
     define_type PoRequest.all.send(:handled).with_includes do 
         field :id, type: 'integer'
-        field :po_request_id, value: -> (record) { record.id }
-        field :po_request_string, value: -> (record) { record.id.to_s }
-        field :inquiry_number, value: -> (record) { record.inquiry.inquiry_number }
-        field :inquiry_number_string, value: -> (record) { record.inquiry.inquiry_number.to_s }
-        field :purchase_order, value: -> (record) { record.id }
-        field :supplier, value: -> (record) { record&.supplier.to_s }
-        field :customer, value: -> (record) { record&.inquiry&.company.to_s }
+        field :po_request_id, value: -> (record) { record.id }, type: 'integer'
+        field :po_request_string, value: -> (record) { record.id.to_s } , analyzer: 'substring'
+        field :inquiry_number, value: -> (record) { record.inquiry.inquiry_number } ,type: 'integer'
+        field :inquiry_number_string, value: -> (record) { record.inquiry.inquiry_number.to_s }, analyzer: 'substring'
+        field :supplier, value: -> (record) { record&.supplier.to_s } , analyzer: 'substring'
+        field :customer, value: -> (record) { record&.inquiry&.company.to_s } , analyzer: 'substring'
         field :customer_alias, value: -> (record) { record&.inquiry&.account.to_s }
         field :customer_po_number, value: -> (record) { record&.inquiry&.customer_po_number }
         field :supplier_committed_date, value: -> (record) { record.supplier_committed_date.present? ? record.supplier_committed_date : 'N / A'}

@@ -57,40 +57,41 @@ json.data (@po_requests) do |po_request|
                         row_action_button(overseers_po_request_path(po_request), 'eye', 'Amendment Changes', 'success')
                       end
                   ].join(' '),
-                  attribute_boxes([{ request_number: conditional_link(po_request.id, overseers_po_request_path(po_request), is_authorized(po_request, 'show'))}, { inquiry_number: conditional_link(po_request.inquiry.inquiry_number, edit_overseers_inquiry_path(po_request.inquiry), is_authorized(po_request.inquiry, 'edit')) }, { order: po_request.purchase_order.present? && (po_request.status == 'Supplier PO: Created Not Sent') ? link_to(po_request.purchase_order.po_number, overseers_inquiry_purchase_order_path(po_request.inquiry, po_request.purchase_order), target: '_blank') : po_request.sales_order.present? ? link_to(po_request.sales_order.order_number, overseers_inquiry_sales_order_path(po_request.inquiry.id, po_request.sales_order.id), target: '_blank') : '-'}]),
-                  attribute_boxes([{ supplier: po_request.supplier.present? ? conditional_link(po_request.supplier.to_s, overseers_company_path(po_request.supplier), is_authorized(po_request.supplier, 'show')) : '-'}, { customer: po_request.inquiry.company.present? ? conditional_link(po_request.inquiry.company.to_s, overseers_company_path(po_request.inquiry.company), is_authorized(po_request.inquiry.company, 'show')) : '-'}]),
-                  attribute_boxes([{ customer_alias: po_request.inquiry.account.present? ? conditional_link(po_request.inquiry.account.to_s, overseers_account_path(po_request.inquiry.account), is_authorized(po_request.inquiry.account, 'show')) : '-'}, { customer_po_number: po_request.inquiry.present? ? po_request.inquiry.customer_po_number : '-'}]),
-                  attribute_boxes([ { supplier: po_request.supplier_committed_date.present? ? po_request.supplier_committed_date : 'N / A' }, { customer: po_request.inquiry.customer_committed_date }]),
-                  attribute_boxes([{ buying: po_request.buying_price }, { selling: po_request.selling_price }]),
-                  attribute_boxes([{ margin: po_request.po_margin_percentage.to_s + '-' + po_request.po_margin.to_s  }, { overal: po_request.sales_order.present? ? po_request.sales_order.calculated_total_margin_percentage : 0 }]),
-                  status_badge(po_request.status),
-                  status_badge(po_request.purchase_order.try(:has_sent_email_to_supplier?) ? 'Supplier PO: Sent to Supplier' : 'Supplier PO: Not Sent to Supplier'),
-                  if po_request.last_comment.present?
-                    format_comment(po_request.last_comment, trimmed: true)
-                  end,
-                  po_request.inquiry.inside_sales_owner.to_s,
-                  format_succinct_date(po_request.created_at),
-                  if po_request.last_comment.present?
-                    format_succinct_date(po_request.last_comment.updated_at)
-                  end,
-              ]
+                attribute_boxes([{ request_number: conditional_link(po_request.id, overseers_po_request_path(po_request), is_authorized(po_request, 'show'))}, { inquiry_number: conditional_link(po_request.inquiry.inquiry_number, edit_overseers_inquiry_path(po_request.inquiry), is_authorized(po_request.inquiry, 'edit')) }, { order: po_request.purchase_order.present? && (po_request.status == 'Supplier PO: Created Not Sent') ? link_to(po_request.purchase_order.po_number, overseers_inquiry_purchase_order_path(po_request.inquiry, po_request.purchase_order), target: '_blank') : po_request.sales_order.present? ? link_to(po_request.sales_order.order_number, overseers_inquiry_sales_order_path(po_request.inquiry.id, po_request.sales_order.id), target: '_blank') : '-'}]),
+                attribute_boxes([{ supplier: po_request.supplier.present? ? conditional_link(po_request.supplier.to_s, overseers_company_path(po_request.supplier), is_authorized(po_request.supplier, 'show')) : '-'}, { customer: po_request.inquiry.company.present? ? conditional_link(po_request.inquiry.company.to_s, overseers_company_path(po_request.inquiry.company), is_authorized(po_request.inquiry.company, 'show')) : '-'}]),
+                attribute_boxes([{ customer_alias: po_request.inquiry.account.present? ? conditional_link(po_request.inquiry.account.to_s, overseers_account_path(po_request.inquiry.account), is_authorized(po_request.inquiry.account, 'show')) : '-'}, { customer_po_number: po_request.inquiry.present? ? po_request.inquiry.customer_po_number : '-'}]),
+                attribute_boxes([ { supplier: po_request.supplier_committed_date.present? ? po_request.supplier_committed_date : 'N / A' }, { customer: po_request.inquiry.customer_committed_date }]),
+                attribute_boxes([{ buying: po_request.buying_price }, { selling: po_request.selling_price }]),
+                attribute_boxes([{ margin: po_request.po_margin_percentage.to_s + '-' + po_request.po_margin.to_s  }, { overal: po_request.sales_order.present? ? po_request.sales_order.calculated_total_margin_percentage : 0 }]),
+                status_badge(po_request.status),
+                status_badge(po_request.purchase_order.try(:has_sent_email_to_supplier?) ? 'Supplier PO: Sent to Supplier' : 'Supplier PO: Not Sent to Supplier'),
+                if po_request.last_comment.present?
+                  format_comment(po_request.last_comment, trimmed: true)
+                end,
+                po_request.inquiry.inside_sales_owner.to_s,
+                format_succinct_date(po_request.created_at),
+                if po_request.last_comment.present?
+                  format_succinct_date(po_request.last_comment.updated_at)
+                end,
+            ]
 end
-
-json.columnFilters [
-  [],
-  [],
-  [],
-  [],
-  [],
-  [],
-  [],
-  PoRequest.statuses.map { |k, v| { "label": k, "value": v.to_s } }.as_json,
-  PoRequest.email_statuses.map { |k, v| { "label": k, "value": v.to_s } }.as_json,
-  [],
-  Overseer.inside.alphabetical.map { |s| { "label": s.full_name, "value": s.id.to_s } }.as_json,
-  [],
-  []
-]
+if action_name == 'index'
+  json.columnFilters [
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    PoRequest.statuses.map { |k, v| { "label": k, "value": v.to_s } }.as_json,
+    PoRequest.email_statuses.map { |k, v| { "label": k, "value": v.to_s } }.as_json,
+    [],
+    Overseer.inside.alphabetical.map { |s| { "label": s.full_name, "value": s.id.to_s } }.as_json,
+    [],
+    []
+  ]
+end
 
 json.recordsTotal @po_requests.count
 if action_name == 'index'

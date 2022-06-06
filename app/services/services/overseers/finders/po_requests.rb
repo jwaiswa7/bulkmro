@@ -32,7 +32,7 @@ class Services::Overseers::Finders::PoRequests < Services::Overseers::Finders::B
   end
 
   def perform_query(query_string)
-    indexed_records = index_klass.query(multi_match: { query: query_string, operator: 'and ', fields: %w[ inquiry_number_string^3   po_request_string^3  supplier customer] }).order(sort_definition)
+    indexed_records = index_klass.query(multi_match: { query: query_string, operator: 'and', fields: %w[ inquiry_number_string   po_request_string inside_sales_owner  supplier customer] }).order(sort_definition)
 
     if current_overseer.present? && !current_overseer.allow_inquiries?
       indexed_records = indexed_records.filter(filter_by_owner(current_overseer.self_and_descendant_ids))

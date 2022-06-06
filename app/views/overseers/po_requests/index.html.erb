@@ -30,37 +30,54 @@
 <% content_for :hide_table_desc do %>
   <!--  To Do Filters-->
 <% end %>
-<% %>
-<% content_for :header_row do %>
-  <th class="no-sort bmro-table-changes all" width="98px">Quick Actions</th>
-  <th class="no-sort desktop text-left">Entity Details</th>
-  <th class="no-sort all text-left" >Supplier</th>
-  <th class="no-sort all text-left" >Customer</th>
-  <th class="no-sort all text-left" >Committed Delivery Date</th>
-  <th class="no-sort all text-left" >Price Details</th>
-  <th class="no-sort all text-left" >Margin %</th>
-  <th class="no-sort desktop text-left" data-name="status">Po Status</th>
-  <th class="no-sort desktop text-left" data-name="email_status">Email status</th>
-  <th class="no-sort desktop text-left">Latest Comment</th>
-  <th class="no-sort all text-left" data-name="inside_sales_owner_id" data-toggle="tooltip" title="Inside Sales & Procurement">IS&P</th>
-  <th class="sort desktop text-left" >Requested At</th>
-  <th class="no-sort desktop text-left" data-name="updated_at">Updated At</th>
-<% end %>
 
-<% content_for :filter_row do %>
-  <td data-filter="false"></td>
-  <td data-filter="false"></td>
-  <td data-filter="false"></td>
-  <td data-filter="false"></td>
-  <td data-filter="false"></td>
-  <td data-filter="false"></td>
-  <td data-filter="false"></td>
-  <td data-filter="dropdown"></td>
-  <td data-filter="dropdown"></td>
-  <td data-filter="false"></td>
-  <td data-filter="dropdown"></td>
-  <td data-filter="false"></td>
-  <td data-filter="false"></td>
+<%if action_name == 'index' %>
+  <% content_for :header_row do %>
+    <th class="no-sort bmro-table-changes all" width="98px">Quick Actions</th>
+    <th class="no-sort desktop text-left">Entity Details</th>
+    <th class="no-sort all text-left" >Supplier</th>
+    <th class="no-sort all text-left" >Customer</th>
+    <th class="no-sort all text-left" >Committed Delivery Date</th>
+    <th class="no-sort all text-left" >Price Details</th>
+    <th class="no-sort all text-left" >Margin %</th>
+    <th class="no-sort desktop text-left" data-name="status">Po Status</th>
+    <th class="no-sort desktop text-left" data-name="email_status">Email status</th>
+    <th class="no-sort desktop text-left">Latest Comment</th>
+    <th class="no-sort all text-left" data-name="inside_sales_owner_id" data-toggle="tooltip" title="Inside Sales & Procurement">IS&P</th>
+    <th class="sort desktop text-left" data-name="created_at">Requested At</th>
+    <th class="no-sort desktop text-left" data-name="updated_at">Updated At</th>
+  <% end %>
+    <% content_for :filter_row do %>
+    <td data-filter="false"></td>
+    <td data-filter="false"></td>
+    <td data-filter="false"></td>
+    <td data-filter="false"></td>
+    <td data-filter="false"></td>
+    <td data-filter="false"></td>
+    <td data-filter="false"></td>
+    <td data-filter="dropdown"></td>
+    <td data-filter="dropdown"></td>
+    <td data-filter="false"></td>
+    <td data-filter="dropdown"></td>
+    <td data-filter="false"></td>
+    <td data-filter="false"></td>
+  <% end %>
+<% else %>
+  <% content_for :header_row do %>
+    <th class="no-sort bmro-table-changes all" width="98px">Quick Actions</th>
+    <th class="no-sort desktop text-left">Entity Details</th>
+    <th class="no-sort all text-left" data-name="supplier">Supplier</th>
+    <th class="no-sort all text-left" data-name="customer">Customer</th>
+    <th class="no-sort all text-left">Committed Delivery Date</th>
+    <th class="no-sort all text-left">Price Details</th>
+    <th class="no-sort all text-left" >Margin %</th>
+    <th class="no-sort desktop text-left" data-name="status">Po Status</th>
+    <th class="no-sort desktop text-left" data-name="email_status">Email status</th>
+    <th class="no-sort desktop text-left">Latest Comment</th>
+    <th class="no-sort all text-left" data-name="sku" data-toggle="tooltip" title="Inside Sales & Procurement">IS&P</th>
+    <th class="sort desktop text-left" data-name="created_at">Requested At</th>
+    <th class="no-sort desktop text-left" data-name="updated_at">Updated At</th>
+  <% end %>
 <% end %>
 
 <div class="col-lg-12">
