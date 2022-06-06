@@ -327,6 +327,8 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
     
     if @status.key?(:empty_message) || purchase_order_params[:can_notify_supplier].blank?
       render json: {error: 'Please fill Required Data!'}, status: 500
+    elsif @purchase_order.company_id.blank?
+      render json: {error: 'Supplier not Exists'}, status: 500
     elsif @status[:status] == 'success' && purchase_order_params[:can_notify_supplier] == 'true'
       cc_addresses = []
       cc_addresses << @purchase_order.inquiry.inside_sales_owner.try(:email) if @purchase_order.inquiry.procurement_operations.present?
