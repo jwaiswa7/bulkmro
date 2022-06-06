@@ -1,5 +1,5 @@
 <div class="font-family: Arial; font-size: 14.5px;">
-  <p style="color: #555;">Dear <%= @po_request.inquiry.procurement_operations.parent.try(:full_name) %></p>
+  <p style="color: #555;">Dear <%= @po_request.inquiry.inside_sales_owner.parent.try(:full_name) %></p>
   <p style="color: #555;">Request for PO Cancellation has been generated 
   by <%= @overseer.full_name %> for Inquiry # <%= @po_request.inquiry.inquiry_number%> 
   Purchase Order # <%= @po_request.purchase_order.metadata['PoNum'] %></p>

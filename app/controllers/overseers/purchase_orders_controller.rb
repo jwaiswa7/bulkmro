@@ -329,15 +329,15 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
       render json: {error: 'Please fill Required Data!'}, status: 500
     elsif @status[:status] == 'success' && purchase_order_params[:can_notify_supplier] == 'true'
       cc_addresses = []
-      cc_addresses << @purchase_order.inquiry.procurement_operations.try(:email) if @purchase_order.inquiry.procurement_operations.present?
+      cc_addresses << @purchase_order.inquiry.inside_sales_owner.try(:email) if @purchase_order.inquiry.procurement_operations.present?
       cc_addresses << @purchase_order.inquiry.outside_sales_owner.try(:email) if @purchase_order.inquiry.outside_sales_owner.present?
       cc_addresses << @purchase_order.inquiry.sales_manager.try(:email) if @purchase_order.inquiry.sales_manager.present?
       cc_addresses << @purchase_order.logistics_owner.try(:email) if @purchase_order.logistics_owner.present?
       @email_message = @purchase_order.email_messages.build(overseer: current_overseer , purchase_order: @purchase_order,cc: cc_addresses)
       @email_message.assign_attributes(
         to: @purchase_order.supplier.email,
-        from: @purchase_order.inquiry.procurement_operations.email,
-        subject: "Bulk MRO Industrial Supply Pvt Ltd. has cancelled the PO # #{@purchase_order.po_number} sent to #{@purchase_order.supplier.default_contact.full_name}",
+        from: @purchase_order.inquiry.inside_sales_owner.email,
+        subject: "Bulk MRO Industrial Supply Pvt Ltd. has cancelled the PO # #{@purchase_order.po_number} sent to #{@purchase_order.supplier.name}",
         body: PoRequestMailer.notify_supplier_of_cancel_purchase_order(@email_message).body.raw_source,
       )
       @metadata = @purchase_order.metadata.deep_symbolize_keys
