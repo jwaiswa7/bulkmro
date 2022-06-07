@@ -47,7 +47,7 @@ module Mixins::HasRole
     SALES_ROLES = %w[inside_sales_executive inside_sales_team_leader inside_sales_manager outside_sales_executive outside_sales_team_leader outside_sales_manager]
 
     PIPELINE_EXECUTIVES = %w(inside_sales_executive outside_sales_executive)
-    LOGISTICS_ROLES = ['Logistics', 'Admin-Leadership Team', 'Admin', 'Inside Sales and Logistic Manager']
+    LOGISTICS_ROLES = ['Logistics', 'Admin-Leadership Team', 'Admin', 'Inside Sales and Logistic Manager', 'Inside Sales Executive', 'Inside Sales Manager', 'Outside Sales Manager']
     CATALOG_ROLES = ['Admin', 'Cataloging']
     ACCOUNT_ROLES = ['Accounts', 'Admin']
     ACCOUNT_ACL_ADMIN_ROLES = ['Account Manager', 'Accounts Leadership']
