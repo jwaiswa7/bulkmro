@@ -15,6 +15,7 @@ class Inquiry < ApplicationRecord
   update_index('inquiry_mapping_tats#inquiry_mapping_tat') {self.inquiry_mapping_tats}
   update_index('logistics_scorecards#sales_invoice') {self}
   update_index('supplier_rfqs#supplier_rfq') {self}
+  update_index('po_requests#po_request') { self.po_requests }
 
   pg_search_scope :locate, against: [:id, :inquiry_number], associated_against: {company: [:name], account: [:name], contact: [:first_name, :last_name], inside_sales_owner: [:first_name, :last_name], outside_sales_owner: [:first_name, :last_name], procurement_operations: [:first_name, :last_name]}, using: {tsearch: {prefix: true}}
 
