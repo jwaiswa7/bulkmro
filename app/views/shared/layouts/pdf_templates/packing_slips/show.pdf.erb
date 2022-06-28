@@ -130,6 +130,7 @@
                     <%= locals[:inquiry].billing_address.to_multiline_s %><br>
                     GST No.: <%= locals[:inquiry].billing_address.gst %><br>
                   <% end %>
+                  <%= locals[:inquiry].contact.mobile %>
                 </td>
 
                 <td style="width: 2%;"></td>
@@ -141,6 +142,7 @@
                     <%= locals[:inquiry].shipping_address.to_multiline_s %><br>
                     GST No.: <%= locals[:inquiry].shipping_address.gst %><br>
                   <% end %>
+                  <%= locals[:inquiry].contact.mobile %>
                 </td>
               </tr>
               </tbody>
