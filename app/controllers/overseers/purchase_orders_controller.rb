@@ -331,7 +331,7 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
       render json: {error: 'Supplier not Exists'}, status: 500
     elsif @status[:status] == 'success' && purchase_order_params[:can_notify_supplier] == 'true'
       cc_addresses = []
-      cc_addresses << @purchase_order.inquiry.inside_sales_owner.try(:email) if @purchase_order.inquiry.procurement_operations.present?
+      cc_addresses << @purchase_order.inquiry.inside_sales_owner.try(:email) if @purchase_order.inquiry.inside_sales_owner.present?
       cc_addresses << @purchase_order.inquiry.outside_sales_owner.try(:email) if @purchase_order.inquiry.outside_sales_owner.present?
       cc_addresses << @purchase_order.inquiry.sales_manager.try(:email) if @purchase_order.inquiry.sales_manager.present?
       cc_addresses << @purchase_order.logistics_owner.try(:email) if @purchase_order.logistics_owner.present?
