@@ -326,10 +326,6 @@
               <span class="bmro-summary-data bmro-summary-padding"> Tax</span>
               <strong class="d-block bmro-summary-heading bmro-summary-padding"><%= format_currency(sales_order.converted_total_tax, symbol: sales_order.currency_sign) %></strong>
             </div>
-            <div class="col-6 col-md-1 mt-2 mt-md-0 bmro-border-left">
-              <span class="bmro-summary-data bmro-summary-padding"> TCS Amount</span>
-              <strong class="d-block bmro-summary-heading bmro-summary-padding"><%= format_currency(sales_order.tcs_amount, symbol: sales_order.currency_sign) %></strong>
-            </div>
             <div class="col-6 col-md-2 mt-2 mt-md-0 bmro-border-left">
               <span class="bmro-summary-data bmro-summary-padding"> Selling Price (I. tax)</span>
               <strong class="d-block bmro-summary-heading bmro-summary-padding"><%= format_currency(sales_order.converted_total_tax_with_tcs, symbol: sales_order.currency_sign) %></strong>
