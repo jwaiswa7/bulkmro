@@ -19,7 +19,7 @@ class Warehouse < ApplicationRecord
   validates_presence_of :name
 
   scope :with_includes, -> { includes(:address) }
-
+  scope :active, -> { where(is_active: true) }
 
   enum series_code: {
       'LWP': 1,
