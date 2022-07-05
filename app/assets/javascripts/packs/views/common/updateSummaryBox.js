@@ -22,7 +22,9 @@ const updateSummaryBox = () => {
         $.each(json.recordsTotalValue, function (index, total_value) {
             let statusId = ".status-" + index;
             $(statusId).find('.status-value-' + index).html(currencyName + new Intl.NumberFormat('en-US', {maximumFractionDigits: 0}).format(total_value));
-        })
+        });
+
+        $('.status-value-without-tax').html(currencyName + new Intl.NumberFormat('en-US', {maximumFractionDigits: 0}).format(json.recordsTotalValue_without_tax));
     });
 };
 
