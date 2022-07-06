@@ -19,11 +19,7 @@
             <table border="0" cellspacing="0" class="pdf-table" style="font-size: 12px;">
               <tbody>
               <tr>
-                <td align="left" style="width:25%; padding-left: 10px;padding-bottom: 5px;" valign="top">
-                  <b><span>Quotation #</span></b></td>
-                <td align="left" style="width:25%;padding-left: 10px;padding-bottom: 5px;" valign="top">
-                  <span><%= locals[:packing_slip].outward_dispatch.sales_invoice.sales_order.sales_quote.id
-                  %></span></td>
+                
                 <td align="left" style="width:25%;padding-left: 10px;padding-bottom: 5px;" valign="top">
                   <b><span>Customer Inquiry Reference</span></b></td>
                 <td align="left" style="width:25%; padding-left: 10px;padding-bottom: 5px;" valign="top">
@@ -59,6 +55,34 @@
                   </td>
                 <td align="left" style="border-top: 1px solid #3c3c3c;padding-left: 10px;padding-bottom: 5px;" valign="top">
                   <span><%= format_succinct_date(locals[:packing_slip].created_at) %></span></td>
+              </tr>
+              <tr>
+                <td align="left" style="border-top: 1px solid #3c3c3c;padding-left: 10px;padding-bottom: 5px;" valign="top">
+                  <b><span>Customer PO #</span></b>
+                  </td>
+                <td align="left" style="border-top: 1px solid #3c3c3c;padding-left: 10px;padding-bottom: 5px;" valign="top">
+                  <span> 
+                  <%= locals[:packing_slip].outward_dispatch.sales_invoice.inquiry.customer_po_number %></span>
+                </td>
+                <td align="left" style="border-top: 1px solid #3c3c3c;padding-left: 10px;padding-bottom: 5px;" valign="top">
+                  <b><span>Customer PO Date</span></b>
+                  </td>
+                <td align="left" style="border-top: 1px solid #3c3c3c;padding-left: 10px;padding-bottom: 5px;" valign="top">
+                  <span><%= format_succinct_date(locals[:packing_slip].outward_dispatch.sales_invoice.inquiry.try(:customer_po_delivery_date))
+                  %></span></td>
+              </tr>
+              <tr>
+                <td align="left" style="border-top: 1px solid #3c3c3c;padding-left: 10px;padding-bottom: 5px;" valign="top">
+                  <b><span>Invoice #</span></b>
+                  </td>
+                <td align="left" style="border-top: 1px solid #3c3c3c;padding-left: 10px;padding-bottom: 5px;" valign="top">
+                  <span> <%= "#{locals[:packing_slip].outward_dispatch.sales_invoice.invoice_number}" %></span>
+                </td>
+                <td align="left" style="border-top: 1px solid #3c3c3c;padding-left: 10px;padding-bottom: 5px;" valign="top">
+                  <b><span>Invoice Date</span></b>
+                  </td>
+                <td align="left" style="border-top: 1px solid #3c3c3c;padding-left: 10px;padding-bottom: 5px;" valign="top">
+                  <span><%= format_succinct_date(locals[:packing_slip].outward_dispatch.sales_invoice.created_at) %></span></td>
               </tr>
               <tr>
                 <td align="left" style="border-top: 1px solid #3c3c3c;padding-left: 10px;padding-bottom: 5px;" valign="top">
