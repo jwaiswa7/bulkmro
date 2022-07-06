@@ -97,6 +97,32 @@
                 <td align="left" style="border-top: 1px solid #3c3c3c;padding-left: 10px;padding-bottom: 5px;" valign="top">
                   <span><%= "#{locals[:packing_slip].box_dimension}" %></span></td>
               </tr>
+              <tr>
+                <td align="left" style="border-top: 1px solid #3c3c3c;padding-left: 10px;padding-bottom: 5px;" valign="top">
+                  <b><span>Bill to #</span></b>
+                </td>
+                <td align="left" style="border-top: 1px solid #3c3c3c;padding-left: 10px;padding-bottom: 5px;" valign="top">
+                  <span> <%= "#{locals[:packing_slip].bill_to}" %></span>
+                </td>
+                <td align="left" style="border-top: 1px solid #3c3c3c;padding-left: 10px;padding-bottom: 5px;" valign="top">
+                  <b><span>Billing address</span></b>
+                </td>
+                <td align="left" style="border-top: 1px solid #3c3c3c;padding-left: 10px;padding-bottom: 5px;" valign="top">
+                  <span><%= "#{locals[:packing_slip].billing_address}" %></span></td>
+              </tr>
+              <tr>
+                <td align="left" style="border-top: 1px solid #3c3c3c;padding-left: 10px;padding-bottom: 5px;" valign="top">
+                  <b><span>Ship to #</span></b>
+                </td>
+                <td align="left" style="border-top: 1px solid #3c3c3c;padding-left: 10px;padding-bottom: 5px;" valign="top">
+                  <span> <%= "#{locals[:packing_slip].ship_to.to_s}" %></span>
+                </td>
+                <td align="left" style="border-top: 1px solid #3c3c3c;padding-left: 10px;padding-bottom: 5px;" valign="top">
+                  <b><span>Shipping address</span></b>
+                </td>
+                <td align="left" style="border-top: 1px solid #3c3c3c;padding-left: 10px;padding-bottom: 5px;" valign="top">
+                  <span><%= "#{locals[:packing_slip].shipping_address.to_s}" %></span></td>
+              </tr>
               </tbody>
             </table>
           </div>

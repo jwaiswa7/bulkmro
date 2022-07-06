@@ -1,7 +1,7 @@
 class Overseers::OutwardDispatches::PackingSlipsController < Overseers::BaseController
   before_action :set_packing_slip, only: [:show, :edit, :update, :destroy]
   before_action :set_outward_dispatch, only: [:new, :create, :update, :show, :edit, :add_packing, :submit_packing, :edit_outward_packing_slips]
-
+  before_action :set_customer_addresses, only: [:new, :create, :edit, :update]
 
   # GET /packing_slips
   # GET /packing_slips.json
@@ -155,6 +155,10 @@ class Overseers::OutwardDispatches::PackingSlipsController < Overseers::BaseCont
 
   private
 
+    def set_customer_addresses
+      @customer_addresses = @outward_dispatch.sales_invoice.inquiry.company.addresses
+    end
+
     def set_outward_dispatch
       @outward_dispatch = OutwardDispatch.find(params[:outward_dispatch_id])
     end
@@ -167,10 +171,14 @@ class Overseers::OutwardDispatches::PackingSlipsController < Overseers::BaseCont
     # Never trust parameters from the scary internet, only allow the white list through.
     def packing_slip_params
       params.require(:packing_slip).except(:action_name).permit(
-        :id,
+          :id,
           :outward_dispatch_id,
           :box_number,
           :box_dimension,
+          :ship_to_id,
+          :shipping_address_id,
+          :bill_to, 
+          :billing_address,
           rows_attributes: [:id, :sales_invoice_row_id, :delivery_quantity, :packing_slip_id, :_destroy]
       )
     end
