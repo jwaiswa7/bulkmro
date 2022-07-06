@@ -1,5 +1,7 @@
 class PackingSlip < ApplicationRecord
   belongs_to :outward_dispatch, required: false
+  belongs_to :ship_to, class_name: "Warehouse", optional: true
+  belongs_to :shipping_address, class_name: "Address", optional: true
   has_many :rows, class_name: 'PackingSlipRow', inverse_of: :packing_slip, dependent: :destroy
   include Mixins::CanBeStamped
   accepts_nested_attributes_for :rows, reject_if: lambda { |attributes| attributes['sales_invoice_row_id'].blank? &&

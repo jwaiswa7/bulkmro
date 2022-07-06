@@ -23,6 +23,26 @@
           <h6 class="text-uppercase text-black-50 mb-1 bmro-form-heading"> Entity Details</h6>
           <div class="form-row">
             <div class="col-4 col-md-4">
+              <%= f.input :bill_to, input_html: { class: 'bmro-form-input' } %>
+            </div>
+            <div class="col-4 col-md-4">
+              <%= f.input :billing_address, input_html: { class: 'bmro-form-input' } %>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="col-4 col-md-4">
+              <div class="select2-wrapper">
+                <%= f.select :ship_to_id, Warehouse.active.map {|x| [x.to_s, x.id]}, {:include_blank => 'Select ship to warehouse'}, :class => 'form-control select2-multiple bmro-com-contacts', :"data-placeholder" => 'Select ship to warehouse' %>
+              </div>
+            </div>
+            <div class="col-4 col-md-4">
+              <div class="select2-wrapper">
+                <%= f.select :shipping_address_id, @customer_addresses.map {|x| [x.to_s, x.id]}, {:include_blank => 'Select shipping address'}, :class => 'form-control select2-multiple bmro-com-contacts', :"data-placeholder" => 'Select shipping address' %>
+              </div>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="col-4 col-md-4">
               <%= f.input :box_number, input_html: { class: 'bmro-form-input' }, required:true%>
             </div>
             <div class="col-4 col-md-4">
