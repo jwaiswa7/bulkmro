@@ -185,6 +185,9 @@ gem 'percentage'
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
+  gem 'factory_bot_rails' # FactoryBot for Rails
+  gem 'faker' # Generate fake data
+  gem 'rspec-rails', '~> 5.0.0' # RSpec Rails
 end
 
 group :development do
@@ -209,6 +212,8 @@ group :test do
   # gem 'selenium-webdriver'
   # Easy installation and use of chromedriver to run system tests with Chrome
   # gem 'chromedriver-helper'
+  gem 'database_cleaner' # Clean database before each test
+  gem 'simplecov', require: false # generate test report
 end
 
  group :production do
