@@ -96,21 +96,20 @@
             <% end %>
             <strong><em>Email</em></strong>: <%= @packing_slip.outward_dispatch.sales_order.inquiry.contact.email if @packing_slip.outward_dispatch.sales_order.inquiry.contact.email.present? %>
             <span class="d-block"><strong><em>GST Number</em></strong>: <%= @packing_slip.outward_dispatch.sales_order.serialized_billing_address.gst || @packing_slip.outward_dispatch.sales_order.inquiry.company.default_billing_address.gst %></span>
-            <span class="d-block"><em><%= @packing_slip.billing_address %></em></span>
-            <span class="d-block"><em><%= @packing_slip.bill_to %></em></span>
           </div>
           <div class="col-md-6 mt-2 mt-md-0">
             <strong class="d-block">Customer - Shipping Address</strong>
-            <span class="d-block"><%= (@packing_slip.outward_dispatch.sales_order.inquiry.shipping_company.name) %></span>
-            <span class="d-block"><%= @packing_slip.outward_dispatch.sales_order.serialized_shipping_address.to_compact_multiline_s %></span>
-            <% if @packing_slip.outward_dispatch.sales_order.inquiry.shipping_contact.phone.present? %>
-            <span class="d-block"><strong><em>Contact</em></strong>: <%= @packing_slip.outward_dispatch.sales_order.inquiry.shipping_contact.full_name %>
-              - <%= @packing_slip.outward_dispatch.sales_order.inquiry.shipping_contact.phone %></span>
-            <% end %>
-            <strong><em>Email</em></strong>: <%= @packing_slip.outward_dispatch.sales_order.inquiry.shipping_contact.email if @packing_slip.outward_dispatch.sales_order.inquiry.shipping_contact.email.present? %>
-            <span class="d-block"><strong><em>GST Number</em></strong>: <%= @packing_slip.outward_dispatch.sales_order.serialized_shipping_address.gst || @packing_slip.outward_dispatch.sales_order.inquiry.company.default_shipping_address.gst %></span>
-            <span class="d-block"><em><%= @packing_slip.ship_to.to_s %></em></span>
-            <span class="d-block"><em><%= @packing_slip.shipping_address.to_s %></em></span>
+              <span class="d-block"><%= (@packing_slip.outward_dispatch.sales_order.inquiry.shipping_company.name) %></span>
+              <span class="d-block"><%= @packing_slip.shipping_address.nil?? @packing_slip.outward_dispatch.sales_order.serialized_shipping_address.to_compact_multiline_s : @packing_slip.shipping_address.to_compact_multiline_s %></span>
+              <% if @packing_slip.outward_dispatch.sales_order.inquiry.shipping_contact.phone.present? && @packing_slip.ship_to.nil? %>
+              <span class="d-block"><strong><em>Contact</em></strong>: <%= @packing_slip.outward_dispatch.sales_order.inquiry.shipping_contact.full_name %>
+                - <%= @packing_slip.outward_dispatch.sales_order.inquiry.shipping_contact.phone %></span>
+              <% end %>
+              <% if @packing_slip.ship_to.present? %>
+                span class="d-block"><strong><em>Contact</em></strong>: <%= @packing_slip.ship_to.to_s %>
+              <% end %>
+              <strong><em>Email</em></strong>: <%= @packing_slip.outward_dispatch.sales_order.inquiry.shipping_contact.email if @packing_slip.outward_dispatch.sales_order.inquiry.shipping_contact&.email.present? %>
+              <span class="d-block"><strong><em>GST Number</em></strong>: <%= @packing_slip.outward_dispatch.sales_order.serialized_shipping_address.gst || @packing_slip.outward_dispatch.sales_order.inquiry.company.default_shipping_address.gst %></span>
           </div>
         </div>
       </div>
