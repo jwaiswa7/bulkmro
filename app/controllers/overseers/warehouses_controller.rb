@@ -30,7 +30,7 @@ class Overseers::WarehousesController < Overseers::BaseController
   def create
     @warehouse = Warehouse.new(warehouse_params)
     authorize_acl @warehouse
-    if @warehouse.save
+    if @warehouse.save!
       redirect_to overseers_warehouse_path(@warehouse), notice: flash_message(@warehouse, action_name)
     else
       puts warehouse_params
