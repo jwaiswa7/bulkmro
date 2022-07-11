@@ -117,6 +117,14 @@ class Company < ApplicationRecord
 
   validate :name_is_conditionally_unique?
 
+  # returns a comma separated list of the company's product categories if it's a supplier company
+  
+  def supplier_product_categories 
+    return if account.nil?
+    return unless is_supplier?
+    supplier_products.map { |m| m.category.to_s}.join(',')
+  end
+
   def name_is_conditionally_unique?
     if Company.joins(:account).where(name: self.name).where.not(id: self.id).where('accounts.account_type = ?', Account.account_types[self.account.account_type]).exists?
       errors.add :name, 'has to be unique'
