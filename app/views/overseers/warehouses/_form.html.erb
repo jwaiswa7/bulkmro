@@ -6,7 +6,7 @@
       <div class="form-group bmro-margin-bottom">
         <%= f.input :name, label: 'Warehouse Name', :placeholder => 'e.g. Reliance Industries', :required => 'true', :class => 'form-control bmro-form-input' %>
       </div>
-      <%= f.simple_fields_for :address do |address| %>
+      <%= f.fields_for :address , f.object.persisted? ? f.object.address : Address.new do |address| %>
          <div class="form-group bmro-margin-bottom">
             <%= address.input :street1, input_html: { class: 'bmro-form-input' }, label:"Street1"  %>
           </div>
