@@ -4,7 +4,7 @@ class Services::Overseers::Exporters::PurchaseOrdersExporter < Services::Oversee
     @model = PurchaseOrder
     @export_name = 'purchase_orders'
     @path = Rails.root.join('tmp', filename)
-    @columns = %w(po_number inquiry_number inquiry_date company_name inside_sales procurement_date order_number order_date order_status po_date po_status supplier_name payment_terms committed_customer_date supplier_phone_no supplier_email route_through ship_from ship_to)
+    @columns = %w( po_number inquiry_number inquiry_date company_name inside_sales procurement_date order_number order_date order_status po_date po_status supplier_name payment_terms committed_customer_date supplier_phone_no supplier_email route_through ship_from ship_to sku brand product_category unit_buying_price po_quantity unit_selling_price so_quantity)
   end
 
   def call
@@ -24,6 +24,7 @@ class Services::Overseers::Exporters::PurchaseOrdersExporter < Services::Oversee
     @export = Export.create!(export_type: 15, status: 'Processing', filtered: @ids.present?, created_by_id: @overseer.id, updated_by_id: @overseer.id)
     records.find_each(batch_size: 100) do |purchase_order|
       inquiry = purchase_order.inquiry
+      purchase_order.rows.each do |item|
 
       row = {
           po_number: purchase_order.po_number.to_s,
@@ -144,12 +145,58 @@ class Services::Overseers::Exporters::PurchaseOrdersExporter < Services::Oversee
           }
         end
       )
+      row.merge!(
+        if item.present?
+          {
+            sku: item.product.present? ? item.product.sku : item.sku,
+            brand: item.product.present? ? item.product.brand.to_s : item.brand,
+            product_category: item.product.present? ? item.product.category.to_s : nil,
+            unit_buying_price: format_currency(item.unit_selling_price, precision: 2, symbol: nil),
+            po_quantity: number_to_currency(item.quantity, precision: 2, unit: '') 
+          }
+        else
+          {
+            sku: nil,
+            brand: nil,
+            product_category: nil,
+            unit_buying_price: nil,
+            po_quantity: nil
+          }
+        end
+      )
+
+      @unit_selling_price = nil
+      @so_quantity = nil
+
+      sales_order.rows.each do |item1|
+          if item.sku == item1.product.sku
+            @unit_selling_price = format_currency(item1.converted_unit_selling_price,precision: 2, symbol: nil)
+            @so_quantity = number_to_currency(item1.quantity, precision: 2, unit: '')
+          end
+      end if sales_order.present?
+
+      row.merge!(
+        if @unit_selling_price.present?
+          {
+            unit_selling_price: @unit_selling_price,
+            so_quantity: @so_quantity
+          }
+        else
+          {
+            unit_selling_price: nil,
+            so_quantity: nil
+          }
+        end
+
+      )
 
       rows.push(row)
+
+      end
     end
 
     @export.update_attributes(status: 'Completed')
     generate_csv(@export)
     puts 'ERRORS', po_with_no_po_requests
   end
-end
+end 
