@@ -16,7 +16,7 @@ class CompaniesIndex < BaseIndex
     field :is_customer, value: -> (record) {record.is_customer?}
     field :rating, value: -> (record) {record.rating}, type: 'float'
     field :sap_status, value: -> (record) {record.synced?}
-    field :supplier_product_categories, value: -> (record) {record.supplier_product_categories } # add company categories to the index
+    field :supplied_product_category, value: -> (record) {record.supplied_product_category } # add company categories to the index
     
     field :nature_of_business_string, value: -> (record) {record.nature_of_business}
     field :nature_of_business, value: -> (record) {businesses[record.nature_of_business]}

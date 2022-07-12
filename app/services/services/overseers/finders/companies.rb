@@ -60,6 +60,8 @@ class Services::Overseers::Finders::Companies < Services::Overseers::Finders::Ba
       @search_filters.each do |ax|
         if ax['name'] ==  'supplied_brand'
           indexed_records = indexed_records.filter(filter_by_array('supplied_brand', [ax['search']['value']]))
+        elsif ax['name'] ==  'supplied_product_category'
+          indexed_records = indexed_records.filter(filter_by_array('supplied_product_category', [ax['search']['value']]))
         end
       end
     end
