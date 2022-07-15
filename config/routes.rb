@@ -287,6 +287,7 @@ Rails.application.routes.draw do
       collection do
         get 'autocomplete'
         get 'autocomplete_closure_tree'
+        get 'export_all'
       end
     end
 

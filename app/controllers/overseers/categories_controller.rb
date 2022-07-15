@@ -1,5 +1,5 @@
 class Overseers::CategoriesController < Overseers::BaseController
-  before_action :set_category, only: [:edit, :update, :show]
+   before_action :set_category, only: [:edit, :update, :show]
 
   def autocomplete
     @categories = ApplyParams.to(Category.leaves.active, params)
@@ -56,6 +56,14 @@ class Overseers::CategoriesController < Overseers::BaseController
     else
       render 'edit'
     end
+  end
+
+  def export_all
+    authorize_acl @category
+    service = Services::Overseers::Exporters::CategoriesExporter.new(params[:q], current_overseer, [])
+    service.call
+
+    redirect_to url_for(Export.categories.not_filtered.completed.last.report)
   end
 
   private
