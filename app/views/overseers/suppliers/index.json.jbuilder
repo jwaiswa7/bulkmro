@@ -36,12 +36,13 @@ json.data (@companies) do |company|
                   elsif company.is_supplier?
                     format_star(rand(3.0..4.8).round(1))
                   end,
+                  company.supplier_product_categories,
                   company.purchase_orders.count,
                   company.supplied_brands&.uniq&.count,
                   company.supplied_products&.uniq&.count,
                   company.supplied_brands.map(&:name)&.uniq&.join(', ').upcase,
                   company.created_by.to_s,
-                  format_succinct_date(company.created_at)
+                  format_succinct_date(company.created_at),
               ]
 end
 
@@ -53,10 +54,11 @@ json.columnFilters [
                        [],
                        [],
                        [],
+                       [{ "source": autocomplete_overseers_categories_path }],
                        [],
                        [],
                        [],
-                       [],
+                       [{ "source": autocomplete_overseers_brands_path }],
                        [],
                        []
                    ]

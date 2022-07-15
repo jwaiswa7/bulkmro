@@ -117,6 +117,22 @@ class Company < ApplicationRecord
 
   validate :name_is_conditionally_unique?
 
+  # returns a comma separated list of the company's product categories if it's a supplier company
+  # if the categories are more than 10, then it will return the first 10 with 3 dots ...
+  def supplier_product_categories 
+    return if account.nil?
+    return unless is_supplier?
+    categories = supplier_products.map { |m| m.category.to_s}.uniq
+    categories.count > 10 ? "#{categories.first(10).join(', ')} ..." : categories.join(', ')
+  end
+  
+  # returns an array of the company's products category ids if it's a supplier company
+  def supplied_product_category
+    return if account.nil?
+    return unless is_supplier?
+    supplier_products.map { |m| m.category.id}.uniq
+  end
+
   def name_is_conditionally_unique?
     if Company.joins(:account).where(name: self.name).where.not(id: self.id).where('accounts.account_type = ?', Account.account_types[self.account.account_type]).exists?
       errors.add :name, 'has to be unique'
