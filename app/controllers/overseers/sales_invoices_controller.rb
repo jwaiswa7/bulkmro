@@ -25,7 +25,7 @@ class Overseers::SalesInvoicesController < Overseers::BaseController
       }
       format.json do
         @total_values = status_service.indexed_total_values
-        @total_values_without_tax = status_service.indexed_total_values_without_tax
+        @total_values_without_tax = SalesInvoice.sum(:calculated_total).to_f
         @statuses = status_service.indexed_statuses
       end
     end
