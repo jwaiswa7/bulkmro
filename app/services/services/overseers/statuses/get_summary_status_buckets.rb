@@ -9,7 +9,7 @@ class Services::Overseers::Statuses::GetSummaryStatusBuckets < Services::Shared:
     else
       @all_indexed_records = all_indexed_records
       @indexed_buckets = (all_indexed_records.count > 0) ? all_indexed_records.aggregations['statuses']['buckets'] : []
-      @indexed_buckets_without_tax = (all_indexed_records.count > 0) ? all_indexed_records.aggregations['statuses_without_tax']['buckets'] : []
+      #@indexed_buckets_without_tax = (all_indexed_records.count > 0) ? all_indexed_records.aggregations['statuses_without_tax']['buckets'] : []
     end
     
     @model_klass = model_klass
