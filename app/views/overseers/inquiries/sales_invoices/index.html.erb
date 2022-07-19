@@ -60,7 +60,7 @@
           <td><%= format_currency(net_amount, precision: 2, symbol: nil) %></td>
           <td><%= format_currency(tax_amount, precision: 2, symbol: nil) %></td>
           <td><%= sales_invoice.status == "Invoiced" ? "-" : format_currency(credit_memo_amount, precision: 2, symbol: nil) %></td>
-          <td><%= format_currency((net_amount + tax_amount) - credit_memo_amount), precision: 2, symbol: nil) %></td>
+          <td><%= format_currency((net_amount + tax_amount) - credit_memo_amount, precision: 2, symbol: nil) %></td>
           <td><%= format_date(sales_invoice.mis_date || sales_invoice.metadata["sales_invoice"]["created_at"].to_date) if sales_invoice.metadata["sales_invoice"].present? && sales_invoice.metadata["sales_invoice"]["created_at"].present? %></td>
           <td><%= format_date(sales_invoice.created_at) %></td>
 
