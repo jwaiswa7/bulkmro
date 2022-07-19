@@ -11,12 +11,17 @@
       <th class="no-sort desktop text-right">Line Items</th>
       <th class="no-sort desktop text-right">Net Amount</th>
       <th class="no-sort desktop text-right">Tax Amount</th>
+      <th class="no-sort desktop text-right">Credit Amount</th>
+      <th class="no-sort desktop text-right">Total Amount</th>
       <th class="no-sort desktop text-right">Invoice Date</th>
       <th class="no-sort desktop text-right">Created At</th>
     <% end %>
 
     <%= render layout: 'shared/layouts/datatable' do %>
       <% @sales_invoices.each do |sales_invoice| %>
+      <% net_amount = sales_invoice.metadata['base_grand_total'].to_f - sales_invoice.metadata['base_tax_amount'].to_f %> 
+      <% tax_amount = sales_invoice.metadata['base_tax_amount'].to_f / 2 %> 
+      <% credit_memo_amount = sales_invoice.credit_notes.first.memo_amount.to_f %> 
         <tr>
           <td>
             <% if is_authorized(sales_invoice,'relationship_map') && policy(sales_invoice).relationship_map? %>
@@ -52,8 +57,10 @@
           <td><%= status_badge(sales_invoice.status) %></td>
           <td><%= sales_invoice.sales_order.order_number %></td>
           <td><%= sales_invoice.rows.size %></td>
-          <td><%= format_currency(sales_invoice.metadata['base_grand_total'].to_f - sales_invoice.metadata['base_tax_amount'].to_f, precision: 2, symbol: nil) %></td>
-          <td><%= format_currency(sales_invoice.metadata['base_tax_amount'].to_f / 2, precision: 2, symbol: nil) %></td>
+          <td><%= format_currency(net_amount, precision: 2, symbol: nil) %></td>
+          <td><%= format_currency(tax_amount, precision: 2, symbol: nil) %></td>
+          <td><%= sales_invoice.status == "Invoiced" ? "-" : format_currency(credit_memo_amount, precision: 2, symbol: nil) %></td>
+          <td><%= format_currency((net_amount + tax_amount) - credit_memo_amount), precision: 2, symbol: nil) %></td>
           <td><%= format_date(sales_invoice.mis_date || sales_invoice.metadata["sales_invoice"]["created_at"].to_date) if sales_invoice.metadata["sales_invoice"].present? && sales_invoice.metadata["sales_invoice"]["created_at"].present? %></td>
           <td><%= format_date(sales_invoice.created_at) %></td>
 
