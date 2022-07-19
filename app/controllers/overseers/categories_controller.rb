@@ -6,6 +6,11 @@ class Overseers::CategoriesController < Overseers::BaseController
     authorize_acl @categories
   end
 
+  def autocomplete_active
+    @categories = ApplyParams.to(Category.active, params)
+    authorize_acl @categories
+  end
+
   def autocomplete_closure_tree
     @categories = []
     ApplyParams.to(Category.where('is_active = ? and is_service = ?', true, params[:is_service]).where.not(id: Category.default.id), params).each do |grandparent|
