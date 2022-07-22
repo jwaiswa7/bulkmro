@@ -39,7 +39,6 @@ class SalesInvoicesIndex < BaseIndex
     field :cp_order_date_s, value: -> (record) { record.inquiry.customer_order_date.strftime('%d-%b-%Y').to_s if record.inquiry.present? && record.inquiry.customer_order_date.present? }, analyzer: 'substring'
     field :payment_option_id, value: -> (record) { record.sales_order.present? ? record.sales_order.inquiry.present? ? record.sales_order.inquiry.payment_option.present? ? record.sales_order.inquiry.payment_option.id : '' : '' : '' }
     field :potential_value, value: -> (record) { record.try(:calculated_total_with_tax) }, type: 'double'
-    field :potential_value_without_tax, value: -> (record) { record.try(:calculated_total) }, type: 'double'
     field :invoice_created_at, value: -> (record) { record.mis_date if record.status != 'Cancelled' }, type: 'date'
     field :is_pod, value: -> (record) {(record.has_attachment? ? 1 : 0) if record.status != 'Cancelled'}, type: 'integer'
     field :regular_pod, value: -> (record) {record.mis_date if !record.has_attachment? && record.inquiry.present? && record.inquiry.opportunity_type != 'route_through' && record.status != 'Cancelled' }, type: 'date'
