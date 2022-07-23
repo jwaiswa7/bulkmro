@@ -321,24 +321,6 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
     }
   end
 
-  def aggregate_by_status_without_tax(key = 'statuses_without_tax', aggregation_field = 'potential_value_without_tax', size = 50, status_field)
-    {
-        "#{key}": {
-            terms: {
-                field: status_field,
-                size: size
-            },
-            aggs: {
-                total_value: {
-                    sum: {
-                        field: aggregation_field
-                    }
-                }
-            }
-        }
-    }
-  end
-
   def aggregate_using_date_histogram(key, aggregation_field, interval, keyed = false, order = 'desc')
     {
         "#{key}": {
