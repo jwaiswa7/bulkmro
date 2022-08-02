@@ -1,8 +1,10 @@
 class Services::Customers::Finders::BaseFinder < Services::Shared::BaseService
-  def initialize(params, current_contact = nil, current_company = nil)
+  def initialize(params, current_contact = nil, current_company = nil, sort_by: 'created_at', sort_order: 'desc')
     @search_filters = []
     @range_filters = []
     @custom_filters = params[:custom_filters]
+    @sort_by = sort_by
+    @sort_order = sort_order
 
     if params[:columns].present?
       params[:columns].each do |index, column|
@@ -14,6 +16,11 @@ class Services::Customers::Finders::BaseFinder < Services::Shared::BaseService
           end
         end
       end
+    end
+    
+    if params[:order].present? && params[:order].values.first['column'].present? && params[:columns][params[:order].values.first['column']][:name].present? && params[:order].values.first['dir'].present?
+      @sort_by = params[:columns][params[:order].values.first['column']][:name]
+      @sort_order = params[:order].values.first['dir']
     end
 
     @query_string = if params[:search].present? && params[:search][:value].present?
@@ -87,7 +94,7 @@ class Services::Customers::Finders::BaseFinder < Services::Shared::BaseService
   end
 
   def sort_definition
-    { created_at: :desc }
+    {"#{sort_by}" => "#{sort_order}"}
   end
 
   def index_klass
@@ -157,5 +164,5 @@ class Services::Customers::Finders::BaseFinder < Services::Shared::BaseService
   end
 
 
-  attr_accessor :query_string, :page, :per, :records, :indexed_records, :current_contact, :current_company, :search_filters, :range_filters
+  attr_accessor :query_string, :page, :per, :records, :indexed_records, :current_contact, :current_company, :search_filters, :range_filters , :sort_by, :sort_order
 end

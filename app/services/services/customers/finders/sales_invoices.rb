@@ -67,9 +67,9 @@ class Services::Customers::Finders::SalesInvoices < Services::Customers::Finders
     indexed_records
   end
 
-  def sort_definition
-    {invoice_number: :desc}
-  end
+  # def sort_definition
+  #   {invoice_number: :desc}
+  # end
 
   def model_klass
     SalesInvoice
