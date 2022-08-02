@@ -86,7 +86,9 @@ class Services::Overseers::CustomerProductsImports::ExcelImporter
         excel_rows.delete(excel_row)
       end
     end
-    # CustomerProduct.import customer_products 
+    
+    CustomerProduct.import customer_products, on_duplicate_key_ignore: true
+
   end
 
   attr_accessor :company, :import, :excel_rows, :excel_header_row, :excel_products, :rows
