@@ -80,13 +80,14 @@ class Services::Overseers::CustomerProductsImports::ExcelImporter
           end
           customer_product.tax_code = (TaxCode.where("code LIKE '%?%'", row['hsn'].to_i).first if row['hsn'].present?) || product.tax_code
           customer_product.tax_rate = (TaxRate.where(tax_percentage: row['tax_percentage'].to_d).first if row['tax_percentage'].present?) || product.tax_rate
-          customer_products << customer_product
+          customer_product.save
+          # customer_products << customer_product
         end
       else
         excel_rows.delete(excel_row)
       end
     end
-    CustomerProduct.import customer_products
+    # CustomerProduct.import customer_products 
   end
 
   attr_accessor :company, :import, :excel_rows, :excel_header_row, :excel_products, :rows

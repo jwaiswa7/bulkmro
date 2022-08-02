@@ -24,7 +24,7 @@ class CustomerProduct < ApplicationRecord
 
   # validates_uniqueness_of :sku, scope: :company_id # Commenting validation due to probability of non unique product codes
 
-  # validates_uniqueness_of :product_id, scope: :company_id
+  validates_uniqueness_of :product_id, scope: :company_id
   validates_presence_of :moq
 
   scope :with_includes, -> {includes(:brand, :category)}
