@@ -20,7 +20,7 @@
     <%= render layout: 'shared/layouts/datatable' do %>
       <% @sales_invoices.each do |sales_invoice| %>
       <% net_amount = sales_invoice.metadata['base_grand_total'].to_f - sales_invoice.metadata['base_tax_amount'].to_f %> 
-      <% tax_amount = sales_invoice.metadata['base_tax_amount'].to_f / 2 %> 
+      <% tax_amount = sales_invoice.metadata['base_tax_amount'].to_f %> 
       <% credit_memo_amount = sales_invoice.credit_notes.present? ? sales_invoice.credit_notes.first.memo_amount.to_f : 0.0 %> 
         <tr>
           <td>
