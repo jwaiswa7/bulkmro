@@ -16,7 +16,8 @@ module Bulkmro
     # the framework and any gems in your application.
     config.assets.paths << Rails.root.join('vendor', 'assets', 'node_modules')
     config.autoload_paths += Dir["#{Rails.root}/lib"]
-    config.time_zone = 'Asia/Kolkata'
+    config.time_zone = 'Mumbai'
     config.active_record.default_timezone = :local
+    config.active_record.time_zone_aware_attributes = false
   end
 end
