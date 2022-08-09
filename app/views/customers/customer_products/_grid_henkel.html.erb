@@ -61,11 +61,10 @@
                 </h5>
                 <hr class="my-2">
                 <p class="mb-0 text-small text-black-50">
+                  <%= display_stock_status(customer_product, [@phursungi_warehouse.id]) %> <br>
                   <strong class="d-block"><%= customer_product.best_brand.name if customer_product.best_brand.present? %></strong>
+                  <b>Qty in stock</b> - <%= customer_product.product.stocks.where(warehouse_id: @phursungi_warehouse.id).sum(&:instock).to_i %></em><br>
                   <em>MOQ - <%= customer_product.moq %></em><br>
-                  <em>Instock Qty (per Warehouse) - <%= display_stock_status(customer_product, [@phursungi_warehouse.id]) %> <br>
-                    <b>PUN</b> - <%= customer_product.product.stocks.where(warehouse_id: @phursungi_warehouse.id).sum(&:instock).to_i %>
-                  </em><br>
                 </p>
               </a>
             </div>
