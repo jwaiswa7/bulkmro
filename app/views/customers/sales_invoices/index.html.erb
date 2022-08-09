@@ -21,6 +21,7 @@
     <th class="no-sort desktop" data-name="">PO #</th>
     <th class="no-sort desktop " data-name="">PO Date</th>
     <th class="no-sort all" data-name="invoice_number">Invoice #</th>
+    <th class="sort desktop " data-name="created_at">Invoice Date</th>
     <th class="no-sort desktop" data-name="inquiry_number">Inquiry #</th>
     <th class="no-sort desktop " data-name="cp_ship_to">Ship To</th>
     <th class="no-sort desktop" data-name="order_number">Order #</th>
@@ -29,12 +30,12 @@
     <th class="no-sort desktop " data-name="outside_sales_executive">Outside Sales</th>
     <th class="no-sort desktop ">Proof of Delivery</th>
     <th class="no-sort desktop ">POD</th>
-    <th class="sort desktop " data-name="created_at">Created At</th>
   <% end %>
   <% content_for :filter_row do %>
     <td data-filter="false"></td>
     <td data-filter="false"></td>
     <td data-filter="false"></td>
+    <td data-filter="daterange"></td>
     <td data-filter="false"></td>
     <td data-filter="false"></td>
     <td data-filter="ajax"></td>
@@ -44,7 +45,6 @@
     <td data-filter="false"></td>
     <td data-filter="false"></td>
     <td data-filter="false"></td>
-    <td data-filter="daterange"></td>
   <% end %>
 
   <%= render layout: 'shared/layouts/datatable' do %>
