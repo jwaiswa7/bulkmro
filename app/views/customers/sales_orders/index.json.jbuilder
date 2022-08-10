@@ -19,7 +19,7 @@ json.data (@sales_orders) do |sales_order|
                   format_date(sales_order.inquiry.customer_committed_date),
                   sales_order.invoices.any? ? format_date(sales_order.invoices.last.delivery_date || sales_order.invoices.last.mis_date) : '-',
                   status_badge(sales_order.effective_customer_status),
-                  format_succinct_date(sales_order.created_at)
+                  format_date(sales_order.created_at)
               ]
 end
 
