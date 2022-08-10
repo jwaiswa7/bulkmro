@@ -1,6 +1,7 @@
 import lazyLoadImages from "../../components/lazyLoadImages";
 
 const index = () => {
+
     $('.filter-list-input').bindWithDelay('keyup', (e) => {
         searchSubmit(e.target.value)
     }, 500);
