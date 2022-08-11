@@ -5,7 +5,7 @@ class CustomerProductsIndex < BaseIndex
     field :company, value: -> (record) { record.company.name.to_s }, analyzer: 'substring'
     field :has_images, value: -> (record) { (record.images.attached? ? record.images.attached? : record.product.images.attached?) }
     field :sku, analyzer: 'sku_substring'
-    field :name, analyzer: 'substring'
+    field :name, analyzer: 'substring',fielddata: true
     field :brand, value: -> (record) { record&.best_brand&.name }, analyzer: 'substring'
     field :category, value: -> (record) { record&.best_category&.name }, analyzer: 'substring'
     field :mpn, value: -> (record) { record.product.try(:mpn).to_s }, analyzer: 'substring'
