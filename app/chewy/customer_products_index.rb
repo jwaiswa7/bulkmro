@@ -16,5 +16,6 @@ class CustomerProductsIndex < BaseIndex
     field :bp_catalog_name, value: -> (record) { record.try(:bp_catalog_name) }, analyzer: 'substring'
     field :bp_catalog_sku, value: -> (record) { record.try(:bp_catalog_sku) }, analyzer: 'substring'
     field :inquiries, type: 'integer',  value: -> (record) { record.product.inquiry_products.count }
+    field :stock, type: 'integer', value: -> (record) { record.product.stocks.where(warehouse_id: Warehouse.find('rQJfAO').id).sum(&:instock).to_i > 0 ? 1 : 0 }
   end
 end

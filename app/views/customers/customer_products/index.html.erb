@@ -11,12 +11,15 @@
   <a href="<%= customers_products_path(view: 'grid_view') %>" class="btn btn-lg btn-light" data-toggle="tooltip" title="Grid View"><i class="fal fa-grip-horizontal"></i></a>
 <% end %>
 
+<%= render partial: 'sort'%>
+
 <% content_for :header_row do %>
   <th class="no-sort"></th>
   <th class="no-sort">Name</th>
   <th class="no-sort">SKU</th>
   <th class="no-sort">Brand</th>
   <th class="no-sort desktop">Customer Price</th>
+  <th class="no-sort desktop">Stock</th>
   <th class="desktop" data-name="created_at">Created</th>
 <% end %>
 

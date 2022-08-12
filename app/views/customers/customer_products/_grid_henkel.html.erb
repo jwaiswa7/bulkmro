@@ -7,19 +7,6 @@
         <h1 class="display-5 mb-1"><%= current_model.humanize %></h1>
       <% end unless content_for?(:hide_table_heading) %>
 
-      <!-- Add products sort -->
-      <div class="dropdown">
-        <button class="btn btn-sm btn-light dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">
-          Sort
-        </button>
-        <div class="dropdown-menu">
-          <a class="dropdown-item" href="<%= customers_products_path %>">Clear sort</a>
-          <a class="dropdown-item" href="<%= customers_products_path(sort: 'inquiries') %>">Most popular</a>
-          <a class="dropdown-item" href="<%= customers_products_path(sort: 'name') %>">Alphabetically</a>
-        </div>
-      </div>
-      <!-- end products sort -->
-
 
       <% if content_for?(:can_be_directly_created) && policy(current_model.singularize.to_sym).new? %>
         <a href="<%= [request.path, '/', 'new'].join %>" class="d-sm-block btn btn-success btn-rounded align-self-center btn-block-sm-down">

@@ -5,6 +5,7 @@ class Services::Customers::Finders::BaseFinder < Services::Shared::BaseService
     @custom_filters = params[:custom_filters]
     @sort_by = sort_by
     @sort_order = sort_order
+    @stock = params[:stock]
 
     if params[:columns].present?
       params[:columns].each do |index, column|
