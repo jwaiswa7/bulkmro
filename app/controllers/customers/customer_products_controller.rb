@@ -73,15 +73,13 @@ class Customers::CustomerProductsController < Customers::BaseController
   private
 
     def sort_by
-      if params[:sort].present?
-        case params[:sort]
-        when "inquiries"
-          "inquiries"
-        when "name"
-          "name"
-        end
-      else
-          "created_at"
+      case params[:sort]
+      when "inquiries"
+        "inquiries"
+      when "name"
+        "name"
+      else 
+        "created_at"
       end
     end
 
