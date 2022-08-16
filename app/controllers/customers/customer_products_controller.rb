@@ -13,7 +13,7 @@ class Customers::CustomerProductsController < Customers::BaseController
       params[:per] = 24
     end
     account = Account.find(2431)
-    service = Services::Customers::Finders::CustomerProducts.new(params, current_customers_contact, current_company)
+    service = Services::Customers::Finders::CustomerProducts.new(params, current_customers_contact, current_company, sort_by: sort_by, sort_order: "asc")
     service.call
     @indexed_customer_products = service.indexed_records
     @customer_products = service.records.with_eager_loaded_images.try(:reverse)
@@ -69,7 +69,19 @@ class Customers::CustomerProductsController < Customers::BaseController
     @most_ordered_products = products.drop(5).map { |id, c| [Product.find(id), [c, 'times'].join(' ')] }
   end
 
+
   private
+
+    def sort_by
+      case params[:sort]
+      when "inquiries"
+        "inquiries"
+      when "name"
+        "name"
+      else 
+        "created_at"
+      end
+    end
 
     def set_customer_product
       @customer_product ||= CustomerProduct.find(params[:id])

@@ -1,5 +1,12 @@
 class Services::Customers::Finders::CustomerProducts < Services::Customers::Finders::BaseFinder
   def call
+    case @stock
+      when "in_stock"
+        @search_filters.push({name: "stock", search: {value: 1 }})
+      when "out_of_stock"
+        @search_filters.push({name: "stock", search: {value: 0 }})
+    end
+    
     call_base
   end
 

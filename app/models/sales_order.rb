@@ -36,7 +36,6 @@ class SalesOrder < ApplicationRecord
   has_many :inquiry_product_suppliers, through: :sales_quote_rows
   has_many :products, through: :rows
   has_many :categories, through: :products
-  has_many :shipments, class_name: 'SalesShipment', inverse_of: :sales_order
   has_many :invoices, class_name: 'SalesInvoice', inverse_of: :sales_order
   has_many :shipments, class_name: 'SalesShipment', inverse_of: :sales_order
   has_many :inward_dispatches

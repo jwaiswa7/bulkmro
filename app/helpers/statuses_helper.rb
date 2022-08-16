@@ -266,4 +266,16 @@ module StatusesHelper
       format_badge(text, 'color-dark-green')
     end
   end
+  
+  # sets the status of the customer order. 
+  def customer_order_status(sales_order)
+    invoice_line_items_total = sales_order.invoices.map { |invoice| invoice.rows.sum(&:quantity) }.sum 
+    sales_order_line_items_total = sales_order.rows.sum(&:quantity)
+
+    if invoice_line_items_total == sales_order_line_items_total
+      format_badge("Delivered", 'color-dark-green')
+    else
+      format_badge("Partually Delivered", 'color-yellow')
+    end
+  end
 end

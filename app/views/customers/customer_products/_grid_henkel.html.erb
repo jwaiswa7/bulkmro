@@ -7,10 +7,6 @@
         <h1 class="display-5 mb-1"><%= current_model.humanize %></h1>
       <% end unless content_for?(:hide_table_heading) %>
 
-      <div class="d-none">
-        <a href="<%= customers_products_path(view: 'list_view') %>" class="btn btn-lg btn-light" data-toggle="tooltip" title="List View"><i class="fal fa-list-ul"></i></a>
-        <a href="<%= customers_products_path(view: 'grid_view') %>" class="btn btn-lg btn-light" data-toggle="tooltip" title="Grid View"><i class="fal fa-grip-horizontal"></i></a>
-      </div>
 
       <% if content_for?(:can_be_directly_created) && policy(current_model.singularize.to_sym).new? %>
         <a href="<%= [request.path, '/', 'new'].join %>" class="d-sm-block btn btn-success btn-rounded align-self-center btn-block-sm-down">
@@ -41,9 +37,9 @@
 </div>
 
 <div class="form-row mt-2" id="product-grid">
-  <% if @customer_products.count > 0 %>
-    <% cache(@customer_products, :expires_in => 30.minutes) do %>
-      <% @customer_products.each do |customer_product| %>
+  <% if customer_products.count > 0 %>
+    <% cache(customer_products, :expires_in => 30.minutes) do %>
+      <% customer_products.each do |customer_product| %>
         <div class="col-xl-3 col-lg-3 col-md-4 col-sm-6 col-xs-12 d-flex">
           <div class="card mb-2">
             <div class="card-body">
@@ -103,7 +99,7 @@
   <% end %>
 
   <div class="col-12 mt-2">
-    <div class="text-center mb-2 text-uppercase"><%= page_entries_info @customer_products_paginate, entry_name: 'products' %></div>
-    <%= paginate @customer_products_paginate, remote: false, :params => {:view => "grid_view", :q => params[:q]} %>
+    <div class="text-center mb-2 text-uppercase"><%= page_entries_info customer_products_paginate, entry_name: 'products' %></div>
+    <%= paginate customer_products_paginate, remote: false, :params => {:view => "grid_view", :q => params[:q]} %>
   </div>
 </div>

@@ -7,7 +7,7 @@ json.data (@customer_products) do |customer_product|
                   customer_product.sku,
                   customer_product.brand.to_s,
                   (customer_product.customer_price || customer_product.product.latest_unit_cost_price.to_f),
-                  format_boolean_label(customer_product.product.synced?, 'synced'),
+                  display_stock_status(customer_product, [@phursungi_warehouse.id]),
                   format_date(customer_product.product.created_at)
               ]
 end
