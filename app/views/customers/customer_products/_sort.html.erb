@@ -6,7 +6,6 @@
   <div class="dropdown-menu">
     <a class="dropdown-item" href="<%= customers_products_path %>">Clear sort</a>
     <a class="dropdown-item" href="<%= customers_products_path(sort: 'inquiries', view: params[:view]) %>">Most popular</a>
-    <a class="dropdown-item" href="<%= customers_products_path(sort: 'name', view: params[:view]) %>">Alphabetically</a>
     <a class="dropdown-item" href="<%= customers_products_path(stock: 'in_stock', view: params[:view]) %>">In stock</a>
     <a class="dropdown-item" href="<%= customers_products_path(stock: 'out_of_stock', view: params[:view]) %>">Not in stock</a>
   </div>
