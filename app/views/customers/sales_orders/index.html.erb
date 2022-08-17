@@ -24,16 +24,16 @@
 <% content_for :header_row do %>
   <th class="no-sort all"></th>
   <th class="sort all" data-name="order_number">Order #</th>
-  <th class="sort desktop " data-name="created_at">Order Date</th>
-  <th class="sort desktop" data-name="">PO #</th>
-  <th class="sort desktop " data-name="">PO Date</th>
-  <th class="sort all" data-name="order_number">Inquiry #</th>
+  <th class="sort all " data-name="created_at">Order Date</th>
+  <th class="sort all" data-name="customer_po_number">PO #</th>
+  <th class="sort all " data-name="cp_order_date">PO Date</th>
+  <th class="sort all" data-name="inquiry_number">Inquiry #</th>
   <th class="no-sort desktop " data-name="cp_ship_to">Ship To</th>
   <th class="no-sort desktop" data-name="">Order Total</th>
-  <th class="sort desktop " data-name="">Expected Delivery Date</th>
+  <th class="sort desktop " data-name="customer_committed_date">Expected Delivery Date</th>
   <th class="no-sort desktop " data-name="">Actual Delivery Date</th>
   <th class="no-sort desktop " data-name="cp_status">Order Status</th>
-  <th class="sort desktop text-left" data-name="created_at">Created</th>
+  <th class="sort all text-left" data-name="created_at">Created</th>
 <% end %>
 
 <% content_for :filter_row do %>

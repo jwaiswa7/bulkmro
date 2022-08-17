@@ -20,7 +20,7 @@ class SalesOrdersIndex < BaseIndex
     field :remote_status, value: -> (record) { remote_statuses[record.remote_status] }, type: 'integer'
     field :quote_total, value: -> (record) { record.sales_quote.calculated_total.to_i if record.sales_quote.present? && record.sales_quote.calculated_total.present? }, type: 'float'
     field :order_total, value: -> (record) { record.calculated_total.to_i if record.rows.present? && record.calculated_total.present? }
-    field :customer_po_number, value: -> (record) { record.inquiry.customer_po_number if record.inquiry.present? }
+    field :customer_po_number, value: -> (record) { record.inquiry.customer_po_number if record.inquiry.present? }, type: 'long'
     field :customer_po_number_string, value: -> (record) { record.inquiry.customer_po_number.to_s if record.inquiry.present? }, analyzer: 'substring'
     field :contact_id, value: -> (record) { record.inquiry&.contact_id if record.inquiry&.present? }, type: 'integer'
     field :company_id, value: -> (record) { record.inquiry&.company&.id if record.inquiry&.present? }, type: 'integer'
@@ -43,6 +43,7 @@ class SalesOrdersIndex < BaseIndex
     field :cp_status_s, value: -> (record) { record.effective_customer_status.to_s }, analyzer: 'substring'
     field :cp_status, value: -> (record) { effective_statuses[record.effective_customer_status] }, type: 'integer'
     field :cp_order_date_s, value: -> (record) { record.inquiry&.customer_order_date&.strftime('%d-%b-%Y').to_s if record.inquiry&.customer_order_date&.present? }, analyzer: 'substring'
+    field :cp_order_date, value: -> (record) { record.inquiry&.customer_order_date if record.inquiry&.customer_order_date&.present? }, type: 'date'
     field :cp_committed_date_s, value: -> (record) { record.inquiry&.customer_committed_date&.strftime('%d-%b-%Y').to_s if record.inquiry&.customer_committed_date&.present? }, analyzer: 'substring'
     field :cp_created_at_s, value: -> (record) { record.created_at.strftime('%d-%b-%Y').to_s if record.created_at.present? }, analyzer: 'substring'
     field :cp_calculated_total_s, value: -> (record) { record.calculated_total.to_s if record.calculated_total.present? }, analyzer: 'substring'

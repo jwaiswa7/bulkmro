@@ -271,9 +271,9 @@ module StatusesHelper
   def customer_order_status(sales_order)
     
     if sales_order.invoices.any?
-      invoice_delivery_date_present?(sales_order.invoices.last) ? format_badge("Delivered", 'color-dark-green') : format_badge("Partually Delivered", 'color-yellow')
+      invoice_delivery_date_present?(sales_order.invoices.last) ? format_badge("Delivered", 'color-dark-green') : format_badge("Processed", 'color-yellow')
     else
-      format_badge("Partually Delivered", 'color-yellow')
+      format_badge("Processed", 'color-yellow')
     end
  
   end
