@@ -267,15 +267,19 @@ module StatusesHelper
     end
   end
   
-  # sets the status of the customer order. 
+  # sets the status of the customer order based on the existance of an invoice delivery date
   def customer_order_status(sales_order)
-    invoice_line_items_total = sales_order.invoices.map { |invoice| invoice.rows.sum(&:quantity) }.sum 
-    sales_order_line_items_total = sales_order.rows.sum(&:quantity)
-
-    if invoice_line_items_total == sales_order_line_items_total
-      format_badge("Delivered", 'color-dark-green')
+    
+    if sales_order.invoices.any?
+      invoice_delivery_date_present?(sales_order.invoices.last) ? format_badge("Delivered", 'color-dark-green') : format_badge("Partually Delivered", 'color-yellow')
     else
       format_badge("Partually Delivered", 'color-yellow')
     end
+ 
+  end
+
+  # returns true if the invoice delivery date is present
+  def invoice_delivery_date_present?(invoice)
+    invoice.delivery_date.present? || invoice.mis_date.present?
   end
 end
