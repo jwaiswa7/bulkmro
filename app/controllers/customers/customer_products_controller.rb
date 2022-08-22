@@ -76,8 +76,6 @@ class Customers::CustomerProductsController < Customers::BaseController
       case params[:sort]
       when "inquiries"
         "inquiries"
-      when "name"
-        "name"
       else 
         "created_at"
       end

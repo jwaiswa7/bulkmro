@@ -1,8 +1,8 @@
 json.data (@warehouse_products) do |warehouse_product|
-  json.array! [
-                  (warehouse_product.product.name.truncate(50, separator: ' ')),
-                  warehouse_product.product.sku,
-                  number_with_delimiter(warehouse_product.instock.to_i, delimiter: ','),
+  json.array! [  
+                warehouse_product.product.sku,
+                (warehouse_product.product.name.truncate(50, separator: ' ')),
+                number_with_delimiter(warehouse_product.instock.to_i, delimiter: ','),
               ]
 end
 
