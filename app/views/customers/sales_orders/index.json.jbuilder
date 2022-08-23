@@ -33,7 +33,7 @@ json.columnFilters [
                        [],
                        [],
                        [],
-                       SalesOrder.effective_statuses.map { |k, v| { "label": k, "value": v.to_s } }.as_json
+                       [{label: "Delivered", value: 1}, {label: "Processed", value: 3}]
 
                    ]
 
