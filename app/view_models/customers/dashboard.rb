@@ -13,7 +13,7 @@ class Customers::Dashboard
 
   def recent_sales_orders
     indexed_sales_orders = Services::Customers::Finders::SalesOrders.new(params.merge(page: 1).merge(per: 5), contact, company)
-    indexed_sales_orders.call.records
+    indexed_sales_orders.call.records.try(:reverse)
   end
 
   def recent_sales_invoices

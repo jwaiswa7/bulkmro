@@ -36,7 +36,7 @@
             <th class="no-sort text-left">Line Items</th>
             <th class="no-sort text-left">Total</th>
             <th class="no-sort text-right">Sales Person</th>
-            <th class="no-sort text-right">Valid Upto</th>
+            <th class="no-sort text-right">Valid Upto</th> -->
             <th class="no-sort text-right">Status</th>
           </tr>
           </thead>
@@ -45,7 +45,7 @@
             <tr>
               <td><%= row_action_button(customers_quote_path(sales_quote), 'eye', 'View Quote', 'info', :_blank) %></td>
               <td class="text-left"><%= sales_quote.inquiry.inquiry_number %></td>
-              <td><%= format_date(sales_quote.inquiry.created_at) %></td>
+              <td><%= format_date(sales_quote.created_at) %></td>
               <td class="text-left"><%= sales_quote.rows.size %></td>
               <td class="text-left"><%= format_currency(sales_quote.calculated_total) %></td>
               <td><%= sales_quote.inquiry.inside_sales_owner.to_s %></td>

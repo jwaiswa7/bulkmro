@@ -165,6 +165,7 @@ class SalesOrder < ApplicationRecord
       'Sync Issue': 10,
   }
 
+
   scope :with_includes, -> { includes(:created_by, :updated_by, :inquiry) }
   scope :remote_approved, -> { where('(((sales_orders.status = ? OR sales_orders.status = ?) AND sales_orders.remote_status != ?) OR sales_orders.legacy_request_status = ?) AND sales_orders.status != ?', SalesOrder.statuses[:'Approved'], SalesOrder.statuses[:'CO'], SalesOrder.remote_statuses[:'Cancelled by SAP'], SalesOrder.legacy_request_statuses['Approved'], SalesOrder.statuses[:'Cancelled']) }
   scope :order_not_deleted, -> { where.not(remote_status: 'Order Deleted')}
@@ -195,6 +196,19 @@ class SalesOrder < ApplicationRecord
 
   def order_status
     self.status || self.legacy_request_status
+  end
+
+  def customer_order_status 
+     if invoices.any?
+       invoice = invoices.last 
+       if invoice.delivery_date.present? || invoice.mis_date.present?
+        "Delivered"
+       else 
+        "Processed"
+       end
+     else 
+       "Processed"
+     end
   end
 
   def update_index
