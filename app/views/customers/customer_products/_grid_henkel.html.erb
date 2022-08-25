@@ -59,7 +59,7 @@
                 <p class="mb-0 text-small text-black-50">
                   <%= display_stock_status(customer_product, [@phursungi_warehouse.id]) %> <br>
                   <strong class="d-block"><%= customer_product.best_brand.name if customer_product.best_brand.present? %></strong>
-                  <b>Qty in stock</b> - <%= customer_product.product.stocks.where(warehouse_id: @phursungi_warehouse.id).sum(&:instock).to_i %></em><br>
+                  <b>Qty in stock</b> - <%= customer_product.qty_in_stock(warehouse: @phursungi_warehouse.id) %></em><br>
                   <em>MOQ - <%= customer_product.moq %></em><br>
                 </p>
               </a>
