@@ -12,6 +12,8 @@
     <a href="<%= customers_products_path(view: 'grid_view') %>" class="btn btn-lg btn-light px-2 <%= params[:view] == 'list_view' ? '': 'bmro-nav-main-color' %> " data-toggle="tooltip" title="Grid View"><i class="fal fa-grip-horizontal"></i></a>
     </br>
     <%= render partial: 'sort'%>
+    </br>
+    <%= render partial: 'filter' %>
   </div>
 <% end %>
 
