@@ -4,7 +4,7 @@ class Services::Overseers::Finders::DeliveryChallans < Services::Overseers::Find
   end
 
   def all_records
-    indexed_records = index_klass.all
+    indexed_records = index_klass.all.order(sort_definition)
 
     if @base_filter.present?
       indexed_records = indexed_records.filter(@base_filter)
