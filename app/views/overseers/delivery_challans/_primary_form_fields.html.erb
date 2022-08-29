@@ -1,6 +1,5 @@
 <%= simple_form_for([:overseers, @delivery_challan ], :url => "/overseers/delivery_challans/next_step",:method => "get", :html => {:class => 'needs-validation mt-3', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
   <%= render 'shared/snippets/form_errors', f: f %>
-
   <div class="card bmro-card">
     <div class="card-body">
       <%= f.hidden_field :inward_dispatch_id, values: f.object.inward_dispatch_id %>
@@ -14,7 +13,6 @@
           <div class="col-6">
             <%= f.input :inquiry_id, as: :select, collection: selected_option_or_nil(f, :inquiry), input_html: {id: 'dc_inquiry_select', class: 'select2-ajax bmro-form-input bmro-dropdown-icon', :'data-source' => autocomplete_without_so_confirmed_overseers_inquiries_path(encoded: true), label: "Inquiries"}, required: true, disabled: f.object.inquiry_id.present? %>
           </div>
-
           <div class="col-6">
             <%= f.input :purpose, collection: enum_to_collection(DeliveryChallan.purposes), required: true, input_html: {id: 'dc_purpose', class: 'select2-single bmro-form-input bmro-dropdown-icon'}, selected: @delivery_challan.purpose, disabled: ['SalesOrder', 'InwardDispatch'].include?(params[:created_from]) %>
           </div>
@@ -23,6 +21,7 @@
           <div class="col-6">
             <%= f.input :sales_order_id, as: :select, collection: selected_option_or_nil(f, :sales_order), input_html: {id: 'dc_sales_order_select', class: 'select2-ajax bmro-form-input bmro-dropdown-icon disabled', label: "Sales Orders"}, disabled: ['SalesOrder'].include?(params[:created_from]) %>
           </div>
+            <%= f.input :can_create_delivery_challan,:wrapper => :vertical_collection_inline,collection: [ ['Yes', 'Yes', disabled: false, checked: true], ['No', 'No']],  required: true, label: ' Do you want to create a Delivery Challan? ' ,  as: :radio_buttons %>
         </div>
       </div>
     </div>
@@ -30,7 +29,7 @@
       <div class="form-row">
         <div class="mt-1 mt-md-0 col-md-12">
           <%= button_tag(type: "submit", class: "btn bmro-button btn-warning btn-block") do %>
-             Next  <i class="bmro-fa-arrow-right"></i>
+            Next  <i class="bmro-fa-arrow-right"></i>
           <% end %>
         </div>
       </div>

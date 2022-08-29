@@ -12,10 +12,13 @@ const newAction = () => {
 
   $('#dc_purpose').on('select2:select', function (e) {
     if ($(this).select2('data')[0].text == "Sample") {
+      $("#delivery_challan_can_create_delivery_challan_yes").prop("checked", true);
+      $("#delivery_challan_can_create_delivery_challan_no").prop("disabled", true);
       $("#dc_sales_order_select").attr("required", false);
       $("#dc_sales_order_select").parent().children().removeClass('is-invalid');
       $("#dc_sales_order_select").parent().find('span .select2-selection').removeClass('is-invalid');
     } else {
+     $("#delivery_challan_can_create_delivery_challan_no").prop("disabled", false);
       $("#dc_sales_order_select").prop("required", true);
     }
   });

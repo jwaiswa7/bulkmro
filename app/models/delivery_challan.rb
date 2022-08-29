@@ -1,7 +1,8 @@
 class DeliveryChallan < ApplicationRecord
 
   COMMENTS_CLASS = 'DeliveryChallanComment'
-  
+  attr_accessor :can_create_delivery_challan
+
   include Mixins::HasComments
   include Mixins::CanBeStamped
   include Mixins::HasConvertedCalculations
