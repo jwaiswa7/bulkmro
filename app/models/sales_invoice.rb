@@ -8,7 +8,7 @@ class SalesInvoice < ApplicationRecord
 
   pg_search_scope :locate, against: [:id, :invoice_number], associated_against: {company: [:name], account: [:name], inside_sales_owner: [:first_name, :last_name], outside_sales_owner: [:first_name, :last_name]}, using: {tsearch: {prefix: true}}
 
-  belongs_to :sales_order
+  belongs_to :sales_order, optional: true
   has_many :outward_dispatches
   belongs_to :billing_address, class_name: 'Address', required: false
   belongs_to :shipping_address, class_name: 'Address', required: false
@@ -121,11 +121,11 @@ class SalesInvoice < ApplicationRecord
   end
 
   def serialized_billing_address
-    billing_address || sales_order.inquiry&.billing_address
+    billing_address || sales_order&.inquiry&.billing_address
   end
 
   def serialized_shipping_address
-    shipping_address || sales_order.inquiry.shipping_address
+    shipping_address || sales_order&.inquiry.shipping_address
   end
 
   def self.syncable_identifiers
