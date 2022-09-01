@@ -74,14 +74,15 @@ class Services::Shared::Migrations::InvoiceDataImport < Services::Shared::Migrat
 			invoice_number = x.get_column('Invoice')
 
 			sales_invoice = SalesInvoice.find_by_invoice_number(invoice_number.to_i)
+      credit_note = CreditNote.find_by(memo_number: memo_number.to_i)
 
-			if invoice_number != '20210266'
-				credit_note = CreditNote.new
-				credit_note.memo_number = memo_number.to_i
-				credit_note.memo_date = DateTime.parse memo_date.to_s
-				credit_note.memo_amount = memo_amount.to_f
-				credit_note.sales_invoice_id = sales_invoice.id if sales_invoice.present?
-				credit_note.save(validate: false)
+			unless credit_note.present?
+				new_credit_note = CreditNote.new
+				new_credit_note.memo_number = memo_number.to_i
+				new_credit_note.memo_date = DateTime.parse memo_date.to_s
+				new_credit_note.memo_amount = memo_amount.to_f
+				new_credit_note.sales_invoice_id = sales_invoice.id if sales_invoice.present?
+				new_credit_note.save(validate: false)
 			end
 		end
 	end
