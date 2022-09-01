@@ -1,0 +1,12 @@
+<!-- Add products filter -->
+<div class="dropdown">
+  <button class="btn btn-sm btn-light dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">
+    Filter
+  </button>
+  <div class="dropdown-menu">
+  <a class="dropdown-item" href="<%= customers_products_path(view: params[:view]) %>">Clear filter</a>
+    <a class="dropdown-item" href="<%= customers_products_path(stock: 'in_stock', view: params[:view]) %>">In stock</a>
+    <a class="dropdown-item" href="<%= customers_products_path(stock: 'out_of_stock', view: params[:view]) %>">Not in stock</a>
+  </div>
+</div>
+<!-- end products filter -->
