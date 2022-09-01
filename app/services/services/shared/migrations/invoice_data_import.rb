@@ -1,8 +1,7 @@
 class Services::Shared::Migrations::InvoiceDataImport < Services::Shared::Migrations::Migrations
-	def call
+	def import_invoice_data
 		service = Services::Shared::Spreadsheets::CsvImporter.new('invoice_data.csv', 'seed_files_3')
 		service.loop(nil) do |x|
-			sales_order_id = x.get_column('Sales Order ID')
 			invoice_number = x.get_column('Invoice number')
 			state = x.get_column('State')
 			sku = x.get_column('SKU')
@@ -20,9 +19,11 @@ class Services::Shared::Migrations::InvoiceDataImport < Services::Shared::Migrat
 			mis_date = x.get_column('MIS date')
 			billing_address_id = x.get_column('Billing address id')
 			shipping_address_id = x.get_column('Shipping address id')
+
+			sales_order = SalesOrder.find_by(order_number: order_id.to_i)
       
 			invoice = SalesInvoice.new
-			invoice.sales_order_id = sales_order_id.to_i
+			invoice.sales_order_id = sales_order.id if sales_order.present?
 			invoice.invoice_number = invoice_number.to_i
 			invoice.metadata["state"] = state.to_s
 			invoice.metadata["ItemLine"][0]["sku"] = sku.to_s
@@ -46,6 +47,27 @@ class Services::Shared::Migrations::InvoiceDataImport < Services::Shared::Migrat
 			invoice.metadata["shipping_address_id"] = shipping_address_id.to_i
 			invoice.save(validate: false)
 			
+		end
+	end
+
+	def import_credit_note_data
+		service = Services::Shared::Spreadsheets::CsvImporter.new('credit_note_data.csv', 'seed_files_3')
+		service.loop(nil) do |x|
+			memo_number = x.get_column('AR Credit Memo')
+			memo_date = x.get_column('AR Credit Memo Date')
+			memo_amount = x.get_column('Credit Memo Amount')
+			invoice_number = x.get_column('Invoice')
+
+			sales_invoice = SalesInvoice.find_by_invoice_number(invoice_number.to_i)
+
+			if invoice_number != '20210266'
+				credit_note = CreditNote.new
+				credit_note.memo_number = memo_number.to_i
+				credit_note.memo_date = DateTime.parse memo_date.to_s
+				credit_note.memo_amount = memo_amount.to_f
+				credit_note.sales_invoice_id = sales_invoice.id if sales_invoice.present?
+				credit_note.save(validate: false)
+			end
 		end
 	end
 end
