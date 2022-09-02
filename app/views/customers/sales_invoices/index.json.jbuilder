@@ -45,5 +45,5 @@ json.columnFilters [
                    ]
 
 json.recordsTotal SalesInvoice.all.count
-json.recordsFiltered @indexed_sales_invoices.total_count
+json.recordsFiltered SalesInvoice.all.count
 json.draw params[:draw]
