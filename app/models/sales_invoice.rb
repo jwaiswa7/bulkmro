@@ -121,11 +121,11 @@ class SalesInvoice < ApplicationRecord
   end
 
   def serialized_billing_address
-    billing_address || sales_order.inquiry&.billing_address
+    billing_address || sales_order&.inquiry&.billing_address
   end
 
   def serialized_shipping_address
-    shipping_address || sales_order.inquiry.shipping_address
+    shipping_address || sales_order&.inquiry&.shipping_address
   end
 
   def self.syncable_identifiers
