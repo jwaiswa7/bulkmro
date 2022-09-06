@@ -45,6 +45,10 @@ class Customers::CartPolicy < Customers::ApplicationPolicy
     true
   end
 
+  def add_item? 
+    true
+  end
+
   def punchout?
     show?
   end

@@ -1,0 +1,13 @@
+<% if @cart_item.errors.empty? %>
+  $.notify({
+      message: 'Product was successfully added to cart.'
+  }, {
+      type: 'success'
+  });
+<% else %>
+  $.notify({
+      message: 'Item could not be added to the cart'
+  }, {
+      type: 'danger'
+  });
+<% end %>
