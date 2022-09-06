@@ -114,6 +114,12 @@ class CustomerProduct < ApplicationRecord
   def has_images?
     self.best_images.attached?
   end
+
+  # This is the qty in stock based on a ware house. 
+  def qty_in_stock(warehouse:)
+    product.stocks.where(warehouse_id: Warehouse.find(warehouse).id ).sum(&:instock).to_i
+  end
+  
 # def set_unit_selling_price
 # self.unit_selling_price ||= price!
 # end
