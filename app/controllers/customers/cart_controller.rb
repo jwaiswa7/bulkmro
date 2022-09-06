@@ -1,6 +1,15 @@
 class Customers::CartController < Customers::BaseController
   before_action :set_cart
 
+  def add_item 
+    authorize @cart
+    @cart_item = @cart.items.new(product_id: params[:product_id], customer_product_id: params[:customer_product_id])
+    @cart_item.save
+    respond_to do |format|
+      format.js { }
+    end
+  end
+
   def show
     authorize @cart
   end

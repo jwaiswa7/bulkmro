@@ -1012,6 +1012,7 @@ Rails.application.routes.draw do
         post 'update_billing_address'
         patch 'update_payment_data'
         patch 'add_po_number'
+        post 'add_item'
         get 'empty_cart'
       end
     end
