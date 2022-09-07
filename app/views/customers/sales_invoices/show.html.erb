@@ -4,7 +4,8 @@
   <div class="page-header">
     <div class="">
       <h2>
-        Invoice <%= ['#', @sales_invoice.invoice_number].join if @sales_invoice.invoice_number.present? %>
+        Invoice <%= ['#', @sales_invoice.invoice_number].join if @sales_invoice.invoice_number.present? %> <br/>
+        Inquiry <%= ['#', @sales_invoice.inquiry.inquiry_number].join if @sales_invoice.inquiry.present? %>
       </h2>
     </div>
   </div>
