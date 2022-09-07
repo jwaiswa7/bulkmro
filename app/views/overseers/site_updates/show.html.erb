@@ -1,0 +1,48 @@
+<% if policy(SiteUpdate).add_release_notes?%>
+  <div class="row justify-content-end mr-3">
+    <%= simple_form_for( SiteUpdate.new, :url => "/release_notes",:method => "post", :html => {:class => 'needs-validation mt-3', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
+      <div class="row">
+        <div class="">
+          <%= f.input :attachment , accept: :csv, wrapper: :custom_file,  input_html: { class: 'bmro-form-input' },required: true ,label: "CSV file of Release Notes" %>
+          <%= button_tag(type: "submit", class: "btn btn-success bmro-button btn-block") do %>
+            Add file
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+<% end %>
+<section style="width:800px" class="row">
+  <div class="row mb-4 mt-3 col-12">
+    <div class="col-md-12 text-center">
+      <h2 class="heading-section"><u>Release Notes</u></h2>
+    </div>
+  </div>
+  <%  @site_updates.each_with_index do |item , index|%>
+    <% prev_elem = @site_updates[index-1] unless index == 0 %>
+    <% next_elem = @site_updates[index+1] unless index == @site_updates.size-1 %>
+    <div class=" w-100 ">
+      <% if !prev_elem || prev_elem[4] != item[4] %>
+        <div class="col-12">
+          <h5><b><%= item[4]%></b></h5>
+        </div>
+      <% end %>
+      <ul>
+        <li>
+          <h5><%= item[1]%></h5>
+        </li>
+        <div class="row">
+          <%if item[3].present?%>
+            <a style="margin-right:15px; font-size:12px;" href=<%= item[3]%>  target="_blank">[Go To File]</a>
+          <% end %>
+          <%if item[5].present?%>
+            <a style="font-size:12px;" href=<%= item[5]%>  target="_blank">[Supporting document]</a>
+          <% end %>
+        </div>
+      </ul>
+      <% if !next_elem || next_elem[4] != item[4] %>
+        <div class="col-12 mb-4 pb-1 border-3 border-bottom border-dark"></div>
+      <% end %>
+    </div>
+  <% end if @site_updates.present? %>
+</section>
