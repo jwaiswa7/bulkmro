@@ -167,4 +167,39 @@
       </div>
     </div>
   <% end %>
+  
+  <% if @dashboard.popular_products.any? %> 
+    <div class="card mt-4">
+      <div class="card-body">
+        <h4 class="text-uppercase display-5 mb-1 d-none d-md-block">Popular products</h4>
+        <table class="table datatable table-bordered w-100 wrap-whitespace table-bordered" data-fixed-header="false">
+          <thead>
+          <tr>
+            <th class="no-sort"></th>
+            <th class="no-sort">Name</th>
+            <th class="no-sort">SKU</th>
+            <th class="no-sort">Brand</th>
+            <th class="no-sort desktop">Price</th>
+          </tr>
+          </thead>
+          <tbody>
+          <% @dashboard.popular_products.each do |customer_product| %>
+            <tr>
+              <td><%= row_action_button(customers_product_path(customer_product), 'eye', 'View Product', 'info') %></td>
+              <td><%= customer_product.product.name.to_s %></td>
+              <td><%= customer_product.sku %></td>
+              <td><%= customer_product.brand.to_s %></td>
+              <td><%= (customer_product.customer_price || customer_product.product.latest_unit_cost_price.to_f) %></td>
+            </tr>
+          <% end %>
+          </tbody>
+        </table>
+      </div>
+      <div class="card-footer">
+        <a href="<%= customers_products_path(sort: 'inquiries', view: 'list_view' ) %>" class="btn btn-lg btn-block btn-info bmro-button"><i class="fal fa-eye-tras mr-1"></i>View
+          More</a>
+      </div>
+    </div>
+  <% end %>
+
 </div>

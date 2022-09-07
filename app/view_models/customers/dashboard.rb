@@ -20,6 +20,11 @@ class Customers::Dashboard
     indexed_sales_invoices = Services::Customers::Finders::SalesInvoices.new(params.merge(page: 1).merge(per: 5), contact, company)
     indexed_sales_invoices.call.records.try(:reverse)
   end
+
+  def popular_products 
+    service = Services::Customers::Finders::CustomerProducts.new(params.merge(page: 1).merge(per: 5), contact, company, sort_by: 'inquiries')
+    service.call.records.try(:reverse)
+  end
   
   def record
     if contact.account_manager?
