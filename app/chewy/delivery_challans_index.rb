@@ -6,6 +6,7 @@ class DeliveryChallansIndex < BaseIndex
     field :order_number, value: -> (record) { record.sales_order.order_number.to_i if record.sales_order.present? }, type: 'integer'
     field :company, value: -> (record) { record.inquiry.company.to_s }, analyzer: 'substring'
     field :company_id, value: -> (record) { record.inquiry.company.id }, type: 'integer'
+    field :delivery_challan_number, analyzer: 'substring', fielddata: true
     field :sales_order_id, type: 'integer'
     field :ar_invoice_request_id, type: 'integer'
     field :supplier_bill_from_id, type: 'integer'
