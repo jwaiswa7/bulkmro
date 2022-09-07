@@ -95,7 +95,7 @@
 
           <div id="checkout-billing" class="collapse <%= show_if(params[:next_step].blank?) %>" data-parent="#checkout">
             <div class="card-body">
-              <%= f.input :po_reference, label: 'PO Reference Number', placeholder: 'e.g. ASDF19126' %>
+              <%= f.input :po_reference, label: 'PO Reference Number', placeholder: 'e.g. ASDF19126', required: true %>
               <%= f.input :customer_po_sheet, as: :file, wrapper: :custom_file, label: 'Customer purchase order' %>
               <p>Select a billing address from your address book.</p>
               <div id="current_company_address">
@@ -152,43 +152,13 @@
           <div id="checkout-comments" class="collapse" data-parent="#checkout">
             <div class="card-body">
               <%= f.input :special_instructions, label: false, placeholder: 'Special Instructions / Comments' %>
+              <%= f.button :submit, 'Continue & Place Order', class: 'btn btn-success btn-block mt-4' %>
+
             </div>
           </div>
         </div>
 
-        <div class="card" id="payment-method">
-          <div class="card-header">
-            <a class="collapsed" data-toggle="collapse" data-parent="#checkout" href="#checkout-payment-method">
-              <h5 class="mb-0"><strong>4. Payment Method</strong></h5>
-            </a>
-          </div>
-
-          <div id="checkout-payment-method" class="collapse" data-parent="#checkout">
-            <div class="card-body">
-              <label class="d-flex justify-content-center align-items-center flex-row">
-                    <span class="h-100">
-                      <%= f.radio_button :payment_method, 'Bank Transfer', :checked => true %>
-                    </span>
-                <span class="flex-grow-1 ml-2">
-                      <strong class="d-block">Bank Transfer</strong>
-                    </span>
-              </label>
-
-              <label class="d-flex justify-content-center align-items-center flex-row">
-                    <span class="h-100">
-                      <%= f.radio_button :payment_method, 'Online Payment', :checked => true if current_company.id == 1847 %>
-                    </span>
-                <span class="flex-grow-1 ml-2">
-                      <strong class="d-block">Online Payment</strong>
-                      Checkout using credit card / debit card / net banking.
-                    </span>
-              </label>
-
-              <%= f.button :submit, 'Continue & Place Order', class: 'btn btn-success btn-block mt-4' %>
       <% end %>
-      </div>
-      </div>
-      </div>
       <div class="card" id="product-summary">
         <div class="card-header">
           <a class="collapsed" data-toggle="collapse" data-parent="#checkout" href="<%= (@cart.billing_address.present? && @cart.shipping_address.present?) ? "#checkout-summary" : "" %>">
