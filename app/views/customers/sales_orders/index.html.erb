@@ -7,17 +7,6 @@
   Orders
 <% end %>
 
-<% if !is_api_request? && Company::DISABLE_DOWNLOAD_COMPANIES.exclude?(current_company.name) %>
-  <% provide :heading_buttons do %>
-    <div class="btn-group">
-      <% if current_company.id == 1847 %>
-        <a href="#export-filters" class="btn btn-success btn-rounded align-self-center btn-block-sm-down ml-1 mb-md-0 mb-1 order-filter" data-toggle="modal" title="All sales orders"><i class="bmro-download-icon"></i>Orders</a>
-      <% else %>
-        <a href="<%= export_all_customers_orders_path(format: :csv) %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down ml-1 mb-md-0 mb-1" data-toggle="tooltip" title="bmro-download-icon"><i class="fal fa-download mr-1"></i>Orders</a>
-      <% end %>
-    </div>
-  <% end %>
-<% end %>
 
 <%= render partial: 'customers/sales_orders/order_filters' %>
 

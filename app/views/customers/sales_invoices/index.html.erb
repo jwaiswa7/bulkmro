@@ -7,13 +7,7 @@
   Invoices
 <% end %>
 
-<% if !is_api_request? && Company::DISABLE_DOWNLOAD_COMPANIES.exclude?(current_company.name) %>
-  <% provide :heading_buttons do %>
-    <div class="btn-group">
-      <a href="<%= export_all_customers_invoices_path(format: :csv) %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down ml-1 mb-md-0 mb-1" data-toggle="tooltip" title="All sales invoices"><i class="fal fa-download mr-1"></i>Invoices</a>
-    </div>
-  <% end %>
-<% end %>
+
 
 <div class="col-lg-12">
   <% content_for :header_row do %>
