@@ -1,3 +1,6 @@
+<% content_for :page_title do %>
+Release Notes
+<% end %>
 <% if policy(SiteUpdate).add_release_notes?%>
   <div class="row justify-content-end mr-3">
     <%= simple_form_for( SiteUpdate.new, :url => "/release_notes",:method => "post", :html => {:class => 'needs-validation mt-3', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
@@ -22,9 +25,9 @@
     <% prev_elem = @site_updates[index-1] unless index == 0 %>
     <% next_elem = @site_updates[index+1] unless index == @site_updates.size-1 %>
     <div class=" w-100 ">
-      <% if !prev_elem || prev_elem[4] != item[4] %>
+      <% if !prev_elem || prev_elem[3] != item[3] %>
         <div class="col-12">
-          <h5><b><%= item[4]%></b></h5>
+          <h5><b><%= item[3]%></b></h5>
         </div>
       <% end %>
       <ul>
@@ -32,15 +35,15 @@
           <h5><%= item[1]%></h5>
         </li>
         <div class="row">
-          <%if item[3].present?%>
-            <a style="margin-right:15px; font-size:12px;" href=<%= item[3]%>  target="_blank">[Go To File]</a>
+          <%if item[2].present?%>
+            <a style="margin-right:15px; font-size:12px;" href=<%= item[2]%>  target="_blank">[Go To Page]</a>
           <% end %>
-          <%if item[5].present?%>
-            <a style="font-size:12px;" href=<%= item[5]%>  target="_blank">[Supporting document]</a>
+          <%if item[4].present?%>
+            <a style="font-size:12px;" href=<%= item[4]%>  target="_blank">[Supporting document]</a>
           <% end %>
         </div>
       </ul>
-      <% if !next_elem || next_elem[4] != item[4] %>
+      <% if !next_elem || next_elem[3] != item[3] %>
         <div class="col-12 mb-4 pb-1 border-3 border-bottom border-dark"></div>
       <% end %>
     </div>

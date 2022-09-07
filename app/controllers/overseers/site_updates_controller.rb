@@ -1,6 +1,7 @@
 class Overseers::SiteUpdatesController < Overseers::BaseController
+	before_action :set_site_update
+
 	def show
-		@site_updates=CSV.parse(SiteUpdate.last.attachment.download, headers: true)
     end
 
 	def create
@@ -9,7 +10,6 @@ class Overseers::SiteUpdatesController < Overseers::BaseController
 		if @site_update.save
 			redirect_to release_notes_path(), notice: flash_message(@site_update, action_name)
 		else
-			@site_updates=SiteUpdate.last
 			redirect_to release_notes_path(), notice: "Please Upload file in Correct Format"
 		end
 	end
@@ -20,6 +20,10 @@ class Overseers::SiteUpdatesController < Overseers::BaseController
 		params.require(:site_update).permit(
 			:attachment
 		)
+	end
+
+	def set_site_update
+		@site_updates=CSV.parse(SiteUpdate.last.attachment.download, headers: true) if SiteUpdate.last.try(:attachment).present?
 	end
 		
 end
