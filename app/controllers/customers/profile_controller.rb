@@ -32,7 +32,8 @@ class Customers::ProfileController < Customers::BaseController
           :email,
           :current_password,
           :password,
-          :password_confirmation
+          :password_confirmation,
+          :mobile
       )
     end
 end
