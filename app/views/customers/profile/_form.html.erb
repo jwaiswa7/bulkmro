@@ -29,6 +29,9 @@
                     required: true, label: 'Confirm New Password',
                     input_html: {autocomplete: "off"} %>
       </div>
+      <div class="col-6">
+        <%= f.input :mobile %>
+      </div>
     </div>
 
     <%= button_tag(type: "submit", class: "btn btn-warning btn-block mb-2 bmro-button") do %>
