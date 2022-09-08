@@ -6,6 +6,11 @@
     <%= f.hidden_field :company_id %>
     <div class="bmro-card bmro-card-padding">
     <div class="form-row">
+       
+     <div class="col-12 col-md-12">
+       <%= f.check_box :published %>
+     </div>
+
       <div class="col-6 col-md-6">
         <%= f.input :company, as: :string, disabled: true %>
       </div>
