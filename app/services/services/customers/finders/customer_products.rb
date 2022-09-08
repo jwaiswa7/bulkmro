@@ -6,6 +6,9 @@ class Services::Customers::Finders::CustomerProducts < Services::Customers::Find
       when "out_of_stock"
         @search_filters.push({name: "stock", search: {value: 0 }})
     end
+
+    # search for published state
+    @search_filters.push({name: "published", search: {value: @published ? 1: 0 }})
     
     call_base
   end

@@ -120,6 +120,7 @@ class Overseers::Companies::CustomerProductsController < Overseers::Companies::B
         :customer_product_sku,
         :lead_time,
         :customer_uom,
+        :published,
         tag_ids: [],
         images: []
       )

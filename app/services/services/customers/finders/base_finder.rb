@@ -1,11 +1,12 @@
 class Services::Customers::Finders::BaseFinder < Services::Shared::BaseService
-  def initialize(params, current_contact = nil, current_company = nil, sort_by: 'created_at', sort_order: 'desc')
+  def initialize(params, current_contact = nil, current_company = nil, sort_by: 'created_at', sort_order: 'desc', published: true)
     @search_filters = []
     @range_filters = []
     @custom_filters = params[:custom_filters]
     @sort_by = sort_by
     @sort_order = sort_order
     @stock = params[:stock]
+    @published = published
 
     if params[:columns].present?
       params[:columns].each do |index, column|

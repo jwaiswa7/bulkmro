@@ -129,6 +129,7 @@ GEM
     bindex (0.7.0)
     bootsnap (1.4.4)
       msgpack (~> 1.0)
+    bootstrap-toggle-rails (2.2.1.0)
     builder (3.2.3)
     byebug (11.0.1)
     chartjs-ror (3.6.4)
@@ -660,6 +661,7 @@ DEPENDENCIES
   azure-storage
   azure-storage-blob
   bootsnap (>= 1.1.0)
+  bootstrap-toggle-rails
   byebug
   chartjs-ror
   chewy
