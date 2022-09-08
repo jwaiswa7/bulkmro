@@ -30,6 +30,7 @@
 //= require raty-fa/lib/jquery.raty-fa.js
 //= require packs/plugins/raty/ratyrate.js.erb
 //= require gijgo/js/gijgo.min.js
+//= require bootstrap-toggle
 
 // Global
 //= require_tree .

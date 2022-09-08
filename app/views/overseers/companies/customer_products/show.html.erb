@@ -108,10 +108,12 @@
                 <%= @customer_product.brand %>
               </div>
             <% end %>
-            <div class="col-6 col-md-3 mb-2">
-              <div class="btn <%= @customer_product.published?? 'btn-success' : 'btn-primary' %>">
-                <%= @customer_product.published?? "Published":"Not published" %>
-              </div>
+
+            <div class="col-6 col-md-3 mb-2">              
+              <strong class="d-block bmro-summary-heading">Published</strong>
+              <div class="bmro-summary-data">
+                <%= format_boolean(@customer_product.published?) %>
+              </div> 
             </div>
           </div>
         </div>
