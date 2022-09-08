@@ -83,7 +83,7 @@
     </div>
 
     <div class="accordion col-lg-9" id="checkout">
-      <%= simple_form_for [:customers, @cart], :url => update_cart_details_customers_cart_path, :method => :post do |f| %>
+      <%= simple_form_for [:customers, @cart], :url => update_cart_details_customers_cart_path, :method => :post , :html => {:class => 'needs-validation', :'novalidate' => '', :'data-parsley-validate' => ''} do |f| %>
         <div class="card" id="billing-address">
           <div class="card-header">
             <a data-toggle="collapse" data-parent="#checkout" href="<%= @cart.billing_address.present? ? "#checkout-billing" : "" %>">
@@ -208,30 +208,9 @@
                 </div>
                 <% if @cart.billing_address.present? && @cart.shipping_address.present? %>
                   <div class="col-12 col-md-6 mt-2 mt-md-0">
-                    <% if @cart.payment_method.present? && @cart.payment_method == 'Bank Transfer' %>
                       <%= link_to customers_customer_orders_path(contact_id: current_customers_contact.id), method: :post, :class => "btn btn-success btn-block" do %>
                         Place Order
-                      <% end %>
-                    <% else %>
-                      <%# raise %>
-                      <%= simple_form_for [:customers, @cart], :url => customers_customer_orders_path, :method => :post do |f| %>
-                        <!-- Note that the amount is in paise = 50 INR -->
-                        <script
-                          src="https://checkout.razorpay.com/v1/checkout.js"
-                          data-key="<%= Settings.razorpay.MERCHANT_KEY_ID %>"
-                          data-amount="<%= (@cart.grand_total * 100).ceil %>"
-                          data-buttontext="Place Order"
-                          data-name="Bulk MRO"
-                          data-description="Online Order Payment"
-                          data-image="https://sprint.bulkmro.com/assets/BMIS_Logo_PNG-53d0c1344909fef521a2a08848e952268ba7b61c133103f49c7100f2735b8d59.png"
-                          data-prefill.name="<%= current_customers_contact.full_name %>"
-                          data-prefill.email="<%= current_customers_contact.email %>"
-                          data-theme.color="#F37254"
-                        ></script>
-                        <%= f.hidden_field :id %>
-                        <%= f.hidden_field :grand_total %>
-                      <% end %>
-                    <% end %>
+                      <% end %>                    
                   </div>
                 <% end %>
               <% else %>
