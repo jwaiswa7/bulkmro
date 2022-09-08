@@ -69,9 +69,14 @@ class Customers::CartController < Customers::BaseController
 
   def update_cart_details
     authorize @cart
-    @cart.assign_attributes(cart_params)
-    @cart.save
-    redirect_to final_checkout_customers_checkout_path(next_step: 'summary')
+    inquiry = Inquiry.where(company_id: current_customers_contact.company.id , customer_po_number: cart_params["po_reference"]).last if cart_params["po_reference"].present?
+    if inquiry
+      @cart.assign_attributes(cart_params)
+      @cart.save
+      redirect_to final_checkout_customers_checkout_path(next_step: 'summary')
+    else
+      redirect_to final_checkout_customers_checkout_path(), notice: "The entered PO number is invalid, please contact the Account Manager."
+    end
   end
 
   private
