@@ -36,10 +36,9 @@ class Overseers::DeliveryChallansController < Overseers::BaseController
 
   def next_step
     sales_order = params["delivery_challan"]["sales_order_id"]
-    inward_dispatch = InwardDispatch.where(sales_order_id: sales_order).last
-
-    if params["delivery_challan"]["can_create_delivery_challan"] == "No" && inward_dispatch
-      redirect_to new_overseers_ar_invoice_request_path(ids: inward_dispatch , so_id: sales_order)
+    
+    if params["delivery_challan"]["can_create_delivery_challan"] == "No"
+      redirect_to new_overseers_ar_invoice_request_path( so_id: sales_order)
     else
     @delivery_challan = Services::Overseers::DeliveryChallans::NewDcFromSo.new(delivery_challan_params, current_overseer).call
     authorize_acl @delivery_challan
