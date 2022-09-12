@@ -57,12 +57,30 @@
 
   <!-- Settings Dropdown DESKTOP -->
   <div class="d-flex align-items-center">
-    <% if current_company.logo.attached? %>
-      <span class="d-none d-md-inline">
-        <img src="<%= url_for(current_company.logo) %>" height="18" alt="<%= current_company.name %>">
-      </span>
-    <% end %>
-    <span class="d-none d-md-inline badge badge-light mr-1"><%= current_company.name %></span>
+    <div class="dropdown d-inline">
+      <a href="#" role="button" data-toggle="dropdown" aria-expanded="false" class="bmro-third-level-header">
+        <span class="d-none d-md-inline pr-2">
+         <% if current_company.logo.attached? %>
+          <img src="<%= url_for(current_company.logo) %>" height="18" alt="<%= current_company.name %>">
+        <% else %>
+          <i class="fal fa-building"></i>&nbsp;<%= current_company.name %>
+        <% end %>
+        </span>
+      </a>
+      <% if policy(current_customers_contact).reset_current_company? %>
+        <span class="dropdown-menu dropdown-menu-right">
+          <% current_customers_contact.account.companies.each do |company| %>
+              <%= link_to reset_current_company_customers_sign_in_steps_path(company_id: company.id), method: :post, :class => 'dropdown-item' do %>
+                <% if company.logo.attached? %>
+                  <img src="<%= url_for(company.logo) %>" height="18" alt="<%= company.name %>">
+                <% else %>
+                  <i class="fal fa-building"></i>&nbsp;<%= company.name %>
+                <% end %>
+              <% end if company.id != current_company.id %>
+          <% end %>
+        </span>
+      <% end %>
+    </div>
     <% if policy(:cart).show? %>
       <div class="dropdown d-inline mr-2" id="cart">
         <a href="<%= customers_cart_path %>" role="button" id="cart-count">
@@ -76,9 +94,6 @@
         <i class="fal fa-cog"></i>
       </a>
       <span class="dropdown-menu dropdown-menu-right">
-        <%= link_to reset_current_company_customers_sign_in_steps_path, method: :post, :class => 'dropdown-item' do %>
-          <i class="fal fa-building"></i>&nbsp;Choose Another Company
-        <% end if policy(current_customers_contact).reset_current_company? %>
         <%= link_to edit_customers_profile_path, class: 'dropdown-item' do %>
           <i class="bmro-profile-icon"></i> Edit Profile
         <% end %>
