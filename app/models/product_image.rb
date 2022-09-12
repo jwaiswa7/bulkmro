@@ -1,9 +1,3 @@
-# frozen_string_literal: true
-
-class ProductImage
-  
-  include ActiveModel::Model
-
-  attr_accessor :image
+class ProductImage < ApplicationRecord
+    has_one_attached :image
 end
-  
