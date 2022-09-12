@@ -8,9 +8,10 @@
       </h3>
 
       <% if is_authorized(@company, 'edit') %>
-        <a href="<%= edit_overseers_account_company_path(@company.account, @company) %>" class="btn btn-warning bmro-button btn-rounded align-self-center btn-block-sm-down"><i class="bmro-update-icon"></i>Edit
+        <a href="<%= edit_overseers_account_company_path(@company.account, @company) %>" class="btn btn-warning bmro-button btn-rounded align-self-center btn-block-sm-down mb" ><i class="bmro-update-icon"></i>Edit
           Company</a>
       <% end %>
+      <a href="<%= new_overseers_company_product_image_path(@company)%>" class="btn btn-warning bmro-button btn-rounded align-self-center btn-block-sm-down"  style="margin-left: 1em"><i class="bmro-plus-icon"></i>Upload images</a>
     </div>
   </section>
 
