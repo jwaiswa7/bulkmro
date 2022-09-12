@@ -5,7 +5,7 @@ class Customers::SignInStepsController < Customers::BaseController
 
   def reset_current_company
     authorize @contact
-    session[:current_company_id] = nil
+    session[:current_company_id] = params[:company_id].to_i
     redirect_back fallback_location: customers_dashboard_path
   end
 
