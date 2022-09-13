@@ -62,7 +62,11 @@ class Customers::CustomerOrdersController < Customers::BaseController
     if account_managers.present?
       email_service.send_order_approval_email(account_managers)
     end
-
+    default_managers = @customer_order.company.default_managers
+    if default_managers.present?
+      email_service.send_order_approval_email(default_managers)
+    end
+    
     redirect_to order_confirmed_customers_customer_order_path(@customer_order)
   end
 

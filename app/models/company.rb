@@ -381,4 +381,8 @@ class Company < ApplicationRecord
     company_amount = self.company_transactions_amounts.where(financial_year: Company.current_financial_year).last
     company_amount.total_amount.to_f if company_amount.present?
   end
+
+  def default_managers
+    [inside_sales_owner, outside_sales_owner, sales_manager, logistics_owner]
+  end
 end
