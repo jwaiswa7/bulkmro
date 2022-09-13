@@ -19,9 +19,9 @@ class Services::Overseers::EmailMessages::SalesMailer < Services::Shared::BaseSe
     service.send_email_message(order_contact, template_id, template_data, subject, contact)
   end
 
-  def send_order_approval_email(account_managers)
-    if Rails.env.production?
-      contact_managers = account_managers
+  def send_order_approval_email(account_and_default_managers)
+    if Rails.env.production? || Rails.env.staging?
+      contact_managers = account_and_default_managers
     else
       contact_managers = current_overseer.present? ? [current_overseer] : Overseer.where(email: Settings.sendgrid.default_email)
     end
@@ -30,7 +30,7 @@ class Services::Overseers::EmailMessages::SalesMailer < Services::Shared::BaseSe
     subject = 'Please confirm the Order Number #' + customer_order.online_order_number.to_s
 
     service = Services::Overseers::EmailMessages::SendEmail.new
-    service.send_email_messages(contact_managers, template_id, template_data, subject, account_managers)
+    service.send_email_messages(contact_managers, template_id, template_data, subject, account_and_default_managers)
   end
 
   def get_template_data
