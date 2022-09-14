@@ -9,6 +9,15 @@ class Overseers::Companies::ProductImagesController < Overseers::Companies::Base
       product_image.save 
       byebug
     end
+    
+    if invalid_images.count.positive?
+      @product_image = ProductImage.new
+      @product_image.invalid_uploads = invalid_images
+      render 'new'
+    else  
+      redirect_to overseers_company_path(@company)
+    end
+    
   end
 
   private
