@@ -1,0 +1,29 @@
+
+<div class="col-4">
+
+<%= render layout: 'shared/layouts/form' do %>
+  <%= simple_form_for([@company, @product_image], url: overseers_company_product_images_path(@company), :html => {:class => 'needs-validation mt-3', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
+    <%= render 'shared/snippets/form_errors', f: f %>
+    <div class="card">
+      <div class="card-header">Upload Product images</card>
+      <div class="card-body">
+        <p>Upload images with the name as the product SKU for them to be successfully attached to the product</p>
+        <% if @product_image&.invalid_uploads&.count&.positive? %>
+          <p class="text-danger">The files with the following names could not be uploaded</p>
+          <ul>
+           <% @product_image.invalid_uploads.each do |name| %> 
+            <li><%= name %></li>
+           <% end %>
+          </ul>
+        <% end %>
+        <div class="form-row ">
+          <%= f.file_field :image, multiple: true, class: "form-control" %>
+        </div>
+        <div class="form-group mb-0">
+          <%= f.submit(class: 'bmro-button btn-block') %>
+        </div>
+      </div>
+    </div>
+  <% end %>
+<% end %>
+</div>

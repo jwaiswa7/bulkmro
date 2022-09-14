@@ -770,6 +770,8 @@ Rails.application.routes.draw do
       scope module: 'companies' do
         resources :customer_orders
 
+        resources :product_images
+
         resources :customer_products do
           collection do
             post 'generate_catalog'

@@ -8,7 +8,7 @@
       </h3>
 
       <% if is_authorized(@company, 'edit') %>
-        <a href="<%= edit_overseers_account_company_path(@company.account, @company) %>" class="btn btn-warning bmro-button btn-rounded align-self-center btn-block-sm-down"><i class="bmro-update-icon"></i>Edit
+        <a href="<%= edit_overseers_account_company_path(@company.account, @company) %>" class="btn btn-warning bmro-button btn-rounded align-self-center btn-block-sm-down mb" ><i class="bmro-update-icon"></i>Edit
           Company</a>
       <% end %>
     </div>
@@ -422,6 +422,7 @@
           <% end %>
           <% content_for :heading_buttons, flush: true do %>
             <div>
+              <a href="<%= new_overseers_company_product_image_path(@company)%>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down mb-2 mb-md-0 mr-1 bmro-button"><i class="bmro-plus-icon"></i>Upload images</a>
               <% if is_authorized(:customer_product, 'generate_catalog') %>
                 <a href="<%= generate_catalog_overseers_company_customer_products_path(@company) %>" data-method="post" class="btn btn-success btn-rounded align-self-center btn-block-sm-down mb-2 mb-md-0 mr-1 bmro-button"><i class="fal fa-plus-circle mr-1"></i>Generate
                   Catalog</a>
