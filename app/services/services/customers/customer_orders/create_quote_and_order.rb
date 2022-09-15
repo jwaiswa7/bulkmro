@@ -20,8 +20,8 @@ class Services::Customers::CustomerOrders::CreateQuoteAndOrder < Services::Share
             inquiry.save!
 
             cost_price = row.product.inquiry_product_suppliers.minimum('unit_cost_price') if row.product.inquiry_product_suppliers.present?
-            if cost_price <= row.customer_product.customer_price
-            margin_percentage = (( (row.customer_product.customer_price - cost_price) / row.customer_product.customer_price ) * 100).round(2) if cost_price
+            if cost_price && cost_price <= row.customer_product.customer_price
+              margin_percentage = (( (row.customer_product.customer_price - cost_price) / row.customer_product.customer_price ) * 100).round(2) 
             else
               margin_percentage = 0
               cost_price = row.customer_product.customer_price
