@@ -5,9 +5,7 @@ class Services::Customers::Finders::SalesOrders < Services::Customers::Finders::
 
   def all_records
     account = Account.find_by_name("Henkel")
-    indexed_records = if (current_company.account == account) && current_contact.present? && current_company.present?
-      super.filter(filter_by_value('company_id', current_company.id).merge(filter_by_value('contact_id', current_contact.id)))
-    elsif current_company.present?
+    indexed_records = if current_company.present?
       super.filter(filter_by_value('company_id', current_company.id))
     else
       super
