@@ -43,9 +43,9 @@ class Services::Customers::CustomerOrders::CreateQuoteAndOrder < Services::Share
         sales_quote.save!
         sales_quote.save_and_sync
 
-        remote_uid = SalesQuote.maximum('remote_uid') + 1
-        sales_quote.update_attributes(remote_uid: remote_uid)
-        sales_quote.inquiry.update_attributes(quotation_uid: remote_uid)
+        # remote_uid = SalesQuote.maximum('remote_uid') + 1
+        # sales_quote.update_attributes(remote_uid: remote_uid)
+        # sales_quote.inquiry.update_attributes(quotation_uid: remote_uid)
 
         # sales order
 
@@ -53,7 +53,7 @@ class Services::Customers::CustomerOrders::CreateQuoteAndOrder < Services::Share
         sales_order.legacy_metadata = { company_total: sales_orders_total }
         sales_order.save!
 
-        sales_order.update_attributes(sent_at: Time.now)
+        # sales_order.update_attributes(sent_at: Time.now)
 
         date = Date.today
         year = date.year
