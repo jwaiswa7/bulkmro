@@ -20,12 +20,16 @@ class Services::Customers::CustomerOrders::CreateQuoteAndOrder < Services::Share
             inquiry.save!
 
             cost_price = row.product.inquiry_product_suppliers.minimum('unit_cost_price') if row.product.inquiry_product_suppliers.present?
+            if cost_price <= row.customer_product.customer_price
             margin_percentage = (( (row.customer_product.customer_price - cost_price) / row.customer_product.customer_price ) * 100).round(2) if cost_price
-
+            else
+              margin_percentage = 0
+              cost_price = row.customer_product.customer_price
+            end
             inquiry.inquiry_products.last.inquiry_product_suppliers.build(supplier_id: Company.where(name: "Bulk MRO Industrial Supply Pvt. Ltd." , account_id: 1).last.id ,unit_cost_price: cost_price, lead_time: Date.today + 7 ,gst: 18.0,)
             inquiry.save!
 
-            sales_quote.rows.build(inquiry_product_supplier_id: inquiry.inquiry_products.last.inquiry_product_suppliers.last.id , tax_code_id: row.tax_code_id , tax_rate_id: row.tax_rate_id , lead_time_option_id: LeadTimeOption.where( min_days: 7, max_days: 7).last.id , quantity: row.quantity ,measurement_unit_id: row.product.measurement_unit_id , margin_percentage: margin_percentage , unit_selling_price: row.customer_product.customer_price )
+            sales_quote.rows.build(inquiry_product_supplier_id: inquiry.inquiry_products.last.inquiry_product_suppliers.last.id , remote_uid: inquiry.inquiry_products.last.sr_no , tax_code_id: row.tax_code_id , tax_rate_id: row.tax_rate_id , lead_time_option_id: LeadTimeOption.where( min_days: 7, max_days: 7).last.id , quantity: row.quantity ,measurement_unit_id: row.product.measurement_unit_id , margin_percentage: margin_percentage , unit_selling_price: row.customer_product.customer_price )
 
         end
 
@@ -37,7 +41,7 @@ class Services::Customers::CustomerOrders::CreateQuoteAndOrder < Services::Share
         sales_orders_total = @customer_order.company.company_transactions_amounts.where(financial_year: Company.current_financial_year).last.total_amount
         sales_quote.metadata = { company_total: sales_orders_total }
         sales_quote.save!
-        # sales_quote.save_and_sync
+        sales_quote.save_and_sync
 
         remote_uid = SalesQuote.maximum('remote_uid') + 1
         sales_quote.update_attributes(remote_uid: remote_uid)
@@ -47,8 +51,9 @@ class Services::Customers::CustomerOrders::CreateQuoteAndOrder < Services::Share
 
         sales_order = Services::Overseers::SalesOrders::BuildFromSalesQuote.new(sales_quote, nil).call
         sales_order.legacy_metadata = { company_total: sales_orders_total }
-
         sales_order.save!
+
+        sales_order.update_attributes(sent_at: Time.now)
 
         date = Date.today
         year = date.year
