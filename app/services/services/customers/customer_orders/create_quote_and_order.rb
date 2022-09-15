@@ -78,7 +78,7 @@ class Services::Customers::CustomerOrders::CreateQuoteAndOrder < Services::Share
         #   end
         sales_order.update_index
 
-        # end
+        end
 
     end
   
