@@ -8,10 +8,7 @@ class CustomerOrderApproval < ApplicationRecord
 
   def update_inquiry_addresses
     if self.customer_order.po_reference.present?
-      inquiry = Inquiry.where(company_id: self.customer_order.company_id , customer_po_number: self.customer_order.po_reference).last
-      inquiry.billing_address_id = self.customer_order.billing_address_id
-      inquiry.shipping_address_id = self.customer_order.shipping_address_id
-      inquiry.save!
+      Services::Customers::CustomerOrders::CreateQuoteAndOrder.new(self.customer_order).call
     end
   end
 end
