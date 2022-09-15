@@ -35,8 +35,6 @@ class Customers::CustomerOrdersController < Customers::BaseController
       @customer_order.save
       @customer_order.update_attributes(online_order_number: Services::Resources::Shared::UidGenerator.online_order_number(@customer_order.id))
 
-      Services::Customers::CustomerOrders::Approval.new(current_customers_contact, current_cart, current_company, @customer_order).call
-
       current_cart.items.each do |cart_item|
         @customer_order.rows.where(product_id: cart_item.product_id).first_or_create do |row|
           row.customer_order_id = @customer_order.id
@@ -46,6 +44,8 @@ class Customers::CustomerOrdersController < Customers::BaseController
           row.tax_code_id = cart_item.customer_product.best_tax_code.id
         end
       end
+
+      Services::Customers::CustomerOrders::Approval.new(current_customers_contact, current_cart, current_company, @customer_order).call
 
       if payment.present?
         payment.update_attributes!(customer_order: @customer_order)
