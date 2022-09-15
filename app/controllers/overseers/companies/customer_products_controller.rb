@@ -66,7 +66,7 @@ class Overseers::Companies::CustomerProductsController < Overseers::Companies::B
     service = Services::Overseers::Exporters::CustomerProductsExporter.new(params, current_overseer, [])
     service.call
 
-    redirect_to url_for(Export.customer_product.last.report)
+    redirect_to url_for(Export.customer_products.last.report)
   end
 
   def edit
