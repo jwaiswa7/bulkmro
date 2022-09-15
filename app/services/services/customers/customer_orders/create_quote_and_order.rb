@@ -29,7 +29,7 @@ class Services::Customers::CustomerOrders::CreateQuoteAndOrder < Services::Share
             inquiry.inquiry_products.last.inquiry_product_suppliers.build(supplier_id: Company.where(name: "Bulk MRO Industrial Supply Pvt. Ltd." , account_id: 1).last.id ,unit_cost_price: cost_price, lead_time: Date.today + 7 ,gst: 18.0,)
             inquiry.save!
 
-            sales_quote.rows.build(inquiry_product_supplier_id: inquiry.inquiry_products.last.inquiry_product_suppliers.last.id , tax_code_id: row.tax_code_id , tax_rate_id: row.tax_rate_id , lead_time_option_id: LeadTimeOption.where( min_days: 7, max_days: 7).last.id , quantity: row.quantity ,measurement_unit_id: row.product.measurement_unit_id , margin_percentage: margin_percentage , unit_selling_price: row.customer_product.customer_price )
+            sales_quote.rows.build(inquiry_product_supplier_id: inquiry.inquiry_products.last.inquiry_product_suppliers.last.id , remote_uid: inquiry.inquiry_products.last.sr_no , tax_code_id: row.tax_code_id , tax_rate_id: row.tax_rate_id , lead_time_option_id: LeadTimeOption.where( min_days: 7, max_days: 7).last.id , quantity: row.quantity ,measurement_unit_id: row.product.measurement_unit_id , margin_percentage: margin_percentage , unit_selling_price: row.customer_product.customer_price )
 
         end
 
