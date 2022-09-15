@@ -77,7 +77,7 @@ class Services::Customers::CustomerOrders::CreateQuoteAndOrder < Services::Share
         #     sales_order.rejection.destroy! if sales_order.rejection.present?
         #   end
         sales_order.update_index
-
+        end
 
     end
   
