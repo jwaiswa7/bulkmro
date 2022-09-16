@@ -54,12 +54,7 @@
               <%= f.input :activity_date, as: :string, input_html: {:'data-toggle' => 'datepicker', class: 'bmro-form-input' } %>
             </div>
           </div>
-          <div class="form-group">
-            <div class="select2-wrapper bmro-collegues">
-              <%= f.input :overseer_ids, as: :select, label: 'Colleagues', collection: Overseer.all.collect {|x| [x.to_s, x.id]}, input_html: {:multiple => true, :class => 'form-control select2-multiple bmro-form-input bmro-dropdown-icon', :"data-placeholder" => 'Select other overseers'} %>
-            </div>
-          </div>
-
+          <%= f.association :overseers, collection: Overseer.all ,label: 'Colleagues' , placeholder:  "Select other overseers" , input_html: {class: 'custom-select2-search select2-multiple ', multiple: true } %>
           <%= f.input :points_discussed, input_html: {class: 'bmro-form-input bmro-input-values' } %>
           <%= f.input :actions_required, input_html: {class: 'bmro-form-input bmro-input-values' } %>
 

@@ -230,3 +230,10 @@ label[class*='col'] {
   label {
     display: block;
   }
+
+.custom-select2-search{  
+  .select2-selection__rendered .select2-search{
+    background-image: none !important;
+    // height: 15px !important;
+  }
+}
