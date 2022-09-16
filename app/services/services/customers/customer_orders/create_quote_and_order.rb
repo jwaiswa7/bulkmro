@@ -19,7 +19,7 @@ class Services::Customers::CustomerOrders::CreateQuoteAndOrder < Services::Share
             inquiry.inquiry_products.build(sr_no: inquiry.inquiry_products.present? ? ( inquiry.inquiry_products.last.sr_no + 1 ) : 1 , product_id: row.product_id.to_i , quantity: row.quantity.to_i)
             inquiry.save!
 
-            cost_price = row.product.inquiry_product_suppliers.minimum('unit_cost_price') if row.product.inquiry_product_suppliers.present?
+            cost_price = row.product.inquiry_product_suppliers.where("unit_cost_price >  0.0").minimum('unit_cost_price') if row.product.inquiry_product_suppliers.present?
             if cost_price && cost_price <= row.customer_product.customer_price
               margin_percentage = (( (row.customer_product.customer_price - cost_price) / row.customer_product.customer_price ) * 100).round(2) 
             else
