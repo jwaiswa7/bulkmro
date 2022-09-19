@@ -76,9 +76,9 @@ class Services::Customers::CustomerOrders::CreateQuoteAndOrder < Services::Share
             company_so_amount.increment_total_amount(sales_order.calculated_total_with_tax) if company_so_amount.present?
           end
           Services::Overseers::Inquiries::UpdateStatus.new(sales_order, :order_won).call
-        #   comment = sales_order.inquiry.comments.create!(message: 'SAP Approved' , sales_order: sales_order)
+          comment = sales_order.inquiry.comments.create!(message: 'SAP Approved' , sales_order: sales_order)
           if sales_order.approval.blank?
-            sales_order.create_approval!(comment: comment, overseer: overseer)
+            sales_order.create_approval!(comment: comment)
             sales_order.rejection.destroy! if sales_order.rejection.present?
           end
         sales_order.update_index
