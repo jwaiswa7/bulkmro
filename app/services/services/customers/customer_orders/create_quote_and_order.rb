@@ -77,10 +77,10 @@ class Services::Customers::CustomerOrders::CreateQuoteAndOrder < Services::Share
           end
           Services::Overseers::Inquiries::UpdateStatus.new(sales_order, :order_won).call
         #   comment = sales_order.inquiry.comments.create!(message: 'SAP Approved' , sales_order: sales_order)
-        #   if sales_order.approval.blank?
-        #     sales_order.create_approval!(comment: comment, overseer: overseer)
-        #     sales_order.rejection.destroy! if sales_order.rejection.present?
-        #   end
+          if sales_order.approval.blank?
+            sales_order.create_approval!(comment: comment, overseer: overseer)
+            sales_order.rejection.destroy! if sales_order.rejection.present?
+          end
         sales_order.update_index
         end
 

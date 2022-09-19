@@ -45,7 +45,7 @@
         </div>
         <div class="col-6 col-md-3">
           <strong class="d-block">Sales Order Date</strong>
-          <%= format_date(@sales_order.approval.created_at) %>
+          <%= format_date(@sales_order.approval.try(:created_at)) %>
         </div>
         <div class="col-6 col-md-3">
           <strong class="d-block">Payment Terms</strong>
