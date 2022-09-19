@@ -1,7 +1,7 @@
 class Services::Shared::Migrations::AddDefaultLogisticsInCompany < Services::Shared::Migrations::MigrationsV2
   def add_default_logistics_in_company
     @invalid_remote_uid = []
-    service = Services::Shared::Spreadsheets::CsvImporter.new('client_mapping.csv', 'seed_files')
+    service = Services::Shared::Spreadsheets::CsvImporter.new('Client_mapping_1.csv', 'seed_files')
     Chewy.strategy(:bypass) do
       service.loop do |row|
         remote_uid = row.get_column('remote_uid')
