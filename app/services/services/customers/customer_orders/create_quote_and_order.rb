@@ -40,7 +40,7 @@ class Services::Customers::CustomerOrders::CreateQuoteAndOrder < Services::Share
 
           if inquiry_product.inquiry_product_suppliers.where(supplier_id: supplier_id).count > 0
             inquiry_product_supplier = inquiry_product.inquiry_product_suppliers.where(supplier_id: supplier_id).last
-            inquiry_product_supplier.update(unit_cost_price: cost_price, lead_time: Date.today + 7 ,gst: 18.0)
+            inquiry_product_supplier.update(unit_cost_price: cost_price, lead_time: Date.today + 7 ,gst: row.tax_rate.tax_percentage)
           else
             inquiry_product.inquiry_product_suppliers.build(supplier_id: supplier_id,unit_cost_price: cost_price, lead_time: Date.today + 7 ,gst: row.tax_rate.tax_percentage)
             inquiry_product.save!
