@@ -12,24 +12,41 @@ class Services::Customers::CustomerOrders::CreateQuoteAndOrder < Services::Share
         inquiry.save!
 
         last_sale_quote = inquiry.sales_quotes.last.try(:id)
-        sales_quote = SalesQuote.create(inquiry_id: inquiry.id , sent_at: Time.now , parent_id: last_sale_quote)
+        sales_quote = SalesQuote.new(inquiry_id: inquiry.id , sent_at: Time.now , parent_id: last_sale_quote)
 
         @customer_order.rows.each do |row|
+          #calculate cost price and supplier
 
+          cost_price = row.product.inquiry_product_suppliers.where("unit_cost_price >  0.0").minimum('unit_cost_price') if row.product.inquiry_product_suppliers.present?
+          if cost_price && cost_price <= row.customer_product.customer_price
+            margin_percentage = (( (row.customer_product.customer_price - cost_price) / row.customer_product.customer_price ) * 100).round(2) 
+          else
+            margin_percentage = 0
+            cost_price = row.customer_product.customer_price
+          end
+
+          supplier_id = Company.where(name: "Bulk MRO Industrial Supply Pvt. Ltd." , account_id: 1).last.id 
+
+          #create inquiry Product and inquiry_product_supplier
+
+          if inquiry.product_ids.include?(row.product_id.to_i)
+            inquiry_product = inquiry.inquiry_products.where(product_id: row.product_id.to_i).last
+            inquiry_product.update( quantity: row.quantity.to_i)
+          else
             inquiry.inquiry_products.build(sr_no: inquiry.inquiry_products.present? ? ( inquiry.inquiry_products.last.sr_no + 1 ) : 1 , product_id: row.product_id.to_i , quantity: row.quantity.to_i)
             inquiry.save!
+            inquiry_product =  inquiry.inquiry_products.last
+          end
 
-            cost_price = row.product.inquiry_product_suppliers.where("unit_cost_price >  0.0").minimum('unit_cost_price') if row.product.inquiry_product_suppliers.present?
-            if cost_price && cost_price <= row.customer_product.customer_price
-              margin_percentage = (( (row.customer_product.customer_price - cost_price) / row.customer_product.customer_price ) * 100).round(2) 
-            else
-              margin_percentage = 0
-              cost_price = row.customer_product.customer_price
-            end
-            inquiry.inquiry_products.last.inquiry_product_suppliers.build(supplier_id: Company.where(name: "Bulk MRO Industrial Supply Pvt. Ltd." , account_id: 1).last.id ,unit_cost_price: cost_price, lead_time: Date.today + 7 ,gst: 18.0,)
-            inquiry.save!
-
-            sales_quote.rows.build(inquiry_product_supplier_id: inquiry.inquiry_products.last.inquiry_product_suppliers.last.id , remote_uid: inquiry.inquiry_products.last.sr_no , tax_code_id: row.tax_code_id , tax_rate_id: row.tax_rate_id , lead_time_option_id: LeadTimeOption.where( min_days: 7, max_days: 7).last.id , quantity: row.quantity ,measurement_unit_id: row.product.measurement_unit_id , margin_percentage: margin_percentage , unit_selling_price: row.customer_product.customer_price )
+          if inquiry_product.inquiry_product_suppliers.where(supplier_id: supplier_id).count > 0
+            inquiry_product_supplier = inquiry_product.inquiry_product_suppliers.where(supplier_id: supplier_id).last
+            inquiry_product_supplier.update(unit_cost_price: cost_price, lead_time: Date.today + 7 ,gst: 18.0)
+          else
+            inquiry_product.inquiry_product_suppliers.build(supplier_id: supplier_id,unit_cost_price: cost_price, lead_time: Date.today + 7 ,gst: row.tax_rate.tax_percentage)
+            inquiry_product.save!
+            inquiry_product_supplier = inquiry_product.inquiry_product_suppliers.last
+          end
+          sales_quote.rows.build(inquiry_product_supplier_id: inquiry_product_supplier.id , remote_uid: inquiry_product.sr_no , tax_code_id: row.tax_code_id , tax_rate_id: row.tax_rate_id , lead_time_option_id: LeadTimeOption.where( min_days: 7, max_days: 7).last.id , quantity: row.quantity ,measurement_unit_id: row.product.measurement_unit_id , margin_percentage: margin_percentage , unit_selling_price: row.customer_product.customer_price )
 
         end
 
