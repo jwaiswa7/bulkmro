@@ -1,9 +1,9 @@
 name,company_alias,remote_uid,inside_sales_owner,outside_sales_owner,logistics_owner,Sales_manager,pan,created_at
 Legacy Company,Sun Petrochem,200001,Shailender Agarwal,Shailender Agarwal,Ajay Rathod,Shailender Agarwal,NOPAN12345,16-Oct-18
-GE India Industrial Pvt. Ltd.,GE,1,Suhas Nair,Shailender Agarwal,Pooja Poojary,Lavanya Jamma,AAACG4901D,16-Oct-18
+GE India Industrial Pvt. Ltd.,GE,1,Suhas Nair,Shailender Agarwal,Vinit bagkar,Lavanya Jamma,AAACG4901D,16-Oct-18
 Ingersoll Rand Technologies and Services Pvt. Ltd.,IR,2,Lavanya Jamma,Lavanya Jamma,Ajay Rathod,Lavanya Jamma,AAACI2961B,16-Oct-18
 Cummins India Ltd.,Cummins,3,Aditya Andankar,Abid Shaikh,Farhan Ansari,Lavanya Jamma,AABCC1533E,16-Oct-18
-Applied Materials India Pvt. Ltd.,AMAT,4,Supriya Govalkar,Shailender Agarwal,Pooja Poojary,Shailender Agarwal,AAECA2635C,16-Oct-18
+Applied Materials India Pvt. Ltd.,AMAT,4,Supriya Govalkar,Shailender Agarwal,Vinit bagkar,Shailender Agarwal,AAECA2635C,16-Oct-18
 Supermarket Grocery Supplies Pvt. Ltd.,Big Basket,10,Aditya Andankar,Abid Shaikh,Ajay Rathod,,AAQCS4503H,16-Oct-18
 Cipla Ltd.,Cipla,12,,,Ajay Rathod,,PANNO12345,16-Oct-18
 Alstom Bharat Forge Power Pvt. Ltd.,Alstom Bharat Forge Power,13,Gaurang Shah,Shailender Agarwal,Ahmedabad Logistics,Lavanya Jamma,AAICA1334J,16-Oct-18
@@ -117,14 +117,14 @@ Flipkart India Pvt. Ltd.,FlipKart,125,Pravin Ganekar,Pravin Ganekar,Ajay Rathod,
 Futuristic Climate Controls Pvt. Ltd.,Futuristic Climate,126,,,Ajay Rathod,,PANNO12345,16-Oct-18
 GAIL (India) Ltd.,GAIL,127,Lavanya Jamma,Lavanya Jamma,Mahendra Kolekar,Lavanya Jamma,AAACG1209J,16-Oct-18
 Galiakotwala Engineering Co. Pvt. Ltd.,Galiakotwala,128,Lavanya Jamma,Lavanya Jamma,Ajay Rathod,Lavanya Jamma,AAACG5701D,16-Oct-18
-GE Diesel Locomotive Pvt. Ltd.,GE,129,Aditya Andankar,Ankit Shah,Pooja Poojary,Lavanya Jamma,PANNO1234K,16-Oct-18
-GE India Industrial Pvt. Ltd. (GE Energy Connections-SRGI),GE,130,Swati Bhosale,Madan Sharma,Pooja Poojary,Lavanya Jamma,AAACG4901D,16-Oct-18
+GE Diesel Locomotive Pvt. Ltd.,GE,129,Aditya Andankar,Ankit Shah,Vinit bagkar,Lavanya Jamma,PANNO1234K,16-Oct-18
+GE India Industrial Pvt. Ltd. (GE Energy Connections-SRGI),GE,130,Swati Bhosale,Madan Sharma,Vinit bagkar,Lavanya Jamma,AAACG4901D,16-Oct-18
 Wipro GE Healthcare Pvt. Ltd.,Wipro,131,,,Ajay Rathod,,PANNO12345,16-Oct-18
-GE India Industrial Pvt. Ltd. (Division: JFWTC),GE,132,Lavanya Jamma,Lavanya Jamma,Pooja Poojary,Lavanya Jamma,AAACG4901D,16-Oct-18
-GE Infrastructure Transportation,GE,133,Lavanya Jamma,Lavanya Jamma,Pooja Poojary,Lavanya Jamma,PANNO1234K,16-Oct-18
-GE Oil & Gas India Private Limited Div-Dresser Valve,GE,134,Lavanya Jamma,Lavanya Jamma,Pooja Poojary,Lavanya Jamma,AAACG4901D,16-Oct-18
+GE India Industrial Pvt. Ltd. (Division: JFWTC),GE,132,Lavanya Jamma,Lavanya Jamma,Vinit bagkar,Lavanya Jamma,AAACG4901D,16-Oct-18
+GE Infrastructure Transportation,GE,133,Lavanya Jamma,Lavanya Jamma,Vinit bagkar,Lavanya Jamma,PANNO1234K,16-Oct-18
+GE Oil & Gas India Private Limited Div-Dresser Valve,GE,134,Lavanya Jamma,Lavanya Jamma,Vinit bagkar,Lavanya Jamma,AAACG4901D,16-Oct-18
 GE Power India Ltd.,GE,136,Jigar Patel,Rahul Dhanani,Ahmedabad Logistics,Jeetendra Sharma,AAICA1334J,16-Oct-18
-GE Transportation Systems,GE,137,Lavanya Jamma,Lavanya Jamma,Pooja Poojary,Lavanya Jamma,PANNO1234K,16-Oct-18
+GE Transportation Systems,GE,137,Lavanya Jamma,Lavanya Jamma,Vinit bagkar,Lavanya Jamma,PANNO1234K,16-Oct-18
 General Energy Management Systems Pvt. Ltd.,General Energy,138,,,Ajay Rathod,,PANNO12345,16-Oct-18
 GerOil Oil and Gas Products,GerOil,139,,,Ajay Rathod,,AEZPG1131P,16-Oct-18
 GL and V India Pvt. Ltd.,GL and V,140,,,Logistics Team,,PANNO12345,16-Oct-18
@@ -299,7 +299,7 @@ Shubham Housing Development Finance Co. Ltd.,Shubham Housing,314,,,Ajay Rathod,,
 Siddharth Enterprises,Siddharth Enterprise,315,,,Ajay Rathod,,AASFS5529E,16-Oct-18
 Siddhi Works,Siddhi Works,316,,,Ajay Rathod,,PANNO12345,16-Oct-18
 Sigma Engineers Works,Sigma Engineers,317,,,Ajay Rathod,,AYVPP9759Q,16-Oct-18
-GE Power Conversion India Pvt. Ltd.,GE,318,Shadab Shaikh,Shailender Agarwal,Pooja Poojary,Lavanya Jamma,AADCC1026E,16-Oct-18
+GE Power Conversion India Pvt. Ltd.,GE,318,Shadab Shaikh,Shailender Agarwal,Vinit bagkar,Lavanya Jamma,AADCC1026E,16-Oct-18
 Smart Industrial Supplies Trading,Smart Industrial,319,,,Ajay Rathod,,PANNO12345,16-Oct-18
 SMPS Supply Pvt. Ltd.,SMPS Supply,320,,,Ajay Rathod,,PANNO12345,16-Oct-18
 Sneha Enterprises,Sneha Enterprises,321,,,Ajay Rathod,,PANNO12345,16-Oct-18
@@ -454,7 +454,7 @@ R.P. Polymers,RP Polymers,484,,,Ajay Rathod,,PANNO12345,16-Oct-18
 Mavani Engineering and Die Maker,Mavani Engg,485,,,Ajay Rathod,,PANNO12345,16-Oct-18
 Evergreen Sales,Evergreen Sales,486,,,Ajay Rathod,,PANNO12345,16-Oct-18
 Ashok Leyland Ltd.,Ashok Leyland,487,,,Ajay Rathod,,AAACA4651L,16-Oct-18
-GE India Industrial Pvt. Ltd. (Division: Wind Energy) (Wind India BID code 285005),GE,488,Aditya Andankar,Ankit Shah,Pooja Poojary,Lavanya Jamma,AAACG4901D,16-Oct-18
+GE India Industrial Pvt. Ltd. (Division: Wind Energy) (Wind India BID code 285005),GE,488,Aditya Andankar,Ankit Shah,Vinit bagkar,Lavanya Jamma,AAACG4901D,16-Oct-18
 Cg Power and Industrial Solutions Ltd.,CG Power,200457,Deepa Gade,Shailender Agarwal,Farhan Ansari,Lavanya Jamma,AAACC3840K,16-Oct-18
 Mylan,Mylan,491,,,Ajay Rathod,,PANNO12345,16-Oct-18
 DHL Global Business Services,DHL,492,Aditya Andankar,Ankit Shah,Ajay Rathod,Lavanya Jamma,PANNO1234K,16-Oct-18
@@ -515,7 +515,7 @@ Satyam Autocomponents Ltd.,Satyam Autocomponent,553,,,Ajay Rathod,,PANNO12345,16
 Delhivery Pvt. Ltd.,Delhivery,554,Aditya Andankar,Abid Shaikh,Ajay Rathod,Lavanya Jamma,AAPCS9575E,16-Oct-18
 Central UP Gas,Central UP Gas,555,,,Ajay Rathod,,PANNO12345,16-Oct-18
 Tata Power DDL,Tata,556,,,Ajay Rathod,,PANNO12345,16-Oct-18
-GE Global Research,GE,557,Lavanya Jamma,Lavanya Jamma,Pooja Poojary,Lavanya Jamma,PANNO1234K,16-Oct-18
+GE Global Research,GE,557,Lavanya Jamma,Lavanya Jamma,Vinit bagkar,Lavanya Jamma,PANNO1234K,16-Oct-18
 NOCIL Ltd.,NOCIL,558,,,Ajay Rathod,,PANNO12345,16-Oct-18
 Chemco Plastic Industries Pvt. Ltd.,Chemco Plastic,559,,,Ajay Rathod,,PANNO12345,16-Oct-18
 VMC Steel,VMC Steel,560,,,Ajay Rathod,,PANNO12345,16-Oct-18
@@ -954,7 +954,7 @@ Chandramukhi Sales Sand Co.,Chandramukhi Sales,1003,,,Ajay Rathod,,PANNO12345,16
 KMG Agro Foods Pvt. Ltd.,KMG Agro Foods,1004,,,Ajay Rathod,,PANNO12345,16-Oct-18
 Kishor Industries,Kishor Industries,1006,,,Ajay Rathod,,PANNO12345,16-Oct-18
 Parmar Engineering Works,Parmar Engineering,1007,,,Ajay Rathod,,PANNO12345,16-Oct-18
-Reliance Industries Ltd.,Reliance,1008,Aditya Andankar,Abid Shaikh,Pooja Poojary,Lavanya Jamma,AAACR5055K,16-Oct-18
+Reliance Industries Ltd.,Reliance,1008,Aditya Andankar,Abid Shaikh,Vinit bagkar,Lavanya Jamma,AAACR5055K,16-Oct-18
 Skimmeronline Pty. Ltd.,Skimmeronline,1009,,,Ajay Rathod,,PANNO12345,16-Oct-18
 Remsons Industries Ltd.,Remsons,1010,,,Ajay Rathod,,PANNO12345,16-Oct-18
 Rahi Systems Pvt. Ltd.,Rahi Systems,1011,,,Ajay Rathod,,PANNO12345,16-Oct-18
@@ -1489,7 +1489,7 @@ Erection Instrumentation Pvt. Ltd.,ERECTION INSTRUMENTATION,1585,,,Ajay Rathod,,
 Troikaa Pharmaceuticals Ltd.,Troikaa Pharma,1586,Aditya Andankar,Abid Shaikh,Ajay Rathod,,PANNO12345,16-Oct-18
 Jadid Technology India Pvt. Ltd.,Jadid Technology,1587,,,Ajay Rathod,,AADCJ8496R,16-Oct-18
 Oerlikon Textile India Pvt. Ltd.,Oerlikon,1588,,,Ajay Rathod,,PANNO12345,16-Oct-18
-Applied Materials Inc.,AMAT,1589,Supriya Govalkar,Shailender Agarwal,Pooja Poojary,Lavanya Jamma,PANN12345K,16-Oct-18
+Applied Materials Inc.,AMAT,1589,Supriya Govalkar,Shailender Agarwal,Vinit bagkar,Lavanya Jamma,PANN12345K,16-Oct-18
 Graziano Trasmissioni India Pvt. Ltd.,Graziano,1590,Aditya Andankar,Bhupendra Kathait,Minal Mali,Madan Sharma,AAACG4258M,16-Oct-18
 Hindustan Zinc Ltd.,HZL,1591,Aditya Andankar,Ankit Shah,Minal Mali,Lavanya Jamma,PANNO12345,16-Oct-18
 Jindal Steel and Power Ltd.,JINDAL,1592,Anand Negi,Shailender Agarwal,Minal Mali,Priyanka Rajpurkar,PANNO12345,16-Oct-18
@@ -1599,7 +1599,7 @@ Bajaj Auto Ltd.,Bajaj,1698,,,Ajay Rathod,,,16-Oct-18
 Aurobindo Pharma Ltd.,Aurobindo Pharma,1699,,,Ajay Rathod,,,16-Oct-18
 Exel Rubber Ltd.,Exel Rubber,1700,,,Ajay Rathod,,,16-Oct-18
 Magnaflux,Magnaflux,1701,,,Ajay Rathod,,,16-Oct-18
-Reliance Corporate IT Park Ltd.,Reliance,1702,Aditya Andankar,Abid Shaikh,Pooja Poojary,Lavanya Jamma,AABCD7169H,16-Oct-18
+Reliance Corporate IT Park Ltd.,Reliance,1702,Aditya Andankar,Abid Shaikh,Vinit bagkar,Lavanya Jamma,AABCD7169H,16-Oct-18
 SAMS Facilities Management Pvt Ltd,SAMS Facilities,1703,,,Ajay Rathod,,No PAN 123,16-Oct-18
 One97 Communications Ltd,Paytm,1704,,,Ajay Rathod,,AAJCP4398N,16-Oct-18
 Lucas TVS Ltd.,Lucas TVS,1705,,,Ajay Rathod,,PANNO12345,16-Oct-18
@@ -1682,7 +1682,7 @@ Naryara Energy Ltd,Naryara Energy,1785,Aditya Andankar,Ankit Shah,Ajay Rathod,,P
 Briny Business Solutions LLP,Briny Business Solutions,1786,Aditya Andankar,Ankit Shah,Ajay Rathod,,PANNO12345,16-Oct-18
 Vashisht Carbons,Vashisht Carbons,1787,Aditya Andankar,Ankit Shah,Ajay Rathod,,AAJFV9113A,16-Oct-18
 Bizongo,Bizongo,1788,Aditya Andankar,Ankit Shah,Ajay Rathod,,PANNO12345,16-Oct-18
-Delhi International Airport Ltd.,Delhi International Airport,1789,Aditya Andankar,Abid Shaikh,Pooja Poojary,Lavanya Jamma,AACCD3570F,16-Oct-18
+Delhi International Airport Ltd.,Delhi International Airport,1789,Aditya Andankar,Abid Shaikh,Vinit bagkar,Lavanya Jamma,AACCD3570F,16-Oct-18
 Archana Enterprises,Archana Enterprises,1790,Aditya Andankar,Ankit Shah,Ajay Rathod,,AQYPJ9969M,16-Oct-18
 GAIL India Limited,GAIL,1791,Mithun Trisule,Lalit Dhingra,Ajay Rathod,Lavanya Jamma,AAACG1209J,16-Oct-18
 Rumy Consultancy Services,Rumy Consultancy,1792,Aditya Andankar,Ankit Shah,Ajay Rathod,,PANNO12345,16-Oct-18
@@ -1753,7 +1753,7 @@ Zodiac Energy Ltd.,Zodiac Energy,1856,Aditya Andankar,Abid Shaikh,Ajay Rathod,,P
 Lear Corporation,Lear Corporation,1858,Aditya Andankar,Abid Shaikh,Logistics Team,,PANNO12345,16-Oct-18
 Carlsberg India Pvt. Ltd.,Carlsberg,1859,Aditya Andankar,Abid Shaikh,Minal Mali,Ved Prakash,AAJCS8454J,16-Oct-18
 JSW Steel Ltd.,JSW Steel,1860,Aditya Andankar,Abid Shaikh,Arti Parteti,Lavanya Jamma,AAACJ4323N,16-Oct-18
-GE India Industrial Pvt. Ltd. (Division: Renewable Energy),GE,1861,Aditya Andankar,Abid Shaikh,Pooja Poojary,Lavanya Jamma,AAACG4901D,16-Oct-18
+GE India Industrial Pvt. Ltd. (Division: Renewable Energy),GE,1861,Aditya Andankar,Abid Shaikh,Vinit bagkar,Lavanya Jamma,AAACG4901D,16-Oct-18
 Konecranes Pvt. Ltd.,Konecranes,1862,Aditya Andankar,Abid Shaikh,Ajay Rathod,,AAACW0328C,16-Oct-18
 Pureport Engineering Pvt. Ltd.,Pureport Engineering,1863,Aditya Andankar,Abid Shaikh,Ajay Rathod,,AAJCP4498H,16-Oct-18
 Signature Cosmetics and Fragrances,Signature Cosmetics and Fragrances,1864,Aditya Andankar,Abid Shaikh,Ajay Rathod,,PANNO12345,16-Oct-18
@@ -2536,7 +2536,7 @@ Steel Case India,Trade,SC-01153,,,Ajay Rathod,,AABPB8843R,17-Jul-17
 Oil Seals MfgCoPvt. Ltd.,Trade,SC-01155,,,Ajay Rathod,,PANNO1234O,17-Jul-17
 Rita Enterprise,Trade,SC-01156,Pravin Shinde,Shailender Agarwal,Ajay Rathod,Lavanya Jamma,CKIPS9482C,17-Jul-17
 Senior India,Trade,SC-01158,,,Ajay Rathod,,AAEFS7411D,17-Jul-17
-Applied Materials India Pvt. Ltd.,Trade,SC-01844,,,Pooja Poojary,,,17-Jul-17
+Applied Materials India Pvt. Ltd.,Trade,SC-01844,,,Vinit bagkar,,,17-Jul-17
 Darmon Electronics,Trade,SC-01801,,,Ajay Rathod,,ABVPT9543K,17-Jul-17
 ATR Chemicals And Lubricants,Trade,SC-01276,,,Ajay Rathod,,AAVFA3926G,17-Jul-17
 Zen Exim Pvt. Ltd.,Trade,SC-01174,,,Ajay Rathod,,PANNO1234O,17-Jul-17
@@ -4178,7 +4178,7 @@ Mobil,Trade,SC-01170,,,Ajay Rathod,,PANNO1234O,17-Jul-17
 Valvoline,Trade,SC-01171,,,Ajay Rathod,,PANNO1234O,17-Jul-17
 Industrial Belts Corporation  ,Trade,SC-01173,Vallabh Agarwal,Vijay Singh,Ajay Rathod,Priyanka Rajpurkar,AABFI0706Q,17-Jul-17
 Galaxy Machinery Pvt. Ltd.,Trade,SC-01177,,,Ajay Rathod,,PANNO1234O,17-Jul-17
-Ge India Industrial Pvt. Ltd.,Trade,SC-01178,,,Pooja Poojary,,PANNO1234O,17-Jul-17
+Ge India Industrial Pvt. Ltd.,Trade,SC-01178,,,Vinit bagkar,,PANNO1234O,17-Jul-17
 Rubbermaid - Cleaning,Trade,SC-01181,,,Ajay Rathod,,PANNO1234O,17-Jul-17
 Kimberly-Clark Professional,Trade,SC-01183,,,Ajay Rathod,,PANNO1234O,17-Jul-17
 Chicago Pneumatic Sales,Trade,SC-01184,Naisargi Bhatt,Jignesh Shah,Ahmedabad Logistics,Ankit Shah,AAACA4074D,17-Jul-17
@@ -9016,7 +9016,7 @@ Balaji Switchgears Pvt. Ltd.,Trade,SC-209050,Prashant Kumar,Shailender Agarwal,A
 Kamlesh Steels,Trade,SC-209051,Dipali Ghanvat,Shailender Agarwal,Ajay Rathod,Nilesh Desai,ACEPB2608M,4-Apr-19
 Siddharth Electricals,Trade,SC-209052,Mithun Trisule,Shailender Agarwal,Ajay Rathod,Lavanya Jamma,ABCPG5611N,4-Apr-19
 Fast Track Batteries,Trade,SC-209053,Mithun Trisule,Shailender Agarwal,Ajay Rathod,Lavanya Jamma,AWKPA7290C,4-Apr-19
-GE POWER INDIA LIMITED.,Trade,SC-209054,Dipen Trivedi,Shailender Agarwal,Pooja Poojary,Nilesh Desai,AAACN0255D,4-Apr-19
+GE POWER INDIA LIMITED.,Trade,SC-209054,Dipen Trivedi,Shailender Agarwal,Vinit bagkar,Nilesh Desai,AAACN0255D,4-Apr-19
 Quality Test Lab Pvt Ltd.   ,Trade,SC-209055,Neha Mundhe,Shailender Agarwal,Ajay Rathod,Nilesh Desai,AAACQ2778G,4-Apr-19
 Nayagi Enterprises Private Limited,Trade,SC-209056,Husna Khan,Shailender Agarwal,Ajay Rathod,Nilesh Desai,AADCN6136C,4-Apr-19
 Altaf Electronics (Major),Trade,SC-209057,Ghousuddin Shaikh,Shailender Agarwal,Farhan Ansari,Lavanya Jamma,PANNO4258E,4-Apr-19
@@ -10946,7 +10946,7 @@ Fence Coat Engineers,Trade,SC-211150,Rajani Kyatham,Shailender Agarwal,Ajay Rath
 Sigma Quality Management Solutions,Trade,SC-211151,Rajani Kyatham,Shailender Agarwal,Ajay Rathod,Shailender Agarwal,AWKPC0104B,3-Dec-19
 Global Marketing Services,Trade,SC-211152,Shashank Nandwal,Ashish Dobariya,Ajay Rathod,Jeetendra Sharma,AADFG6308A,3-Dec-19
 Avlock International India.Pvt. Ltd,Trade,SC-211153,Ajitsinh Kadam,Gajendra Pawar,Ajay Rathod,Priyanka Rajpurkar,AAMCA4234B,3-Dec-19
-GE Oil & Gas India Private Limited BID CODE : BID205175,GE,211154,Alfaiz Shaikh,Shailender Agarwal,Pooja Poojary,Subrata Baruah,AAACD2199L,3-Dec-19
+GE Oil & Gas India Private Limited BID CODE : BID205175,GE,211154,Alfaiz Shaikh,Shailender Agarwal,Vinit bagkar,Subrata Baruah,AAACD2199L,3-Dec-19
 Pooja Computers,Trade,SC-211155,Subin Nadar,Shailender Agarwal,Ajay Rathod,Subrata Baruah,EJDPD3476F,3-Dec-19
 F. H. Traders,Trade,SC-211156,Subin Nadar,Shailender Agarwal,Ajay Rathod,Subrata Baruah,BILPS7475M,3-Dec-19
 NIHVA Technologies Pvt. Ltd,Trade,SC-211157,Rajani Kyatham,Shailender Agarwal,Ajay Rathod,Shailender Agarwal,AAECN0437H,4-Dec-19
@@ -12126,7 +12126,7 @@ Micropack Systems,Trade,SC-212362,Ajay Kondal,Ajay Kondal,Ajay Rathod,Ajay Konda
 Mediklin Healthcare Limited,Trade,SC-212363,Ajitsinh Kadam,Hardik Mehta,Ajay Rathod,Priyanka Rajpurkar,AAACG1910C,10-Apr-20
 Safe Health Enterprises,Trade,SC-212364,Dipali Ghanvat,Lavanya Jamma,Ajay Rathod,Lavanya Jamma,BJXPM9596E,10-Apr-20
 AL HAMZA LEATHER GALLERY,Trade,SC-212365,Kevin Kunnassery,Vijay Singh,Ajay Rathod,Shailender Agarwal,ATRPK4367J,10-Apr-20
-GE Oil & Gas India Pvt. Ltd,GE,212366,Bhalchandra Thorat,Shailender Agarwal,Pooja Poojary,Shailender Agarwal,AAACD2199L,11-Apr-20
+GE Oil & Gas India Pvt. Ltd,GE,212366,Bhalchandra Thorat,Shailender Agarwal,Vinit bagkar,Shailender Agarwal,AAACD2199L,11-Apr-20
 Sree Analytical Inc.,Trade,SC-212367,Sajida Sayyed,Shailender Agarwal,Ajay Rathod,Shailender Agarwal,AFBPV0343P,11-Apr-20
 Karmanye Traders Pvt Ltd,Karmanye Traders,212368,Subin Nadar,Shailender Agarwal,Ajay Rathod,Shailender Agarwal,AAECK9199F,11-Apr-20
 Shakti Surgical & Scientific,Trade,SC-212369,Subin Nadar,Vijay Singh,Ajay Rathod,Shailender Agarwal,AKSPM4204C,11-Apr-20
@@ -16023,7 +16023,7 @@ CITIZEN WEIGHING SYSTEMS,Trade,SC-216480,Rashmi  Patel,Jignesh Shah,Ajay Rathod,
 Bluestream Manufacturing Services Pvt. Ltd,Trade,SC-216481,Tejaswini  Mane,Vijay Narayan,Ajay Rathod,Ved Prakash,AACCB5734D,16-Aug-21
 TANOTIS PRIVATE LIMITED,Trade,SC-216482,Dipali Ghanvat,Vijay Singh,Ajay Rathod,Hardik Mehta,AAICT4883B,16-Aug-21
 ARADHYA FIRE PROTECTION,Trade,SC-216483,Jigar Patel,Jignesh Shah,Ajay Rathod,Jeetendra Sharma,CTRPS0224C,16-Aug-21
-Wabtec India Industrial Private Limited,Wabtec India,216484,Pooja Egade,Vijay Prasad,Pooja Poojary,Shailender Agarwal,AABCG0865H,16-Aug-21
+Wabtec India Industrial Private Limited,Wabtec India,216484,Pooja Egade,Vijay Prasad,Vinit bagkar,Shailender Agarwal,AABCG0865H,16-Aug-21
 SAMAR SALES ,Trade,SC-216485,Avni Shah,Jeetendra Sharma,Ajay Rathod,Jeetendra Sharma,AVYPK9938L,16-Aug-21
 Inder Industries ,Trade,16486,Shubham  Ladge,Ved Prakash,Ajay Rathod,Ved Prakash,AAAFI7590M,16-Aug-21
 Manzoor Ahsan grand sons,Trade,SC-216487,Pooja Egade,Vijay Prasad,Ajay Rathod,Shailender Agarwal,AAHPI1033N,16-Aug-21
@@ -16547,7 +16547,7 @@ HECHT Technologie GmbH,Trade,SC-217004,Bhakti Patil,Pravin Bhosale,Ajay Rathod,S
 Shree Sahajanands Automeck Pvt. Ltd,Trade,SC-217005,Tejas  Panchal,Ved Prakash,Ajay Rathod,Ved Prakash,AASCS5958A,19-Oct-21
 Bengaluru Paper Cups,Trade,SC-217006,Rohit  Hemale,Vijay Singh,Ajay Rathod,Ved Prakash,BECPR3189E,19-Oct-21
 Green Business Certification Institute Pvt. Ltd.,Trade,SC-217007,Bhakti Patil,Shailender Agarwal,Ajay Rathod,Shailender Agarwal,AAGCG1639L,19-Oct-21
-Wabtec Locomotive Private Limited,Wabtec Locomotive,217008,Pooja Egade,Vijay Prasad,Pooja Poojary,Shailender Agarwal,AAGCG1589H,20-Oct-21
+Wabtec Locomotive Private Limited,Wabtec Locomotive,217008,Pooja Egade,Vijay Prasad,Vinit bagkar,Shailender Agarwal,AAGCG1589H,20-Oct-21
 Scancon Encoders A/S,Foreign Trade,SC-217009,Sajida Sayyed,Gajendra Pawar,Ajay Rathod,Shailender Agarwal,NOPAN12345,20-Oct-21
 Montanari Lifts Components Pvt Ltd ,Trade,SC-217010,Jigar Patel,Ketan Makwana,Ajay Rathod,Jeetendra Sharma,AAFCM7750F,20-Oct-21
 Ritu Kaushal,Ritu Kaushal,SC-217011,Ajay Kondal,Ajay Kondal,Ajay Rathod,Nitin Nabera,ALIPK6393D,20-Oct-21
