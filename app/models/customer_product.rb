@@ -103,8 +103,8 @@ class CustomerProduct < ApplicationRecord
 
   def best_image
     if best_images.present?
-      if best_images.first.present?
-        best_images.first
+      if best_images.last.present?
+        best_images.last
       else
         nil
       end
