@@ -41,6 +41,8 @@ json.data (@companies) do |company|
                   company.supplied_brands&.uniq&.count,
                   company.supplied_products&.uniq&.count,
                   company.supplied_brands.map(&:name)&.uniq&.join(', ').upcase,
+                  company.addresses.map(&:state)&.uniq&.join(', '),
+                  company.addresses.map(&:country_name)&.uniq&.join(', '),
                   company.created_by.to_s,
                   format_succinct_date(company.created_at),
               ]
@@ -59,6 +61,8 @@ json.columnFilters [
                        [],
                        [],
                        [{ "source": autocomplete_overseers_brands_path }],
+                       AddressState.all.map { |s| { "label": s.name, "value": s.id.to_s } }.as_json,
+                       Address.has_company_id.map { |country| { "label": country.country_name, "value": country.country_name.to_s.downcase } }.uniq.as_json,
                        [],
                        []
                    ]

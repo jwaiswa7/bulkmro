@@ -26,6 +26,8 @@ class Services::Overseers::Finders::Companies < Services::Overseers::Finders::Ba
       @search_filters.each do |data_obj|
         if data_obj['name'] ==  'supplied_brand'
           indexed_records = indexed_records.filter(filter_by_array('supplied_brand', [data_obj['search']['value']]))
+        elsif data_obj['name'] ==  'supplied_addresses_states'
+          indexed_records = indexed_records.filter(filter_by_array('supplied_addresses_states', [data_obj['search']['value']]))
         end
       end
     end
@@ -62,6 +64,8 @@ class Services::Overseers::Finders::Companies < Services::Overseers::Finders::Ba
           indexed_records = indexed_records.filter(filter_by_array('supplied_brand', [ax['search']['value']]))
         elsif ax['name'] ==  'supplied_product_category'
           indexed_records = indexed_records.filter(filter_by_array('supplied_product_category', [ax['search']['value']]))
+        elsif ax['name'] ==  'supplied_addresses_states'
+          indexed_records = indexed_records.filter(filter_by_array('supplied_addresses_states', [ax['search']['value']]))
         end
       end
     end
