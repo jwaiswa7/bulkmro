@@ -70,7 +70,7 @@ class Overseers::InwardDispatchPolicy < Overseers::ApplicationPolicy
     inward_dispatch_delivered_quantities = record.rows.sum(&:delivered_quantity)
     if record.delivery_challans.present?
       record.delivery_challans.each do |dc|
-        total_quantity += dc.rows.sum(&:quantity)
+        total_quantity += dc.rows.map(&:quantity).compact.sum
       end
     end
 
