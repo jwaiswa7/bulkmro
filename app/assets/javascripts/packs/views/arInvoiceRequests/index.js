@@ -4,7 +4,7 @@ const index = () => {
     updateSummaryBox()
 
     $('.datatable').on('click','.cancel-ar-invoice, .reject-ar-invoice',function () {
-        var status = $(this).attr('title')
+        var status = $(this).attr('data-status')
         if( confirm('Do you want to '+ status.toLocaleLowerCase() +' the AR invoice request') ) {
             var id = $(this).data('invoice-request-id')
             var $this = $(this)
