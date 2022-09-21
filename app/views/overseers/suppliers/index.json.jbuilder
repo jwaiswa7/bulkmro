@@ -54,7 +54,7 @@ json.columnFilters [
                        [],
                        [],
                        [],
-                       [{ "source": autocomplete_active_overseers_categories_path }],
+                       [{ "source": autocomplete_overseers_categories_path }],
                        [],
                        [],
                        [],
