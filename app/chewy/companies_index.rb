@@ -25,6 +25,8 @@ class CompaniesIndex < BaseIndex
     field :supplied_products_count, value: -> (record) {record.supplied_products.uniq.count}, type: 'integer'
     field :supplied_brand_names, value: -> (record) {record.supplied_brands.map(&:name).uniq.join(',').upcase}
     field :supplied_brand, value: -> (record) {record.supplied_brands.pluck(:id).uniq}
+    field :supplied_addresses_states, value: -> (record) {record.addresses.pluck(:address_state_id).uniq}
+    field :supplied_countries, value: -> (record) {record.addresses.map(&:country_name)&.uniq&.compact  }, analyzer: 'substring'
     field :created_at, value: -> (record) {record.created_at}, type: 'date'
     field :updated_at, value: -> (record) {record.updated_at}, type: 'date'
   end
