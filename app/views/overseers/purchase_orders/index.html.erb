@@ -1,6 +1,6 @@
 <% provide :can_be_ajaxed, true %>
 <% provide :can_be_searched_or_created, true %>
-<% provide :can_be_directly_exported, true %>
+<% provide :can_be_directly_exported, true if policy(:download).allowed? %>
 <% provide :wrap_whitespace, true %>
 <% provide :container_fluid, true %>
 <% provide :can_be_directly_exported_filtered_records, true %>
