@@ -67,7 +67,7 @@ class Overseers::InwardDispatchPolicy < Overseers::ApplicationPolicy
 
   def create_new_dc?
     total_quantity = 0
-    inward_dispatch_delivered_quantities = record.rows.sum(&:delivered_quantity)
+    inward_dispatch_delivered_quantities = record.rows.map(&:delivered_quantity).compact.sum
     if record.delivery_challans.present?
       record.delivery_challans.each do |dc|
         total_quantity += dc.rows.map(&:quantity).compact.sum
