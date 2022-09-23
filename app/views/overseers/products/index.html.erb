@@ -20,6 +20,7 @@
   <th class="no-sort desktop text-right" width="33px" data-name="is_service"> Service</th>
   <th class="no-sort desktop text-left" width="65px">SAP</th>
   <th class="no-sort desktop text-right" width="33px" data-name="is_active"> Active</th>
+  <th class="no-sort desktop text-left" width="88px">Available Qty</th>
   <th class="sort desktop text-left" width="75px" data-name="created_at">Created</th>
   <th class="no-sort all text-left" width="88px">Created By</th>
   <th class="no-sort desktop text-left" width="88px">Approved By</th>
@@ -38,6 +39,7 @@
   <td data-filter="false"></td>
   <td data-filter="false"></td>
   <td data-filter="false"></td>
+  <td data-filter="false"></td>
   <td data-filter="daterange">
   <td data-filter="false"></td>
   <td data-filter="false"></td>
@@ -47,3 +49,36 @@
   <%= render layout: 'shared/layouts/datatable' do %>
   <% end %>
 </div>
+
+<!-- Qty modal -->
+
+<div class="modal fade" id="inStock" role="dialog">
+  <div class="modal-dialog modal-lg">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header pb-0">
+        <h4 class="modal-title">Product Inventory</h4>
+      </div>
+      <div class="modal-body py-0 px-2">
+        <table class="table table-bordered dt-responsive datatable w-100" width="780px" data-sort="false" id="stock-table">
+          <thead>
+          <tr>
+            <th class="no-sort">Warehouse</th>
+            <th class="no-sort text-right">In Stock</th>
+            <th class="no-sort text-right">Committed</th>
+            <th class="no-sort text-right">Ordered</th>
+            <th class="no-sort text-right">Available</th>
+          </tr>
+          </thead>
+          <tbody>
+          </tbody>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn bmro-button btn-outline-danger btn-block" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- end Qty modal -->
