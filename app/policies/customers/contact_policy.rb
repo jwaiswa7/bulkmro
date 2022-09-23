@@ -2,7 +2,7 @@
 
 class Customers::ContactPolicy < Customers::ApplicationPolicy
   def edit_current_company?
-    manager?
+    manager? || customer?
   end
 
   def update_current_company?
