@@ -270,7 +270,7 @@ module StatusesHelper
   # sets the status of the customer order based on the existance of an invoice delivery date
   def customer_order_status(sales_order)
     
-    sales_order.customer_order_status == "Delivered" ? format_badge("Delivered", 'color-green') : format_badge("Processed", 'color-yellow')
+    sales_order.customer_order_status == "Delivered" ? format_badge("Delivered", 'color-green') : format_badge("Processing", 'color-yellow')
     
   end
 
