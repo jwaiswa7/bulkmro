@@ -366,4 +366,14 @@ module DisplayHelper
   def get_instock_status(customer_product, *warehouses)
     customer_product.product.stocks.where(warehouse_id: warehouses).sum(&:instock).to_i > 0 ? true : false
   end
+
+  def add_to_cart(product)
+    form = "
+      <form action='#'>
+        <input type='number' name='amount' min=0, class='' style='width: 50px' />
+        <input type='submit' value='Submit'/>
+      </form> 
+    "
+    form.html_safe
+  end
 end
