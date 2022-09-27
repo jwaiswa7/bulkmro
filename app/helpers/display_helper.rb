@@ -373,7 +373,9 @@ module DisplayHelper
         <input type='hidden', name='product_id' value='#{product.product_id}'/>
         <input type='hidden', name='customer_product_id' value='#{product.id}'/>
         <input type='number' name='amount' min=0, value=1 class='' style='width: 50px' />
-        <input type='submit' value='Submit'/>
+        <button type='submit' style='border: none; background: none'>
+          <i class='fal fa-shopping-cart'></i>
+        </button>
       </form> 
     "
     form.html_safe

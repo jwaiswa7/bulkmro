@@ -4,8 +4,20 @@ class Customers::CartController < Customers::BaseController
 
   def add_item 
     authorize @cart
-    @cart_item = @cart.items.new(product_id: params[:product_id], customer_product_id: params[:customer_product_id], quantity: params[:amount])
-    @cart_item.save
+    # check if cart item exists, and update the quantity
+    @cart_item = CartItem.where(
+      product_id: params[:product_id],
+      customer_product_id: params[:customer_product_id],
+      cart: @cart
+    ).last
+    if @cart_item
+      @cart_item.update(quantity: @cart_item.quantity += params[:amount].to_i)
+    else 
+      # create one it it doesn't exist
+      @cart_item = @cart.items.new(product_id: params[:product_id], customer_product_id: params[:customer_product_id], quantity: params[:amount])
+      @cart_item.save
+    end
+
     respond_to do |format|
       format.js { }
     end
