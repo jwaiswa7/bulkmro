@@ -18,7 +18,7 @@
     <%#= f.hidden_field :inward_dispatch_ids, value: action_name == "new"  ? @inward_dispatches.pluck(:id).join(',') :  @ar_invoice_request.inward_dispatches.pluck(:id).join(',') %>
     <% if @delivery_challans.present? %>
       <%= hidden_field_tag "delivery_challan_ids", action_name == "new" ? @delivery_challans.pluck(:id).join(',') : @ar_invoice_request.delivery_challan_ids.join(',') %>
-    <% else %>
+    <% elsif  @inward_dispatches.present? %>
       <%= hidden_field_tag "inward_dispatch_ids", action_name == "new" ? @inward_dispatches.pluck(:id).join(',') : @ar_invoice_request.inward_dispatch_ids.join(',') %>
     <% end %>
     <%#= hidden_field_tag "inward_dispatch_ids", action_name == "new" ? @inward_dispatches.pluck(:id).join(',') : @ar_invoice_request.inward_dispatch_ids.join(',') %>

@@ -60,5 +60,19 @@ class Services::Overseers::ArInvoiceRequests::New < Services::Shared::BaseServic
     @ar_invoice_request
   end
 
+  def ar_creation_from_sales_order
+    @sales_order = SalesOrder.where(id: sales_order_id).last
+    @ar_invoice_request = ArInvoiceRequest.new(overseer: current_overseer, sales_order: @sales_order, inquiry: @sales_order.inquiry)
+
+    @sales_order.rows.each do |row|
+     
+      @ar_invoice_request.rows.build( delivered_quantity: nil,
+                                      quantity: nil,
+                                      sales_order_id: @sales_order.id,
+                                      product_id: row.product_id, sales_order_row_id: row.id )
+    end
+    @ar_invoice_request
+  end
+
   attr_accessor :sales_order_id, :inward_dispatches, :current_overseer, :delivery_challans
 end
