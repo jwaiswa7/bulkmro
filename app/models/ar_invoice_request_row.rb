@@ -13,7 +13,7 @@ class ArInvoiceRequestRow < ApplicationRecord
   delegate :unit_selling_price_with_tax, to: :sales_order_row, allow_nil: true
 
   def is_delivered_quantity_less
-    errors.add(:delivered_quantity, 'must be less than Existing Quantity ') if delivered_quantity > quantity
+    errors.add(:delivered_quantity, 'must be less than Existing Quantity ') if quantity.present? && delivered_quantity > quantity
   end
 
   def to_s
