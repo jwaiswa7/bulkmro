@@ -1,6 +1,6 @@
 class NewCompanyReportsIndex < BaseIndex
   statuses =  Inquiry.statuses.except('Lead by O/S', 'Order Lost', 'Regret').keys
-  index_scope Inquiry.where.not(company_id: 1).where(status: statuses).with_includes 
+  define_type Inquiry.where.not(company_id: 1).where(status: statuses).with_includes do
     # default_import_options batch_size: 10000, bulk_size: 10.megabytes, refresh: false
     field :id, type: 'integer'
     field :live_inquiry, value: -> (record) { statuses.include?(record.status) ? 1 : 0 }, type: 'integer'
@@ -43,5 +43,5 @@ class NewCompanyReportsIndex < BaseIndex
     field :cancelled_invoiced_total, value: -> (record) { record.invoices.where(status: 'Cancelled').map(&:calculated_total).compact.sum}, type: 'double'
 
     field :sku, value: -> (record) {record.unique_skus_in_order }, type: 'integer'
-  
+  end
 end

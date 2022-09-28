@@ -1,5 +1,5 @@
 class SuggestionsIndex < BaseIndex
-  index_scope Inquiry.all 
+  define_type Inquiry.all do
     field :id
     field :inquiry_number, value: -> (record) { record.inquiry_number.to_i }, type: 'integer'
     field :inquiry_number_string, value: -> (record) { record.inquiry_number.to_s }, analyzer: 'substring'
@@ -39,5 +39,5 @@ class SuggestionsIndex < BaseIndex
         field :autocomplete, type: 'text',  analyzer: 'autocomplete'
       end
     end
-
+  end
 end

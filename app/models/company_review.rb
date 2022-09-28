@@ -1,6 +1,6 @@
 class CompanyReview < ApplicationRecord
   include Mixins::CanBeStamped
-  update_index('company_reviews') { self }
+  update_index('company_reviews#company_review') { self }
   pg_search_scope :locate, against: [:rating], associated_against: { created_by: [:first_name, :last_name], company: [:name],  }, using: { tsearch: { prefix: true } }
 
   belongs_to :company

@@ -12,7 +12,7 @@ class OutwardDispatch < ApplicationRecord
   has_many :email_messages
   after_save :status_auto_update
   scope :with_includes, -> { }
-  update_index('outward_dispatches') {self}
+  update_index('outward_dispatches#outward_dispatch') {self}
 
   enum status: {
       'Material Ready for Dispatch': 10,

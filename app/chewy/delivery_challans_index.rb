@@ -1,5 +1,5 @@
 class DeliveryChallansIndex < BaseIndex
-  index_scope DeliveryChallan.with_includes.all
+  define_type DeliveryChallan.with_includes.all do
     field :id, type: 'integer'
     field :inquiry_id, type: 'integer'
     field :inquiry_number, value: -> (record) { record.inquiry.inquiry_number.to_i if record.inquiry.present? }, type: 'integer'
@@ -20,6 +20,6 @@ class DeliveryChallansIndex < BaseIndex
     field :sales_order_date, type: 'date'
     field :created_by_id, type: 'integer'
     field :created_at, type: 'date'
-  
+  end
 end
 

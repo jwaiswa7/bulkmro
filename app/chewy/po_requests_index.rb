@@ -3,7 +3,7 @@ class PoRequestsIndex < BaseIndex
     PoRequest.statuses
     statuses = PoRequest.statuses
     email_statuses = PoRequest.email_statuses
-    index_scope PoRequest.all.send(:handled).with_includes
+    define_type PoRequest.all.send(:handled).with_includes do 
         field :id, type: 'integer'
         field :po_request_id, value: -> (record) { record.id }, type: 'integer'
         field :po_request_string, value: -> (record) { record.id.to_s } , analyzer: 'substring'
@@ -28,4 +28,5 @@ class PoRequestsIndex < BaseIndex
         field :outside_sales_executive, value: -> (record) { record.inquiry.outside_sales_owner.id if record.inquiry.present? && record.inquiry.outside_sales_owner.present? }
         field :procurement_operations, value: -> (record) { record.inquiry.procurement_operations_id if record.inquiry.present? && record.inquiry.procurement_operations.present? }
 
+    end
 end

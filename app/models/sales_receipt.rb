@@ -1,6 +1,6 @@
 class SalesReceipt < ApplicationRecord
   include Mixins::CanBeSynced
-  update_index('sales_receipts') { self }
+  update_index('sales_receipts#sales_receipt') { self }
   has_many :rows, class_name: 'SalesReceiptRow', dependent: :destroy
 
   belongs_to :company, required: false

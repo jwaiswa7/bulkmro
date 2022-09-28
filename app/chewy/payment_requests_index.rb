@@ -2,7 +2,7 @@ class PaymentRequestsIndex < BaseIndex
   statuses = PaymentRequest.statuses
   request_owners = PaymentRequest.request_owners
 
-  index_scope PaymentRequest.all 
+  define_type PaymentRequest.all do
     field :id, type: 'integer'
     field :status_string, value: -> (record) { record.status.to_s }, analyzer: 'substring'
     field :request_owner_string, value: -> (record) { record.request_owner }, analyzer: 'substring'
@@ -16,5 +16,5 @@ class PaymentRequestsIndex < BaseIndex
     field :inside_sales_owner, value: -> (record) { record.inquiry.inside_sales_owner.to_s if record.inquiry.present? }, analyzer: 'substring'
     field :created_at, type: 'date'
     field :updated_at, type: 'date'
-  
+  end
 end

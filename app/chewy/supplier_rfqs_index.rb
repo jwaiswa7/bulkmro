@@ -1,6 +1,6 @@
 class SupplierRfqsIndex < BaseIndex
   statuses = SupplierRfq.statuses
-  index_scope SupplierRfq 
+  define_type SupplierRfq do
     witchcraft!
     field :id, type: 'integer'
     field :inquiry_number, value: -> (record) { record.inquiry.inquiry_number.to_i }, type: 'integer'
@@ -15,5 +15,5 @@ class SupplierRfqsIndex < BaseIndex
     field :potential_value, value: -> (record) { record.calculated_total.to_s if record.calculated_total.present? }, type: 'double'
     field :calculated_total, value: -> (record) { record.calculated_total.to_s if record.calculated_total.present? }, analyzer: 'substring'
     field :calculated_total_with_tax, value: -> (record) { record.calculated_total_with_tax.to_s if record.calculated_total_with_tax.present? }, analyzer: 'substring'
-  
+  end
 end

@@ -1,5 +1,5 @@
 class SupplierProductsIndex < BaseIndex
-  index_scope SupplierProduct.all 
+  define_type SupplierProduct.all do
     field :id, type: 'integer'
     field :supplier_id, type: 'integer'
     field :supplier, value: -> (record) { record.supplier.name.to_s }, analyzer: 'substring'
@@ -12,5 +12,5 @@ class SupplierProductsIndex < BaseIndex
     field :supplier_price, type: 'integer'
     field :created_at, type: 'date'
     field :updated_at, type: 'date'
-  
+  end
 end

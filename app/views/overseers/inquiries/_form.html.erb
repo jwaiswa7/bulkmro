@@ -516,7 +516,7 @@
               </div>
 
             </div>
-             <%= f.nested_fields_for :inquiry_products, wrapper_tag: :div do |inquiry_product| %>
+            <%= f.nested_fields_for :inquiry_products, wrapper_tag: :div do |inquiry_product| %>
               <div class="form-row flex-row align-items-start w-100 col-md-12">
                 <%= inquiry_product.hidden_field :id %>
                 <% if inquiry_product.object.persisted? && inquiry_product.object.product.present? && inquiry_product.object.product.approved? %>
@@ -606,9 +606,9 @@
                 </div>
                 </div>
             <% end %>
-            <%if !f.object.persisted? || is_authorized(@inquiry, 'logistics') %>
+            <% if !f.object.persisted? || is_authorized(@inquiry, 'logistics') %>
               <%#= f.add_nested_fields_link :inquiry_products, 'Add a product', class: 'btn btn-outline-success btn-block' %>
-            <% else %> 
+            <% else %>
               <div class="form-row bmro-product-btn-parent">
                 <div class="bmro-fl">
                   <a href="<%= new_excel_import_overseers_inquiry_imports_path(@inquiry) %>" class="btn btn-block mb-2 mb-md-0 bmro-product-btn"><i class="bmro-addexcel-icon mr-1"></i>Add
