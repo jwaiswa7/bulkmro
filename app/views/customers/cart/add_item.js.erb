@@ -4,6 +4,7 @@
   }, {
       type: 'success'
   });
+  document.getElementById("count-cart-items").innerHTML = "<%= @cart.items.count %>"
 <% else %>
   $.notify({
       message: 'Item could not be added to the cart'
