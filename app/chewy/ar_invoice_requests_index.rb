@@ -1,6 +1,6 @@
 class ArInvoiceRequestsIndex < BaseIndex
   statuses = ArInvoiceRequest.statuses
-  define_type ArInvoiceRequest.all do
+  index_scope ArInvoiceRequest.all 
     field :id, type: 'integer'
     field :inquiry_number_string, value: -> (record) { record.inquiry.inquiry_number.to_s if record.inquiry.present? }, analyzer: 'substring'
     field :ar_invoice_number_string, value: -> (record) { record.ar_invoice_number.to_s}, analyzer: 'substring', fielddata: true
@@ -21,5 +21,5 @@ class ArInvoiceRequestsIndex < BaseIndex
     field :inside_sales_executive, value: -> (record) { record.inquiry.inside_sales_owner.id if record.inquiry.present? && record.inquiry.inside_sales_owner.present? }
     field :outside_sales_executive, value: -> (record) { record.inquiry.outside_sales_owner.id if record.inquiry.present? && record.inquiry.outside_sales_owner.present? }
     field :procurement_operations, value: -> (record) { record.inquiry.procurement_operations_id if record.inquiry.present? && record.inquiry.procurement_operations.present? }
-  end
+
 end

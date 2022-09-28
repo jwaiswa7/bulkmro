@@ -74,7 +74,7 @@ gem 'closure_tree'
 gem 'phony_rails'
 
 # Use Microsoft Azure for file storage
-gem 'azure-storage', require: false
+gem 'azure-storage-ruby', '~> 9001.0'
 gem 'azure-storage-blob'
 
 gem 'aws-sdk-s3', require: false
@@ -174,7 +174,7 @@ gem 'google-api-client', '~> 0.11'
 gem 'mini_magick'
 
 # This gem allows you to write static Rails views and partials using the Markdown syntax. No more editing prose in HTML!
-gem 'markdown-rails'
+#gem 'markdown-rails'
 
 # Star Rating
 gem 'ratyrate'
@@ -227,7 +227,7 @@ end
 #   gem 'bonsai-elasticsearch-rails', '< 7.0.0'
 # end
 
-gem 'elasticsearch', '< 7.0.0'
+gem 'elasticsearch', '7.13.0'
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]

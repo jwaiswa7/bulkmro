@@ -95,8 +95,8 @@ end
 
 json.recordsTotal @po_requests.count
 if action_name == 'index'
-  json.recordsFiltered @indexed_po_requests.total_count
+  json.recordsFiltered @indexed_po_requests.total_count rescue nil
 else
-  json.recordsFiltered @po_requests.total_count
+  json.recordsFiltered @po_requests.total_count rescue nil
 end
 json.draw params[:draw]

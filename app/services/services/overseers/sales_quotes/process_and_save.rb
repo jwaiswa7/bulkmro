@@ -34,7 +34,7 @@ class Services::Overseers::SalesQuotes::ProcessAndSave < Services::Shared::BaseS
       end
       supplier_rfqs = SupplierRfq.where(id: sales_quote.supplier_rfq_ids) if sales_quote.supplier_rfq_ids.present?
       if supplier_rfqs.present?
-        supplier_rfqs.map { |rfq| SupplierRfqsIndex::SupplierRfq.import([rfq.id])  }
+        supplier_rfqs.map { |rfq| SupplierRfqsIndex.import([rfq.id])  }
       end
     else
       sales_quote.reload

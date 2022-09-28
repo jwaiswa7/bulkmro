@@ -1,6 +1,6 @@
 class SalesQuotesIndex < BaseIndex
   statuses = Inquiry.statuses
-  define_type SalesQuote.all.with_includes do
+  index_scope SalesQuote.all.with_includes
     witchcraft!
     field :id, type: 'integer'
     field :inquiry_number, value: -> (record) { record.inquiry.inquiry_number.to_i }, type: 'integer'
@@ -40,5 +40,5 @@ class SalesQuotesIndex < BaseIndex
       field :brand, value: -> (record, sales_quote_row) { sales_quote_row.product.brand.name if sales_quote_row.product.brand.present? }, analyzer: 'substring'
       field :mpn, value: -> (record, sales_quote_row) { sales_quote_row.product.mpn if sales_quote_row.product.mpn.present? }, analyzer: 'substring'
     end
-  end
+
 end

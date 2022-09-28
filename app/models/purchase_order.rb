@@ -5,9 +5,9 @@ class PurchaseOrder < ApplicationRecord
   include Mixins::HasConvertedCalculations
   include Mixins::HasComments
   include Mixins::CanBeSynced
-  update_index('purchase_orders#purchase_order') { self }
-  update_index('customer_order_status_report#sales_order') { self.po_request.sales_order if self.po_request.present? }
-  update_index('po_requests#po_request') { self.po_request if self.po_request.present? }
+  update_index('purchase_orders') { self }
+  update_index('customer_order_status_report') { self.po_request.sales_order if self.po_request.present? }
+  update_index('po_requests') { self.po_request if self.po_request.present? }
 
   pg_search_scope :locate, against: [:id, :po_number], using: {tsearch: {prefix: true}}
 
@@ -276,7 +276,7 @@ class PurchaseOrder < ApplicationRecord
     else
       self.update_attribute(:material_status, 'Material Readiness Follow-Up')
     end
-    PurchaseOrdersIndex::PurchaseOrder.import([self.id])
+    PurchaseOrdersIndex.import([self.id])
   end
 
   def po_request_present?

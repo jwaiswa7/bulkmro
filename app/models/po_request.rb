@@ -6,9 +6,9 @@ class PoRequest < ApplicationRecord
   include Mixins::HasConvertedCalculations
   include Mixins::GetOverallDate
 
-  update_index('po_requests#po_request') { self }
-  update_index('purchase_orders#purchase_order') { purchase_order }
-  update_index('customer_order_status_report#sales_order') { sales_order }
+  update_index('po_requests') { self }
+  update_index('purchase_orders') { purchase_order }
+  update_index('customer_order_status_report') { sales_order }
   scope :with_includes, -> {includes(:inquiry)}
   pg_search_scope :locate, against: [:id], associated_against: { sales_order: [:id, :order_number], inquiry: [:inquiry_number, :customer_po_number], supplier: [:name], account: [:name] }, using: { tsearch: { prefix: true } }
   belongs_to :sales_order, required: false
@@ -146,9 +146,9 @@ class PoRequest < ApplicationRecord
 
   def update_po_index
     if purchase_order.present?
-      PurchaseOrdersIndex::PurchaseOrder.import([self.purchase_order.id])
+      PurchaseOrdersIndex.import([self.purchase_order.id])
     elsif self.saved_change_to_status? && self.status == 'Cancelled' && self.purchase_order_id_before_last_save.present?
-      PurchaseOrdersIndex::PurchaseOrder.import([self.purchase_order_id_before_last_save])
+      PurchaseOrdersIndex.import([self.purchase_order_id_before_last_save])
     end
   end
 

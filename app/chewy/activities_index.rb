@@ -1,7 +1,7 @@
 class ActivitiesIndex < BaseIndex
   purposes = Activity.purposes
   activity_types = Activity.activity_types
-  define_type Activity.with_includes do
+  index_scope Activity.with_includes 
     field :id, type: 'integer'
     field :created_by_id, value: -> (record) {record.created_by.id.to_s if record.created_by.present?}, type: 'integer'
     field :created_by, value: -> (record) {record.created_by.to_s}, analyzer: 'substring'
@@ -21,5 +21,5 @@ class ActivitiesIndex < BaseIndex
     field :activity_type, value: -> (record) {record.activity_type}, analyzer: 'substring'
     field :created_at, type: 'date'
     field :updated_at, type: 'date'
-  end
+  
 end

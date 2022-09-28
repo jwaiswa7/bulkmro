@@ -14,6 +14,7 @@ class Overseers::PoRequests::PaymentRequestsController < Overseers::PoRequests::
 
     if @payment_request.valid?
       ActiveRecord::Base.transaction do
+        # binding.pry
         @payment_request.save!
         @payment_request_comment = PaymentRequestComment.new(message: 'Payment Request submitted.', payment_request: @payment_request, overseer: current_overseer)
         @payment_request_comment.save!
@@ -62,12 +63,15 @@ class Overseers::PoRequests::PaymentRequestsController < Overseers::PoRequests::
         :status,
         :payment_terms,
         :purpose_of_payment,
+        :payment_request_approved_or_rejected,
+        :reason_for_rejection,
         :description,
         :supplier_bank_details,
         :company_bank_id,
         comments_attributes: [:id, :message, :created_by_id],
         transactions_attributes: [:id, :payment_type, :utr_or_cheque_no, :issue_date, :cheque_date, :amount_paid, :transaction_due_date, :status, :_destroy],
-        attachments: []
+        purchase_order_attributes: [rows_attributes: [:id, :selected, :due_date]],
+        attachments: []        
     )
   end
 

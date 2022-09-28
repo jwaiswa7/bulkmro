@@ -6,7 +6,7 @@ class PurchaseOrdersIndex < BaseIndex
   payment_request_statuses = PaymentRequest.statuses
   supplier_po_type = PoRequest.supplier_po_types
 
-  define_type PurchaseOrder.all.with_includes do
+  index_scope PurchaseOrder.all.with_includes 
     field :id
     field :inquiry_id, value: -> (record) { record.inquiry.id if record.inquiry.present? }, type: 'integer'
     field :inquiry, value: -> (record) { record.inquiry.to_s }, analyzer: 'substring'
@@ -55,5 +55,5 @@ class PurchaseOrdersIndex < BaseIndex
     field :po_request_present, value: -> (record) { record.po_request_present? }
     field :expected_delivery_date, value: -> (record) { record.revised_supplier_delivery_date}, type: 'date'
     field :latest_comment, value: -> (record) { record.last_comment.present? ? record.last_comment.created_at : Date.today }, type: 'date'
-  end
+
 end

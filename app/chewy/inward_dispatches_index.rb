@@ -6,7 +6,7 @@ class InwardDispatchesIndex < BaseIndex
   # payment_request_statuses = PaymentRequest.statuses
   # supplier_po_type = PoRequest.supplier_po_types
 
-  define_type InwardDispatch.all.with_includes do
+  index_scope InwardDispatch.all.with_includes 
     field :id
     field :inquiry_number, value: -> (record) { record.purchase_order.inquiry.inquiry_number if record.inquiry.present? }, type: 'integer'
     field :inquiry_id, value: -> (record) { record.purchase_order.inquiry.id if record.inquiry.present? }
@@ -41,5 +41,4 @@ class InwardDispatchesIndex < BaseIndex
     field :created_at, type: 'date'
     field :latest_comment, value: -> (record) { record.last_comment.present? ? record.last_comment.created_at : Date.today }, type: 'date'
     field :inside_sales_executive, value: -> (record) { record.inquiry.inside_sales_owner_id if record.inquiry.present? }, type: 'integer'
-  end
 end

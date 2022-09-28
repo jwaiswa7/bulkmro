@@ -2,7 +2,7 @@ class SalesInvoicesIndex < BaseIndex
   statuses = SalesInvoice.statuses
   opportunity_type = Inquiry.opportunity_types
 
-  define_type SalesInvoice.all.with_includes do
+  index_scope SalesInvoice.all.with_includes 
     field :id, type: 'integer'
     field :sales_order_id, value: -> (record) { record.sales_order.id if record.sales_order.present? }
     field :sales_order_number, value: -> (record) { record.sales_order.order_number.to_i if record.sales_order.present? }, type: 'long'
@@ -36,9 +36,7 @@ class SalesInvoicesIndex < BaseIndex
     field :cp_created_at_s, value: -> (record) { record.created_at.strftime('%d-%b-%Y').to_s if record.created_at.present? }, analyzer: 'substring'
     field :cp_delivery_date_s, value: -> (record) { record.delivery_date.strftime('%d-%b-%Y').to_s if record.delivery_date.present? }, analyzer: 'substring'
     field :cp_po_number_s, value: -> (record) { record.inquiry.customer_po_number.to_s if record.inquiry.present? && record.inquiry.customer_po_number.present? }, analyzer: 'substring'
-    field :cp_po_number, value: -> (record) { record.inquiry.customer_po_number if record.inquiry.present? && record.inquiry.customer_po_number.present? }, type: 'long'
     field :cp_order_date_s, value: -> (record) { record.inquiry.customer_order_date.strftime('%d-%b-%Y').to_s if record.inquiry.present? && record.inquiry.customer_order_date.present? }, analyzer: 'substring'
-    field :cp_order_date, value: -> (record) { record.inquiry.customer_order_date if record.inquiry.present? && record.inquiry.customer_order_date.present? }, type: 'date'
     field :payment_option_id, value: -> (record) { record.sales_order.present? ? record.sales_order.inquiry.present? ? record.sales_order.inquiry.payment_option.present? ? record.sales_order.inquiry.payment_option.id : '' : '' : '' }
     field :potential_value, value: -> (record) { record.try(:calculated_total_with_tax) }, type: 'double'
     field :invoice_created_at, value: -> (record) { record.mis_date if record.status != 'Cancelled' }, type: 'date'
@@ -47,7 +45,5 @@ class SalesInvoicesIndex < BaseIndex
     field :route_through_pod, value: -> (record) {record.mis_date if !record.has_attachment? && record.inquiry.present? && record.inquiry.opportunity_type == 'route_through' && record.status != 'Cancelled'}, type: 'date'
     field :opportunity_type, value: -> (record) {opportunity_type[record.inquiry.opportunity_type] if record.inquiry.present?}, type: 'integer'
     field :pod_type, value: -> (record) {(record.inquiry.opportunity_type != 'route_through' ? 40 : 70) if record.inquiry.present? && record.status != 'Cancelled' }, type: 'integer'
-    field :cp_ship_to_s, value: -> (record) { record.inquiry&.shipping_contact.try(:name) || record.inquiry&.billing_contact.try(:name) }, analyzer: 'substring'
-    field :cp_ship_to, value: -> (record) { record.inquiry&.shipping_contact_id || record.inquiry&.contact_id }, type: 'integer'
-  end
+  
 end

@@ -1,5 +1,5 @@
 class CompanyReportsIndex < BaseIndex
-  define_type Company.with_includes do
+  index_scope Company.with_includes
     default_import_options batch_size: 100, bulk_size: 10.megabytes, refresh: false
     field :id, type: 'integer'
     field :account_id, value: -> (record) {record.account_id}, type: 'integer'
@@ -37,5 +37,5 @@ class CompanyReportsIndex < BaseIndex
     end
 
     field :sku, value: -> (record) {record.final_sales_orders.uniq.map(&:products).flatten.uniq.count }, type: 'integer'
-  end
+  
 end

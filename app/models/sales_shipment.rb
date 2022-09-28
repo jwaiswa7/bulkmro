@@ -4,7 +4,7 @@ class SalesShipment < ApplicationRecord
   include Mixins::CanBeSynced
   include Mixins::CanBeStamped
 
-  update_index('sales_shipments#sales_shipment') { self }
+  update_index('sales_shipments') { self }
 
   belongs_to :sales_order
   has_one :inquiry, through: :sales_order

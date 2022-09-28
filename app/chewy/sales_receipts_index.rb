@@ -1,7 +1,7 @@
 class SalesReceiptsIndex < BaseIndex
   payment_types = SalesReceipt.payment_types
   payment_methods = SalesReceipt.payment_methods
-  define_type SalesReceipt.all.with_includes do
+  index_scope SalesReceipt.all.with_includes
     field :id, type: 'integer'
     field :company_id, value: -> (record) { record.company_id if record.company_id.present? }
     field :account_id, value: -> (record) { record.company.account.id if record.company_id.present? }
@@ -20,7 +20,7 @@ class SalesReceiptsIndex < BaseIndex
     field :currency_name, value: -> (record) { record.currency.name if record.currency_id.present? }
     field :created_at, type: 'date'
     field :updated_at, type: 'date'
-  end
+  
 
   def self.fields
     [:reference_number, :company_alias, :company, :payment_type_string, :payment_method_string, :currency_name]

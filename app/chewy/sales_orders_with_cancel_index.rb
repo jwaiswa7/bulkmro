@@ -1,5 +1,5 @@
 class SalesOrdersWithCancelIndex < BaseIndex
-  define_type SalesOrder.with_includes do
+  index_scope SalesOrder.with_includes 
     witchcraft!
     field :id, type: 'integer'
     field :order_number, value: -> (record) { record.order_number }, type: 'long'
@@ -14,5 +14,5 @@ class SalesOrdersWithCancelIndex < BaseIndex
     field :mis_date, value: -> (record) { record.mis_date }, type: 'date'
     field :created_at, type: 'date'
     field :updated_at, type: 'date'
-  end
+  
 end

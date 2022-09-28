@@ -5,7 +5,7 @@ class Contact < ApplicationRecord
   include Mixins::HasMobileAndTelephone
   include Mixins::CanBeActivated
 
-  update_index('contacts#contact') { self }
+  update_index('contacts') { self }
   pg_search_scope :locate, against: [:first_name, :last_name, :email], associated_against: { account: [:name] }, using: { tsearch: { prefix: true } }
 
   # Include default devise modules. Others available are:

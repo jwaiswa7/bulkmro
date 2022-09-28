@@ -1,5 +1,5 @@
 class InquiryMappingTat < ApplicationRecord
-  update_index('inquiry_mapping_tats#inquiry_mapping_tat') { self }
+  update_index('inquiry_mapping_tats') { self }
 
   attr_accessor :inside_sales_owner
 

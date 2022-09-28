@@ -16,7 +16,7 @@ class ArInvoiceRequest < ApplicationRecord
   accepts_nested_attributes_for :rows, reject_if: lambda { |attributes| attributes['product_id'].blank? }, allow_destroy: true
   validates_associated :rows, dependent: :destroy
 
-  update_index('ar_invoice_requests#ar_invoice_request') {self}
+  update_index('ar_invoice_requests') {self}
 
   enum status: {
       'AR Invoice requested': 10,
@@ -53,7 +53,7 @@ class ArInvoiceRequest < ApplicationRecord
       product_ids = self.rows.pluck(:product_id)
       if product_ids.present?
         inward_dispatch_ids = InwardDispatch.where(sales_order_id: sales_order.id).includes(:rows).where(inward_dispatch_rows: {product_id: product_ids}).pluck(:id).uniq
-        InwardDispatchesIndex::InwardDispatch.import([inward_dispatch_ids])
+        InwardDispatchesIndex.import([inward_dispatch_ids])
       end
     end
   end

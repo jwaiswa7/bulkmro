@@ -1,6 +1,6 @@
 class CompaniesIndex < BaseIndex
   businesses = Company.nature_of_businesses
-  define_type Company.where.not(account: nil, is_active: false).with_includes do
+  index_scope Company.where.not(account: nil).with_includes 
     field :id, type: 'integer'
     field :account_id, value: -> (record) {record.account_id}
     field :name, value: -> (record) {record.name}, analyzer: 'fuzzy_substring'
@@ -16,8 +16,7 @@ class CompaniesIndex < BaseIndex
     field :is_customer, value: -> (record) {record.is_customer?}
     field :rating, value: -> (record) {record.rating}, type: 'float'
     field :sap_status, value: -> (record) {record.synced?}
-    field :supplied_product_category, value: -> (record) {record.supplied_product_category } # add company categories to the index
-    
+
     field :nature_of_business_string, value: -> (record) {record.nature_of_business}
     field :nature_of_business, value: -> (record) {businesses[record.nature_of_business]}
     field :purchase_orders_count, value: -> (record) {record.purchase_orders.count}, type: 'integer'
@@ -29,5 +28,5 @@ class CompaniesIndex < BaseIndex
     field :supplied_countries, value: -> (record) {record.addresses.map(&:country_name)&.uniq&.compact  }, analyzer: 'substring'
     field :created_at, value: -> (record) {record.created_at}, type: 'date'
     field :updated_at, value: -> (record) {record.updated_at}, type: 'date'
-  end
+  
 end

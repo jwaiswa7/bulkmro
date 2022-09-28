@@ -1,12 +1,12 @@
 class CompanyBank < ApplicationRecord
   include Mixins::CanBeSynced
 
-  update_index('company_banks#company_bank') { self }
+  update_index('company_banks') { self }
   pg_search_scope :locate, against: [:account_number, :account_name, :branch], associated_against: { bank: [:name] }, using: { tsearch: { prefix: true } }
 
   belongs_to :company
   belongs_to :bank
-  belongs_to :ifsc_code
+  belongs_to :ifsc_code, optional: :true
   has_many :payment_requests
   has_many_attached :attachments
 

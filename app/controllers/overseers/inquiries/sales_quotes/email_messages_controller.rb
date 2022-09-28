@@ -37,7 +37,7 @@ class Overseers::Inquiries::SalesQuotes::EmailMessagesController < Overseers::In
 
       # update ES is_final field
       @inquiry.sales_quotes.each do |sq|
-        SalesQuotesIndex::SalesQuote.import sq, update_fields: [:is_final]
+        SalesQuotesIndex.import sq, update_fields: [:is_final]
       end
 
       @sales_quote.save_and_sync

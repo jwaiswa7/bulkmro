@@ -1,5 +1,5 @@
 class KraReportVarientsIndex < BaseIndex
-  define_type SalesOrder.without_cancelled.where.not(sent_at: nil) do
+  index_scope SalesOrder.without_cancelled.where.not(sent_at: nil) 
     default_import_options batch_size: 1000, bulk_size: 10.megabytes, refresh: false
     field :id, type: 'integer'
     field :inquiry_number, value: -> (record) { record.inquiry.inquiry_number.to_i }, type: 'integer'
@@ -29,5 +29,5 @@ class KraReportVarientsIndex < BaseIndex
     field :gross_margin_percentage, value: -> (record) { record.bible_margin_percentage }, type: 'double'
     field :gross_margin_actual, value: -> (record) { record.bible_actual_margin }, type: 'double'
     field :gross_margin_actual_percentage, value: -> (record) { record.bible_actual_margin_percentage }, type: 'double'
-  end
+
 end
