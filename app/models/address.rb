@@ -40,13 +40,12 @@ class Address < ApplicationRecord
   scope :has_company_id, -> {where.not(company_id: nil)}
   scope :with_includes, -> {includes(:state, :company)}
 
-  # validates_presence_of :name, :country_code, :city_name, :street1
-  # validates_presence_of :pincode, :state, :if => :domestic?
-  # validates_presence_of :state_name, :if => :international?
+
+  validates :street1, length: {minimum: 5, maximum: 100, too_long: "may not be longer than %{count} characters"}, allow_blank: true
+  validates :street2, length: {minimum: 5, maximum: 50, too_long: "may not be longer than %{count} characters"}, allow_blank: true
   validates_presence_of :state, :if => :domestic?
   validates_uniqueness_of :remote_uid, on: :update, if: Proc.new {|address| address.company_id.present?}
   validates_length_of :gst, maximum: 15, minimum: 15, allow_nil: true, allow_blank: true, if: -> {self.gst != 'No GST Number'}
-  # validates_presence_of :remote_uid
 
   validates_with FileValidator, attachment: :gst_proof, file_size_in_megabytes: 2
   validates_with FileValidator, attachment: :cst_proof, file_size_in_megabytes: 2
