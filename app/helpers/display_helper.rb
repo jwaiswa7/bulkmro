@@ -366,4 +366,18 @@ module DisplayHelper
   def get_instock_status(customer_product, *warehouses)
     customer_product.product.stocks.where(warehouse_id: warehouses).sum(&:instock).to_i > 0 ? true : false
   end
+
+  def add_to_cart(product)
+    form = "
+      <form action='#{add_item_customers_cart_path}' method='post' data-remote='true' >
+        <input type='hidden', name='product_id' value='#{product.product_id}'/>
+        <input type='hidden', name='customer_product_id' value='#{product.id}'/>
+        <input type='number' name='amount' min=0, value=1 class='' style='width: 50px' />
+        <button type='submit' style='border: none; background: none'>
+          <i class='fal fa-shopping-cart'></i>
+        </button>
+      </form> 
+    "
+    form.html_safe
+  end
 end
