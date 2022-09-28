@@ -66,10 +66,10 @@ class Services::Overseers::ArInvoiceRequests::New < Services::Shared::BaseServic
 
     @sales_order.rows.each do |row|
      
-      @ar_invoice_request.rows.build( delivered_quantity: nil,
-                                      quantity: nil,
+      @ar_invoice_request.rows.build( delivered_quantity: row.quantity,
+                                      quantity: row.quantity,
                                       sales_order_id: @sales_order.id,
-                                      product_id: row.product_id, sales_order_row_id: row.id )
+                                      product_id: row.product_id || row.sales_quote_row.product.id, sales_order_row_id: row.id )
     end
     @ar_invoice_request
   end

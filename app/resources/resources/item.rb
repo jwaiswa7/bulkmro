@@ -25,9 +25,9 @@ class Resources::Item < Resources::ApplicationResource
         Mainsupplier: nil, # Supplier ID
         Manufacturer: (record.brand.present? && record.brand.remote_uid.present?) ? record.brand.remote_uid : -1, # Product Manufacturer
         Valid: record.is_active ? 'tYES' : 'tNO', # Status
-        SalesUnit: nil, # TO BE CREATED IN MAGENTO
+        SalesUnit: record.measurement_unit.try(:name), # TO BE CREATED IN MAGENTO
         SalesItemsPerUnit: 1, # UOM Quantity
-        PurchaseUnit: nil, # TO BE CREATED IN MAGENTO
+        PurchaseUnit: record.measurement_unit.try(:name), # TO BE CREATED IN MAGENTO
         PurchaseItemsPerUnit: 1, # TO BE CREATED IN MAGENTO
         PurchaseUnitWeight: 0, # TO BE CREATED IN MAGENTO
         SalesUnitWeight1: 0, # weight
