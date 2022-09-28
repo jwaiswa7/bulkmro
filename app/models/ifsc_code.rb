@@ -2,7 +2,7 @@ class IfscCode < ApplicationRecord
   has_many :company_banks
   belongs_to :bank
 
-  update_index('ifsc_codes') { self }
+  update_index('ifsc_codes#ifsc_code') { self }
   scope :with_includes, -> { includes(:bank) }
 
   def to_s

@@ -5,8 +5,8 @@ class PaymentRequest < ApplicationRecord
   include Mixins::HasComments
 
   pg_search_scope :locate, against: [:id], associated_against: { po_request: [:id, :purchase_order_id], inquiry: [:inquiry_number], purchase_order: [:po_number] }, using: { tsearch: { prefix: true } }
-  update_index('payment_requests') { self }
-  update_index('customer_order_status_report') { self.purchase_order.po_request.sales_order }
+  update_index('payment_requests#payment_request') { self }
+  update_index('customer_order_status_report#sales_order') { self.purchase_order.po_request.sales_order }
 
   belongs_to :inquiry
   belongs_to :purchase_order
@@ -14,7 +14,6 @@ class PaymentRequest < ApplicationRecord
   has_many_attached :attachments
   has_one :payment_option, through: :purchase_order
   belongs_to :company_bank, required: false
-  accepts_nested_attributes_for :company_bank
   accepts_nested_attributes_for :inquiry
   has_many :transactions, class_name: 'PaymentRequestTransaction', dependent: :destroy
   accepts_nested_attributes_for :transactions, allow_destroy: true
@@ -68,23 +67,6 @@ class PaymentRequest < ApplicationRecord
       'Supplier Invoice': 10,
       'Supplier Proforma Invoice': 20
   }
-  enum payment_request_approved_or_rejected: {
-    'Payment Request Approved': 10,
-    'Payment Request Rejected': 20
-  }
-  enum reason_for_rejection:{
-    'GST not filed': 10,
-    'Low or Negative Margin': 20,
-    'Original Attachment Missing': 30,
-    'Incorrect Payment Terms': 40,
-    'Advance Terms not Favourable': 50,
-    'Custom Credit not Approved': 60
-  }
-
-  enum stage:{
-    '1st': 10,
-    '2nd': 20 
-    }
 
   scope :with_includes, -> {includes(:created_by, :updated_by, :inquiry)}
   scope :Pending, -> { where(status: [10, 11]) }
@@ -98,19 +80,12 @@ class PaymentRequest < ApplicationRecord
     payment_request.validates_presence_of :due_date, :purpose_of_payment, unless: :skip_validation
   end
   validate :due_date_cannot_be_in_the_past, unless: :skip_due_date_validation
-  validate :update_payment_request_stage
   attr_accessor :skip_validation, :skip_due_date_validation
 
   def due_date_cannot_be_in_the_past
     if self.due_date.present? && self.due_date < Date.today
       errors.add(:due_date, 'cannot be less than Today')
     end
-  end
-
-  def update_payment_request_stage
-    # if self.payment_request_approved_or_rejected.present? && self.payment_request_approved_or_rejected == "Payment Request Approved"
-    self.stage = "2nd"
-    # end
   end
 
   after_initialize :set_defaults, if: :new_record?

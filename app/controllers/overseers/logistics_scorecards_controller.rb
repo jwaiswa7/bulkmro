@@ -39,7 +39,7 @@ class Overseers::LogisticsScorecardsController < Overseers::BaseController
   def add_delay_reason
     authorize_acl :logistics_scorecard
     SalesInvoice.where(id: params[:invoice_id]).update_all(delay_reason: params[:selected].to_i)
-    LogisticsScorecardsIndex.import SalesInvoice.where(id: params[:invoice_id])
+    LogisticsScorecardsIndex::SalesInvoice.import SalesInvoice.where(id: params[:invoice_id])
     redirect_to overseers_logistics_scorecards_path, notice: 'Delay Reason Updated'
   end
 end

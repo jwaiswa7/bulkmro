@@ -1,7 +1,7 @@
 class SalesShipmentsIndex < BaseIndex
   statuses = SalesShipment.statuses
 
-  index_scope SalesShipment.all.with_includes 
+  define_type SalesShipment.all.with_includes do
     field :id
 
     field :sales_order_id, value: -> (record) { record.sales_order.id if record.sales_order.present? }
@@ -25,5 +25,5 @@ class SalesShipmentsIndex < BaseIndex
 
     field :created_at, type: 'date'
     field :updated_at, type: 'date'
-  
+  end
 end

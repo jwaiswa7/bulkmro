@@ -54,7 +54,7 @@ class Services::Overseers::PurchaseOrders::CreatePurchaseOrder < Services::Share
           )
           if po_row.po_request_row.inquiry_product_supplier.present? && po_row.po_request_row.inquiry_product_supplier.supplier_rfq.present?
             po_row.po_request_row.inquiry_product_supplier.supplier_rfq.update_column(:status, 'PO Issued')
-            SupplierRfqsIndex.import([po_row.po_request_row.inquiry_product_supplier.supplier_rfq.id])
+            SupplierRfqsIndex::SupplierRfq.import([po_row.po_request_row.inquiry_product_supplier.supplier_rfq.id])
           end
         end
       end

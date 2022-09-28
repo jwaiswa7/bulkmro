@@ -4,7 +4,7 @@ class SupplierProduct < ApplicationRecord
   include Mixins::HasImages
   include Mixins::CanBeWatermarked
 
-  update_index('supplier_products') {self}
+  update_index('supplier_products#supplier_product') {self}
   pg_search_scope :locate, against: [:sku, :name], associated_against: {brand: [:name]}, using: {tsearch: {prefix: true}}
 
   belongs_to :brand, required: false
@@ -35,7 +35,7 @@ class SupplierProduct < ApplicationRecord
   # after_save :update_index
   #
   # def update_index
-  #   CustomerProductsIndex.import([self.id])
+  #   CustomerProductsIndex::CustomerProduct.import([self.id])
   # end
 
   def best_brand

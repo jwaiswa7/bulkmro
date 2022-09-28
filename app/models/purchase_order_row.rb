@@ -8,11 +8,7 @@ class PurchaseOrderRow < ApplicationRecord
   belongs_to :po_request_row, required: false
 
   delegate :measurement_unit, to: :po_request_row, allow_nil: true
-  # selected_rows { where(selected: true) }
 
-  def self.selected_rows
-    where(selected: true)
-  end
 
   def increase_product_count
     product = self.get_product

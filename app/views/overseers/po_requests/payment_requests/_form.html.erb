@@ -24,7 +24,6 @@
             <%= button_tag(type: "submit", class: "btn btn-warning bmro-button btn-block mb-2 payment_request_submit") do %>
               <i class="fal fa-pen"></i> Update Payment Request
             <% end %>
-            <%= "#{@payment_request.stage} stage of approval"%>
           <% end %>
         </div>
       </div>
@@ -44,9 +43,6 @@
             <%= f.input :request_owner, as: :select, collection: enum_to_collection(PaymentRequest.request_owners, alphabetical: true, keep_raw: true), :include_blank => false, label: 'Transfer the ownership to ', disabled: (f.object.request_owner == "Accounts"), input_html: {class: 'select2-ajax select2-wrap-text bmro-form-input bmro-dropdown-icon'} %>
           </div>
           <div class="col-4">
-            <%= f.input :po_request, disabled: true, input_html: {:'value' => f.object.po_request&.sales_order&.order_number,class: 'bmro-form-input'}, include_blank: "Sales Order Number", label: "Sales Order Number", required: false  %>
-          </div>
-          <div class="col-4">
             <%= f.input :po_date, disabled: true, input_html: {:'value' => f.object.purchase_order.metadata["PoDate"],class: 'bmro-form-input'}, include_blank: "Supplier PO Date", label: "Supplier PO Date" %>
           </div>
           <div class="col-8">
@@ -63,18 +59,6 @@
             <div class="col-4">
               <%= inquiry.input :created_by, disabled: true, label: 'Name of the Requestor / IS & P', input_html: {class: 'bmro-form-input'}%>
             </div>
-             <div class="col-4">
-              <%= inquiry.input :inside_sales_owner, disabled: true, label: 'ISP', input_html: {class: 'bmro-form-input'}%>
-            </div>
-            <div class="col-4">
-              <%= inquiry.input :outside_sales_owner, disabled: true, label: 'Outside Sales Owner', input_html: {class: 'bmro-form-input'}%>
-            </div>
-            <div class="col-4">
-              <%= inquiry.input :sales_manager, disabled: true, label: 'KAM', input_html: {class: 'bmro-form-input'}%>
-            </div>  
-            <div class="col-4">
-            <%= f.input :logistics_owner, label: "Logistics Owner", input_html: {:'value' => f.object.purchase_order.logistics_owner,class: 'bmro-form-input' }, disabled: true %>
-          </div>
             </div>
           <% end %>
           <!--      <div class="col-12">-->
@@ -86,153 +70,35 @@
                 <%#= f.input :status, collection: enum_to_collection(PaymentRequest.statuses, alphabetical: false, keep_raw: true), input_html: {class: 'select2-ajax select2-wrap-text', :'data-source' => grouped_statuses_overseer_payment_requests_path, :'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''}, :include_blank => false %>
                 <%= f.input :status, collection: f.object.grouped_status, as: :grouped_select, group_method: :last, include_blank: true, input_html: {class: 'bmro-form-input bmro-dropdown-icon'}%>
               </div>
-              <%# <div class="col-4">
-                <%= f.input :due_date, as: :string, input_html: {:'data-toggle' => 'datepicker',class: 'bmro-form-input'}, label: "Payment Due Date"
-              </div> %>
+              <div class="col-4">
+                <%= f.input :due_date, as: :string, input_html: {:'data-toggle' => 'datepicker',class: 'bmro-form-input'}, label: "Payment Due Date" %>
+              </div>
 
               <div class="col-4">
                 <%= f.input :purpose_of_payment, as: :select, collection: enum_to_collection(PaymentRequest.purpose_of_payments, alphabetical: false, keep_raw: true), :include_blank => true, input_html: {class: 'bmro-form-input'} %>
               </div>
 
               <div class="col-12">
-                <%= f.input :company_bank_id, as: :select, collection: f.object.inquiry.company.company_banks.collect {|x| [x, x.id]}, :include_blank => 'Supplier Bank Details', label: "Supplier Bank Details", input_html: {class: 'bmro-dropdown-icon bmro-form-input '} %>
+                <%= f.input :company_bank, as: :select, collection: f.object.inquiry.company.company_banks.collect {|x| [x, x.id]}, :include_blank => false, label: "Supplier Bank Details", input_html: {class: 'bmro-dropdown-icon bmro-form-input '} %>
               </div>
 
               <div class="col-4">
                 <%= f.input :payment_option, label: "Payment Terms", input_html: {:'value' => f.object.po_request.payment_option,class: 'bmro-form-input' }, disabled: true %>
               </div>
-            </div>
-          </div>
-          <div class="col-12">
-            <div class="card mt-2">
-              <div class="card-body">
-                <div class="form-row">
-                  <%- @purchase_order = f.object.purchase_order %>
-                  <% if @purchase_order.rows.unscoped.size > 0 %>
-                    <div class="col-12">
-                      <h6 class="text-uppercase text-black-50 mb-1">Product Details</h6>
-                      <table class="table table-bordered dt-responsive wrap-whitespace w-100 datatable" data-fixed-header="false" data-sort="false">
-                        <thead>
-                          <tr>
-                            <th class="no-sort">
-                              <span>Select</span>
-                            </th>
-                            <th class="no-sort">
-                              <span>BM Number</span>
-                            </th>
-                            <th class="no-sort">
-                              <span data-toggle="tooltip" title="Description">Product/Service Description</span>
-                            </th>
-                            <th class="no-sort">
-                              <span data-toggle="tooltip" title="">Tax Code</span>
-                            </th>
-                            <th class="no-sort">
-                              <span data-toggle="tooltip" title="Quantity">Qty</span>
-                            </th>
-                            <th class="no-sort">
-                              <span data-toggle="tooltip" title="Unit Price">Unit Price</span>
-                            </th>
-                            <th class="no-sort">
-                              <span data-toggle="tooltip" title="Subtotal">Gross Total</span>
-                            </th>
-                            <th class="no-sort">
-                              <span data-toggle="tooltip" title="Tax Rate">Tax Rate</span>
-                            </th>
-                            <th class="no-sort">
-                              <span data-toggle="tooltip" title="Tax Amount">Tax Amount</span>
-                            </th>
-                            <th class="no-sort">
-                              <span data-toggle="tooltip" title="Total Buying Price">Total Buying Price</span>
-                            </th>
-                            <th class="no-sort">
-                              <span data-toggle="tooltip" title="Total Selling Price">Total Selling Price</span>
-                            </th>
-                            <th class="no-sort">
-                              <span data-toggle="tooltip" title="Margin">%Margin</span>
-                            </th>
-                            <th class="no-sort">
-                              <span data-toggle="tooltip" title="Total Margin">Total Margin</span>
-                            </th>
-                            <th class="no-sort">
-                              <span data-toggle="tooltip" title="Due Date">Payment Due Date</span>
-                            </th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <% @purchase_order.rows.order(:created_at).each_with_index do |item, index| %>
-                              <%= f.fields_for 'purchase_order_attributes[rows_attributes[]]', item do |t| %>
-                              <%= t.hidden_field :id, value:item.id %>
-                            <tr>
-                              <th class="no-sort all bmro-material-queue checkbox"> 
-                                <span>
-                                  <%= t.check_box :selected, class: "select_row", :value => t.object.id %>
-                                </span>
-                            </th>
-                              <td>
-                                <span><%= item.product.present? ? item.product.sku : item.sku %></span>
-                              </td>
-                              <td align="left" valign="top">
-                                <span><%= item.product.present? ? item.product.name : item.metadata['PopProductName'] %></span>
-                              </td>
-                              <td>
-                                <span>
-                                  <%= item.tax_code_six_digits %>
-                                </span>
-                              </td>
-                              <td>
-                                <span><%= number_to_currency(item.quantity, precision: 2, unit: '') %></span>
-                              </td>
-                              <td align="right" valign="top">
-                                <span><%= format_currency(item.unit_selling_price, precision: 2, symbol: nil) %></span>
-                              </td>
-                              <td align="right" valign="top">
-                                <span class= 'gross_price'><%= item.total_selling_price %></span>
-                              </td>
-
-                              <td>
-                                <span><%= item.po_request_tax_rate %>%</span>
-                              </td>
-                              <td align="right" valign="top">
-                                <span><%= format_currency(item.total_tax, precision: 2, symbol: nil) %></span>
-                              </td>
-                              <td>
-                                <span><%= format_currency(item.total_selling_price_with_tax, precision: 2, symbol: nil) %>%</span></td>
-                              <td>
-                                <span><%= 'N/A' %><br></span>
-                              </td>
-                              <td>
-                                <span><%= 'N/A' %><br></span>
-                              </td>
-                              <td>
-                                <span><%= format_currency(item.total_selling_price_with_tax, precision: 2, symbol: nil) %><br></span>
-                              </td>
-                              <td>
-                                <span>                                  
-                                  <%= t.input :due_date, as: :string, input_html: {class: 'bmro-form-input due_datepicker'}%></span>
-                              </td>
-                            </tr>
-                            <% end %>
-                          <% end %>
-                        </tbody>
-                      </table>
-                    </div>
-                  <% end %>
+              <div class="col-4 mt-1">
+                <div class="form-group mb-0">
+                  <label>Remaining amount to be Paid</label>
                 </div>
+                <h6 class="form-group text-uppercase text-black-50 form-text mb-1"><%= format_currency(f.object.remaining_amount) %></h6>
+              </div>
+              <div class="col-4 mt-1">
+                <div class="form-group mb-0">
+                  <label>Total amount paid in Percentage</label>
+                </div>
+                <h6 class="form-group text-uppercase text-black-50 form-text mb-1"><%= percentage(f.object.percent_amount_paid, precision: 2) %></h6>
               </div>
             </div>
           </div>
-          <div class="col-8">
-                <span class="col-4"><%= "Total Amount:" %></span>
-                <span class="rows-total-amount"> <%= @purchase_order.rows.selected_rows.sum(&:total_selling_price_with_tax)%> </span>
-                <span class="col-4"><%= "Payable Amount:" %></span>
-                <span class="rows-payable-amount"> <%= @purchase_order.rows.selected_rows.sum(&:total_selling_price_with_tax)%> </span>
-              </div>
-          <div class="col-4 mt-4">
-                <%= f.radio_button(:supplier_invoice_type, 10) %>
-                <%= label(:supplier_invoice_type, "Supplier Invoice") %></br>
-                <%= f.radio_button(:supplier_invoice_type, 20) %>
-                <%= label(:supplier_invoice_type, "Supplier Proforma Invoice") %>
-              </div>
           <div class="mt-0">
             <h6 class="form-group text-uppercase text-black-50 bmro-form-heading mb-1">Payment Request Transactions</h6>
 <!--            <div class="form-row">-->
@@ -301,34 +167,32 @@
                 </div>
               </div>
             <% end %>
-            <% if action_name != "new" %>
-              <% if f.object.remaining_amount > 0.0 && (!PaymentRequest.Rejected.include? (f.object)) %>
-                <div class="form-row">
-                  <div class="col-md-6">
-                    <%= f.add_nested_fields_link :transactions, class: 'btn bmro-button btn-outline-success btn-block mb-2 mb-md-0 add-transaction' do %>
-                      <i class="fal fa-plus-circle mr-1"></i>Add payment transaction
-                    <% end %>
-                  </div>
-                  <div class="col-md-6">
-                    <%= button_tag(type: "submit", class: "btn bmro-button btn-warning btn-block mb-2 payment_request_submit") do %>
-                      <i class="fal fa-pen"></i>  Save payment transaction
-                    <% end %>
-                  </div>
+            <% if f.object.remaining_amount > 0.0 && (!PaymentRequest.Rejected.include? (f.object)) %>
+              <div class="form-row">
+                <div class="col-md-6">
+                  <%= f.add_nested_fields_link :transactions, class: 'btn bmro-button btn-outline-success btn-block mb-2 mb-md-0 add-transaction' do %>
+                    <i class="fal fa-plus-circle mr-1"></i>Add payment transaction
+                  <% end %>
                 </div>
-              <% else %>
-                <div class="form-row">
-                  <div class="col-md-6">
-                    <%= f.add_nested_fields_link :transactions, class: 'btn btn-outline-success btn-block mb-2 mb-md-0 disabled add-transaction' do %>
-                      <i class="fal fa-plus-circle mr-1"></i>Add payment transaction
-                    <% end %>
-                  </div>
-                  <div class="col-md-6">
-                    <%= button_tag(type: "submit", class: "btn btn-warning btn-block mb-2 payment_request_submit disabled") do %>
-                      <i class="fal fa-pen"></i>  Save payment transaction
-                    <% end %>
-                  </div>
+                <div class="col-md-6">
+                  <%= button_tag(type: "submit", class: "btn bmro-button btn-warning btn-block mb-2 payment_request_submit") do %>
+                    <i class="fal fa-pen"></i>  Save payment transaction
+                  <% end %>
                 </div>
-              <% end %>
+              </div>
+            <% else %>
+              <div class="form-row">
+                <div class="col-md-6">
+                  <%= f.add_nested_fields_link :transactions, class: 'btn btn-outline-success btn-block mb-2 mb-md-0 disabled add-transaction' do %>
+                    <i class="fal fa-plus-circle mr-1"></i>Add payment transaction
+                  <% end %>
+                </div>
+                <div class="col-md-6">
+                  <%= button_tag(type: "submit", class: "btn btn-warning btn-block mb-2 payment_request_submit disabled") do %>
+                    <i class="fal fa-pen"></i>  Save payment transaction
+                  <% end %>
+                </div>
+              </div>
             <% end %>
 
 
@@ -338,7 +202,7 @@
               <div class="col-12 col-md-12">
                 <div class="d-block d-md-flex align-items-end">
                   <div class="flex-grow-1">
-                    <%= f.input :attachments, wrapper: :custom_file, input_html: {multiple: true}, label: 'Supplier Invoice / PI' %>
+                    <%= f.input :attachments, wrapper: :custom_file, input_html: {multiple: true}, label: 'Attachments' %>
                   </div>
                   <div class="form-group">
                     <% f.object.attachments.each do |attachment| %>
@@ -375,38 +239,12 @@
                   <% end %>
                 </div>
               <% end %>
-              <% if action_name.capitalize != "New" %>
-              <div class="col-12">
-                <%= f.simple_fields_for :company_bank do |cb| %>
-                <div class="col-4">
-                  <%= cb.input :account_number,disabled: true,label: 'Supplier Bank Account Number', input_html: {class: 'bmro-form-input'}, required: false%>
-                </div>
-                <div class="col-4">
-                  <%= cb.input :branch,disabled: true, label: 'Supplier Bank Branch Name', input_html: {class: 'bmro-form-input'}, required: false%>
-                </div>
-                <div class="col-4">
-                  <%= cb.input :ifsc_code_number,disabled: true, label: 'IFSC Number', input_html: {class: 'bmro-form-input'}, required: false%>
-                </div>
-                <% end %>
-              </div>
-              <div class="col-4 mt-4">
-                <%= f.radio_button(:payment_request_approved_or_rejected, 10) %>
-                <%= label(:payment_request_approved_or_rejected, "Payment Request Approved") %></br>
-                <%= f.radio_button(:payment_request_approved_or_rejected, 20) %>
-                <%= label(:payment_request_approved_or_rejected, "Payment Request Rejected") %>
-              </div>
-              <div class="col-4 mt-4">
-                <%= f.input :reason_for_rejection, as: :select, collection: enum_to_collection(PaymentRequest.reason_for_rejections, alphabetical: false, keep_raw: true), :include_blank => true, input_html: {class: 'bmro-form-input bmro-dropdown-icon'} %>
-              </div>
-              <% end %>
-
-
 
               <div class="col-12 mt-2">
                 <%= f.nested_fields_for :comments, f.object.comments.build(:overseer => current_overseer) do |payment_request_comment| %>
                   <%= payment_request_comment.hidden_field :created_by_id %>
                   <%= payment_request_comment.hidden_field :updated_by_id %>
-                  <%= payment_request_comment.input :message, :placeholder => 'Type message', input_html: {:'data-parsely-no-valid-feedback' => '',class: 'bmro-form-input'}, label: 'Remarks' %>
+                  <%= payment_request_comment.input :message, :placeholder => 'Type message', input_html: {:'data-parsely-no-valid-feedback' => '',class: 'bmro-form-input'} %>
                 <% end %>
               </div>
             </div>
@@ -448,32 +286,3 @@
     </div>
   <% end %>
 </div>
-<script>
-  $(document).on('focusin','.due_datepicker',function(e) {
-    $(this).datepicker();
-    $(".gj-icon").hide();
-  });
-  
-  $('.select_row').change(function() {
-    if(this.checked) {
-      let rows_total_amount = parseFloat($(".rows-total-amount").text())
-      let rows_payable_amount = parseFloat($(".rows-payable-amount").text())      
-      let row_amount = parseFloat($(this).closest('tr').find('.gross_price').text())       
-      rows_total_amount = parseFloat(rows_total_amount + row_amount)            
-      rows_payable_amount = parseFloat(rows_payable_amount + row_amount)
-      
-      $(".rows-total-amount").text(rows_total_amount)
-      $(".rows-payable-amount").text(rows_payable_amount)
-    }
-    else{
-      let rows_total_amount = parseFloat($(".rows-total-amount").text())
-      let rows_payable_amount = parseFloat($(".rows-payable-amount").text())      
-      let row_amount = parseFloat($(this).closest('tr').find('.gross_price').text())       
-      rows_total_amount = parseFloat(rows_total_amount - row_amount)            
-      rows_payable_amount = parseFloat(rows_payable_amount - row_amount)
-      
-      $(".rows-total-amount").text(rows_total_amount)
-      $(".rows-payable-amount").text(rows_payable_amount)
-    }
-  });
-</script>

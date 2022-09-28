@@ -6,7 +6,7 @@ class SalesQuote < ApplicationRecord
   include DisplayHelper
   has_closure_tree(name_column: :to_s)
 
-  update_index('sales_quotes') { self }
+  update_index('sales_quotes#sales_quote') { self }
   belongs_to :inquiry
   has_many :comments, -> { where(show_to_customer: true) }, through: :inquiry
   accepts_nested_attributes_for :comments

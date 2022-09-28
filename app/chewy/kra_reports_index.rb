@@ -1,5 +1,5 @@
 class KraReportsIndex < BaseIndex
-  index_scope Inquiry.all.with_includes 
+  define_type Inquiry.all.with_includes do
     field :id, type: 'integer'
     field :inquiry_number, value: -> (record) { record.inquiry_number.to_i }, type: 'integer'
     field :inquiry_number_string, value: -> (record) { record.inquiry_number.to_s }, analyzer: 'substring'
@@ -41,5 +41,5 @@ class KraReportsIndex < BaseIndex
     field :gross_margin_percentage, value: -> (record) { record.bible_margin_percentage }, type: 'double'
     field :gross_margin_actual, value: -> (record) { record.bible_actual_margin }, type: 'double'
     field :gross_margin_actual_percentage, value: -> (record) { record.bible_actual_margin_percentage }, type: 'double'
-  
+  end
 end

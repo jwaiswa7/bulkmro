@@ -1,7 +1,7 @@
 class RemoteRequestsIndex < BaseIndex
   resource_status = RemoteRequest.resources
   id = RemoteRequest.last(5000).first.try(:id)
-  index_scope RemoteRequest.where('id >= ?', id)
+  define_type RemoteRequest.where('id >= ?', id) do
     field :id, type: 'integer'
     field :request, value: -> (record) { record.manage_remote_request_data(record) }, analyzer: 'substring'
     field :resource_id, value: ->(record) { resource_status[record.resource] }
@@ -11,5 +11,5 @@ class RemoteRequestsIndex < BaseIndex
     field :updated_at, type: 'date'
     field :created_by_id, value: ->(record) { record.created_by_id if record.created_by_id.present? }
     field :created_by, value: ->(record) { record.created_by.first_name + ' ' + record.created_by.last_name if record.created_by_id.present? }
-  
+  end
 end

@@ -4,11 +4,7 @@ class PaymentRequestTransaction < ApplicationRecord
   belongs_to :payment_request
   enum payment_type: {
       'Cheque': 10,
-      'NEFT/RTGS': 20,
-      'Advance': 30,
-      'Basic': 40,
-      'Balance': 50,
-      'Full Payment': 60
+      'NEFT/RTGS': 20
   }
 
   enum status: {

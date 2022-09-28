@@ -1,7 +1,7 @@
 class CreditNotesIndex < BaseIndex
   statuses = SalesInvoice.statuses
 
-  index_scope CreditNote.all.with_includes 
+  define_type CreditNote.all.with_includes do
     field :id, type: 'integer'
     field :memo_number, value: -> (record) { record.memo_number&.to_i }, type: 'integer'
     field :memo_amount, value: -> (record) { record.memo_amount&.to_f }, type: 'float'
@@ -26,5 +26,5 @@ class CreditNotesIndex < BaseIndex
     field :created_at, value: ->(record) { record.created_at.to_date if record.created_at.present? }, type: 'date'
     field :updated_at, type: 'date'
     field :potential_value, value: -> (record) { record&.calculated_total_with_tax }, type: 'double'
-  
+  end
 end

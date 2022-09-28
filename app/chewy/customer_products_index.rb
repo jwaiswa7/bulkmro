@@ -1,5 +1,5 @@
 class CustomerProductsIndex < BaseIndex
-  index_scope CustomerProduct.all
+  define_type CustomerProduct.all do
     field :id, type: 'integer'
     field :company_id, type: 'integer'
     field :company, value: -> (record) { record.company.name.to_s }, analyzer: 'substring'
@@ -19,4 +19,5 @@ class CustomerProductsIndex < BaseIndex
     field :stock, type: 'integer', value: -> (record) { record.product.stocks.where(warehouse_id: Warehouse.find('rQJfAO').id).sum(&:instock).to_i > 0 ? 1 : 0 }
     field :qty_in_stock, type: 'integer', value: -> (record) { record.qty_in_stock(warehouse: 'rQJfAO') }
     field :published, type: 'integer', value: -> (record) { record.published?? 1: 0 }
+  end
 end

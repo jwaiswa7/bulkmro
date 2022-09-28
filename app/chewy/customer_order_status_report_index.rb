@@ -1,5 +1,5 @@
 class CustomerOrderStatusReportIndex < BaseIndex
-  index_scope SalesOrder.where.not(order_number: nil, status: 'Cancelled').with_includes 
+  define_type SalesOrder.where.not(order_number: nil, status: 'Cancelled').with_includes do
     field :id, type: 'integer'
     field :inquiry_id, value: -> (record) { record.inquiry.id if record.inquiry.present? }, type: 'integer'
     field :inquiry_number, value: -> (record) { record.inquiry.inquiry_number.to_i if record.inquiry.present? }, type: 'integer'
@@ -100,5 +100,5 @@ class CustomerOrderStatusReportIndex < BaseIndex
         end
       end
     end
-
+  end
 end

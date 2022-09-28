@@ -1,8 +1,9 @@
 class InvoiceRequestsIndex < BaseIndex
     statuses = InvoiceRequest.statuses
-    index_scope InvoiceRequest.all 
+    define_type InvoiceRequest.all do
       field :id, type: 'integer'
       field :inquiry_number_string, value: -> (record) { record.inquiry.inquiry_number.to_s if record.inquiry.present? }, analyzer: 'substring'
+
       field :sales_order_number_string, value: -> (record) { record.sales_order.order_number.to_s if record.sales_order.present? }, analyzer: 'substring'
       field :status, value: -> (record) { statuses[record.status] }, type: 'integer'
       field :status_string, value: -> (record) { record.status.to_s }, analyzer: 'substring'
@@ -19,6 +20,6 @@ class InvoiceRequestsIndex < BaseIndex
       field :inside_sales_executive, value: -> (record) { record.inquiry.inside_sales_owner.id if record.inquiry.present? && record.inquiry.inside_sales_owner.present? }
       field :outside_sales_executive, value: -> (record) { record.inquiry.outside_sales_owner.id if record.inquiry.present? && record.inquiry.outside_sales_owner.present? }
       field :procurement_operations, value: -> (record) { record.inquiry.procurement_operations_id if record.inquiry.present? && record.inquiry.procurement_operations.present? }  
-    
+    end
   end
   

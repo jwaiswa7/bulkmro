@@ -5,7 +5,7 @@ class InwardDispatch < ApplicationRecord
   include Mixins::CanBeStamped
   include Mixins::GetOverallDate
 
-  update_index('inward_dispatches') { self }
+  update_index('inward_dispatches#inward_dispatch') { self }
   belongs_to :purchase_order
   has_one :inquiry, through: :purchase_order
 
