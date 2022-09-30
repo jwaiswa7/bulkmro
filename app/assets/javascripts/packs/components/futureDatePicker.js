@@ -3,7 +3,7 @@ const futureDatePicker = () => {
         const date = new Date();
         if (!$(this).data('daterangepicker')) {
             $(this).daterangepicker({
-                singlefutureDatePicker: true,
+                singleDatePicker: true,
                 showDropdowns: true,
                 minDate: date,
                 opens: $(this).data('direction') ? $(this).data('direction') : "left",
