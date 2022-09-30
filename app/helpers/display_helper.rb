@@ -367,17 +367,42 @@ module DisplayHelper
     customer_product.product.stocks.where(warehouse_id: warehouses).sum(&:instock).to_i > 0 ? true : false
   end
 
-  def add_to_cart(product)
-    form = "
-      <form action='#{add_item_customers_cart_path}' method='post' data-remote='true' >
-        <input type='hidden', name='product_id' value='#{product.product_id}'/>
-        <input type='hidden', name='customer_product_id' value='#{product.id}'/>
-        <input type='number' name='amount' min=0, value=1 class='' style='width: 50px' />
-        <button type='submit' style='border: none; background: none'>
-          <i class='fal fa-shopping-cart'></i>
-        </button>
-      </form> 
-    "
+  def add_to_cart(product, layout = nil)
+    if layout.nil?
+      form = "
+        <form action='#{add_item_customers_cart_path}' method='post' data-remote='true' >
+          <input type='hidden', name='product_id' value='#{product.product_id}'/>
+          <input type='hidden', name='customer_product_id' value='#{product.id}'/>
+          <div class='form-row'>
+            <div class='col-4'>
+              <input type='number' name='amount' min=1, value=1 class='' style='width: 30px' />
+            </div>
+            <div class='col-8'>
+              <button type='submit' style='border: none; background: none'>
+                <i class='fal fa-shopping-cart'></i>
+              </button>
+            </div>
+          </div>
+        </form> 
+      "
+    else
+      form = "
+        <form action='#{add_item_customers_cart_path}' method='post' data-remote='true' >
+          <input type='hidden', name='product_id' value='#{product.product_id}'/>
+          <input type='hidden', name='customer_product_id' value='#{product.id}'/>
+          <div class='form-row'>
+            <div class='col-4'>
+              <input type='number' name='amount' min=1, value=1 class='form-control' style='width: 50px' />
+            </div>
+            <div class='col-8'>
+              <button type='submit' class='btn btn-block btn-success col-8'>
+                Add to Cart
+              </button>
+            </div>
+          </div>
+        </form> 
+      "
+    end
     form.html_safe
   end
 end
