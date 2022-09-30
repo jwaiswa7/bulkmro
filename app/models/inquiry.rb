@@ -224,6 +224,7 @@ class Inquiry < ApplicationRecord
         Inquiry.statuses[:'Regret']
     ]).order(priority: :desc, quotation_followup_date: :asc, calculated_total: :desc)
   }
+  scope :get_current_company_inquiries_customer_po_numbers, -> (record) { Inquiry.where(company_id: record.company.id).where.not(customer_po_number: "").map(&:customer_po_number)&.uniq&.compact}
   scope :won, -> {where(status: :'Order Won')}
   scope :live, -> {where.not(status: :'Order Lost').where.not(status: :'Regret')}
   scope :without_so, -> {where.not(status: ['SO Rejected by Sales Manager', 'Rejected by Accounts',
