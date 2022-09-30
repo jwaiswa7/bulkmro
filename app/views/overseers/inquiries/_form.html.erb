@@ -223,14 +223,14 @@
           </h6>
           <div class="form-row">
             <div class="col-12 col-md-4">
-              <%= f.input :valid_end_time, as: :string, label: "Quotation validity date", required: true, input_html: { :'data-toggle' => 'datepicker' } %>
+              <%= f.input :valid_end_time, as: :string, label: "Quotation validity date", required: true, input_html: { :'data-toggle' => 'futureDatePicker' } %>
               <%= f.input :quotation_date, as: :string, input_html: { :'data-toggle' => 'datepicker' }, input_html: { class: 'bmro-form-input' }, disabled: true %>
             </div>
             <div class="col-12 col-md-4">
-              <%= f.input :expected_closing_date, as: :string, input_html: { :'data-toggle' => 'datepicker', class: 'bmro-form-input' } %>
+              <%= f.input :expected_closing_date, as: :string, input_html: { :'data-toggle' => 'futureDatePicker', class: 'bmro-form-input' } %>
             </div>
             <div class="col-12 col-md-4">
-              <%= f.input :quotation_followup_date, as: :string, input_html: { :'data-toggle' => 'datepicker', class: 'bmro-form-input' }, required: @inquiry.sales_quotes.present? ? true : false %>
+              <%= f.input :quotation_followup_date, as: :string, input_html: { :'data-toggle' => 'futureDatePicker', class: 'bmro-form-input' }, required: @inquiry.sales_quotes.present? ? true : false %>
             </div>
           </div>
         </div>
