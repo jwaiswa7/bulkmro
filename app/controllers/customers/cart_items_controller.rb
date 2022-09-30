@@ -5,9 +5,19 @@ class Customers::CartItemsController < Customers::BaseController
   def create
     authorize :cart_item
 
-    @cart_item = current_cart.items.where(product_id: cart_item_params[:product_id], customer_product_id: cart_item_params[:customer_product_id]).first_or_create
+    @cart_item = CartItem.where(
+      product_id: cart_item_params[:product_id],
+      customer_product_id: cart_item_params[:customer_product_id],
+      cart: current_cart
+    ).last
+    
+    if @cart_item
+      @cart_item.update(quantity: @cart_item.quantity += cart_item_params[:quantity].to_i)
+    else 
+      @cart_item = current_cart.items.where(product_id: cart_item_params[:product_id], customer_product_id: cart_item_params[:customer_product_id]).first_or_create
 
-    @cart_item.update_attributes(quantity: cart_item_params[:quantity])
+      @cart_item.update_attributes(quantity: cart_item_params[:quantity])
+    end 
 
     respond_to do |format|
       format.js { }

@@ -11,6 +11,7 @@ import loadViews from "./views/loadViews";
 import alertsAutohide from "./components/alertsAutohide";
 import tinyHtmlEditor from "./components/tinyHtmlEditor";
 import datePicker from "./components/datePicker";
+import futureDatePicker from "./components/futureDatePicker";
 import stickyBits from "./components/stickyBits";
 import daterangePicker from "./components/daterangePicker";
 import notify from "./components/notify";
@@ -45,6 +46,7 @@ app.initializeComponents = () => {
     dataTables();
     tinyHtmlEditor();
     datePicker();
+    futureDatePicker();
     stickyBits();
     daterangePicker();
     notify();
