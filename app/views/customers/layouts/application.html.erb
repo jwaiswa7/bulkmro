@@ -3,7 +3,7 @@
       navigation: ( is_api_request? ? 
       render(partial: 'customers/layouts/components/navigation_cxml') : render(partial: 'customers/layouts/components/navigation'))
   } do %>
-    <%= yield %>
+      <%= yield %>
   <% end %>
 <% else %>
   <%= render layout: 'shared/layouts/application' do %>
