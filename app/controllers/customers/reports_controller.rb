@@ -2,7 +2,9 @@ class Customers::ReportsController < Customers::BaseController
   def monthly_purchase_data
     authorize :report, :show_aggregate_reports?
 
-    service = Services::Customers::Charts::MonthlyPurchaseData.send(:new, (params['daterange'].present? ? params['daterange'] : nil))
+    @daterange =  params['daterange']
+
+    service = Services::Customers::Charts::MonthlyPurchaseData.send(:new, (@daterange.present? ? @daterange : nil))
     @chart = service.call(current_company.account)
 
     render 'monthly_purchase_data'
@@ -11,7 +13,9 @@ class Customers::ReportsController < Customers::BaseController
   def quarterly_purchase_data
     authorize :report, :show_aggregate_reports?
 
-    service = Services::Customers::Charts::QuarterlyPurchaseData.send(:new, (params['daterange'].present? ? params['daterange'] : nil))
+    @daterange =  params['daterange']
+
+    service = Services::Customers::Charts::QuarterlyPurchaseData.send(:new, (@daterange.present? ? @daterange : nil))
     @chart = service.call(current_company.account)
 
     render 'quarterly_purchase_data'
@@ -29,7 +33,9 @@ class Customers::ReportsController < Customers::BaseController
   def unique_skus
     authorize :report, :show_aggregate_reports?
 
-    service = Services::Customers::Charts::UniqueSkus.send(:new, (params['daterange'].present? ? params['daterange'] : nil))
+    @daterange =  params['daterange']
+
+    service = Services::Customers::Charts::UniqueSkus.send(:new, (@daterange.present? ? @daterange : nil))
     @chart = service.call(current_company.account)
 
     render 'unique_skus'
@@ -38,7 +44,9 @@ class Customers::ReportsController < Customers::BaseController
   def order_count
     authorize :report, :show_aggregate_reports?
 
-    service = Services::Customers::Charts::OrderCount.send(:new, (params['daterange'].present? ? params['daterange'] : nil))
+    @daterange =  params['daterange']
+
+    service = Services::Customers::Charts::OrderCount.send(:new, (@daterange.present? ? @daterange : nil))
     @chart = service.call(current_company.account)
 
     render 'order_count'
