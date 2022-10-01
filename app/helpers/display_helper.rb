@@ -147,6 +147,10 @@ module DisplayHelper
     "Q#{quarter}-#{date.year}"
   end
 
+  def get_month(date)
+    "#{Date::ABBR_MONTHNAMES[date.month]}-#{date.year}"
+  end
+
   def format_num(num, precision = 0)
     number_with_precision(num, precision: precision)
   end
