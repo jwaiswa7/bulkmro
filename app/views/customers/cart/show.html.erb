@@ -2,7 +2,7 @@
   <%= simple_form_for([:customers, @cart], :url => customers_cart_path, :method => :patch) do |cart| %>
 
     <section class="pt-3 pt-lg-4 pb-2 pb-lg-3">
-      <div class="d-md-flex justify-content-between">
+      <div class="d-none justify-content-between">
         <h1 class="display-5 mb-1">Cart</h1>
         <%= cart.hidden_field 'id' %>
       </div>

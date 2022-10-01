@@ -39,7 +39,7 @@
         <% end %>
         <!-- <%#= render 'shared/layouts/components/breadcrumbs' if local_assigns[:navigation].present? %> -->
 
-        <div class="container bmro-container bmro-container-fluid <% if content_for?(:container_fluid) %>-fluid<% end %>">
+        <div class="container bmro-container bmro-container-fluid <% if content_for?(:container_fluid) %>-fluid<% end %> mt-4" >
           <%= render 'shared/layouts/components/breadcrumbs' if (local_assigns[:navigation].present? &&  !params[:controller].include?('dashboard')) %>
 
           <div <% unless current_overseer.nil? %><% if current_overseer.sales? && current_overseer.descendant_ids.present? && request.path_info.include?("/dashboard/sales_manager") %>class="justify-content-center bmro-padd-col"<%end %>
