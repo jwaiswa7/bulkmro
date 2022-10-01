@@ -28,6 +28,7 @@ class Resources::Item < Resources::ApplicationResource
         SalesUnit: record.measurement_unit.try(:name), # TO BE CREATED IN MAGENTO
         SalesItemsPerUnit: 1, # UOM Quantity
         PurchaseUnit: record.measurement_unit.try(:name), # TO BE CREATED IN MAGENTO
+        SalesPackagingUnit: record.measurement_unit.try(:name),
         PurchaseItemsPerUnit: 1, # TO BE CREATED IN MAGENTO
         PurchaseUnitWeight: 0, # TO BE CREATED IN MAGENTO
         SalesUnitWeight1: 0, # weight
