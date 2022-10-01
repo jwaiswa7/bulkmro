@@ -95,7 +95,7 @@
 
           <div id="checkout-billing" class="collapse <%= show_if(params[:next_step].blank?) %>" data-parent="#checkout">
             <div class="card-body">
-              <%= f.input :po_reference, label: 'PO Reference Number', placeholder: 'e.g. ASDF19126', required: true %>
+              <%= f.input :po_reference, label: 'PO Reference Number' ,input_html: { class: 'select2-single bmro-form-input bmro-dropdown-icon bmro-width-select' , placeholder: 'e.g. ASDF19126'}, as: :select, :wrapper => :custom_multi_select, collection: Inquiry.get_current_company_inquiries_customer_po_numbers(current_customers_contact) , required: true %>
               <%= f.input :customer_po_sheet, as: :file, wrapper: :custom_file, label: 'Customer purchase order' %>
               <p>Select a billing address from your address book.</p>
               <div id="current_company_address">
