@@ -18,7 +18,7 @@ class ProductsIndex < BaseIndex
     end
     field :mpn, value: -> (record) {record.mpn.to_s}, analyzer: 'substring', type: 'text', fielddata: true
     field :total_pos, value: -> (record) {record.total_pos}, type: 'integer'
-    field :available_qty, value: -> (record) {record.stocks.sum(&:instock)}, type: 'integer'
+    field :available_qty, value: -> (record) {record.stocks.map(&:instock).compact.sum }, type: 'integer'
     field :total_quotes, value: -> (record) {record.total_quotes}, type: 'integer'
     field :created_at, type: 'date'
     field :updated_at, type: 'date'
