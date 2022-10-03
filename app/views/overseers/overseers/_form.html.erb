@@ -49,9 +49,14 @@
       <div class="col-12 col-md-4">
         <%= f.input :geography, input_html: { class: 'bmro-form-input' } %>
       </div>
-      <div class="col-12 col-md-4">
+      <div class="col-12 col-md-2">
         <%= f.input :status, as: :check_boxes, :wrapper => :vertical_collection_inline, collection: enum_to_collection(Overseer.statuses.except("inactive")) %>
       </div>
+      <% if policy(:overseer).edit_super_admin? %>
+        <div class="col-12 col-md-2">
+          <%= f.input :is_super_admin, label: 'Is Super Admin?',:wrapper => :vertical_collection_inline, as: :radio_buttons %>
+        </div>
+      <% end %>
     </div>
     <div class="bmro-button-parent">
     <%= action_button(action_name, @overseer) %>

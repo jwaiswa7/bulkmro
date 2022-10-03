@@ -41,4 +41,8 @@ class Overseers::OverseerPolicy < Overseers::ApplicationPolicy
   def can_add_edit_target?
     record.role == 'outside_sales_executive'
   end
+
+  def edit_super_admin?
+    overseer.is_super_admin
+  end
 end
