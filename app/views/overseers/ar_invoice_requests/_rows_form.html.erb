@@ -1,8 +1,13 @@
 <div class="card mb-2">
   <div class="card-body">
     <h6 class="text-uppercase text-black-50 mb-1"> Products Details</h6>
-    <div class="form-row d-none d-md-flex">
-      <div class="col-9">
+      <div class="form-row d-none d-md-flex">
+          <div class="col-1">
+        <div class="form-group mb-0">
+          <label>Sr. No</label>
+        </div>
+      </div>
+      <div class="col-8">
         <div class="form-group mb-0">
           <label>Product Name</label>
         </div>
@@ -23,15 +28,21 @@
         </div>
       </div>
     </div>
+    <% @sr_no = 0 %>
     <% if @ar_invoice_request.rows.present? %>
       <%= f.nested_fields_for :rows, f.object.rows, wrapper_tag: :div do |row| %>
         <div class="form-row flex-row align-items-start ar-invoice-req-row">
-          <div class="col-6 col-md-6">
+          <div class="col-12 col-md-12">
             <%= row.hidden_field :sales_order_id, label: false %>
             <%= row.hidden_field :product_id, label: false %>
             <%= row.hidden_field :sales_order_row_id, label: false%>
           </div>
-          <div class="col-9 col-md-9">
+          <div class="col-1 col-md-1">
+            <div class="form-group disabled" >
+              <input class="form-control disabled"  disabled="disabled" value="<%= @sr_no += 1 %>">
+            </div>
+          </div>
+          <div class="col-8 col-md-8">
             <%= row.hidden_field :product_id, label: 'Product' %>
             <%= row.input :inward_dispatch_row, input_html: { value: row.object.product.to_s }, disabled: row.object.product_id.present? && row.object.errors.blank?, label: false %>
           </div>
