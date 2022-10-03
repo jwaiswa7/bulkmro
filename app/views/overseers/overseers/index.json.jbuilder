@@ -19,7 +19,9 @@ json.data (@overseers) do |overseer|
                   ].join(' '),
                   overseer.hierarchy_to_s,
                   overseer.email,
-                  if overseer.acl_role.present?
+                  if overseer.is_super_admin
+                      "Super Admin"
+                  elsif overseer.acl_role.present?
                     overseer.acl_role.role_name
                   end,
                   format_succinct_date(overseer.created_at),
