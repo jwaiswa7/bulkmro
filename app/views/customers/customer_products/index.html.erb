@@ -1,45 +1,49 @@
-<% provide :container_fluid, true %>
-<% provide :can_be_ajaxed, true %>
-<% provide :wrap_whitespace, true %>
+<% if @customer_products.present? %>
+  <% provide :container_fluid, true %>
+  <% provide :can_be_ajaxed, true %>
+  <% provide :wrap_whitespace, true %>
 
-<% content_for :heading do %>
-  Products
-<% end %>
-
-<% content_for :heading_buttons do %>
-  <div class="btn-group" style="<%= 'margin-top: 4.5rem; z-index: 999' if current_overseer.nil? %>" >
-    <a href="<%= customers_products_path(view: 'list_view') %>" class="btn btn-lg btn-light px-2 <%= params[:view] == 'list_view' ? 'bmro-nav-main-color':'' %>" data-toggle="tooltip" title="List View"><i class="fal fa-list-ul"></i></a>
-    <a href="<%= customers_products_path(view: 'grid_view') %>" class="btn btn-lg btn-light px-2 <%= params[:view] == 'list_view' ? '': 'bmro-nav-main-color' %> " data-toggle="tooltip" title="Grid View"><i class="fal fa-grip-horizontal"></i></a>
-    </br>
-    <%= render partial: 'sort'%>
-    </br>
-    <%= render partial: 'filter' %>
-  </div>
-<% end %>
-
-
-
-<% content_for :header_row do %>
-  <th class="no-sort"></th>
-  <th class="no-sort">Name</th>
-  <th class="no-sort">SKU</th>
-  <th class="no-sort">Brand</th>
-  <th class="no-sort desktop">Price</th>
-  <th class="no-sort desktop">Stock</th>
-  <th class="no-sort desktop">Qty in Stock</th>
-  <th class="no-sort desktop" style="width: 100px !important">Add to cart</th>
-<% end %>
-
-<div class="col-lg-12" id="customer_products_index">
-  <% if params[:view] == "list_view" %>
-    <%= render partial: 'shared/layouts/datatable' %>
-  <% elsif @is_henkel %>
-    <%= render partial: 'grid_henkel', locals: {customer_products: @customer_products, customer_products_paginate: @customer_products_paginate} %>
-  <% elsif @is_saint_gobain %>
-    <%= render partial: 'grid_saint_gobain' %>
-  <% else %>
-    <%= render partial: 'grid' %>
+  <% content_for :heading do %>
+    Products
   <% end %>
-</div>
 
-<div id="to_cart_modal_content"></div>
+  <% content_for :heading_buttons do %>
+    <div class="btn-group" style="<%= 'margin-top: 4.5rem; z-index: 999' if current_overseer.nil? %>" >
+      <a href="<%= customers_products_path(view: 'list_view') %>" class="btn btn-lg btn-light px-2 <%= params[:view] == 'list_view' ? 'bmro-nav-main-color':'' %>" data-toggle="tooltip" title="List View"><i class="fal fa-list-ul"></i></a>
+      <a href="<%= customers_products_path(view: 'grid_view') %>" class="btn btn-lg btn-light px-2 <%= params[:view] == 'list_view' ? '': 'bmro-nav-main-color' %> " data-toggle="tooltip" title="Grid View"><i class="fal fa-grip-horizontal"></i></a>
+      </br>
+      <%= render partial: 'sort'%>
+      </br>
+      <%= render partial: 'filter' %>
+    </div>
+  <% end %>
+
+
+
+  <% content_for :header_row do %>
+    <th class="no-sort"></th>
+    <th class="no-sort">Name</th>
+    <th class="no-sort">SKU</th>
+    <th class="no-sort">Brand</th>
+    <th class="no-sort desktop">Price</th>
+    <th class="no-sort desktop">Stock</th>
+    <th class="no-sort desktop">Qty in Stock</th>
+    <th class="no-sort desktop" style="width: 100px !important">Add to cart</th>
+  <% end %>
+
+  <div class="col-lg-12" id="customer_products_index">
+    <% if params[:view] == "list_view" %>
+      <%= render partial: 'shared/layouts/datatable' %>
+    <% elsif @is_henkel %>
+      <%= render partial: 'grid_henkel', locals: {customer_products: @customer_products, customer_products_paginate: @customer_products_paginate} %>
+    <% elsif @is_saint_gobain %>
+      <%= render partial: 'grid_saint_gobain' %>
+    <% else %>
+      <%= render partial: 'grid' %>
+    <% end %>
+  </div>
+
+  <div id="to_cart_modal_content"></div>
+<% else %>
+  <%= render partial: 'static_page_for_no_products' %>
+<% end%>

@@ -10,10 +10,14 @@ class Customers::CustomerProductPolicy < Customers::ApplicationPolicy
   end
 
   def index?
-    current_company.customer_products.exists?
+    current_company.present?
   end
 
   def online_orders?
     contact.customer_products.exists?
+  end
+
+  def current_company_has_products?
+    current_company.customer_products.exists?
   end
 end
