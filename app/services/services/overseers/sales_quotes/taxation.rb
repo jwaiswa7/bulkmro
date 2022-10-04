@@ -42,19 +42,19 @@ class Services::Overseers::SalesQuotes::Taxation < Services::Shared::BaseService
       sez_taxcode_as_per_sap
       # 'IG@%g' % ('%.2f' % tax_rate.tax_percentage)
     elsif is_igst
-      if tcs_applicable?
-        # 'IG@%g' % ('%.2f' % tax_rate.tax_percentage)
-        'IG%gT' % ('%.2f' % tax_rate.tax_percentage) + percentage_as_per_pan
-      else
+      # if tcs_applicable?
+      #   # 'IG@%g' % ('%.2f' % tax_rate.tax_percentage)
+      #   'IG%gT' % ('%.2f' % tax_rate.tax_percentage) + percentage_as_per_pan
+      # else
         'IG@%g' % ('%.2f' % tax_rate.tax_percentage)
-      end
+      # end
     else
-      if tcs_applicable?
-        # 'IG@%g' % ('%.2f' % tax_rate.tax_percentage)
-        'CS%gT' % ('%.2f' % tax_rate.tax_percentage) + percentage_as_per_pan
-      else
+      # if tcs_applicable?
+      #   # 'IG@%g' % ('%.2f' % tax_rate.tax_percentage)
+      #   'CS%gT' % ('%.2f' % tax_rate.tax_percentage) + percentage_as_per_pan
+      # else
         'CSG@%g' % ('%.2f' % tax_rate.tax_percentage)
-      end
+      # end
     end
   end
 
@@ -70,19 +70,19 @@ class Services::Overseers::SalesQuotes::Taxation < Services::Shared::BaseService
 
   private
 
-    def tcs_applicable?
-      bill_to.company.check_company_total_amount(sales_quote)
-    end
+    # def tcs_applicable?
+    #   bill_to.company.check_company_total_amount(sales_quote)
+    # end
 
-    def percentage_as_per_pan
-      (bill_to.company.pan.present? ? 0.1 : 1).to_s
-    end
+    # def percentage_as_per_pan
+    #   (bill_to.company.pan.present? ? 0.1 : 1).to_s
+    # end
 
     def sez_taxcode_as_per_sap
-      if tcs_applicable?
-        'IG0T0.1'
-      else
+      # if tcs_applicable?
+      #   'IG0T0.1'
+      # else
         'IG@0'
-      end
+      # end
     end
 end
