@@ -223,7 +223,7 @@ class Company < ApplicationRecord
           customer_product.category_id = inquiry_product.product.category_id
           customer_product.brand_id = inquiry_product.product.brand_id
           customer_product.name = (inquiry_product.bp_catalog_name == '' ? nil : inquiry_product.bp_catalog_name) || inquiry_product.product.name
-          customer_product.sku = (inquiry_product.bp_catalog_sku == '' ? nil : inquiry_product.bp_catalog_sku) || inquiry_product.product.sku
+          customer_product.inquiry_product_sku = (inquiry_product.bp_catalog_sku == '' ? nil : inquiry_product.bp_catalog_sku) || inquiry_product.product.sku
           customer_product.tax_code = inquiry_product.product.best_tax_code
           customer_product.tax_rate = inquiry_product.best_tax_rate
           customer_product.measurement_unit = inquiry_product.product.measurement_unit

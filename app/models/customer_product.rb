@@ -22,6 +22,8 @@ class CustomerProduct < ApplicationRecord
   validates_presence_of :sku
   validates_presence_of :customer_price
 
+  before_validation :generate_sku, on: :create
+
   # validates_uniqueness_of :sku, scope: :company_id # Commenting validation due to probability of non unique product codes
 
   validates_uniqueness_of :product_id, scope: :company_id
@@ -146,4 +148,12 @@ class CustomerProduct < ApplicationRecord
 #     self.price
 #   end
 # end
+
+  private 
+
+  def generate_sku 
+    self.sku = Services::Resources::Shared::UidGenerator.product_sku
+  end
+
+
 end
