@@ -157,6 +157,7 @@ class Overseers::ActivitiesController < Overseers::BaseController
         :points_discussed,
         :actions_required,
         :expenses,
+        :purpose_for_others ,
         overseer_ids: [],
         company_creation_request_attributes: [
             :name,
