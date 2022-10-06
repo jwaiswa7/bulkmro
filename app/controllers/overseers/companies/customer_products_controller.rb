@@ -45,8 +45,7 @@ class Overseers::Companies::CustomerProductsController < Overseers::Companies::B
 
   def generate_catalog
     authorize_acl :customer_product
-    @company.generate_catalog(current_overseer)
-
+    GenerateCatalogJob.perform_later(@company.id, current_overseer.id)
     redirect_to overseers_company_path(@company), notice: 'Catalog successfully generated.'
   end
 
