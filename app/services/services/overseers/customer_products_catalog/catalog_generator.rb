@@ -1,8 +1,11 @@
-class GenerateCatalogWorker
-  include Sidekiq::Worker
+class Services::Overseers::CustomerProductsCatalog::CatalogGenerator
+	def initialize(company_id, overseer_id)
+		@company_id = company_id
+		@overseer_id = overseer_id
+	end
 
-  def perform(company_id, overseer_id)
-    company = Company.find(company_id)
+	def call
+		company = Company.find(company_id)
     overseer = Overseer.find(overseer_id)
     
     inquiry_products = Inquiry.includes(:inquiry_products, :products).where(company_id: company.id).map { |i| i.inquiry_products }.flatten
@@ -25,6 +28,8 @@ class GenerateCatalogWorker
         end
       end
     end
-  
-  end
+	end
+
+	attr_accessor :company_id, :overseer_id
 end
+  
