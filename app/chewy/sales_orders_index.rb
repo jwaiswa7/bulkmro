@@ -4,7 +4,7 @@ class SalesOrdersIndex < BaseIndex
   remote_statuses = SalesOrder.remote_statuses
   effective_statuses = SalesOrder.effective_statuses
 
-  define_type SalesOrder.where.not(status: ['SAP Rejected', 'Hold by Finance', 'Requested', 'CO']).with_includes do
+  index_scope SalesOrder.where.not(status: ['SAP Rejected', 'Hold by Finance', 'Requested', 'CO']).with_includes 
     witchcraft!
     field :id, type: 'integer'
     field :order_number, value: -> (record) { record.order_number }, type: 'long'
@@ -44,7 +44,6 @@ class SalesOrdersIndex < BaseIndex
     field :cp_status_s, value: -> (record) { record.effective_customer_status.to_s }, analyzer: 'substring'
     field :cp_status, value: -> (record) { effective_statuses[record.effective_customer_status] }, type: 'integer'
     field :cp_order_date_s, value: -> (record) { record.inquiry&.customer_order_date&.strftime('%d-%b-%Y').to_s if record.inquiry&.customer_order_date&.present? }, analyzer: 'substring'
-    field :cp_order_date, value: -> (record) { record.inquiry&.customer_order_date if record.inquiry&.customer_order_date&.present? }, type: 'date'
     field :cp_committed_date_s, value: -> (record) { record.inquiry&.customer_committed_date&.strftime('%d-%b-%Y').to_s if record.inquiry&.customer_committed_date&.present? }, analyzer: 'substring'
     field :cp_created_at_s, value: -> (record) { record.created_at.strftime('%d-%b-%Y').to_s if record.created_at.present? }, analyzer: 'substring'
     field :cp_calculated_total_s, value: -> (record) { record.calculated_total.to_s if record.calculated_total.present? }, analyzer: 'substring'
@@ -68,5 +67,5 @@ class SalesOrdersIndex < BaseIndex
     field :invoice_total, type: 'integer', value: -> (record) { record.invoice_total }
     field :order_total, type: 'integer', value: -> (record) { record.order_total }
     field :potential_value, value: -> (record) { record.try(:calculated_total) }, type: 'double'
-  end
+  
 end

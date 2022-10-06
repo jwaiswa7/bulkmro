@@ -1,5 +1,5 @@
 class IfscCodesIndex < BaseIndex
-  define_type IfscCode.with_includes do
+  index_scope IfscCode.with_includes 
     default_import_options batch_size: 5000, bulk_size: 10.megabytes, refresh: false
     field :id
     field :ifsc_code, analyzer: 'sku_substring'
@@ -16,5 +16,5 @@ class IfscCodesIndex < BaseIndex
     field :bank, value: -> (record) {record.bank.to_s}, analyzer: 'substring'
     field :created_at, type: 'date'
     field :merged_address, value: -> (record) {[record.city, record.state].join(', ')}, analyzer: 'substring'
-  end
+  
 end

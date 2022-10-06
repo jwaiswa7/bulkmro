@@ -1,6 +1,6 @@
 class InquiriesPerOrderIndex < BaseIndex
   statuses = Inquiry.statuses
-  define_type Inquiry.where.not(inside_sales_owner_id: nil).left_outer_joins(:sales_orders).with_includes.select('inquiries.*,sales_orders.*') do
+  index_scope Inquiry.where.not(inside_sales_owner_id: nil).left_outer_joins(:sales_orders).with_includes.select('inquiries.*,sales_orders.*') 
     field :id, value: -> (record) { record.id }, type: 'integer'
     field :status_string, value: -> (record) { record.status.to_s }, analyzer: 'substring'
     field :status, value: -> (record) { statuses[record.status] }
@@ -22,5 +22,5 @@ class InquiriesPerOrderIndex < BaseIndex
     field :updated_at, type: 'date'
     field :created_by_id
     field :updated_by_id, value: -> (record) { record.updated_by.to_s }, analyzer: 'letter'
-  end
+
 end

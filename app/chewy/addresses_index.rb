@@ -1,5 +1,5 @@
 class AddressesIndex < BaseIndex
-  define_type Address.has_company_id.with_includes do
+  index_scope Address.has_company_id.with_includes 
     field :id, type: 'integer'
     field :address, value: -> (record) { record.to_s }, analyzer: 'substring'
     field :state_id, value: -> (record) { record.try(:state_id) }
@@ -11,5 +11,5 @@ class AddressesIndex < BaseIndex
     field :company_id, value: -> (record) { record.company_id }
     field :company, value: -> (record) { record.company.to_s }, analyzer: 'substring'
     field :created_at, type: 'date'
-  end
+  
 end

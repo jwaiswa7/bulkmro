@@ -1,5 +1,5 @@
 class ProductsIndex < BaseIndex
-  define_type Product.approved.with_includes do
+  index_scope Product.approved.with_includes 
     field :id
     field :product_id, value: -> (record) {record.id}
     field :brand_id, value: -> (record) {record.brand_id}
@@ -25,5 +25,5 @@ class ProductsIndex < BaseIndex
     field :created_by, value: -> (record) {record.created_by.to_s}
     field :updated_by, value: -> (record) {record.updated_by.to_s}
     field :is_not_kit, value: -> (record) { !record.is_kit }
-  end
+  
 end

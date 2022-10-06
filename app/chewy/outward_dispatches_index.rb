@@ -1,6 +1,6 @@
 class OutwardDispatchesIndex < BaseIndex
   statuses = OutwardDispatch.statuses
-  define_type OutwardDispatch.all do
+  index_scope OutwardDispatch.all
     field :id
     field :inquiry_number, value: -> (record) { record.sales_invoice.inquiry.inquiry_number if record.sales_invoice.inquiry.present? }, type: 'integer'
     field :inquiry_number_string, value: -> (record) { record.sales_invoice.inquiry.inquiry_number.to_s if record.sales_invoice.inquiry.present? }, analyzer: 'substring'
@@ -27,5 +27,4 @@ class OutwardDispatchesIndex < BaseIndex
     field :inside_sales_executive, value: -> (record) { record.sales_invoice.inquiry.inside_sales_owner_id if record.sales_invoice.present? && record.sales_invoice.inquiry.present? }, type: 'integer'
     field :outside_sales_executive, value: -> (record) { record.sales_invoice.inquiry.outside_sales_owner_id if record.sales_invoice.present? && record.sales_invoice.inquiry.present? }, type: 'integer'
     field :procurement_operations, value: -> (record) { record.sales_invoice.inquiry.procurement_operations_id if record.sales_invoice.present? && record.sales_invoice.inquiry.present? }, type: 'integer'
-  end
 end

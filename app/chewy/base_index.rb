@@ -94,10 +94,54 @@ class BaseIndex < Chewy::Index
     },
     max_result_window: 5000000,
     'number_of_replicas': '1',
-    'number_of_shards': '1'
+    'number_of_shards': '1',
+    max_ngram_diff: 30,
   )
 
   def self.fields
     mappings_hash[:mappings][self.to_s.underscore.split('_').first.singularize.to_sym][:properties].keys - [:created_at, :updated_at, :id, :inquiry_number]
   end
 end
+
+
+# ActivitiesIndex.import
+# AddressesIndex.import
+# ArInvoiceRequestsIndex.import
+# BanksIndex.import
+# BibleUploadsIndex.import
+# CallbackRequestsIndex.import
+# CompaniesIndex.import
+# CompanyBanksIndex.import
+# CompanyReportsIndex.import
+# CompanyReviewsIndex.import
+# ContactsIndex.import
+# CreditNotesIndex.import
+# CustomerOrderStatusReportIndex.import
+# CustomerProductsIndex.import
+# DeliveryChallansIndex.import
+# IfscCodesIndex.import
+# InquiriesIndex.import
+# InquiriesPerOrderIndex.import
+# InquiryMappingTatsIndex.import
+# InvoiceRequestsIndex.import
+# InwardDispatchesIndex.import
+# KraReportVarientsIndex.import
+# KraReportsIndex.import
+# LogisticsScorecardsIndex.import
+# NewCompanyReportsIndex.import
+# OutwardDispatchesIndex.import
+# OverseersIndex.import
+# PaymentRequestsIndex.import
+# ProductsIndex.import
+# PurchaseOrdersIndex.import
+# RemoteRequestsIndex.import
+# SalesInvoicesIndex.import
+# SalesOrdersIndex.import
+# SalesOrdersWithCancelIndex.import
+# SalesQuotesIndex.import
+# SalesReceiptsIndex.import
+# SalesShipmentsIndex.import
+# SuggestionsIndex.import
+# SupplierProductsIndex.import
+# SupplierRfqsIndex.import
+# TaxCodesIndex.import

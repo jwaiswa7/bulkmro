@@ -1,5 +1,5 @@
 class CompanyBanksIndex < BaseIndex
-  define_type CompanyBank.all.with_includes do
+  index_scope CompanyBank.all.with_includes
     field :id, type: 'integer'
     field :company_id, value: -> (record) { record.company_id }
     field :bank_id, value: -> (record) { record.bank_id }
@@ -10,5 +10,5 @@ class CompanyBanksIndex < BaseIndex
     field :branch, value: -> (record) { record.branch }, analyzer: 'substring'
     field :created_at, value: -> (record) { record.created_at }, type: 'date'
     field :updated_at, value: -> (record) { record.updated_at }, type: 'date'
-  end
+  
 end

@@ -1,7 +1,7 @@
 class InquiryMappingTatsIndex < BaseIndex
   start_date = Date.parse('01-01-2019')
   end_date = Date.today.end_of_day
-  define_type InquiryMappingTat.where(inquiry_created_at: start_date..end_date).with_includes do
+  index_scope InquiryMappingTat.where(inquiry_created_at: start_date..end_date).with_includes
     field :id, type: 'integer'
     field :inquiry_number, value: -> (record) { record.inquiry.inquiry_number.to_i }, type: 'integer'
     field :inquiry_number_string, value: -> (record) { record.inquiry.inquiry_number.to_s }, analyzer: 'substring'
@@ -59,5 +59,5 @@ class InquiryMappingTatsIndex < BaseIndex
     field :regret_mins, value: -> (record) { InquiryStatusRecord.turn_around_time(record.inquiry_id, 'Inquiry', record.sales_order_id, 'Regret') }, type: 'integer'
 
     field :created_at, value: -> (record) { record.inquiry.created_at }, type: 'date'
-  end
+
 end

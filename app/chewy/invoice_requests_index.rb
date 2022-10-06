@@ -1,9 +1,8 @@
 class InvoiceRequestsIndex < BaseIndex
     statuses = InvoiceRequest.statuses
-    define_type InvoiceRequest.all do
+    index_scope InvoiceRequest.all 
       field :id, type: 'integer'
       field :inquiry_number_string, value: -> (record) { record.inquiry.inquiry_number.to_s if record.inquiry.present? }, analyzer: 'substring'
-
       field :sales_order_number_string, value: -> (record) { record.sales_order.order_number.to_s if record.sales_order.present? }, analyzer: 'substring'
       field :status, value: -> (record) { statuses[record.status] }, type: 'integer'
       field :status_string, value: -> (record) { record.status.to_s }, analyzer: 'substring'

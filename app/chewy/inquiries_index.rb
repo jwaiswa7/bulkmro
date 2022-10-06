@@ -3,7 +3,7 @@
     opportunity_types = Inquiry.opportunity_types
     pipeline_statuses = Inquiry.statuses.except('Lead by O/S', 'Supplier RFQ Sent', 'SO Not Created-Customer PO Awaited', 'Hold by Accounts')
 
-    define_type Inquiry.all.with_includes do
+    index_scope Inquiry.all.with_includes 
       field :id, type: 'integer'
       field :status_string, value: -> (record) { record.status.to_s }, analyzer: 'substring'
       field :status, value: -> (record) { statuses[record.status] }, analyzer: 'substring'
@@ -43,12 +43,11 @@
 
       field :opportunity_type, value: -> (record) { opportunity_types[record.opportunity_type] }
       field :opportunity_type_key, value: -> (record) { opportunity_types[record.opportunity_type] }, type: 'integer'
-      field :key_acc_manager, value: -> (record) { record.sales_manager_id }
       # field :sales_quote_value, value: -> (record) { record.final_sales_quote.calculated_total if record.final_sales_quote.present? }, type: 'double'
       # field :sales_quote_created_at, value: -> (record) {record.final_sales_quote.created_at if record.final_sales_quote.present? }, type: 'date'
-    end
+    
 
     def self.fields
-      [:status, :status_string, :subject, :inquiry_number_string, :sales_orders_ids, :sales_invoices_ids, :inside_sales_owner, :outside_sales_owner, :inside_sales_executive, :outside_sales_executive, :procurement_operations, :company, :account, :contact_s, :opportunity_type, :created_by_id, :key_acc_manager]
+      [:status, :status_string, :subject, :inquiry_number_string, :sales_orders_ids, :sales_invoices_ids, :inside_sales_owner, :outside_sales_owner, :inside_sales_executive, :outside_sales_executive, :procurement_operations, :company, :account, :contact_s, :opportunity_type, :created_by_id]
     end
   end
