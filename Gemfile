@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby '2.7.5'
+ruby '2.6.9'
 
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
@@ -174,7 +174,7 @@ gem 'google-api-client', '~> 0.11'
 gem 'mini_magick'
 
 # This gem allows you to write static Rails views and partials using the Markdown syntax. No more editing prose in HTML!
-gem 'markdown-rails'
+#gem 'markdown-rails'
 
 # Star Rating
 gem 'ratyrate'
