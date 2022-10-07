@@ -8,7 +8,7 @@ class DeliveryChallan < ApplicationRecord
   include Mixins::HasConvertedCalculations
 
   attr_accessor :customer_inquiry_reference, :sales_order_number, :sales_order_date, :payment_terms
-  update_index('delivery_challans#delivery_challan') { self }
+  update_index('delivery_challans') { self }
   belongs_to :inquiry
   has_one :inquiry_currency, through: :inquiry
   belongs_to :sales_order, required: false

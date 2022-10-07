@@ -7,9 +7,7 @@ class Activity < ApplicationRecord
   include Mixins::CanBeRejected
   include Mixins::HasApproveableStatus
 
-  EMAIL_FROM_ADDRESS = 'itop@bulkmro.com'
-
-  update_index('activities#activity') { self }
+  update_index('activities') { self }
   pg_search_scope :locate, against: [:purpose, :company_type, :activity_type], associated_against: { created_by: [:first_name, :last_name], account: [:name], company: [:name], contact: [:first_name, :last_name], inquiry: [:inquiry_number] }, using: { tsearch: { prefix: true } }
   scope :latest_activities, -> {where('created_at > ?', '2023-03-01 00:00:00')}
 

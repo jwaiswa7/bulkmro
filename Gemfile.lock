@@ -372,6 +372,9 @@ GEM
       sass-rails
     marcel (0.3.3)
       mimemagic (~> 0.3.2)
+    markdown-rails (1.0.0)
+      rails
+      rdiscount (>= 1.6.8)
     memcachier (0.0.2)
     memoist (0.16.0)
     memoizable (0.4.2)
@@ -509,6 +512,7 @@ GEM
     rb-fsevent (0.10.3)
     rb-inotify (0.10.0)
       ffi (~> 1.0)
+    rdiscount (2.2.0.2)
     redis (4.1.2)
     representable (3.0.4)
       declarative (< 0.1.0)
@@ -725,6 +729,7 @@ DEPENDENCIES
   kaminari
   letter_opener
   maily
+  markdown-rails
   memcachier
   mini_magick
   money-open-exchange-rates

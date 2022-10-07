@@ -174,7 +174,7 @@ gem 'google-api-client', '~> 0.11'
 gem 'mini_magick'
 
 # This gem allows you to write static Rails views and partials using the Markdown syntax. No more editing prose in HTML!
-#gem 'markdown-rails'
+gem 'markdown-rails'
 
 # Star Rating
 gem 'ratyrate'

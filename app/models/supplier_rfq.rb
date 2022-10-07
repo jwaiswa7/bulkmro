@@ -7,7 +7,7 @@ class SupplierRfq < ApplicationRecord
   has_many :supplier_rfq_revisions, through: :inquiry_product_suppliers
   has_many :email_messages, dependent: :destroy
 
-  update_index('supplier_rfqs#supplier_rfq') {self}
+  update_index('supplier_rfqs') {self}
 
   accepts_nested_attributes_for :inquiry_product_suppliers
   scope :with_includes, -> { includes(:created_by, :updated_by, :inquiry) }

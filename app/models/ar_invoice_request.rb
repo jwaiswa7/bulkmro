@@ -16,7 +16,7 @@ class ArInvoiceRequest < ApplicationRecord
   accepts_nested_attributes_for :rows, reject_if: lambda { |attributes| attributes['product_id'].blank? }, allow_destroy: true
   validates_associated :rows, dependent: :destroy
 
-  update_index('ar_invoice_requests#ar_invoice_request') {self}
+  update_index('ar_invoice_requests') {self}
 
   enum status: {
       'AR Invoice requested': 10,
