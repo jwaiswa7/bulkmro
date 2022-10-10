@@ -1042,6 +1042,9 @@ Rails.application.routes.draw do
         get 'contact_companies'
       end
     end
+
+    resources :rfqs, only: %i[index show]
+  
   end
 
   namespace 'suppliers' do
