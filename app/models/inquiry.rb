@@ -279,6 +279,10 @@ class Inquiry < ApplicationRecord
 
   validate :company_is_active, if: :new_record?
 
+  validates :quotation_date, not_in_past: true 
+  validates :expected_closing_date, not_in_past: true 
+  validates :quotation_followup_date, not_in_past: true 
+
   def company_is_active
     if !self.company.is_active
       errors.add(:company, 'must be active to make a inquiry')
