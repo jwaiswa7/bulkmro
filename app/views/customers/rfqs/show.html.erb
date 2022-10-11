@@ -1,1 +1,109 @@
-<h1>Showing</h1>
+<% provide :container_fluid, true %>
+<% provide :controller_is_aliased, true %>
+<% content_for :page_title do %>
+RFQ <%= ['#', @customer_rfq.id].join('') %>
+<% end %>
+<div class="col-12">
+<div class="pt-3 pt-lg-4 pb-2 pb-lg-3">
+    <div class="d-inline-flex justify-content-between mt-2">
+        <h1 class="display-5 mb-1">Inquiry <%= ['#', @customer_rfq.inquiry.id].join('') %></h1>
+    </div>
+</div>
+<div class="card">
+<div class="card-header">
+    <div class=form-row>
+        <div class="col-6 col-md-3 mb-2 mb-md-0">
+            <strong class="d-block">Inquiry Number</strong>
+            #<%= @customer_rfq.inquiry.inquiry_number %>
+        </div>
+        <div class="col-6 col-md-3 mb-0">
+            <strong class="d-block">Subject</strong>
+            <%= @customer_rfq.subject %>
+        </div>
+        <div class="col-6 col-md-3 mb-0">
+            <strong class="d-block">Sales Person</strong>
+            <%= @customer_rfq.inquiry.inside_sales_owner.first_name %> <%= @customer_rfq.inquiry.inside_sales_owner.last_name %>
+        </div>
+        <div class="col-6 col-md-3 mb-0">
+            <strong class="d-block">Currency</strong>
+            <%= @customer_rfq.inquiry.currency %> (<%= @customer_rfq.inquiry.inquiry_currency.conversion_rate %>)
+        </div>
+    </div>
+</div>
+<div class="card-body">
+    <div class="form-row mb-0 mb-md-2">
+        <div class="col-6 col-md-3 mb-2 mb-md-0">
+            <strong class="d-block">Inquiry Reference</strong>
+            <%= @customer_rfq.inquiry.subject %>
+        </div>
+        <div class="col-6 col-md-3 mb-2 mb-md-0">
+            <strong class="d-block">Date of Inquiry</strong>
+            <%= format_date(@customer_rfq.inquiry.created_at) %>
+        </div>
+    </div>
+    <div class="card-alternative mt-3">
+      <div class="form-row mb-0 mb-md-2">
+          <div class="col-12 col-md-12 mb-2 mb-md-0">
+              <strong class="d-block">Requirement details</strong>
+              <%= @customer_rfq.requirement_details %>
+          </div>
+      </div>
+    </div>
+    <div class="mt-3">
+        <div class="form-row">
+            <div class="col-md-6">
+                <strong class="d-block">Supplier - Billing Address</strong>
+                <%= @customer_rfq.inquiry.bill_from.address.name.to_s %>
+                <%= @customer_rfq.inquiry.bill_from.address.try(:to_compact_multiline_s) if @customer_rfq.inquiry.bill_from.present? %>
+                <% if @customer_rfq.inquiry.bill_from.address.phone.present? %>
+                <span class="d-block"><em>Contact</em>:<%= @customer_rfq.inquiry.contact.full_name %>
+                - <%= @customer_rfq.inquiry.bill_from.address.phone %></span>
+                <br>
+                <% end %>
+                <% if @customer_rfq.inquiry.bill_from.address.try(:gst) %>
+                <span class="d-block"><em>GST Number</em>: <%= @customer_rfq.inquiry.bill_from.address.try(:gst) %></span>
+                <% end %>
+            </div>
+            <div class="col-md-6 mt-2 mt-md-0">
+                <strong class="d-block">Supplier - Shipping Address</strong>
+                <%= @customer_rfq.inquiry.ship_from&.address&.name&.to_s %>
+                <%= @customer_rfq.inquiry.ship_from.address.try(:to_compact_multiline_s) if @customer_rfq.inquiry.ship_from.present? %>
+                <br>
+                <% if @customer_rfq.inquiry.ship_from&.address&.mobile || @customer_rfq.inquiry.ship_from&.address&.telephone %>
+                Contact: <%= @customer_rfq.inquiry.ship_from&.address&.mobile || @customer_rfq.inquiry.ship_from&.address&.telephone %>
+                <br>
+                <% end %>
+                <% if @customer_rfq.inquiry.ship_from&.address&.try(:gst) %>
+                <span class="d-block"><em>GST Number</em>: <%= @customer_rfq.inquiry.ship_from&.address&.try(:gst) %></span>
+                <% end %>
+            </div>
+        </div>
+        <div class="form-row mt-2">
+            <div class="col-12 col-md-6">
+                <strong class="d-block">Customer - Billing Address</strong>
+                <%= (@customer_rfq.inquiry.company.name) %><br>
+                <%= @customer_rfq.inquiry.billing_address.try(:to_compact_multiline_s) %><br>
+                <% if @customer_rfq.inquiry.contact.phone.present? %>
+                Contact: <%= @customer_rfq.inquiry.contact.full_name %> - <%= @customer_rfq.inquiry.contact.phone %><br>
+                <% end %>
+                <span class="d-block"><em>Email</em>: <a href="mailto:<%= @customer_rfq.inquiry.contact.email if @customer_rfq.inquiry.contact.email.present? %>"><%= @customer_rfq.inquiry.contact.email if @customer_rfq.inquiry.contact.email.present? %></a></span>
+                <% if @customer_rfq.inquiry.billing_address.try(:gst) || @customer_rfq.inquiry.company.default_billing_address.try(:gst) %>
+                <span class="d-block"><em>GST Number</em>: <%= [@customer_rfq.inquiry.billing_address.try(:gst) || @customer_rfq.inquiry.company.default_billing_address.try(:gst)].join %></span>
+                <% end %>
+            </div>
+            <div class="col-12 col-md-6 mt-2 mt-md-0">
+                <strong class="d-block">Customer - Shipping Address</strong>
+                <%= (@customer_rfq.inquiry.company.name) %><br>
+                <%= @customer_rfq.inquiry.shipping_address.try(:to_compact_multiline_s) %><br>
+                <% if @customer_rfq.inquiry.contact.mobile || @customer_rfq.inquiry.contact.telephone %>
+                <span class="d-block"><em>Contact</em>: <%= @customer_rfq.inquiry.contact.full_name %>
+                - <%= @customer_rfq.inquiry.contact.phone %></span>
+                <% end %>
+                <span class="d-block"><em>Email</em>: <a href="mailto:<%= @customer_rfq.inquiry.contact.email if @customer_rfq.inquiry.contact.email.present? %>"><%= @customer_rfq.inquiry.contact.email if @customer_rfq.inquiry.contact.email.present? %></a></span>
+                <% if @customer_rfq.inquiry.shipping_address.try(:gst) || @customer_rfq.inquiry.company.default_shipping_address.try(:gst) %>
+                <span class="d-block"><em>GST Number</em>: <%= [@customer_rfq.inquiry.shipping_address.try(:gst) || @customer_rfq.inquiry.company.default_shipping_address.try(:gst)].join %></span>
+                <% end %>
+            </div>
+        </div>
+    </div>
+</div>
