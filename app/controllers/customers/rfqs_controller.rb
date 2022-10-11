@@ -16,7 +16,7 @@ class Customers::RfqsController < Customers::BaseController
 
   def create 
     authorize :rfq
-    @inquiry = Inquiry.new(company_id: current_customers_contact.company.id, potential_amount: 1.0, subject: 'RFQ subject', opportunity_source: 'Online_order' , quote_category: 'bmro', is_sez: true, product_type: 'MRO',price_type: 'Door delivery' , contact_id:  current_customers_contact.id , shipping_contact_id: current_customers_contact.id)
+    @inquiry = Inquiry.new(company_id: current_customers_contact.company.id, potential_amount: 1.0, subject: customer_rfq_params[:subject], opportunity_source: 'Online_order' , quote_category: 'bmro', is_sez: true, product_type: 'MRO',price_type: 'Door delivery' , contact_id:  current_customers_contact.id , shipping_contact_id: current_customers_contact.id)
     if @inquiry.save
       @customer_rfq = CustomerRfq.new(customer_rfq_params.merge(inquiry_id: @inquiry.id)) 
       if @customer_rfq.save 
