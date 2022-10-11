@@ -1,5 +1,17 @@
 class Customers::RfqPolicy < Customers::ApplicationPolicy
 	def index?
-		contact.account_id == 2208
+      true
+	end
+
+	def new?
+		true
+	end
+
+	def create?
+		true
+	end
+
+	def show?
+		true
 	end
 end

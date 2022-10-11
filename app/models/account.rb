@@ -23,7 +23,9 @@ class Account < ApplicationRecord
   has_many :sales_receipts
   has_many :payment_collections
   has_many :email_messages
+  has_many :customer_rfqs, dependent: :destroy
   has_one_attached :logo
+  
 
 
   has_many :annual_targets

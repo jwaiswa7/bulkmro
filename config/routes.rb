@@ -1043,7 +1043,7 @@ Rails.application.routes.draw do
       end
     end
 
-    resources :rfqs, only: %i[index show]
+    resources :rfqs
   
   end
 
