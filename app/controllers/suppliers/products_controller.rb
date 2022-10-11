@@ -46,7 +46,7 @@ class Suppliers::ProductsController < Suppliers::BaseController
     if product_params['product_show'].present?
       redirect_to suppliers_product_path(product_params[:product_id])
     else
-      redirect_to suppliers_products_path(view: 'grid_view')
+      redirect_to suppliers_products_path
     end
   end
 

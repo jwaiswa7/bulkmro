@@ -9,9 +9,9 @@
 
   <% content_for :heading_buttons do %>
     <div class="btn-group" style="<%= 'margin-top: 4.5rem; z-index: 999' if current_overseer.nil? %>" >
-      <a href="<%= customers_products_path(view: 'list_view') %>" class="btn btn-lg btn-light px-2 <%= params[:view] == 'list_view' ? 'bmro-nav-main-color':'' %>" data-toggle="tooltip" title="List View"><i class="fal fa-list-ul"></i></a>
-      <a href="<%= customers_products_path(view: 'grid_view') %>" class="btn btn-lg btn-light px-2 <%= params[:view] == 'list_view' ? '': 'bmro-nav-main-color' %> " data-toggle="tooltip" title="Grid View"><i class="fal fa-grip-horizontal"></i></a>
-      </br>
+      <!-- <a href="<%= customers_products_path %>" class="btn btn-lg btn-light px-2 <%= params[:view] == 'list_view' ? 'bmro-nav-main-color':'' %>" data-toggle="tooltip" title="List View"><i class="fal fa-list-ul"></i></a>
+      <a href="<%= customers_products_path %>" class="btn btn-lg btn-light px-2 <%= params[:view] == 'list_view' ? '': 'bmro-nav-main-color' %> " data-toggle="tooltip" title="Grid View"><i class="fal fa-grip-horizontal"></i></a>
+      </br> -->
       <%= render partial: 'sort'%>
       </br>
       <%= render partial: 'filter' %>
@@ -32,15 +32,7 @@
   <% end %>
 
   <div class="col-lg-12" id="customer_products_index">
-    <% if params[:view] == "list_view" %>
-      <%= render partial: 'shared/layouts/datatable' %>
-    <% elsif @is_henkel %>
-      <%= render partial: 'grid_henkel', locals: {customer_products: @customer_products, customer_products_paginate: @customer_products_paginate} %>
-    <% elsif @is_saint_gobain %>
-      <%= render partial: 'grid_saint_gobain' %>
-    <% else %>
-      <%= render partial: 'grid' %>
-    <% end %>
+    <%= render partial: 'shared/layouts/datatable' %>
   </div>
 
   <div id="to_cart_modal_content"></div>

@@ -8,8 +8,8 @@
       <% end unless content_for?(:hide_table_heading) %>
 
       <div class="d-none">
-        <a href="<%= customers_products_path(view: 'list_view') %>" class="btn btn-lg btn-light" data-toggle="tooltip" title="List View"><i class="fal fa-list-ul"></i></a>
-        <a href="<%= customers_products_path(view: 'grid_view') %>" class="btn btn-lg btn-light" data-toggle="tooltip" title="Grid View"><i class="fal fa-grip-horizontal"></i></a>
+        <a href="<%= customers_products_path %>" class="btn btn-lg btn-light" data-toggle="tooltip" title="List View"><i class="fal fa-list-ul"></i></a>
+        <a href="<%= customers_products_path %>" class="btn btn-lg btn-light" data-toggle="tooltip" title="Grid View"><i class="fal fa-grip-horizontal"></i></a>
       </div>
 
       <% if content_for?(:can_be_directly_created) && policy(current_model.singularize.to_sym).new? %>
