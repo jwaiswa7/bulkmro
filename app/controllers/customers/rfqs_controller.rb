@@ -16,10 +16,14 @@ class Customers::RfqsController < Customers::BaseController
 
   def create 
     authorize :rfq
-    @customer_rfq = CustomerRfq.new(customer_rfq_params.merge(inquiry_id: Inquiry.first.id)) # [To do] Set the right inquiry id
-    
-    if @customer_rfq.save 
-      redirect_to customers_rfq_path(@customer_rfq)
+    @inquiry = Inquiry.new(company_id: current_customers_contact.company.id, potential_amount: 1.0, subject: 'RFQ subject', opportunity_source: 'Online_order' , quote_category: 'bmro', is_sez: true, product_type: 'MRO',price_type: 'Door delivery' , contact_id:  current_customers_contact.id , shipping_contact_id: current_customers_contact.id)
+    if @inquiry.save
+      @customer_rfq = CustomerRfq.new(customer_rfq_params.merge(inquiry_id: @inquiry.id)) 
+      if @customer_rfq.save 
+        redirect_to customers_rfq_path(@customer_rfq) , notice: "Your Inquiry # #{ @customer_rfq.inquiry.inquiry_number } has been submitted. You will receive a quotation shortly"
+      else 
+        render :new
+      end
     else 
       render :new
     end

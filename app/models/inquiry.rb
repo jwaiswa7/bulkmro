@@ -166,7 +166,8 @@ class Inquiry < ApplicationRecord
       meeting: 10,
       phone_call: 20,
       email: 30,
-      quote_tender_prep: 40
+      quote_tender_prep: 40,
+      Online_order: 50
   }
 
   enum quote_category: {
