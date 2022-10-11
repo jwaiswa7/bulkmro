@@ -17,13 +17,13 @@
 
       <% if current_company.id == 11420 %>
         <%= nav_item 'Dashboard', customers_dashboard_path, true %>
-        <%= nav_item 'Products', customers_products_path(view: "list_view"), policy(:customer_product).current_company_has_products? %>
+        <%= nav_item 'Products', customers_products_path, policy(:customer_product).current_company_has_products? %>
         <%= nav_item 'Invoices', customers_invoices_path, true %>
       <% else %>
         <%= nav_item 'Dashboard', customers_dashboard_path, true %>
         <%= nav_item 'Quotes', customers_quotes_path, true %>
         <%= nav_item 'Orders', customers_orders_path, true %>
-        <%= nav_item 'Products', customers_products_path(view: "list_view"), policy(:customer_product).current_company_has_products? %>
+        <%= nav_item 'Products', customers_products_path, policy(:customer_product).current_company_has_products? %>
         <%= nav_item 'Invoices', customers_invoices_path, true %>
       <% end %>
       <% if current_company.id == 11420 %>
