@@ -1,0 +1,34 @@
+<%= simple_form_for([:customers, @customer_rfq], url: customers_rfqs_path, :html => { :class => 'needs-validation mt-3', :'novalidate' => '', :'data-parsley-validate' => '' }) do |f| %>
+    <%= f.hidden_field :account_id %>
+  
+    <%= render 'shared/snippets/form_errors', f: f %>
+    <div class="card bmro-card">
+    <div class="bmro-adjusting-form">
+      <div class="card-body bmro-card-body bmro-card-body-pt" data-spy="scroll" data-target=".bmro-nav" data-offset="100">
+        <div class="bmro-Opportunity-slide target-scroll" id="Opportunity-Details"></div>
+        <div>
+  
+          <div class="form-row">
+            <div class="col-12 col-md-12">
+              <%= f.input :subject, label: 'Subject', input_html: { class: 'bmro-form-input' }, required: true%>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="col-12 col-md-12">
+            <%= f.input :requirement_details, label: 'Requirement details', as: :text, required: true  %>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="col-12 col-md-12">
+              <%= f.input :file, as: :file, wrapper: :custom_file, label: 'File' %>
+            </div>
+          </div>
+          <%= button_tag(type: "submit", class: "btn btn-warning btn-block") do %>
+            <i class="bmro-update-icon"></i> <%= submit_text(@customer_rfq) %>
+          <% end %>
+          
+          
+      </div>
+    </div>
+<% end %>
+  
