@@ -2,7 +2,7 @@
   <p style="color: #555;">Dear <%= @inquiry.inside_sales_owner.full_name %>,</p>
   <p style="color: #555;"><%= @contact.name %> has submitted a RFQ, Inquiry <%= @inquiry.subject %> which requires your attention. </p> 
   <p style="color: #555;">Please click here (Link of the inquiry page) to view the details.
-    <%= link_to 'Click here to view quote in Sprint', customers_inquiry_path(@inquiry.id) %>
+    <%= link_to 'Click here to view quote in Sprint', customers_inquiry_url(@inquiry.id) %>
   </p>
 
   <br/>
