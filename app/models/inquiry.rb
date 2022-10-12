@@ -279,8 +279,8 @@ class Inquiry < ApplicationRecord
   validate :every_product_is_only_added_once?
 
   validate :company_is_active, if: :new_record?
-
-  validates :quotation_date, not_in_past: true 
+  
+  validates :valid_end_time, not_in_past: true
   validates :expected_closing_date, not_in_past: true 
   validates :quotation_followup_date, not_in_past: true 
 
