@@ -20,7 +20,7 @@
           </div>
           <div class="form-row">
             <div class="col-12 col-md-12">
-              <%= f.input :file, as: :file, wrapper: :custom_file, label: 'File' %>
+             <%= f.input :files, wrapper: :custom_file, input_html: {multiple: true} ,label: 'File'%>
             </div>
           </div>
           <%= button_tag(type: "submit", class: "btn btn-warning btn-block") do %>
