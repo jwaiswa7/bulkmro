@@ -1,17 +1,23 @@
 class Customers::RfqPolicy < Customers::ApplicationPolicy
 	def index?
-      true
+    bombardier? 
 	end
 
 	def new?
-		true
+		bombardier? 
 	end
 
 	def create?
-		true
+		bombardier? 
 	end
 
 	def show?
-		true
+		bombardier? 
+	end
+
+	private
+
+	def bombardier? 
+		contact.account_id == 2208
 	end
 end
