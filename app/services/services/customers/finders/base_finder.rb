@@ -48,7 +48,11 @@ class Services::Customers::Finders::BaseFinder < Services::Shared::BaseService
     end
 
     @indexed_records = non_paginated_records.page(page).per(per) if non_paginated_records.present?
-    @records = model_klass.where(id: indexed_records.pluck(:id)).with_includes if indexed_records.present?
+    if @indexed_records.size > 0
+      @records = model_klass.find_ordered(indexed_records.pluck(:id)).with_includes if @indexed_records.present?
+    else
+      @records = model_klass.none
+    end
   end
 
 
