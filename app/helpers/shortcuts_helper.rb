@@ -45,11 +45,11 @@ module ShortcutsHelper
       when 'ar_invoice_requests'
          'AR Invoice Request'   
       when 'invoice_requests'
-         'AP Invoice Request'
-      else
-         element.titleize  
-      end
-    
+        'AP Invoice Request'
+     else
+        element.titleize
+     end
+
       # name = element == 'manage_failed_skus' ? 'Manage SKUs' : element.titleize
       begin
         prev_element = elements[index - 1]
@@ -68,6 +68,7 @@ module ShortcutsHelper
       if (index + 1) == elements.size
         crumbs << (content_tag :li, class: 'breadcrumb-item' do
           name = prev_element.singularize.titleize if controller_is_aliased == 'true'
+          name = prev_element.singularize.upcase  if controller_is_aliased == 'true' && prev_element == 'rfqs'
           name
         end)
       else
