@@ -253,6 +253,19 @@ module StatusesHelper
     format_badge(status, status_color(status)) if status
   end
 
+  def sap_status(invoiced_qty, total_qty)
+    if invoiced_qty == 0 
+      format_badge("Processing", 'color-yellow') 
+    elsif invoiced_qty > 0 && invoiced_qty < total_qty
+      format_badge("Partially Delivered", 'color-yellow') 
+    elsif invoiced_qty == total_qty
+      format_badge("Delivered", 'color-green')
+    else 
+      "Undefined"
+    end
+  end
+
+
   def due_badge(due_in_days, text)
     if due_in_days == 0
       format_badge(text, 'color-red')
