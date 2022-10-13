@@ -9,6 +9,7 @@ class Services::Customers::CustomerOrders::CreateQuoteAndOrder < Services::Share
         inquiry = Inquiry.where(company_id: @customer_order.company_id , customer_po_number: @customer_order.po_reference).last
         inquiry.billing_address_id = @customer_order.billing_address_id
         inquiry.shipping_address_id = @customer_order.shipping_address_id
+        inquiry.skip_dates_validations = true
         inquiry.save!
 
         last_sale_quote = inquiry.sales_quotes.last.try(:id)
@@ -34,6 +35,7 @@ class Services::Customers::CustomerOrders::CreateQuoteAndOrder < Services::Share
             inquiry_product.update( quantity: row.quantity.to_i)
           else
             inquiry.inquiry_products.build(sr_no: inquiry.inquiry_products.present? ? ( inquiry.inquiry_products.last.sr_no + 1 ) : 1 , product_id: row.product_id.to_i , quantity: row.quantity.to_i)
+            inquiry.skip_dates_validations = true
             inquiry.save!
             inquiry_product =  inquiry.inquiry_products.last
           end

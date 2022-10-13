@@ -230,7 +230,7 @@ class Inquiry < ApplicationRecord
   scope :live, -> {where.not(status: :'Order Lost').where.not(status: :'Regret')}
   scope :without_so, -> {where.not(status: ['SO Rejected by Sales Manager', 'Rejected by Accounts',
        'Hold by Accounts', 'Order Lost', 'Regret', 'Regret Request']).order(id: :desc)}
-  attr_accessor :force_has_sales_orders, :common_supplier_id, :select_all_products, :select_all_suppliers, :inquiry_from
+  attr_accessor :force_has_sales_orders, :common_supplier_id, :select_all_products, :select_all_suppliers, :inquiry_from ,:skip_dates_validations
 
   with_options if: :has_sales_orders_and_not_legacy? do |inquiry|
     # inquiry.validates_with FilePresenceValidator, attachment: :customer_po_sheet
@@ -279,10 +279,9 @@ class Inquiry < ApplicationRecord
   validate :every_product_is_only_added_once?
 
   validate :company_is_active, if: :new_record?
-  
-  validates :valid_end_time, not_in_past: true
-  validates :expected_closing_date, not_in_past: true 
-  validates :quotation_followup_date, not_in_past: true 
+  validates :valid_end_time, not_in_past: true , unless: :skip_dates_validations
+  validates :expected_closing_date, not_in_past: true , unless: :skip_dates_validations
+  validates :quotation_followup_date, not_in_past: true , unless: :skip_dates_validations
 
   def company_is_active
     if !self.company.is_active
