@@ -392,6 +392,9 @@ class Overseers::InquiriesController < Overseers::BaseController
     @new_inquiry.duplicated_from = @inquiry.id
     @new_inquiry.inquiry_currency = InquiryCurrency.create(currency_id: @inquiry.currency)
     @new_inquiry.quotation_date = ''
+    @new_inquiry.valid_end_time = Date.today
+    @new_inquiry.expected_closing_date = Date.today + 1.week
+    @new_inquiry.quotation_followup_date = Date.today + 1.week
 
     if @new_inquiry.save
       @inquiry.inquiry_products.each do |inquiry_product|
