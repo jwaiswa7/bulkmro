@@ -52,6 +52,8 @@ class Overseers::ActivitiesController < Overseers::BaseController
     authorize_acl @activity
 
     if @activity.save
+      activity_number = Services::Resources::Shared::UidGenerator.generate_activity_number
+      @activity.update_attributes(activity_number: activity_number)
       approve
     else
       render 'new'
