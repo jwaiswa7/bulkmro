@@ -9,7 +9,7 @@ class Services::Customers::CustomerOrders::CreateQuoteAndOrder < Services::Share
         inquiry = Inquiry.where(company_id: @customer_order.company_id , customer_po_number: @customer_order.po_reference).last
         inquiry.billing_address_id = @customer_order.billing_address_id
         inquiry.shipping_address_id = @customer_order.shipping_address_id
-        inquiry.save!
+        inquiry.save(validate: false)
 
         last_sale_quote = inquiry.sales_quotes.last.try(:id)
         sales_quote = SalesQuote.new(inquiry_id: inquiry.id , sent_at: Time.now , parent_id: last_sale_quote)
@@ -34,7 +34,7 @@ class Services::Customers::CustomerOrders::CreateQuoteAndOrder < Services::Share
             inquiry_product.update( quantity: row.quantity.to_i)
           else
             inquiry.inquiry_products.build(sr_no: inquiry.inquiry_products.present? ? ( inquiry.inquiry_products.last.sr_no + 1 ) : 1 , product_id: row.product_id.to_i , quantity: row.quantity.to_i)
-            inquiry.save!
+            inquiry.save(validate: false)
             inquiry_product =  inquiry.inquiry_products.last
           end
 
