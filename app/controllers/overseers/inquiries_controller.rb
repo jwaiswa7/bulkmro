@@ -393,7 +393,7 @@ class Overseers::InquiriesController < Overseers::BaseController
     @new_inquiry.inquiry_currency = InquiryCurrency.create(currency_id: @inquiry.currency)
     @new_inquiry.quotation_date = ''
 
-    if @new_inquiry.save
+    if @new_inquiry.save(validate: false)
       @inquiry.inquiry_products.each do |inquiry_product|
         new_inquiry_product = inquiry_product.dup
         new_inquiry_product.inquiry_id = @new_inquiry.id
