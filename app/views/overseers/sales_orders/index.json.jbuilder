@@ -60,7 +60,7 @@ json.data (@sales_orders) do |sales_order|
                   sales_order.calculated_total_margin,
                   format_invoiced_qty(sales_order.get_invoiced_qty, sales_order.total_qty),
                   format_succinct_date(sales_order.created_at),
-                  status_badge(sales_order.remote_uid.present? ? 'Sync' : 'Not Sync')
+                  sap_status(sales_order.get_invoiced_qty, sales_order.total_qty)
               ]
 end
 
