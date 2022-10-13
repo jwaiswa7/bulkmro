@@ -1,22 +1,28 @@
+<% content_for :page_title do %>
+  Fotgot Password?
+<% end %>
+
 <div class="col-xl-5 col-lg-6 col-md-7">
   <div class="text-center">
     <h1 class="h2">
       <img src="<%= image_path('BMIS_Logo_PNG.png') %>" height="30"/>
     </h1>
     <p>Forgot your password?</p>
-    <%= simple_form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }) do |f| %>
+    <%= simple_form_for(resource, as: resource_name, url: password_path(resource_name), :html => {:class => 'text-left needs-validation mt-3', :'novalidate' => '', :'data-parsley-validate' => '', method: :post}) do |f| %>
       <%= f.error_notification %>
-
-      <div class="form-inputs">
+      <div class="form-group">
         <%= f.input :email,
-                    required: true,
-                    autofocus: true,
-                    input_html: { autocomplete: "email" } %>
+                required: true,
+                autofocus: true,
+                input_html: { autocomplete: "email" } %>
       </div>
 
-      <div class="form-actions">
-        <%= f.button :submit, "Send me reset password instructions" %>
-      </div>
+      <%= button_tag(type: "submit", class: "btn btn-success btn-rounded btn-block") do %>
+        Reset Password
+      <% end %>
+      <p class="text-center mt-1">
+        <small>Lost? Ping the sysadmin on <a href="mailto:techdesk@bulkmro.net">techdesk@bulkmro.net</a>.</small>
+      </p>
     <% end %>
   </div>
 </div>

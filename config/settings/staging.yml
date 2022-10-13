@@ -54,8 +54,8 @@ sendgrid_smtp:
   address: "smtp.sendgrid.net"
   port: 587
   domain: "bulkmro.com"
-  user_name: "bulk"
-  password: "GhgjIH4zw3p2"
+  user_name: apikey
+  password: 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
   authentication: "plain"
   enable_starttls_auto: true
 
