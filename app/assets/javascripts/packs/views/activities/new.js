@@ -1,3 +1,5 @@
+import disableBackdateOption from "../common/disableBackdateOption";
+
 const newAction = () => {
     if($('.existing-company').hasClass('d-none')){
         $('.new-company-form').find('select, input').attr('required', false);
@@ -45,6 +47,34 @@ const newAction = () => {
         } else {
             $('.activity_contact').removeClass('d-none');
         }
+    });
+
+    
+
+    if ($('#activity_purpose').select2('data')[0].text == "Others") {
+        $("#activity_purpose_others").prop("required", true);
+        $("#activity_purpose_others").prop("disabled", false);
+    }
+    else{
+        $("#activity_purpose_others").val('');
+    }
+
+    $('#activity_purpose').on('select2:select', function (e) {
+        if ($(this).select2('data')[0].text != "Others") {
+          $("#activity_purpose_others").val('');
+          $("#activity_purpose_others").prop("disabled", true);
+          $("#activity_purpose_others").attr("required", false);
+          $("#activity_purpose_others").parent().children().removeClass('is-invalid');
+          $("#activity_purpose_others").parent().find('span .select2-selection').removeClass('is-invalid');
+        } else {
+          $("#activity_purpose_others").prop("required", true);
+          $("#activity_purpose_others").prop("disabled", false);
+        }
+      });
+      
+      $('#activity_date').on("focus", function () {
+        var newDate = Date.parse(new Date())
+        disableBackdateOption($('#activity_date'),true,moment(newDate).subtract(15, 'days').format('DD-MMM-YYYY'));
     });
 };
 export default newAction
