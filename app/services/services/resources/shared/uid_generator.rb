@@ -57,5 +57,15 @@ class Services::Resources::Shared::UidGenerator < Services::Shared::BaseService
     end
   end
 
+  def self.generate_activity_number
+    previous_record = Activity.where.not(activity_number: nil).last
+    if previous_record
+        series = previous_record.activity_number.scan(/\d+/)&.first&.to_i + 1
+        "AC#{series}"
+    else
+      "AC1"
+    end
+  end
+
   attr_accessor :sales_quote
 end

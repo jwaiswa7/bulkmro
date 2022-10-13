@@ -15,26 +15,11 @@
           <%= f.association :contact, collection: selected_option_or_nil(f, :contact), input_html: {class: 'select2-ajax bmro-form-input bmro-dropdown-icon', :'data-source' => autocomplete_overseers_contacts_path}, include_blank: 'Leave blank if no contact connected', label: "Existing Contact" %>
           <%= f.input :subject %>
           <div class="form-row">
-            <div class="col-4 col-md-4">
+            <div class="col-6 col-md-6">
               <%= f.input :expenses, input_html: {class: 'bmro-form-input' }, label: "Misc Expenses" %>
             </div>
-            <div class="col-8">
-              <div class="d-block d-md-flex align-items-end">
-                <div class="flex-grow-1 bmro-chosen-height-parent">
-                  <%= f.input :attachments, wrapper: :custom_file, input_html: {class: 'select2-ajax bmro-form-input bmro-dropdown-icon select2-single '}, input_html: {multiple: true}, label: 'Attachments' %>
-                </div>
-
-                <div class="form-group">
-                  <% f.object.attachments.each do |attachment| %>
-                    <%= link_to url_for(attachment), class: ' btn bmro-button btn-success bmro-new-margins', target: '_blank', :"data-toggle" => 'tooltip', :status => attachment.filename do %>
-                      <i class="bmro-download-icon"></i>
-                      <%= link_to overseers_attachment_path(attachment.id), class: 'btn btn-sm mr-md-0 p-15 fl-l p-0', method: :delete, data: {confirm: 'Are you sure?'}, :"data-toggle" => 'tooltip', :status => ['Delete', ' ', attachment.filename, '?'].join(''), required: true do %>
-                        <i class="bmro-product-trash bmro-new-trash-border "></i>
-                      <% end if attachment.present? && is_authorized(:attachment, 'destroy') %>
-                    <% end %>
-                  <% end if f.object.attachments.attached? %>
-                </div>
-              </div>
+            <div class="col-6 col-md-6">
+              <%= f.input :activity_date, as: :string, input_html: {:'data-toggle' => 'datepicker', class: 'bmro-form-input', id: "activity_date"} %>
             </div>
           </div>
 
@@ -48,10 +33,10 @@
           </div>
           <div class="form-row">
             <div class="col-6 col-md-6">
-              <%= f.input :purpose, as: :select, include_blank: false, input_html: {class: 'bmro-form-input bmro-dropdown-icon select2-single' }, :wrapper => :custom_multi_select, collection: enum_to_collection(Activity.purposes) %>
+              <%= f.input :purpose, as: :select, include_blank: false, input_html: {class: 'bmro-form-input bmro-dropdown-icon select2-single' , id: 'activity_purpose', }, :wrapper => :custom_multi_select, collection: enum_to_collection(Activity.purposes) %>
             </div>
             <div class="col-6 col-md-6">
-              <%= f.input :activity_date, as: :string, input_html: {:'data-toggle' => 'datepicker', class: 'bmro-form-input' } %>
+              <%= f.input :purpose_for_others ,label: "Specify if selected others", input_html: {class: 'bmro-form-input' ,id: 'activity_purpose_others'} , disabled: true %>
             </div>
           </div>
           <%= f.association :overseers, collection: Overseer.all ,label: 'Colleagues' , placeholder:  "Select other overseers" , input_html: {class: 'custom-select2-search select2-multiple ', multiple: true } %>
@@ -68,6 +53,25 @@
                 <i class="fal fa-pen"></i> <%= submit_text(@activity) %>
               <% end %>
             <% end %>
+          </div>
+
+          <div class="mt-4">
+            <div class="d-block d-md-flex align-items-end">
+              <div class="flex-grow-1 bmro-chosen-height-parent">
+                <%= f.input :attachments, wrapper: :custom_file, input_html: {class: 'select2-ajax bmro-form-input bmro-dropdown-icon select2-single '}, input_html: {multiple: true}, label: 'Attachments' %>
+              </div>
+
+              <div class="form-group">
+                <% f.object.attachments.each do |attachment| %>
+                  <%= link_to url_for(attachment), class: ' btn bmro-button btn-success bmro-new-margins', target: '_blank', :"data-toggle" => 'tooltip', :status => attachment.filename do %>
+                    <i class="bmro-download-icon"></i>
+                    <%= link_to overseers_attachment_path(attachment.id), class: 'btn btn-sm mr-md-0 p-15 fl-l p-0', method: :delete, data: {confirm: 'Are you sure?'}, :"data-toggle" => 'tooltip', :status => ['Delete', ' ', attachment.filename, '?'].join(''), required: true do %>
+                      <i class="bmro-product-trash bmro-new-trash-border "></i>
+                    <% end if attachment.present? && is_authorized(:attachment, 'destroy') %>
+                  <% end %>
+                <% end if f.object.attachments.attached? %>
+              </div>
+            </div>
           </div>
           <!--<div class="form-row mt-2">
             <%# if @activity.persisted? && !(@activity.approved? || @activity.rejected?) %>

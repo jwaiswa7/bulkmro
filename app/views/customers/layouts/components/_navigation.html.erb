@@ -21,7 +21,7 @@
         <%= nav_item 'Invoices', customers_invoices_path, true %>
       <% else %>
         <%= nav_item 'Dashboard', customers_dashboard_path, true %>
-        <%= nav_item 'RFQ', customers_rfqs_path, true if current_customers_contact.account_id == 2208 %>
+        <%= nav_item 'RFQ', customers_rfqs_path, true if policy(:rfq).index? %>
         <%= nav_item 'Quotes', customers_quotes_path, true %>
         <%= nav_item 'Orders', customers_orders_path, true %>
         <%= nav_item 'Products', customers_products_path, policy(:customer_product).current_company_has_products? %>
