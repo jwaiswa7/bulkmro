@@ -26,10 +26,12 @@ class Customers::RfqsController < Customers::BaseController
           subject: subject,
           body: CustomerRfqMailer.rfq_submitted_email(@email_message, @customer_rfq).body.raw_source,
           from: "noreply@bulmro.com",
-          to: @customer_rfq.inquiry.inside_sales_owner.email,
-          cc: [@customer_rfq.inquiry.sales_manager.email]
+          to: [@customer_rfq.inquiry.inside_sales_owner.email, @customer_rfq.inquiry.outside_sales_owner.email, @customer_rfq.inquiry.sales_manager.email]
         )
-        @email_message.save
+        # @email_message.files.attach(io: File.open(RenderPdfToFile.for(@customer_rfq, locals: { is_revision_visible: true })), filename: @customer_rfq.filename(include_extension: true))
+        if @email_message.save
+          CustomerRfqMailer.send_rfq_submitted_email(@email_message).deliver_now
+        end
         redirect_to customers_rfq_path(@customer_rfq) , notice: "Your Inquiry # #{ @customer_rfq.inquiry.inquiry_number } has been submitted. You will receive a quotation shortly"
       else 
         render :new
