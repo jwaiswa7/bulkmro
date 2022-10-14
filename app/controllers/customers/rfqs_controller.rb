@@ -28,7 +28,11 @@ class Customers::RfqsController < Customers::BaseController
           from: "noreply@bulmro.com",
           to: [@customer_rfq.inquiry.inside_sales_owner.email, @customer_rfq.inquiry.outside_sales_owner.email, @customer_rfq.inquiry.sales_manager.email]
         )
-        # @email_message.files.attach(io: File.open(RenderPdfToFile.for(@customer_rfq, locals: { is_revision_visible: true })), filename: @customer_rfq.filename(include_extension: true))
+        @customer_rfq.files.each do |original_file|
+          @email_message.files.attach(io: StringIO.new(original_file.download),
+                                   filename: original_file.filename,
+                                   content_type: original_file.content_type)
+        end
         if @email_message.save
           CustomerRfqMailer.send_rfq_submitted_email(@email_message).deliver_now
         end
