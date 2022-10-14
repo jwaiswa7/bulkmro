@@ -17,7 +17,7 @@ json.data (@sales_orders) do |sales_order|
                   format_currency(sales_order.calculated_total),
                   format_date(sales_order.inquiry.customer_committed_date),
                   sales_order.invoices.any? ? format_date(sales_order.invoices.last.delivery_date || sales_order.invoices.last.mis_date) : '-',
-                  customer_order_status(sales_order),
+                  sap_status(sales_order.get_invoiced_qty, sales_order.total_qty),
                   format_date(sales_order.created_at)
               ]
 end
