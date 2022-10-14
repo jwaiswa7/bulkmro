@@ -258,10 +258,8 @@ module StatusesHelper
       format_badge("Processing", 'color-yellow') 
     elsif invoiced_qty > 0 && invoiced_qty < total_qty
       format_badge("Partially Delivered", 'color-yellow') 
-    elsif invoiced_qty == total_qty
+    else
       format_badge("Delivered", 'color-green')
-    else 
-      "Undefined"
     end
   end
 
