@@ -1,0 +1,20 @@
+<div class="col-lg-12">
+
+  <%= simple_form_for([:overseers, @activity, @email_message], :html => {:class => 'card needs-validation mt-3', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
+
+    <div class="card-body">
+      <%= f.input :from, input_html: { class: 'bmro-form-input' }, disabled: true %>
+      <%= f.input :to, input_html: { class: 'bmro-form-input' } %>
+      <%= f.input :cc, input_html: { class: 'bmro-form-input' } %>
+      <%= f.input :bcc, input_html: { class: 'bmro-form-input' } %>
+      <%= f.input :subject, input_html: { class: 'bmro-form-input' } %>
+      <%= f.input :files, input_html: { class: 'bmro-form-input' }, wrapper: :custom_file, input_html: {multiple: true} %>
+      <%= f.input :body, input_html: {rows: 10, class: 'html-editor bmro-form-input  bmro-form-overflow'} %>
+    </div>
+    <div class="card-footer bmro-card-footer">
+      <%= button_tag(type: "submit", class: "btn btn-success btn-block bmro-button") do %>
+        <i class="bmro-fa-paper-plane"></i> Send Email
+      <% end %>
+    </div>
+  <% end %>
+</div>

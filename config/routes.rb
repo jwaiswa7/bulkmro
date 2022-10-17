@@ -194,6 +194,9 @@ Rails.application.routes.draw do
         get 'approve'
         get 'reject'
       end
+      scope module: 'activities' do
+        resources :email_messages , only: [:new, :create]
+      end
     end
 
     resource :profile, controller: :profile, except: [:show, :index]

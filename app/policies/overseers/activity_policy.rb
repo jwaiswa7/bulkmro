@@ -4,10 +4,10 @@ class Overseers::ActivityPolicy < Overseers::ApplicationPolicy
   end
 
   def approve?
-    admin?
+    admin_or_manager? 
   end
   def reject?
-    admin?
+    admin_or_manager? 
   end
 
   def add_to_inquiry?
@@ -27,10 +27,14 @@ class Overseers::ActivityPolicy < Overseers::ApplicationPolicy
   end
 
   def edit?
-    admin? || (record.created_by == overseer)
+    (admin? || (record.created_by == overseer)) && record.approval_status == 'Pending Approval' 
   end
 
   def export_all?
     allow_activity_export?
+  end
+
+  def send_email?
+    admin_or_manager? 
   end
 end

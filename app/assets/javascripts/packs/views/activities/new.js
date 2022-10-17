@@ -76,5 +76,24 @@ const newAction = () => {
         var newDate = Date.parse(new Date())
         disableBackdateOption($('#activity_date'),true,moment(newDate).subtract(15, 'days').format('DD-MMM-YYYY'));
     });
+    approve();
+    reject();
+};
+
+let approve = () => {
+    $('.approve').click(function () {
+        let id = $('input[name="activity[id]"]').val();
+        console.log(id);
+        let data = {id: id};
+        window.open(Routes.approve_overseers_activity_path(data), '_self');
+    });
+};
+let reject = () => {
+    $('.reject').click(function () {
+        let id = $('input[name="activity[id]"]').val();
+        console.log(id);
+        let data = {id: id};
+        window.open(Routes.reject_overseers_activity_path(data), '_self');
+    });
 };
 export default newAction
