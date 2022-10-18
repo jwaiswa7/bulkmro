@@ -1,23 +1,27 @@
 class Customers::RfqPolicy < Customers::ApplicationPolicy
 	def index?
-    bombardier? 
+    	bombardier? || vertiv? 
 	end
 
 	def new?
-		bombardier? 
+		bombardier? || vertiv? 
 	end
 
 	def create?
-		bombardier? 
+		bombardier? || vertiv? 
 	end
 
 	def show?
-		bombardier? 
+		bombardier? || vertiv? 
 	end
 
 	private
 
 	def bombardier? 
 		contact.account_id == 2208
+	end
+
+	def vertiv? 
+		contact.account_id == 2478
 	end
 end
