@@ -198,6 +198,7 @@ class Company < ApplicationRecord
   end
 
   def default_logistics_owner
+    return if Rails.env.test?
     Overseer.find(213)
   end
 
