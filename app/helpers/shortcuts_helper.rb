@@ -46,6 +46,8 @@ module ShortcutsHelper
          'AR Invoice Request'   
       when 'invoice_requests'
         'AP Invoice Request'
+      when 'rfqs'
+        'RFQs'
      else
         element.titleize
      end

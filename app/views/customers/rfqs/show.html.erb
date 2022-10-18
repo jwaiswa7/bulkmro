@@ -1,19 +1,19 @@
 <% provide :container_fluid, true %>
 <% provide :controller_is_aliased, true %>
 <% content_for :page_title do %>
-  Inquiry <%= ['#', @customer_rfq.inquiry.inquiry_number].join('') %>
+  RFQ <%= ['#', @customer_rfq.inquiry.inquiry_number].join('') %>
 <% end %>
 <div class="col-12">
   <div class="pt-3 pt-lg-4 pb-2 pb-lg-3">
     <div class="d-inline-flex justify-content-between mt-2">
-      <h1 class="display-5 mb-1">Inquiry <%= ['#', @customer_rfq.inquiry.inquiry_number].join('') %></h1>
+      <h1 class="display-5 mb-1">RFQ <%= ['#', @customer_rfq.inquiry.inquiry_number].join('') %></h1>
     </div>
   </div>
   <div class="card">
     <div class="card-header">
       <div class=form-row>
         <div class="col-6 col-md-3 mb-2 mb-md-0">
-          <strong class="d-block">Inquiry Number</strong>
+          <strong class="d-block">RFQ Number</strong>
           #<%= @customer_rfq.inquiry.inquiry_number %>
         </div>
         <div class="col-6 col-md-3 mb-0">
@@ -33,11 +33,11 @@
     <div class="card-body">
       <div class="form-row mb-0 mb-md-2">
         <div class="col-6 col-md-3 mb-2 mb-md-0">
-          <strong class="d-block">Inquiry Reference</strong>
+          <strong class="d-block">RFQ Reference</strong>
           <%= @customer_rfq.inquiry.subject %>
         </div>
         <div class="col-6 col-md-3 mb-2 mb-md-0">
-          <strong class="d-block">Date of Inquiry</strong>
+          <strong class="d-block">Date of RFQ</strong>
           <%= format_date(@customer_rfq.inquiry.created_at) %>
         </div>
       </div>
