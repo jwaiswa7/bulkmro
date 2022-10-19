@@ -89,3 +89,6 @@ end
 ## Windows
 "<PATH TO POSTGRESQL's BIN FOLDER>\pg_restore" --verbose --clean --no-acl --no-owner -h localhost -U rails -d sprint_dev "<PATH TO DUMP>"
 
+# Running tests
+Run the command `rspec` to run the test suite
+

@@ -284,7 +284,7 @@ class Inquiry < ApplicationRecord
   validates :quotation_followup_date, not_in_past: true , unless: :skip_dates_validations
 
   def company_is_active
-    if !self.company.is_active
+    if self.company.present? && !self.company.is_active
       errors.add(:company, 'must be active to make a inquiry')
     end
   end
