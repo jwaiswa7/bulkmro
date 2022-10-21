@@ -51,11 +51,7 @@ json.data (@activities) do |activity|
                   activity.points_discussed,
                   activity.actions_required,
                   format_succinct_date(activity.created_at),
-                  if activity.approval.present?
-                    status_badge(activity.approval.activity_status)
-                  else
-                    ' - '
-                  end
+                  status_badge(activity.approval_status)
               ]
 end
 json.columnFilters [

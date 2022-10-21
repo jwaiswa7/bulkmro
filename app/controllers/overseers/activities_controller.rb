@@ -63,7 +63,8 @@ class Overseers::ActivitiesController < Overseers::BaseController
                                             edit_overseers_activity_path(@activity)
                                           )
 
-      approve
+      # approve
+      redirect_to overseers_activities_path, notice: flash_message(@activity, action_name)
     else
       render 'new'
     end
@@ -161,6 +162,7 @@ class Overseers::ActivitiesController < Overseers::BaseController
         :company_id,
         :contact_id,
         :company_type,
+        :activity_status,
         :subject,
         :purpose,
         :activity_date,

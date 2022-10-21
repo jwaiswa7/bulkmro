@@ -11,6 +11,7 @@ class EmailMessage < ApplicationRecord
   belongs_to :outward_dispatch, required: false
   belongs_to :supplier_rfq, required: false
   belongs_to :customer_rfq, required: false
+  belongs_to :activity, required: false
 
   has_many_attached :files
 

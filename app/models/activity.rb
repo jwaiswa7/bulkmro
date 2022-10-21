@@ -11,6 +11,7 @@ class Activity < ApplicationRecord
   pg_search_scope :locate, against: [:purpose, :company_type, :activity_type], associated_against: { created_by: [:first_name, :last_name], account: [:name], company: [:name], contact: [:first_name, :last_name], inquiry: [:inquiry_number] }, using: { tsearch: { prefix: true } }
 
   has_many :activity_overseers
+  has_many :email_messages, dependent: :destroy
   has_many :overseers, through: :activity_overseers
   accepts_nested_attributes_for :activity_overseers, reject_if: lambda { |attributes| attributes['overseer_id'].blank? && attributes['id'].blank? }, allow_destroy: true
   belongs_to :inquiry, required: false
@@ -54,9 +55,13 @@ class Activity < ApplicationRecord
 
 
   enum activity_status: {
-      'Approved': 10,
-      'Pending Approval': 20,
-      'Rejected': 30
+    'Completed': 10 ,
+    'Closed': 20 ,
+    'Pending': 30 ,
+    'Overdue': 40 ,
+    'To-Do': 50 ,
+    'MOM Sent': 60 ,
+    'Customer follow-up email sent': 60 
   }
   scope :with_includes, -> { includes(:created_by, :company, :inquiry, :contact) }
 
@@ -75,6 +80,7 @@ class Activity < ApplicationRecord
     self.purpose ||= :'First Meeting/Intro Meeting'
     self.activity_type ||= :'Meeting'
     self.activity_date ||= Date.today
+    self.activity_status ||= :'To-Do'
   end
 
   def activity_company
@@ -90,6 +96,16 @@ class Activity < ApplicationRecord
       self.account
     elsif self.inquiry.present?
       self.inquiry.account
+    end
+  end
+
+  def approval_status
+    if self.approved?
+      'Approved'
+    elsif self.rejected?
+      'Rejected'
+    else
+      'Pending Approval'
     end
   end
 
