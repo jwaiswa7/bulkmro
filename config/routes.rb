@@ -195,7 +195,14 @@ Rails.application.routes.draw do
         get 'reject'
       end
       scope module: 'activities' do
-        resources :email_messages , only: [:new, :create]
+        resources :email_messages do
+          collection do
+            get 'minutes_of_meeting'
+            post 'minutes_of_meeting_notification'
+            get 'follow_up_email'
+            post 'follow_up_email_notification'
+          end
+        end
       end
     end
 

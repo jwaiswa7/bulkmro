@@ -1,6 +1,5 @@
 <div class="col-lg-12">
-
-  <%= simple_form_for([:overseers, @activity, @email_message], :html => {:class => 'card needs-validation mt-3', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
+  <%= simple_form_for([:overseers, @activity, @email_message], url: {action: @action, controller: 'overseers/activities/email_messages'}, :html => {:class => 'card needs-validation mt-3', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
 
     <div class="card-body">
       <%= f.input :from, input_html: { class: 'bmro-form-input' }, disabled: true %>
