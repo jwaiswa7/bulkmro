@@ -3,6 +3,9 @@ import onScrollandClickSideMenu from '../common/ScrollandClickSideMenu';
 import disableBackdateOption from "../common/disableBackdateOption";
 
 const newAction = () => {
+
+    var route_through_value = "\n7. Bulk MRO will not be responsible for any changes done by the vendor in terms of product specifications. \n8. Any costs incurred by Bulk MRO for warranty claim will be reimbursed by the customer."
+
     $('form').on('change', 'select[name*=shipping_company_id]', function (e) {
         let reset = true;
         onShippingCompanyChange(this, reset);
@@ -27,6 +30,25 @@ const newAction = () => {
         var newDate = Date.parse(new Date())
         disableBackdateOption($('[name="inquiry[quotation_followup_date]'),true,moment(newDate).format('DD-MMM-YYYY'));
     });
+
+        
+    if ($('#inquiry_opportunity_type').select2('data')[0].text == "Route through") {
+        var commercial_terms_and_conditions = $("#inquiry_commercial_terms_and_conditions")[0].value;
+        commercial_terms_and_conditions = commercial_terms_and_conditions + route_through_value
+        $("#inquiry_commercial_terms_and_conditions").val(commercial_terms_and_conditions);
+   }
+   
+   $('#inquiry_opportunity_type').on('select2:select', function (e) {
+       if ($(this).select2('data')[0].text == "Route through") {
+           var commercial_terms_and_conditions = $("#inquiry_commercial_terms_and_conditions")[0].value;
+           commercial_terms_and_conditions = commercial_terms_and_conditions + route_through_value
+           $("#inquiry_commercial_terms_and_conditions").val(commercial_terms_and_conditions);
+       } else {
+           var commercial_terms_and_conditions = $("#inquiry_commercial_terms_and_conditions")[0].value;
+           commercial_terms_and_conditions = commercial_terms_and_conditions.replace(route_through_value, "");           
+           $("#inquiry_commercial_terms_and_conditions").val(commercial_terms_and_conditions);
+       }
+   });
 
 };
 
