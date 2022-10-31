@@ -1,6 +1,6 @@
 class ExportMailer < ApplicationMailer
   default template_path: "mailers/#{self.name.underscore}"
-  default from: 'no-reply@bulkmro.com'
+  default from: 'itops@bulkmro.com'
 
   def export_filtered_records(record, overseer)
     @overseer = overseer

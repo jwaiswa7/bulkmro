@@ -25,7 +25,7 @@ class Customers::RfqsController < Customers::BaseController
         @email_message.assign_attributes(
           subject: subject,
           body: CustomerRfqMailer.rfq_submitted_email(@email_message, @customer_rfq).body.raw_source,
-          from: "noreply@bulmro.com",
+          from: "itops@bulmro.com",
           to: [@customer_rfq.inquiry.inside_sales_owner.email, @customer_rfq.inquiry.outside_sales_owner.email, @customer_rfq.inquiry.sales_manager.email]
         )
         @customer_rfq.files.each do |original_file|
