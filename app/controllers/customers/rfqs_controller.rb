@@ -26,7 +26,7 @@ class Customers::RfqsController < Customers::BaseController
           subject: subject,
           body: CustomerRfqMailer.rfq_submitted_email(@email_message, @customer_rfq).body.raw_source,
           from: "itops@bulmro.com",
-          to: ["devendra.singh@bulkmro.com"]
+          to: "devendra.singh@bulkmro.com"
         )
         @customer_rfq.files.each do |original_file|
           @email_message.files.attach(io: StringIO.new(original_file.download),
