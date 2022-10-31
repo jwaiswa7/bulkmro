@@ -1,6 +1,6 @@
 class CommonMailer < ApplicationMailer
   default template_path: "mailers/#{self.name.underscore}"
-  default from: 'no-reply@bulkmro.com'
+  default from: 'itops@bulkmro.com'
 
   def chewy_notification_mail(is_process_started, chewy_time)
     @process_status = is_process_started
