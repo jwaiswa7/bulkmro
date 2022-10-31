@@ -44,7 +44,7 @@ class Suppliers::RfqController < Suppliers::BaseController
             )
           end
           @email_message.assign_attributes(
-              from: "itops@bulmro.com",
+              from: "itops@bulkmro.com"",
               to: @rfq.inquiry.inside_sales_owner.email,
               cc: [@rfq.inquiry.sales_manager.email]
           )
