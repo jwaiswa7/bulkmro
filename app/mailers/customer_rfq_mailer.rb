@@ -15,6 +15,7 @@ class CustomerRfqMailer < ApplicationMailer
     @inquiry = email_message.inquiry
     attach_files(email_message.files)
     email = htmlized_email(email_message)
+    email.delivery_method.settings = Settings.gmail_smtp.to_hash
     email.delivery_method.settings.merge!(user_name: @inquiry.inside_sales_owner.email, password: @inquiry.inside_sales_owner.smtp_password)
   end
 end
