@@ -61,7 +61,7 @@ class Activity < ApplicationRecord
     'Overdue': 40 ,
     'To-Do': 50 ,
     'MOM Sent': 60 ,
-    'Customer follow-up email sent': 60 
+    'Customer follow-up email sent': 70 
   }
   scope :with_includes, -> { includes(:created_by, :company, :inquiry, :contact) }
 

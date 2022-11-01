@@ -48,7 +48,7 @@
                             </div>
                           </div>
                           <div class="modal-body bmro-model-body-padding">
-                            <%= f.input :activity_status, input_html: { class: 'select2-single bmro-form-input bmro-dropdown-icon bmro-width-select' }, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(Activity.activity_statuses, keep_raw: true), selected: @activity.activity_status %>
+                            <%= f.input :activity_status, input_html: { class: 'select2-single bmro-form-input bmro-dropdown-icon bmro-width-select' }, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(Activity.activity_statuses.except('MOM Sent', 'Customer follow-up email sent'), keep_raw: true), selected: @activity.activity_status %>
                           </div>
                           <div class="bmro-button-parent bmro-model-button">
                             <%= action_button(action_name, @activity) %>
@@ -92,44 +92,7 @@
           <%= f.association :overseers, collection: Overseer.all ,label: 'Colleagues' , placeholder:  "Select other overseers" , input_html: {class: 'custom-select2-search select2-multiple ', multiple: true } %>
           <%= f.input :points_discussed, input_html: {class: 'bmro-form-input bmro-input-values' } %>
           <%= f.input :actions_required, input_html: {class: 'bmro-form-input bmro-input-values' } %>
-
-          <div class="form-row">
-            <% if action_name.capitalize == "New" %>
-              <%= button_tag(type: "submit", class: "btn btn-success btn-block bmro-button") do %>
-                <i class="fal fa-plus-circle"></i> <%= submit_text(@activity) %>
-              <% end %>
-            <% else %>
-              <% if policy(@activity).approve? %>
-                <div class="col-3">
-                  <%= button_tag(type: "submit", class: "btn btn-m btn-block btn-warning bmro-button approve", value: 'approve') do %>
-                    Approve
-                  <% end %>
-                </div>
-              <% end %>
-              <% if policy(@activity).reject? %>
-                <div class="col-3">
-                  <%= button_tag(type: "submit", class: "btn btn-m btn-block btn-warning bmro-button reject", value: 'reject') do %>
-                    Reject
-                  <% end %>
-                </div>
-              <% end %>
-              <% if policy(@activity).send_email? %>
-                <div class="col-3">
-                  <a href="<%= new_overseers_activity_email_message_path(activity_id: @activity.id) %>" class="bmro-button btn btn-lg btn-block align-self-center">Send MOM</a>
-                </div>
-                <div class="col-3">
-                  <a href="#<%#= new_overseers_activity_email_message_path(activity_id: @activity.id) %>" class="bmro-button btn btn-lg btn-block align-self-center">Send Follow-Up Email</a>
-                </div>
-              <% end %>
-              <div class="col-12 mt-3">
-                <%= button_tag(type: "submit", class: "btn btn-warning btn-block bmro-button") do %>
-                  <i class="fal fa-pen"></i> <%= submit_text(@activity) %>
-                <% end %> 
-              </div>
-            <% end %>
-          </div>
-
-          <div class="mt-4">
+          <div class="mb-2">
             <div class="d-block d-md-flex align-items-end">
               <div class="flex-grow-1 bmro-chosen-height-parent">
                 <%= f.input :attachments, wrapper: :custom_file, input_html: {class: 'select2-ajax bmro-form-input bmro-dropdown-icon select2-single '}, input_html: {multiple: true}, label: 'Attachments' %>
@@ -147,21 +110,43 @@
               </div>
             </div>
           </div>
-          <!--<div class="form-row mt-2">
-            <%# if @activity.persisted? && !(@activity.approved? || @activity.rejected?) %>
-              <%# if is_authorized(@activity, 'approve') %>
-                <div class="col-md-6">
-                  <a href="<%#= approve_overseers_activity_path(@activity) %>" class="btn-block btn btn-success bmro-button"><i class="bmro-fa-check"></i>
-                    Approve</a>
+
+          <div class="form-row mt-2">
+            <% if action_name.capitalize == "New" %>
+              <%= button_tag(type: "submit", class: "btn btn-success btn-block bmro-button") do %>
+                <i class="fal fa-plus-circle"></i> <%= submit_text(@activity) %>
+              <% end %>
+            <% else %>
+              <% if @activity.persisted? && !(@activity.approved? || @activity.rejected?) %>
+                <% if is_authorized(@activity, 'approve') %>
+                  <div class="col-md-6">
+                    <a href="<%= approve_overseers_activity_path(@activity) %>" class="btn-block btn btn-success bmro-button"><i class="bmro-fa-check"></i>
+                      Approve</a>
+                  </div>
+                <% end %>
+                <% if is_authorized(@activity, 'reject') %>
+                  <div class="col-md-6">
+                    <a href="<%= reject_overseers_activity_path(@activity) %>" class="btn-block btn btn-danger bmro-button"><i class="bmro-fa-times"></i>Reject</a>
+                  </div>
+                <% end %>
+              <% end %>
+
+              <% if policy(@activity).send_email? %>
+                <div class="col-6">
+                  <a href="<%= minutes_of_meeting_overseers_activity_email_messages_path(activity_id: @activity.id) %>" class="bmro-button btn btn-lg btn-block align-self-center"> <i class="bmro-fa-paper-plane"></i>Send MOM</a>
                 </div>
-              <%# end %>
-              <%# if is_authorized(@activity, 'reject') %>
-                <div class="col-md-6">
-                  <a href="<%#= reject_overseers_activity_path(@activity) %>" class="btn-block btn btn-danger bmro-button"><i class="bmro-fa-times"></i>Reject</a>
+                <div class="col-6">
+                  <a href="<%= follow_up_email_overseers_activity_email_messages_path(activity_id: @activity.id) %>" class="bmro-button btn btn-lg btn-block align-self-center"> <i class="bmro-fa-paper-plane"></i>Send Follow-Up Email</a>
                 </div>
-              <%# end %>
-            <%# end %>
-          </div>-->
+              <% end %>
+              <div class="col-12 mt-3">
+                <%= button_tag(type: "submit", class: "btn btn-warning btn-block bmro-button") do %>
+                  <i class="fal fa-pen"></i> <%= submit_text(@activity) %>
+                <% end %> 
+              </div>
+            <% end %>
+          </div>
+
         </div>
       </div>
     </div>
