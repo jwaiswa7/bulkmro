@@ -368,7 +368,7 @@ class SalesInvoice < ApplicationRecord
   end
 
   def total_quantity
-    self.rows.sum(:quantity)
+    self.rows.sum(&:quantity)
   end
 
   def cosr_calculate_time_delay
