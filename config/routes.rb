@@ -1033,7 +1033,9 @@ Rails.application.routes.draw do
       end
     end
 
-    resource :wish_list, controller: :wish_list,  except: :index 
+    resource :wish_list, controller: :wish_list,  except: :index do 
+      post "add_item"
+    end
 
     resources :inquiries do
       scope module: 'inquiries' do
