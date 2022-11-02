@@ -55,25 +55,6 @@ const newAction = () => {
         }
     });
 
-        
-    if ($('#inquiry_opportunity_type').select2('data')[0].text == "Route through") {
-        var commercial_terms_and_conditions = $("#inquiry_commercial_terms_and_conditions")[0].value;
-        commercial_terms_and_conditions = commercial_terms_and_conditions + route_through_value
-        $("#inquiry_commercial_terms_and_conditions").val(commercial_terms_and_conditions);
-   }
-   
-   $('#inquiry_opportunity_type').on('select2:select', function (e) {
-       if ($(this).select2('data')[0].text == "Route through") {
-           var commercial_terms_and_conditions = $("#inquiry_commercial_terms_and_conditions")[0].value;
-           commercial_terms_and_conditions = commercial_terms_and_conditions + route_through_value
-           $("#inquiry_commercial_terms_and_conditions").val(commercial_terms_and_conditions);
-       } else {
-           var commercial_terms_and_conditions = $("#inquiry_commercial_terms_and_conditions")[0].value;
-           commercial_terms_and_conditions = commercial_terms_and_conditions.replace(route_through_value, "");           
-           $("#inquiry_commercial_terms_and_conditions").val(commercial_terms_and_conditions);
-       }
-   });
-
 };
 
 let onShippingCompanyChange = (container, reset) => {
