@@ -4,7 +4,7 @@ import disableBackdateOption from "../common/disableBackdateOption";
 
 const newAction = () => {
 
-    var route_through_value = "\n7. Bulk MRO will not be responsible for any changes done by the vendor in terms of product specifications. \n8. Any costs incurred by Bulk MRO for warranty claim will be reimbursed by the customer."
+    var route_through_value = "\n7. Bulk MRO will not be responsible for any changes done by the vendor in terms of product specifications.\n8. Any costs incurred by Bulk MRO for warranty claim will be reimbursed by the customer."
 
     $('form').on('change', 'select[name*=shipping_company_id]', function (e) {
         let reset = true;
@@ -28,7 +28,31 @@ const newAction = () => {
     onScrollandClickSideMenu();
     $('[name="inquiry[quotation_followup_date]').on("focus", function () {
         var newDate = Date.parse(new Date())
-        disableBackdateOption($('[name="inquiry[quotation_followup_date]'),true,moment(newDate).format('DD-MMM-YYYY'));
+        disableBackdateOption($('[name="inquiry[quotation_followup_date]'), true, moment(newDate).format('DD-MMM-YYYY'));
+    });
+
+    if ($('#inquiry_opportunity_type').select2('data')[0].text == "Route through" && $("#inquiry_commercial_terms_and_conditions")[0].value.search(route_through_value) == -1) {
+        var commercial_terms_and_conditions = $("#inquiry_commercial_terms_and_conditions")[0].value;
+        commercial_terms_and_conditions = commercial_terms_and_conditions + route_through_value
+        $("#inquiry_commercial_terms_and_conditions").val(commercial_terms_and_conditions);
+    }
+    else if ($("#inquiry_commercial_terms_and_conditions")[0].value.search(route_through_value) == -1) {
+        var commercial_terms_and_conditions = $("#inquiry_commercial_terms_and_conditions")[0].value;
+        commercial_terms_and_conditions = commercial_terms_and_conditions.replace(route_through_value, "");
+        $("#inquiry_commercial_terms_and_conditions").val(commercial_terms_and_conditions);
+    }
+
+    $('#inquiry_opportunity_type').on('select2:select', function (e) {
+        if ($(this).select2('data')[0].text == "Route through" && $("#inquiry_commercial_terms_and_conditions")[0].value.search(route_through_value) == -1) {
+            var commercial_terms_and_conditions = $("#inquiry_commercial_terms_and_conditions")[0].value;
+            commercial_terms_and_conditions = commercial_terms_and_conditions + route_through_value
+            $("#inquiry_commercial_terms_and_conditions").val(commercial_terms_and_conditions);
+        }
+        else {
+            var commercial_terms_and_conditions = $("#inquiry_commercial_terms_and_conditions")[0].value;
+            commercial_terms_and_conditions = commercial_terms_and_conditions.replace(route_through_value, "");
+            $("#inquiry_commercial_terms_and_conditions").val(commercial_terms_and_conditions);
+        }
     });
 
         
@@ -87,17 +111,17 @@ let onCompanyChange = (container, reset) => {
 
     if (optionSelected.exists() && optionSelected.val() !== '') {
         $.getJSON
-        (
-            {
-                url: Routes.get_account_overseers_company_path(optionSelected.val()),
-                success: function (response) {
-                    $('#inquiry_account_id').val(response.account_id);
-                    $('#inquiry_account').val(response.account_name);
-                    $('#inquiry_contact_id').removeAttr('disabled', false);
-                    $('#inquiry_shipping_contact_id').removeAttr('disabled', false);
+            (
+                {
+                    url: Routes.get_account_overseers_company_path(optionSelected.val()),
+                    success: function (response) {
+                        $('#inquiry_account_id').val(response.account_id);
+                        $('#inquiry_account').val(response.account_name);
+                        $('#inquiry_contact_id').removeAttr('disabled', false);
+                        $('#inquiry_shipping_contact_id').removeAttr('disabled', false);
+                    }
                 }
-            }
-        );
+            );
 
         if (reset) {
             $("#inquiry_contact_id, #inquiry_shipping_contact_id").val(null);
