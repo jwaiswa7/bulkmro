@@ -1033,6 +1033,8 @@ Rails.application.routes.draw do
       end
     end
 
+    resource :wish_list, controller: :wish_list,  except: :index 
+
     resources :inquiries do
       scope module: 'inquiries' do
         resources :comments
