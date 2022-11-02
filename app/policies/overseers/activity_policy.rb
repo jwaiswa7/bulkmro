@@ -27,7 +27,8 @@ class Overseers::ActivityPolicy < Overseers::ApplicationPolicy
   end
 
   def edit?
-    (admin? || (record.created_by == overseer)) && record.approval_status == 'Pending Approval' 
+     overseer.email
+    (admin? || (record.created_by == overseer)) && ['Completed','Closed'].exclude?(record.activity_status)
   end
 
   def export_all?
@@ -35,6 +36,6 @@ class Overseers::ActivityPolicy < Overseers::ApplicationPolicy
   end
 
   def send_email?
-    admin_or_manager? 
+    admin_or_manager? && record.approval_status == 'Approved' && overseer.smtp_password.present?
   end
 end

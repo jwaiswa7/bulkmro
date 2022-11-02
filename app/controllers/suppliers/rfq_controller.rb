@@ -44,7 +44,7 @@ class Suppliers::RfqController < Suppliers::BaseController
             )
           end
           @email_message.assign_attributes(
-              from: "noreply@bulmro.com",
+              from: "itops@bulkmro.com",
               to: @rfq.inquiry.inside_sales_owner.email,
               cc: [@rfq.inquiry.sales_manager.email]
           )
@@ -54,7 +54,7 @@ class Suppliers::RfqController < Suppliers::BaseController
           end
         end
         @rfq.update_attributes(supplier_quote_submitted: true) unless @rfq.supplier_quote_submitted
-        redirect_to suppliers_rfq_index_path, notice: "Rfq's updated."
+        redirect_to suppliers_rfq_index_path, notice: "Rfq is updated."
       end
     else
       authorize :supplier_rfq

@@ -22,16 +22,33 @@
               <tbody>
               <tr>
                 <td align="left" colspan="5" height="20" style="width:25%; padding-left: 10px;font-size:11px;" valign="top">
-                  <b><span style="color:#000000">Bulk MRO Sales Person</span></b> <span style="float:right">:</span>
+                  <b><span style="color:#000000">Inside Sales Person</span></b> <span style="float:right">:</span>
                 </td>
                 <td align="left" colspan="5" style="width:25%; padding-left: 10px;font-size:11px;" valign="top">
                   <span style="color:#000000">
                     <%= record.inquiry.inside_sales_owner.full_name if record.inquiry.inside_sales_owner.present? %>
                   </span></td>
                 <td align="left" colspan="5" style="width:25%; padding-left: 10px;font-size:11px;" valign="top">
-                  <b><span style="color:#000000">Bulk MRO Contact #</span></b> <span style="float:right">:</span></td>
+                  <b><span style="color:#000000">Inside Sales Contact #</span></b> <span style="float:right">:</span></td>
                 <td align="left" colspan="6" style="width:25%; padding-left: 10px;font-size:11px;" valign="top">
-                  <span style="color:#000000">+91-22-4921-4921</span></td>
+                  <span style="color:#000000">
+                    <%= record.inquiry.inside_sales_owner.phone if record.inquiry.inside_sales_owner.present? %>
+                  </span></td>
+              </tr>
+              <tr>
+                <td align="left" colspan="5" height="20" style="border-top: 1px solid #3c3c3c;padding-left: 10px;font-size:11px;" valign="top">
+                  <b><span style="color:#000000">Outside Sales Person</span></b> <span style="float:right">:</span></td>
+                <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c;padding-left: 10px;font-size:11px;" valign="top">
+                  <span style="color:#000000">
+                    <%= record.inquiry.outside_sales_owner.full_name if record.inquiry.outside_sales_owner.present? %>
+                  </span></td>
+                <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c;padding-left: 10px;font-size:11px;" valign="top">
+                  <b><span style="color:#000000">Outside Sales Contact #</span></b> <span style="float:right">:</span></td>
+                <td align="left" colspan="6" style="border-top: 1px solid #3c3c3c;padding-left: 10px;font-size:11px;" valign="top">
+                  <span style="color:#000000">
+                    <%= record.inquiry.outside_sales_owner.phone if record.inquiry.outside_sales_owner.present? %>
+                  </span>
+                </td>
               </tr>
               <tr>
                 <td align="left" colspan="5" height="20" style="border-top: 1px solid #3c3c3c;padding-left: 10px;font-size:11px;" valign="top">
