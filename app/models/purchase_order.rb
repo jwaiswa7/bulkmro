@@ -131,7 +131,7 @@ class PurchaseOrder < ApplicationRecord
       'FOB': 50,
       'DAP': 60,
       'CIP Mumbai Airport': 100,
-      'CIF Mumbai Airport': 70,
+      'FCA Mumbai': 70,
       'Door Delivery': 80,
       'CIP': 90,
   }
