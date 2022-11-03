@@ -3,7 +3,7 @@ json.data (@customer_products) do |customer_product|
   json.array! [
                   [
                       row_action_button(customers_product_path(customer_product), 'eye', 'View Product', 'info'),
-                      add_to_wish_list(customer_product.id)
+                      add_to_wish_list(customer_product)
                   ].join(' '),
                   customer_product.product.name.to_s,
                   customer_product.sku,

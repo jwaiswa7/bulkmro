@@ -10,8 +10,9 @@ class Customers::WishListController < Customers::BaseController
     def add_item
         authorize @wish_list
         product_id = params[:product_id]
-        if @wish_list.items.where(product_id: product_id).empty?
-          @item = @wish_list.items.new(product_id: params[:product_id])
+        customer_product_id = params[:customer_product_id]
+        if @wish_list.items.where(product_id: product_id, customer_product_id: customer_product_id).empty?
+          @item = @wish_list.items.new(product_id: product_id, customer_product_id: customer_product_id)
           @item.save!
         end
     end

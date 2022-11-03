@@ -1,0 +1,62 @@
+<div class="col-12">
+    <section class="pt-3 pt-lg-4 pb-2 pb-lg-3">
+      <div class="d-none justify-content-between">
+        <h1 class="display-5 mb-1">Wishlist</h1>
+      </div>
+      <p class="lead mt-1">
+        You have <strong><%= @wish_list.items.count %></strong> product(s) in your wishlist.
+      </p>
+    </section>
+
+    <div class="row">
+      <div class="col-lg-9">
+        <div class="card mt-2 mt-lg-0">
+          <div class="card-body py-2">
+            <div class="text-left">
+              <table class="datatable table table-bordered dt-responsive wrap-whitespace w-100" data-fixed-header="false">
+                <thead>
+                <tr>
+                  <th class="no-sort desktop">Imageing</th>
+                  <th class="no-sort all">Product</th>
+                  <th class="no-sort all" >SKU</th>
+                  <th class="no-sort">Price</th>
+                  <th data-toggle="tooltip" title="Minimum Order Quantity">MOQ</th>
+                  <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                <% @wish_list.items.each do |wish_list_item| %>
+                  <tr>
+                    <td>
+                      <% if wish_list_item.customer_product.best_image.present? %>
+                        <%= image_tag wish_list_item.customer_product.tiny_best_image, fallback_url: image_path('coming_soon.png'), check_remote: false %>
+                      <% else %>
+                        <img src="<%= image_path('coming_soon.png') %>" alt="<%= wish_list_item.customer_product.sku %>" height="40" />
+                      <% end %>
+                    </td>
+                    <td>
+                      <a href="<%= customers_product_path(wish_list_item.customer_product) %>">
+                        <%= wish_list_item.customer_product.name.truncate(80) %>
+                      </a>
+                    </td>
+                    <td><%= wish_list_item.customer_product.sku %></td>
+                    <td><%= format_currency(wish_list_item.customer_product.customer_price, precision: 2, symbol: '') %></td>
+                    <td><%= wish_list_item.customer_product.moq %></td>
+                    <td>
+                       <%= add_to_cart(wish_list_item.customer_product) %>
+                    </td>
+                  </tr>
+                <% end %>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="card-footer">
+            <%= link_to customers_products_path, :class => "mt-2 btn btn-outline-success btn-block btn-sm" do %>
+              Add More Products
+            <% end %>
+          </div>
+        </div>
+      </div>
+  </div>
+</div>
