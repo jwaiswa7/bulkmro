@@ -21,6 +21,7 @@ class Contact < ApplicationRecord
   has_one :company_contact
   has_one :company, through: :company_contact
   has_one :cart
+  has_one :wish_list
   has_many :customer_orders
   has_many :customer_products, through: :companies
   has_many :customer_order_comments

@@ -77,7 +77,9 @@ class Customers::BaseController < ApplicationController
     end
 
     def current_wish_list 
-      WishList.new 
+      current_customers_contact.wish_list || current_customers_contact.create_wish_list(
+        company: current_company
+      )
     end
 
     def current_company
