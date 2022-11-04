@@ -3,7 +3,7 @@ class Overseers::Activities::EmailMessagesController < Overseers::Activities::Ba
     @email_message = @activity.email_messages.build(overseer: current_overseer, activity: @activity)
     @action = 'minutes_of_meeting_notification'
     @email_message.assign_attributes(
-      to: @activity.contact.email,
+      to: @activity&.contact&.email,
       subject: "Minutes of Meeting",
       body: ActivityMailer.minutes_of_meeting(@email_message).body.raw_source,
     )
@@ -33,7 +33,7 @@ class Overseers::Activities::EmailMessagesController < Overseers::Activities::Ba
     @email_message = @activity.email_messages.build(overseer: current_overseer, activity: @activity)
     @action = 'follow_up_email_notification'
     @email_message.assign_attributes(
-      to: @activity.contact.email,
+      to: @activity&.contact&.email,
       subject: "Following up - #{@activity.company&.name} <> Bulk MRO Industrial Supply Pvt Ltd",
       body: ActivityMailer.follow_up(@email_message).body.raw_source,
     )
