@@ -373,7 +373,7 @@ module DisplayHelper
 
   def add_to_wish_list(product)
     "<a class='btn btn-sm' data-method='post' href='#{add_item_customers_wish_list_path(product_id: product.product_id, customer_product_id: product.id )}' title='add to cart' data-remote=true>
-      <li class='fa fa-bookmark'></li>
+      <li class='fa fa-heart'></li>
     </a>".html_safe
   end
 

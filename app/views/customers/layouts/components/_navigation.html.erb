@@ -85,7 +85,7 @@
     <% if policy(:wish_list).show? %>
       <div class="dropdown d-inline mr-2" id="cart">
         <a href="<%= customers_wish_list_path %>" role="button" id="wish-list-count">
-          <i class="fal fa-history mr-1"></i><span class="text-primary wish-list-items-count" id="count-cart-wish-list-items"><%= 0 %></span>
+          <i class="fa fa-heart mr-1"></i><span class="text-primary wish-list-items-count" id="count-cart-wish-list-items"><%= current_wish_list.items.count %></span>
         </a>
       </div>
     <% end %>

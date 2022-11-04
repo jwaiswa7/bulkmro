@@ -2,7 +2,7 @@
 
 class Customers::CartPolicy < Customers::ApplicationPolicy
   def show?
-    contact.customer_products.exists?
+    contact.customer_products.exists? && !vertiv?
   end
 
   def checkout?
@@ -60,4 +60,9 @@ class Customers::CartPolicy < Customers::ApplicationPolicy
   def manual_punchout?
     show?
   end
+
+  private 
+  def vertiv? 
+		contact.account_id == 2478
+	end
 end

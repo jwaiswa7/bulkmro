@@ -35,7 +35,7 @@
                   <% end %>
                 </div>
                 <!-- Hide add to cart button for contact named warehouse (id = 15667) for customer saint gobain -->
-                <% unless (current_customers_contact.id == 15667) %>
+                <% unless (current_customers_contact.id == 15667 || current_company.id != 2478 ) %>
                   <div class="col-8 col-md-4">
                     <%= f.submit 'Add to Cart', class: "btn btn-block btn-success" %>
                   </div>
