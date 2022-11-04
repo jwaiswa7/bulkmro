@@ -28,7 +28,9 @@
     <th class="no-sort desktop">Price</th>
     <th class="no-sort desktop">Stock</th>
     <th class="no-sort desktop">Qty in Stock</th>
-    <th class="no-sort desktop" style="width: 100px !important">Add to cart</th>
+    <% if  policy(:cart).add_item? %>
+      <th class="no-sort desktop" style="width: 100px !important">Add to cart</th>
+    <% end %>
   <% end %>
 
   <div class="col-lg-12" id="customer_products_index">

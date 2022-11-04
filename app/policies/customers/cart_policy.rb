@@ -46,6 +46,7 @@ class Customers::CartPolicy < Customers::ApplicationPolicy
   end
 
   def add_item? 
+    return false if vertiv?
     true
   end
 
@@ -62,7 +63,7 @@ class Customers::CartPolicy < Customers::ApplicationPolicy
   end
 
   private 
-  def vertiv? 
+  def vertiv?  
 		contact.account_id == 2478
 	end
 end
