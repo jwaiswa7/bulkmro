@@ -9,7 +9,7 @@ class Customers::BaseController < ApplicationController
   after_action :verify_authorized, except: [:route, :generate_punchout_order]
   before_action :redirect_if_required, except: [:route]
 
-  helper_method :current_cart, :current_company, :is_api_request?, :current_api_request
+  helper_method :current_cart, :current_company, :is_api_request?, :current_api_request, :current_wish_list
 
   private
 
@@ -73,6 +73,12 @@ class Customers::BaseController < ApplicationController
         company: current_company,
         billing_address: current_company.default_billing_address || current_company.billing_address,
         shipping_address: current_company.default_shipping_address || current_company.shipping_address,
+      )
+    end
+
+    def current_wish_list 
+      current_customers_contact.wish_list || current_customers_contact.create_wish_list(
+        company: current_company
       )
     end
 

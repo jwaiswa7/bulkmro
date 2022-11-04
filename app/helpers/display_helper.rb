@@ -371,6 +371,12 @@ module DisplayHelper
     customer_product.product.stocks.where(warehouse_id: warehouses).sum(&:instock).to_i > 0 ? true : false
   end
 
+  def add_to_wish_list(product)
+    "<a class='btn btn-sm' data-method='post' href='#{add_item_customers_wish_list_path(product_id: product.product_id, customer_product_id: product.id )}' title='add to cart' data-remote=true>
+      <li class='fa fa-heart'></li>
+    </a>".html_safe
+  end
+
   def add_to_cart(product, layout = nil)
     if layout.nil?
       form = "
