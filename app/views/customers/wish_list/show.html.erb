@@ -21,7 +21,9 @@
                   <th class="no-sort all" >SKU</th>
                   <th class="no-sort">Price</th>
                   <th data-toggle="tooltip" title="Minimum Order Quantity">MOQ</th>
-                  <th></th>
+                  <% if  policy(:cart).add_item? %>
+                    <th></th>
+                  <% end %>
                 </tr>
                 </thead>
                 <tbody>
@@ -42,9 +44,11 @@
                     <td><%= wish_list_item.customer_product.sku %></td>
                     <td><%= format_currency(wish_list_item.customer_product.customer_price, precision: 2, symbol: '') %></td>
                     <td><%= wish_list_item.customer_product.moq %></td>
-                    <td>
-                       <%= add_to_cart(wish_list_item.customer_product) %>
-                    </td>
+                    <% if  policy(:cart).add_item? %>
+                      <td>
+                         <%= add_to_cart(wish_list_item.customer_product) %>
+                      </td>
+                    <% end %>
                   </tr>
                 <% end %>
                 </tbody>

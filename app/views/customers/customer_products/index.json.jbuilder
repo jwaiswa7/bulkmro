@@ -11,7 +11,7 @@ json.data (@customer_products) do |customer_product|
                   format_currency((customer_product.customer_price || customer_product.product.latest_unit_cost_price.to_f)),
                   display_stock_status(customer_product, [@phursungi_warehouse.id]),
                   qty_in_stock,
-                  policy(:cart).show? ? add_to_cart(customer_product) : ""
+                  policy(:cart).add_item? ? add_to_cart(customer_product) : ""
               ]
 end
 
