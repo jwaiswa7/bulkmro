@@ -1,5 +1,14 @@
-$.notify({
-    message: 'Product was successfully added to the whish list.'
-}, {
-    type: 'success'
-});
+<% if @wish_list.errors.empty? %>
+  $.notify({
+      message: 'Product was successfully added to the whish list.'
+  }, {
+      type: 'success'
+  });
+  document.getElementById("count-cart-wish-list-items").innerHTML = "<%= @wish_list.items.count %>"
+<% else %>
+  $.notify({
+      message: 'Product could not be added to the wish list'
+  }, {
+      type: 'danger'
+  });
+<% end %>
