@@ -9,6 +9,6 @@ class Customers::WishListPolicy < Customers::ApplicationPolicy
 
   private
 	def vertiv? 
-		true # contact.account_id == 2478
+		contact.account_id == 2478
 	end
 end
