@@ -1037,6 +1037,8 @@ Rails.application.routes.draw do
       post "add_item"
     end
 
+    resources :wish_list_items, only: :destroy
+
     resources :inquiries do
       scope module: 'inquiries' do
         resources :comments

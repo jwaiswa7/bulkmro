@@ -20,10 +20,12 @@
                   <th class="no-sort all">Product</th>
                   <th class="no-sort all" >SKU</th>
                   <th class="no-sort">Price</th>
-                  <th data-toggle="tooltip" title="Minimum Order Quantity">MOQ</th>
+                  <th class="no-sort" data-toggle="tooltip" title="Minimum Order Quantity">MOQ</th>
                   <% if  policy(:cart).add_item? %>
-                    <th></th>
+                    <th class="no-sort" ></th>
                   <% end %>
+                  <th class="no-sort" >
+                  </th>
                 </tr>
                 </thead>
                 <tbody>
@@ -49,6 +51,11 @@
                          <%= add_to_cart(wish_list_item.customer_product) %>
                       </td>
                     <% end %>
+                    <td>
+                      <%= link_to customers_wish_list_item_path(wish_list_item), :class => 'text-danger float-right', :data => {:method => "delete"} do %>
+                        <i class="fal fa-times"></i>
+                      <% end %>
+                    </td>
                   </tr>
                 <% end %>
                 </tbody>
