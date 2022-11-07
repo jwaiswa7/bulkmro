@@ -28,6 +28,7 @@ class SalesInvoicesIndex < BaseIndex
     field :inside_sales_executive, value: -> (record) { record.inquiry.inside_sales_owner_id if record.inquiry.present? }
     field :outside_sales_executive, value: -> (record) { record.inquiry.outside_sales_owner_id if record.inquiry.present? }
     field :billing_contact, value: -> (record) {record.inquiry&.billing_contact.try(:name)}, analyzer: 'substring'
+    field :billing_contact_id, value: -> (record) {record.inquiry.billing_contact.id if record.inquiry&.billing_contact.present? }, type: 'integer'
     field :billing_location, value: -> (record) {record.serialized_billing_address.to_multiline_s if record.serialized_billing_address.present?}, analyzer: 'substring'
     field :shipping_contact, value: -> (record) {record.inquiry&.shipping_contact.try(:name)}, analyzer: 'substring'
     field :mis_date, value: -> (record) { record.mis_date }, type: 'date'
@@ -36,7 +37,7 @@ class SalesInvoicesIndex < BaseIndex
     field :cp_created_at_s, value: -> (record) { record.created_at.strftime('%d-%b-%Y').to_s if record.created_at.present? }, analyzer: 'substring'
     field :cp_delivery_date_s, value: -> (record) { record.delivery_date.strftime('%d-%b-%Y').to_s if record.delivery_date.present? }, analyzer: 'substring'
     field :cp_po_number_s, value: -> (record) { record.inquiry.customer_po_number.to_s if record.inquiry.present? && record.inquiry.customer_po_number.present? }, analyzer: 'substring'
-    field :cp_po_number, value: -> (record) { record.inquiry.customer_po_number if record.inquiry.present? && record.inquiry.customer_po_number.present? }, type: 'long'
+    field :cp_po_number, value: -> (record) { record.inquiry.customer_po_number if record.inquiry.present? && record.inquiry.customer_po_number.present? }
     field :cp_order_date_s, value: -> (record) { record.inquiry.customer_order_date.strftime('%d-%b-%Y').to_s if record.inquiry.present? && record.inquiry.customer_order_date.present? }, analyzer: 'substring'
     field :cp_order_date, value: -> (record) { record.inquiry.customer_order_date if record.inquiry.present? && record.inquiry.customer_order_date.present? }, type: 'date'
     field :payment_option_id, value: -> (record) { record.sales_order.present? ? record.sales_order.inquiry.present? ? record.sales_order.inquiry.payment_option.present? ? record.sales_order.inquiry.payment_option.id : '' : '' : '' }

@@ -84,7 +84,7 @@ json.columnFilters [
                        [],
                        [{ "source": autocomplete_overseers_accounts_path }],
                        [{ "source": autocomplete_overseers_companies_path }],
-                       [],
+                       [{ "source": autocomplete_overseers_contacts_path }],
                        [],
                        [],
                        [],

@@ -21,7 +21,7 @@ class SalesOrdersIndex < BaseIndex
     field :remote_status, value: -> (record) { remote_statuses[record.remote_status] }, type: 'integer'
     field :quote_total, value: -> (record) { record.sales_quote.calculated_total.to_i if record.sales_quote.present? && record.sales_quote.calculated_total.present? }, type: 'float'
     field :order_total, value: -> (record) { record.calculated_total.to_i if record.rows.present? && record.calculated_total.present? }
-    field :customer_po_number, value: -> (record) { record.inquiry.customer_po_number if record.inquiry.present? }, type: 'long'
+    field :customer_po_number, value: -> (record) { record.inquiry.customer_po_number if record.inquiry.present? }
     field :customer_po_number_string, value: -> (record) { record.inquiry.customer_po_number.to_s if record.inquiry.present? }, analyzer: 'substring'
     field :contact_id, value: -> (record) { record.inquiry&.contact_id if record.inquiry&.present? }, type: 'integer'
     field :company_id, value: -> (record) { record.inquiry&.company&.id if record.inquiry&.present? }, type: 'integer'
@@ -58,6 +58,7 @@ class SalesOrdersIndex < BaseIndex
     field :cp_shipping_city_s, value: -> (record) { record.inquiry&.shipping_address&.city_name&.to_s if record.inquiry&.shipping_address.present? }, analyzer: 'substring'
     field :cp_billing_gst_s, value: -> (record) { [record.inquiry&.billing_address.try(:gst) || record.inquiry&.company&.default_billing_address.try(:gst)].join if record.inquiry&.billing_address.try(:gst) || record.inquiry&.company&.default_billing_address.try(:gst) }, analyzer: 'substring'
     field :cp_shipping_gst_s, value: -> (record) { [record.inquiry&.shipping_address.try(:gst) || record.inquiry&.company&.default_shipping_address.try(:gst)].join if record.inquiry&.shipping_address.try(:gst) || record.inquiry&.company&.default_shipping_address.try(:gst) }, analyzer: 'substring'
+    field :billing_contact_id, value: -> (record) {record.inquiry.billing_contact.id if record.inquiry&.billing_contact.present? }, type: 'integer'
     field :sales_order_rows do
       field :sku, value: -> (record, sales_order_row) { sales_order_row.sales_quote_row.product.remote_uid }, analyzer: 'substring'
       field :brand, value: -> (record, sales_order_row) { sales_order_row.sales_quote_row.product.brand.name if sales_order_row.sales_quote_row.product.brand.present? }, analyzer: 'substring'
