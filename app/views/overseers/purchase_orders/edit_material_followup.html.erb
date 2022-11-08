@@ -51,8 +51,11 @@
             <%= f.nested_fields_for :comments, f.object.comments.build(:overseer => current_overseer) do |purchase_order_comment| %>
               <%= purchase_order_comment.hidden_field :created_by_id %>
               <%= purchase_order_comment.hidden_field :updated_by_id %>
-              <%= purchase_order_comment.input :message, :placeholder => 'Type message', input_html: {:'data-parsely-no-valid-feedback' => '', class: 'select2-ajax select2-wrap-text bmro-form-input'} %>
+              <%= purchase_order_comment.input :message, collection: enum_to_collection(PurchaseOrder.messages, alphabetical: false, keep_raw: true)  , include_blank: 'Select a Message', input_html: {class: "select2-single bmro-form-input bmro-dropdown-icon" , id: "po_message"}%>
             <% end %>
+          </div>
+          <div class="col-12">
+              <%= f.input :other_message , :placeholder => 'Specify If Selected Others', input_html: {:'data-parsely-no-valid-feedback' => '', class: 'select2-ajax select2-wrap-text bmro-form-input', id: "po_other_message"},label: false ,disabled: true %>
           </div>
 
           <%= button_tag(type: "submit", class: "btn btn-success bmro-button btn-block") do %>
