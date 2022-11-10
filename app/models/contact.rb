@@ -29,7 +29,11 @@ class Contact < ApplicationRecord
   belongs_to :contact_creation_request, optional: true
   belongs_to :company_creation_request, optional: true
 
-  enum role: { customer: 10, account_manager: 20 }
+  enum role: { 
+              customer: 10, 
+              account_manager: 20,
+              customer_admin: 30
+             }
   enum status: { active: 10, inactive: 20 }
   enum contact_group: {
       general: 10,
