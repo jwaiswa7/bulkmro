@@ -31,7 +31,7 @@ class Contact < ApplicationRecord
 
   enum role: { 
               customer: 10, 
-              account_manager: 20 
+              account_manager: 20,
               customer_admin: 30
              }
   enum status: { active: 10, inactive: 20 }
