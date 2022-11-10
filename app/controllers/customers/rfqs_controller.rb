@@ -57,7 +57,7 @@ class Customers::RfqsController < Customers::BaseController
   end
 
   def customer_rfq_params 
-    params.require(:customer_rfq).permit(:account_id, :subject, :requirement_details, :shipping_address_id , :billing_address_id , files: [])
+    params.require(:customer_rfq).permit(:account_id, :subject, :requirement_details, :shipping_address_id , :billing_address_id , :shipping_company_id , :billing_company_id , files: [])
   end
 
 end
