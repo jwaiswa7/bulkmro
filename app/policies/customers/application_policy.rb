@@ -21,6 +21,10 @@ class Customers::ApplicationPolicy
     contact.account_manager?
   end
 
+  def admin?
+    contact.customer_admin?
+  end
+
   def show?
     true
   end
