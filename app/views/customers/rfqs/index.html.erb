@@ -22,12 +22,14 @@
     <th class="no-sort all"></th>
     <th class="no-sort all" data-name="inquiry_number" style="width: 53px">RFQ #</th>
     <th class="sort all" data-name="created_at" style="width: 73px">RFQ Date</th>
-    <th class="no-sort all" data-name="company_nam">Company</th>
+    <th class="no-sort all" data-name="company_name">Company</th>
+    <th class="no-sort all" data-name="company_contact">Contact</th>
     <th class="no-sort desktop">Subject</th>
     <th class="no-sort desktop">Sales Person</th>
   <% end %>
 
   <% content_for :filter_row do %>
+    <td data-filter="false"></td>
     <td data-filter="false"></td>
     <td data-filter="false"></td>
     <td data-filter="false"></td>

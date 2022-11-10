@@ -4,6 +4,7 @@ json.data (@rfqs) do |rfq|
 								rfq.inquiry.inquiry_number,
 								format_date(rfq.created_at),
 								rfq.inquiry.company.to_s,
+								rfq.inquiry.contact.to_s,
 								rfq.subject,
 								rfq.inquiry.inside_sales_owner.to_s
 						]
