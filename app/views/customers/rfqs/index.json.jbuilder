@@ -14,7 +14,8 @@ json.columnFilters [
 												[],
 												[],
 												[],
-												[],
+												@rfqs.map{|rfq| { "label": rfq.inquiry.company.to_s, "value": rfq.inquiry.company.to_s }}.uniq,
+												@rfqs.map{|rfq| { "label": rfq.inquiry.contact.to_s, "value": rfq.inquiry.contact.to_s }}.uniq,
 												[],
 												[]
 										]
@@ -23,3 +24,4 @@ json.recordsTotal @rfqs.count
 json.recordsFiltered @indexed_rfqs.total_count
 json.draw params[:draw]
   
+
