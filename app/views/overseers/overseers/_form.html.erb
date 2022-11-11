@@ -49,8 +49,11 @@
       <div class="col-12 col-md-4">
         <%= f.input :geography, input_html: { class: 'bmro-form-input' } %>
       </div>
-      <div class="col-12 col-md-2">
-        <%= f.input :status, as: :check_boxes, :wrapper => :vertical_collection_inline, collection: enum_to_collection(Overseer.statuses.except("inactive")) %>
+      <div class="col-12 col-md-2 form-group">
+        <label class="form-row  form-control-label ml-1 mt-1">Status</label>
+        <div class=" mt-2 ml-1 form-check form-check-inline">
+          <%= f.check_box :status, {class: ' form-check-input'}, "active", "inactive" %>Active
+        </div>
       </div>
       <% if policy(:overseer).edit_super_admin? %>
         <div class="col-12 col-md-2">

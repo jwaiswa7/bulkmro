@@ -1,6 +1,6 @@
 class PurchaseOrder < ApplicationRecord
   COMMENTS_CLASS = 'PoComment'
-  attr_accessor :can_notify_supplier
+  attr_accessor :can_notify_supplier , :other_message
 
   include Mixins::HasConvertedCalculations
   include Mixins::HasComments
@@ -135,6 +135,25 @@ class PurchaseOrder < ApplicationRecord
       'Door Delivery': 80,
       'CIP': 90,
   }
+
+  enum messages: [
+    'Vendor is not responding on call or email - Escalated with ISP/KAM for alternate contact details',
+    'Received order acknowledgement and awaiting proforma invoice',
+    'Require to amend the purchase order',
+    'Awaiting for revised the proforma invoice',
+    'Awaiting for revised the tax invoice',
+    'Awaiting for bank account details / Canceled cheque copy',
+    'GST return not filed by vendor',
+    'Awaiting for Manager/KAMs approval',
+    'Full / Balance payment processed to vendor awaiting UTR details',
+    'Partial payment processed to the vendor awaiting UTR details',
+    'Full / Balance payment UTR shared awaiting confirmation & dispatch details',
+    'Partial payment UTR shared awaiting confirmation',
+    'Pickup arranged by Bulk MRO Logistics',
+    'Damaged / Wrong material supplied',
+    'Others'
+  ]
+
   scope :material_readiness_queue, -> {where.not(material_status: [:'Material Delivered'])}
   scope :material_pickup_queue, -> {where(material_status: :'Inward Dispatch')}
   scope :material_delivered_queue, -> {where(material_status: :'Material Delivered')}

@@ -243,6 +243,9 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
         @purchase_order.comments.create(message: messages, overseer: current_overseer)
       end
 
+      if @purchase_order.comments.last.message == 'Others'
+        @purchase_order.comments.last.message = "Others: #{params[:purchase_order][:other_message]}"
+      end
       @purchase_order.save
       redirect_to edit_material_followup_overseers_purchase_order_path, notice: flash_message(@purchase_order, action_name)
     else
