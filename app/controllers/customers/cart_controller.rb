@@ -99,6 +99,6 @@ class Customers::CartController < Customers::BaseController
     end
 
     def cart_params
-      params.require(:cart).permit(:id, :billing_address_id, :shipping_address_id, :po_reference, :customer_po_sheet, :special_instructions, :payment_method, items_attributes: [:quantity, :id])
+      params.require(:cart).permit(:id, :billing_address_id, :shipping_address_id, :billing_company_id, :shipping_company_id, :po_reference, :customer_po_sheet, :special_instructions, :payment_method, items_attributes: [:quantity, :id])
     end
 end
