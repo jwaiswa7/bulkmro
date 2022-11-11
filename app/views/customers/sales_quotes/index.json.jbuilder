@@ -14,6 +14,9 @@ json.data (@sales_quotes) do |sales_quote|
                   end,
                   sales_quote.inquiry.inquiry_number,
                   format_date(sales_quote.created_at),
+                  if current_customers_contact.customer_admin?
+                    link_to(sales_quote.inquiry.company.name, overseers_company_path(sales_quote.inquiry.company, sales_quote), target: '_blank')
+                  end,
                   sales_quote.rows.size,
                   format_currency(sales_quote.calculated_total),
                   sales_quote.inquiry.inside_sales_owner.to_s,

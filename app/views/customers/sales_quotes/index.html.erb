@@ -17,6 +17,9 @@
     <% end %>
     <th class="no-sort all" data-name="inquiry_number">Inquiry #</th>
     <th class="sort all " data-name="created_at">Inquiry Date</th>
+    <% if current_customers_contact.customer_admin? %>
+      <th class="no-sort desktop">Company</th>  
+    <% end %>
     <th class="no-sort desktop">Line Items</th>
     <th class="no-sort desktop">Total</th>
     <th class="no-sort desktop " data-name="inside_sales_executive">Sales Person</th>
