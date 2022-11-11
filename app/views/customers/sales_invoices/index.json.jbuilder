@@ -14,6 +14,7 @@ json.data (@sales_invoices) do |sales_invoice|
                         row_action_button(show_pods_customers_invoice_path(sales_invoice), 'eye', "View POD's", 'success', :_blank)
                       end
                   ].join(' '),
+                  sales_invoice.company.to_s,
                   sales_invoice.inquiry.customer_po_number,
                   format_date(sales_invoice.inquiry.customer_order_date),
                   sales_invoice.invoice_number,
@@ -31,6 +32,7 @@ end
 
 json.columnFilters [
                        [],
+                       @sales_invoices.map{ |sales_invoice| {label: sales_invoice.company.to_s, value: sales_invoice.company.id}}.uniq,
                        [],
                        [],
                        [],
