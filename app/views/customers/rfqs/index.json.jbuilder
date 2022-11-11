@@ -14,8 +14,8 @@ json.columnFilters [
 												[],
 												[],
 												[],
-												@rfqs.map{|rfq| { "label": rfq.inquiry.company.to_s, "value": rfq.inquiry.company.to_s }}.uniq,
-												@rfqs.map{|rfq| { "label": rfq.inquiry.contact.to_s, "value": rfq.inquiry.contact.to_s }}.uniq,
+												@rfqs.map{|rfq| { "label": rfq.inquiry.company.to_s, "value": rfq.inquiry.company.id }}.uniq,
+												@rfqs.map{|rfq| { "label": rfq.inquiry.contact.to_s, "value": rfq.inquiry.contact.id }}.uniq,
 												[],
 												[]
 										]

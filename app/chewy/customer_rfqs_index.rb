@@ -6,7 +6,7 @@ class CustomerRfqsIndex < BaseIndex
     field :inside_sales_executive, value: -> (record) { record.inquiry.inside_sales_owner_id if record.inquiry.present? }, type: 'integer'
     field :created_at, type: 'date'
     field :updated_at, type: 'date'  
-    field :company_name, value:->(record) {record.inquiry.company.to_s}, analyzer: 'substring'
-    field :company_contact, value:->(record) {record.inquiry.contact.to_s}, analyzer: 'substring'
+    field :company_name, value:->(record) {record.inquiry.company.id}, type: 'integer'
+    field :company_contact, value:->(record) {record.inquiry.contact.id}, type: 'integer'
   end
 end
