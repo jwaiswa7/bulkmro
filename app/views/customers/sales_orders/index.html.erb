@@ -12,6 +12,7 @@
 
 <% content_for :header_row do %>
   <th class="no-sort all"></th>
+  <th class="no-sort all" data-name="company_id">Company</th>
   <th class="no-sort all" data-name="order_number">Order #</th>
   <th class="no-sort all " data-name="created_at">Order Date</th>
   <th class="no-sort all" data-name="customer_po_number">PO #</th>
@@ -27,6 +28,7 @@
 
 <% content_for :filter_row do %>
   <td data-filter="false"></td>
+  <td data-filter="dropdown"></td>
   <td data-filter="false"></td>
   <td data-filter="false"></td>
   <td data-filter="false"></td>
