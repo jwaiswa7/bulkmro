@@ -1,5 +1,5 @@
 json.data (@sales_invoices) do |sales_invoice|
-  json.array! [
+  columns =  [
                   [
                       if policy(sales_invoice).show? && !is_api_request?
                         row_action_button(customers_invoice_path(sales_invoice), 'eye', 'View Invoice', 'info')
@@ -28,6 +28,8 @@ json.data (@sales_invoices) do |sales_invoice|
                   format_date(sales_invoice.delivery_date),
                   format_boolean_with_badge(sales_invoice.pod_status)
               ]
+  columns.delete_at(1) unless policy(current_customers_contact).admin_columns?
+  json.merge! columns
 end
 
 json.columnFilters [

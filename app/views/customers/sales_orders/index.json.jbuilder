@@ -1,5 +1,5 @@
 json.data (@sales_orders) do |sales_order|
-  json.array! [
+  columns = [
                   [
                       if policy(sales_order).index?
                         row_action_button(customers_order_path(sales_order), 'eye', 'View Order', 'info')
@@ -21,6 +21,8 @@ json.data (@sales_orders) do |sales_order|
                   sap_status(sales_order.get_invoiced_qty, sales_order.total_qty),
                   format_date(sales_order.created_at)
               ]
+  columns.delete_at(1) unless policy(current_customers_contact).admin_columns?
+  json.merge! columns
 end
 
 json.columnFilters [
