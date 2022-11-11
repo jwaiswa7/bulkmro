@@ -111,7 +111,7 @@
               <% else %>
                 <label class="d-flex justify-content-center align-items-center flex-row">
                   <span class="h-100">
-                    <%= f.radio_button :shipping_address_id, current_company.id %>
+                    <%= f.radio_button :billing_company_id, current_company.id %>
                   </span>
                   <span class="flex-grow-1 ml-2">
                     <%= current_company.to_s %><br/>
@@ -162,7 +162,7 @@
               <% else %>
                 <label class="d-flex justify-content-center align-items-center flex-row">
                   <span class="h-100">
-                    <%= f.radio_button :shipping_address_id, current_company.id %>
+                    <%= f.radio_button :shipping_company_id, current_company.id %>
                   </span>
                   <span class="flex-grow-1 ml-2">
                     <%= current_company.to_s %><br/>
