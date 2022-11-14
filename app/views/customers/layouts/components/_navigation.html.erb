@@ -61,10 +61,11 @@
     <div class="dropdown d-inline">
       <a href="#" role="button" data-toggle="dropdown" aria-expanded="false" class="bmro-third-level-header">
         <span class="d-none d-md-inline pr-2">
-         <% if current_company.logo.attached? %>
-          <img src="<%= url_for(current_company.logo) %>" height="18" alt="<%= current_company.name %>">
+        <% company_account_name = current_customers_contact.customer_admin?? current_company.account.name : current_company.name %>
+        <% if current_company.logo.attached? %>
+          <img src="<%= url_for(current_company.logo) %>" height="18" alt="<%= company_account_name %>">
         <% else %>
-          <i class="fal fa-building"></i>&nbsp;<%= current_company.name %>
+          <i class="fal fa-building"></i>&nbsp;<%= company_account_name %>
         <% end %>
         </span>
       </a>
