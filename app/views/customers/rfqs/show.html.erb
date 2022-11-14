@@ -81,7 +81,7 @@
         <div class="form-row mt-2">
           <div class="col-12 col-md-6">
             <strong class="d-block">Customer - Billing Address</strong>
-            <%= (@customer_rfq.inquiry.company.name) %><br>
+            <%= (@customer_rfq.inquiry.billing_company.name) %><br>
             <%= @customer_rfq.inquiry.billing_address.try(:to_compact_multiline_s) %><br>
             <% if @customer_rfq.inquiry.contact.phone.present? %>
               Contact: <%= @customer_rfq.inquiry.contact.full_name %> - <%= @customer_rfq.inquiry.contact.phone %><br>
@@ -93,7 +93,7 @@
           </div>
           <div class="col-12 col-md-6 mt-2 mt-md-0">
             <strong class="d-block">Customer - Shipping Address</strong>
-            <%= (@customer_rfq.inquiry.company.name) %><br>
+            <%= (@customer_rfq.inquiry.shipping_company.name) %><br>
             <%= @customer_rfq.inquiry.shipping_address.try(:to_compact_multiline_s) %><br>
             <% if @customer_rfq.inquiry.contact.mobile || @customer_rfq.inquiry.contact.telephone %>
               <span class="d-block"><em>Contact</em>: <%= @customer_rfq.inquiry.contact.full_name %>

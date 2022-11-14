@@ -1057,6 +1057,19 @@ Rails.application.routes.draw do
         get 'choose_company'
         get 'contact_companies'
       end
+      scope module: 'companies' do
+        resources :addresses do
+          collection do
+            get 'autocomplete'
+          end
+        end
+      end
+    end
+
+    resources :addresses do
+      collection do
+        get 'autocomplete'
+      end
     end
 
     resources :rfqs

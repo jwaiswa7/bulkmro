@@ -25,8 +25,8 @@
              <%= f.input :files, wrapper: :custom_file, input_html: {multiple: true} ,label: 'File'%>
             </div>
           </div>
-          <%= f.input :billing_address_id, as: :select, collection: current_company.addresses.map {|address| [address.to_s, address.id ]} ,include_blank: "Billing address" , label: 'Billing address', input_html: {class: "select2-single bmro-dropdown-icon"}, required: true %>
-          <%= f.input :shipping_address_id,as: :select, collection: current_company.addresses.map {|address| [address.to_s, address.id ]} ,include_blank: "Shipping address" , label: 'Shipping address', input_html: {class: "select2-single bmro-dropdown-icon"}, required: true %>
+          <%= f.association :billing_address, collection: selected_option_or_nil(f, :billing_address) ,include_blank: "Billing address" , label_method: :to_s, label: 'Billing address', input_html: {class: "select2-ajax bmro-form-input bmro-dropdown-icon" , :'data-source' => autocomplete_customers_addresses_path }, required: true , disabled: true %>
+          <%= f.association :shipping_address, collection: selected_option_or_nil(f, :shipping_address) ,include_blank: "Shipping address" , label_method: :to_s, label: 'Shipping address', input_html: {class: "select2-ajax bmro-form-input bmro-dropdown-icon" , :'data-source' => autocomplete_customers_addresses_path }, required: true , disabled: true %>
 
           <%= button_tag(type: "submit", class: "btn bmro-button bmro-set-size  btn-block") do %>
             <i class="bmro-update-icon"></i> <%= submit_text(@customer_rfq) %>
