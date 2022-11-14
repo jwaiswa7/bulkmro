@@ -1,5 +1,5 @@
 json.data (@sales_orders) do |sales_order|
-  json.array! [
+  columns = [
                   [
                       if policy(sales_order).index?
                         row_action_button(customers_order_path(sales_order), 'eye', 'View Order', 'info')
@@ -8,6 +8,7 @@ json.data (@sales_orders) do |sales_order|
                         row_action_button(customers_order_path(sales_order, format: :pdf), 'file-pdf', 'Download Order', 'dark', :_blank)
                       end
                   ].join(' '),
+                  sales_order.inquiry.company.to_s,
                   sales_order.order_number,
                   format_date(sales_order.created_at),
                   sales_order.inquiry.customer_po_number,
@@ -20,10 +21,13 @@ json.data (@sales_orders) do |sales_order|
                   sap_status(sales_order.get_invoiced_qty, sales_order.total_qty),
                   format_date(sales_order.created_at)
               ]
+  columns.delete_at(1) unless policy(current_customers_contact).admin_columns?
+  json.merge! columns
 end
 
 json.columnFilters [
                        [],
+                       @sales_orders.map {|sales_order| {label: sales_order.inquiry.company.to_s, value: sales_order.company.id}}.uniq,
                        [],
                        [],
                        [],

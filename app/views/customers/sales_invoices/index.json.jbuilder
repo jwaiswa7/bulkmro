@@ -1,5 +1,5 @@
 json.data (@sales_invoices) do |sales_invoice|
-  json.array! [
+  columns =  [
                   [
                       if policy(sales_invoice).show? && !is_api_request?
                         row_action_button(customers_invoice_path(sales_invoice), 'eye', 'View Invoice', 'info')
@@ -14,6 +14,7 @@ json.data (@sales_invoices) do |sales_invoice|
                         row_action_button(show_pods_customers_invoice_path(sales_invoice), 'eye', "View POD's", 'success', :_blank)
                       end
                   ].join(' '),
+                  sales_invoice.company.to_s,
                   sales_invoice.inquiry.customer_po_number,
                   format_date(sales_invoice.inquiry.customer_order_date),
                   sales_invoice.invoice_number,
@@ -27,10 +28,13 @@ json.data (@sales_invoices) do |sales_invoice|
                   format_date(sales_invoice.delivery_date),
                   format_boolean_with_badge(sales_invoice.pod_status)
               ]
+  columns.delete_at(1) unless policy(current_customers_contact).admin_columns?
+  json.merge! columns
 end
 
 json.columnFilters [
                        [],
+                       @sales_invoices.map{ |sales_invoice| {label: sales_invoice.company.to_s, value: sales_invoice.company.id}}.uniq,
                        [],
                        [],
                        [],

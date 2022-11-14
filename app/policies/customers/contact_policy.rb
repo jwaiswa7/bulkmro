@@ -1,6 +1,10 @@
 # frozen_string_literal: true
 
 class Customers::ContactPolicy < Customers::ApplicationPolicy
+  def admin_columns?
+    customer_admin?
+  end
+
   def edit_current_company?
     manager? || customer?
   end

@@ -12,6 +12,9 @@
 
 <% content_for :header_row do %>
   <th class="no-sort all"></th>
+  <% if policy(current_customers_contact).admin_columns? %>
+    <th class="no-sort all" data-name="company_id">Company</th>
+  <% end %>
   <th class="no-sort all" data-name="order_number">Order #</th>
   <th class="no-sort all " data-name="created_at">Order Date</th>
   <th class="no-sort all" data-name="customer_po_number">PO #</th>
@@ -27,6 +30,9 @@
 
 <% content_for :filter_row do %>
   <td data-filter="false"></td>
+  <% if policy(current_customers_contact).admin_columns? %>
+    <td data-filter="dropdown"></td>
+  <% end %>
   <td data-filter="false"></td>
   <td data-filter="false"></td>
   <td data-filter="false"></td>
