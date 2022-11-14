@@ -6,6 +6,12 @@ json.data (@sales_quotes) do |sales_quote|
                         row_action_button(customers_quote_path(sales_quote, format: :pdf), 'file-pdf', 'Download Quote', 'dark', :_blank)
                       end
                   ].join(' '),
+                  if policy(current_customers_contact).admin_columns?
+                  sales_quote.company&.to_s
+                  end,
+                  if policy(current_customers_contact).admin_columns?
+                  sales_quote.inquiry&.contact&.to_s
+                  end,
                   sales_quote.inquiry.inquiry_number,
                   format_date(sales_quote.created_at),
                   sales_quote.rows.size,
@@ -14,11 +20,13 @@ json.data (@sales_quotes) do |sales_quote|
                   status_badge(sales_quote.changed_status(sales_quote.inquiry.status)),
                   format_date(sales_quote.created_at),
                   format_date(sales_quote.inquiry.valid_end_time)
-              ]
+                ]
 end
 
 json.columnFilters [
                        [],
+                       @sales_quotes.map{ |sales_quote| {label: sales_quote.company.to_s, value: sales_quote.company.id}}.uniq,
+                       [{ "source": autocomplete_overseers_company_contacts_path(current_company) }],
                        [],
                        [],
                        [],
@@ -28,6 +36,6 @@ json.columnFilters [
                        []
                    ]
 
-json.recordsTotal @sales_quotes.count
+json.recordsTotal SalesQuote.all.count
 json.recordsFiltered @indexed_sales_quotes.total_count
 json.draw params[:draw]
