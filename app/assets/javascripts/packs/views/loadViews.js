@@ -24,6 +24,7 @@ import salesQuotes from "./salesQuotes/init";
 
 import categories from "./categories/init";
 import customerProducts from "./customerProducts/init";
+import rfqs from "./rfqs/init";
 import kits from "./kits/init";
 import freightRequests from "./freightRequests/init";
 import freightQuotes from "./freightQuotes/init";
@@ -121,6 +122,7 @@ let loader = {
     categories: categories,
     salesQuotes: salesQuotes,
     customerProducts: customerProducts,
+    rfqs: rfqs,
     kits: kits,
     freightRequests: freightRequests,
     freightQuotes: freightQuotes,
