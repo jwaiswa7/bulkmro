@@ -1,5 +1,5 @@
 json.data (@sales_quotes) do |sales_quote|
-  json.array! [
+  columns = [
                   [
                       row_action_button(customers_quote_path(sales_quote), 'eye', 'View Quote', 'info', :_blank),
                       if !is_api_request?
@@ -21,6 +21,8 @@ json.data (@sales_quotes) do |sales_quote|
                   format_date(sales_quote.created_at),
                   format_date(sales_quote.inquiry.valid_end_time)
                 ]
+  2.times{columns.delete_at(1)} unless policy(current_customers_contact).admin_columns?
+  json.merge! columns
 end
 
 json.columnFilters [
