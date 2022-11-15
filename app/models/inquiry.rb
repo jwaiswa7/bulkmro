@@ -35,7 +35,6 @@ class Inquiry < ApplicationRecord
   # belongs_to :bible_invoice, required: false
   # belongs_to :bible_sales_order, required: false
 
-  has_one :account, through: :company
   has_many :inquiry_products, -> {order(sr_no: :asc)}, inverse_of: :inquiry, dependent: :destroy
   accepts_nested_attributes_for :inquiry_products, reject_if: lambda {|attributes| attributes['product_id'].blank? && attributes['id'].blank?}, allow_destroy: true
   belongs_to :payment_option, required: false
