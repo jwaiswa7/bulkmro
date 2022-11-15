@@ -34,7 +34,7 @@
             <th class="no-sort"></th>
             <th class="no-sort text-left">Inquiry #</th>
             <th class="no-sort text-right">Date</th>
-            <% if current_customers_contact.customer_admin? %>
+            <% if policy(current_customers_contact).admin_columns? %>
               <th class="no-sort text-left">Company</th>  
             <% end %>
             <th class="no-sort text-left">Line Items</th>
@@ -49,8 +49,8 @@
               <td><%= row_action_button(customers_quote_path(sales_quote), 'eye', 'View Quote', 'info', :_blank) %></td>
               <td class="text-left"><%= sales_quote.inquiry.inquiry_number %></td>
               <td><%= format_date(sales_quote.created_at) %></td>
-              <% if current_customers_contact.customer_admin? %>
-                link_to(sales_quote.inquiry.company.name, overseers_company_path(sales_quote.inquiry.company, sales_quote), target: '_blank')
+              <% if policy(current_customers_contact).admin_columns? %>
+                <td><%= sales_quote.company&.to_s %></td>
               <% end %>
               <td class="text-left"><%= sales_quote.rows.size %></td>
               <td class="text-left"><%= format_currency(sales_quote.calculated_total) %></td>
