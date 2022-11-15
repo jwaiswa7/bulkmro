@@ -10,8 +10,8 @@
   
           <div class="form-row">
             <div class="col-12 col-md-12">
-              <%= f.input :billing_company_id, as: :select, collection: policy(:rfq).admin? ? current_company.account.companies.map {|company| [company.to_s, company.id ]} : [[current_company.to_s, current_company.id ]] ,include_blank: "Billing Company" , label: 'Billing Company', input_html: {class: "select2-single bmro-dropdown-icon"}, required: true %>
-              <%= f.input :shipping_company_id,as: :select, collection: policy(:rfq).admin? ? current_company.account.companies.map {|company| [company.to_s, company.id ]} : [[current_company.to_s, current_company.id ]] ,include_blank: "Shipping Company" , label: 'Shipping Company', input_html: {class: "select2-single bmro-dropdown-icon"}, required: true %>
+              <%= f.input :billing_company_id, as: :select, collection: policy(:rfq).customer_admin? ? current_company.account.companies.map {|company| [company.to_s, company.id ]} : [[current_company.to_s, current_company.id ]] ,include_blank: "Billing Company" , label: 'Billing Company', input_html: {class: "select2-single bmro-dropdown-icon"}, required: true %>
+              <%= f.input :shipping_company_id,as: :select, collection: policy(:rfq).customer_admin? ? current_company.account.companies.map {|company| [company.to_s, company.id ]} : [[current_company.to_s, current_company.id ]] ,include_blank: "Shipping Company" , label: 'Shipping Company', input_html: {class: "select2-single bmro-dropdown-icon"}, required: true %>
               <%= f.input :subject, label: 'Subject', input_html: { class: 'bmro-form-input' }, required: true%>
             </div>
           </div>

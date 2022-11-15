@@ -97,7 +97,7 @@
             <div class="card-body">
               <%= f.input :po_reference, label: 'PO Reference Number' ,input_html: { class: 'select2-single bmro-form-input bmro-dropdown-icon bmro-width-select' , placeholder: 'e.g. ASDF19126'}, as: :select, :wrapper => :custom_multi_select, collection: Inquiry.get_current_company_inquiries_customer_po_numbers(current_customers_contact) , required: true %>
               <p>Select a billing company.</p>
-              <% if policy(:checkout).admin? %>
+              <% if policy(:checkout).customer_admin? %>
                 <% current_company.account.companies.each do |company| %>
                     <label class="d-flex justify-content-center align-items-center flex-row">
                       <span class="h-100">
@@ -148,7 +148,7 @@
           <div id="checkout-shipping" class="collapse" data-parent="#checkout">
             <div class="card-body">
               <p>Select a shipping company.</p>
-              <% if policy(:checkout).admin? %>
+              <% if policy(:checkout).customer_admin? %>
                 <% current_company.account.companies.each do |company| %>
                     <label class="d-flex justify-content-center align-items-center flex-row">
                       <span class="h-100">
