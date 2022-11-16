@@ -200,17 +200,26 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
         base_filter_key: 'is_inward_completed',
         base_filter_value: true
     }
+    service = Services::Overseers::Finders::InwardDispatches.new(params.merge(base_filter), current_overseer)
+    service.call
 
+    @indexed_inward_dispatches = service.indexed_records
+    @inward_dispatches = service.records
 
-    respond_to do |format|
-      format.html {}
-      format.json do
-        service = Services::Overseers::Finders::InwardDispatches.new(params.merge(base_filter), current_overseer)
-        service.call
-        @indexed_inward_dispatches = service.indexed_records
-        @inward_dispatches = service.records.try(:reverse)
+    status_service = Services::Overseers::Statuses::GetSummaryStatusBuckets.new(@indexed_inward_dispatches, InwardDispatch, custom_status: 'ar_invoice_request_status', main_summary_status: InwardDispatch.ar_invoice_request_statuses)
+    status_service.call
+
+      respond_to do |format|
+        format.html {
+          @statuses = InwardDispatch.ar_invoice_request_statuses
+          @alias_name = 'Inward completed queue'
+          @main_summary_statuses = InwardDispatch.ar_invoice_request_statuses
+        }
+        format.json do
+          @total_values = status_service.indexed_total_values
+          @statuses = status_service.indexed_statuses
+        end
       end
-    end
 
     authorize :inward_dispatch
     render 'inward_completed_queue'

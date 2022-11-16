@@ -48,7 +48,7 @@ class InwardDispatch < ApplicationRecord
       'Not Requested': 10,
       'Partially Completed': 20,
       'Invoiced': 30,
-      'Fully Cancelled': 40,
+      'Fully Cancelled': 40
   }
 
   # enum outward_status: {

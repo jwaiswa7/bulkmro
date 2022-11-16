@@ -1,6 +1,10 @@
+import bindSummaryBox from '../common/bindSummaryBox'
+import updateSummaryBox from "../common/updateSummaryBox";
 import updateLogisticsOwner from "./inwardDispatchPickupQueue";
 
 const inwardCompletedQueue = () => {
+    bindSummaryBox(".summary_box", '.status-filter')
+    updateSummaryBox();
     $(' #create_ar_invoice').hide();
     toggleCheckboxes();
 

@@ -82,3 +82,7 @@ json.columnFilters [
 json.recordsTotal @indexed_inward_dispatches.count
 json.recordsFiltered @indexed_inward_dispatches.total_count
 json.draw params[:draw]
+
+json.recordsSummary InwardDispatch.ar_invoice_request_statuses.map { |status, status_id| { status_id: status_id, "label": status, "size": @statuses[status_id] || 0} }.as_json
+json.recordsMainSummary InwardDispatch.ar_invoice_request_statuses.map { |status, status_id| { status_id: status_id, "label": status, "size": @statuses[status_id] || 0} }.as_json
+json.recordsTotalValue @total_values

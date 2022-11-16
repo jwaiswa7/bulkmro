@@ -12,9 +12,9 @@ class InwardDispatchesIndex < BaseIndex
     field :inquiry_id, value: -> (record) { record.purchase_order.inquiry.id if record.inquiry.present? }
     field :so_number, value: -> (record) {record.purchase_order.po_request.sales_order.order_number if record.purchase_order.po_request.present? && record.purchase_order.po_request.sales_order.present? }, type: 'long'
     field :inquiry, value: -> (record) { record.purchase_order.inquiry.to_s }, analyzer: 'substring'
-    field :status, value: -> (record) { statuses[record.status] }
+    field :status, value: -> (record) { statuses[record.status] } , type: 'integer'
     field :status_string, value: -> (record) { record.status.to_s }
-    field :ar_invoice_request_status, value: -> (record) { ar_invoice_request_statuses[record.calculative_ar_invoice_req_status] }
+    field :ar_invoice_request_status, value: -> (record) { ar_invoice_request_statuses[record.calculative_ar_invoice_req_status] } , type: 'integer'
     field :ar_invoice_request_status_string, value: -> (record) { record.calculative_ar_invoice_req_status.to_s }
     field :po_number, value: -> (record) { record.purchase_order.po_number.to_i }, type: 'integer'
     field :po_number_string, value: -> (record) { record.purchase_order.po_number.to_s }, analyzer: 'substring'
@@ -25,7 +25,7 @@ class InwardDispatchesIndex < BaseIndex
     field :customer_id, value: -> (record) { record.purchase_order.inquiry.company.try(:id) if record.inquiry.company.present? }
     field :customer, value: -> (record) { record.purchase_order.inquiry.company.to_s if record.inquiry.company.present? }, analyzer: 'substring'
     field :logistics_owner_id, value: -> (record) { record.logistics_owner.id if record.logistics_owner.present? }
-    field :po_request_status, value: -> (record) { po_statuses[record.purchase_order.po_request ? record.purchase_order.po_request.status : 'Supplier PO: Created Not Sent'] }
+    field :po_request_status, value: -> (record) { po_statuses[record.purchase_order.po_request ? record.purchase_order.po_request.status : 'Supplier PO: Created Not Sent'] } , type: 'integer'
     field :po_request_status_string, value: -> (record) { record.purchase_order.po_request ? record.purchase_order.po_request.status : 'Supplier PO: Created Not Sent' }, analyzer: 'substring'
     field :company_id, value: -> (record) { record.purchase_order.inquiry.company_id if record.inquiry.present? }
     field :company_rating, value: ->(record) { record.purchase_order.get_supplier(record.purchase_order.rows.first.metadata['PopProductId'].to_i).try(:rating) if record.purchase_order.rows.present? }
