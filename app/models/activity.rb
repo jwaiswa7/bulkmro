@@ -23,6 +23,8 @@ class Activity < ApplicationRecord
   accepts_nested_attributes_for :company_creation_request, reject_if: lambda { |attributes| attributes['name'].blank? }, allow_destroy: true
   accepts_nested_attributes_for :contact_creation_request, reject_if: lambda { |attributes| attributes['first_name'].blank? }, allow_destroy: true
 
+  before_save :send_overdue_email, if: :will_save_change_to_activity_status?
+
   has_many_attached :attachments
   scope :with_includes, -> { includes(:company, :contact, :inquiry) }
   enum company_type: {
@@ -111,5 +113,24 @@ class Activity < ApplicationRecord
 
   def to_s
     (company || inquiry || contact).to_s
+  end
+
+  private 
+
+  # will send an email to the user if the activity status changes to overdue
+  def send_overdue_email 
+    return true unless activity_status == "Overdue"
+    # build email message
+    emails = [contact&.email]
+    overseers.map { |overseer| emails.push overseer.email }
+
+    email_message = email_messages.build(
+      subject: "Activity is overdue",
+      to: emails,
+      from: 'sales@bulkmro.com'
+    )
+    
+    ActivityMailer.overdue(email_message).deliver_now if email_message.save
+    
   end
 end

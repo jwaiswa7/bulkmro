@@ -30,4 +30,10 @@ class ActivityMailer < ApplicationMailer
       email = htmlized_email(email_message)
       email.delivery_method.settings.merge!(user_name: @overseer.email, password: @overseer.smtp_password)
     end
+
+    def overdue(email_message)
+      @overseer = email_message.overseer
+      @activity = email_message.activity
+      standard_email(email_message)
+    end
 end
