@@ -38,7 +38,7 @@ class Overseers::ActivitiesController < Overseers::BaseController
   end
 
   def create
-    @activity = Activity.new(activity_params.merge(overseer: current_overseer))
+    @activity = Activity.new(activity_params.merge(overseer: current_overseer , status_updated_at: Time.now))
     company_creation_params = activity_params['company_creation_request_attributes']
     if company_creation_params['create_new_contact'] == 'true'
       @activity.build_contact_creation_request(
@@ -78,7 +78,9 @@ class Overseers::ActivitiesController < Overseers::BaseController
   def update
     @activity.assign_attributes(activity_params.merge(overseer: current_overseer))
     company_creation_request = @activity.company_creation_request
-
+    if @activity.activity_status_changed?
+      @activity.assign_attributes(status_updated_at: Time.now)
+    end
     authorize_acl @activity
     if @activity.save
       redirect_to overseers_activities_path, notice: flash_message(@activity, action_name)

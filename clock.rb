@@ -138,6 +138,11 @@ every(4.day, 'set_slack_ids', at: '23:00') do
   end
 end
 
+every(1.day, 'update_activity_status', at: '07:00') do
+  service = Services::Overseers::Activities::UpdateStatus.new
+  service.call
+end if Rails.env.production? || Rails.env.staging?
+
 # every(1.day, 'send_inventory_status_to_saint_gobain_customer', at: '19:30') do
 #   InventoryStatusMailer.send_inventory_status_to_customer.deliver_now
 # end if Rails.env.production?
