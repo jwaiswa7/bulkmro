@@ -1,0 +1,13 @@
+<div class="font-family: Arial; font-size: 14.5px;">
+  <p style="color: #555;">Dear <%= @activity.created_by&.parent&.try(:full_name) %></p>
+  <p style="color: #555;">This is an urgent message regarding your team member’s activity, 
+  which was due on <%= format_date(@activity.status_updated_at) %>, is now <%= Time.now.day - @activity.status_updated_at.day %> days overdue and requires immediate attention.
+  Please find below the details</p>
+  <p style="color: #555;">Name of the user - <%= @activity.created_by&.try(:full_name) %></b></p>
+  <p style="color: #555;">Email Address - <%= @activity.created_by&.try(:email) %></p></b>
+  <p style="color: #555;">Activity No - <%= @activity.activity_number %></p></b>
+  <p style="color: #555;">Click <%= link_to "here", edit_overseers_activity_url(@activity) %> to view the activity.</p></b>
+
+  <br/>
+  <p style="color: #555;">Thank you<br></p>
+</div>
