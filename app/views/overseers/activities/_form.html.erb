@@ -92,6 +92,7 @@
           <%= f.association :overseers, collection: Overseer.all ,label: 'Colleagues' , placeholder:  "Select other overseers" , input_html: {class: 'custom-select2-search select2-multiple ', multiple: true } %>
           <%= f.input :points_discussed, input_html: {class: 'bmro-form-input bmro-input-values' } %>
           <%= f.input :actions_required, input_html: {class: 'bmro-form-input bmro-input-values' } %>
+          <%= f.input :internal_remarks, input_html: {class: 'bmro-form-input bmro-input-values' } %>
           <div class="mb-2">
             <div class="d-block d-md-flex align-items-end">
               <div class="flex-grow-1 bmro-chosen-height-parent">
