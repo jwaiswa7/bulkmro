@@ -4,10 +4,20 @@ class Services::Overseers::Finders::CustomerOrderStatusReports < Services::Overs
   end
 
   def all_records
-    indexed_records = if current_overseer.present? && !current_overseer.allow_inquiries?
+    indexed_records = if current_overseer.present? && !current_overseer.allow_status_report?
       index_klass.limit(model_klass.count).order(sort_definition).filter(filter_by_owner(current_overseer.self_and_descendant_ids))
     else
       index_klass.limit(model_klass.count).order(sort_definition)
+    end
+
+    # if the current overseer is an inside sales owner 
+    if current_overseer.present? && current_overseer.inside_sales_executive?
+      indexed_records = indexed_records.filter(filter_by_value('inside_sales_owner_id', current_overseer.id))
+    end
+
+    # if the current overseer is an outside sales executive
+    if current_overseer.present? && current_overseer.outside_sales_executive?
+      indexed_records = indexed_records.filter(filter_by_value('outside_sales_owner_id', current_overseer.id))
     end
 
     if search_filters.present?

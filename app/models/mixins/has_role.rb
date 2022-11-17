@@ -95,6 +95,10 @@ module Mixins::HasRole
       admin? || cataloging? || logistics? || accounts?
     end
 
+    def allow_status_report? 
+      allow_inquiries? || outside_sales_executive? || inside_sales_executive?
+    end
+
     def manager_or_cataloging?
       manager? || cataloging?
     end
