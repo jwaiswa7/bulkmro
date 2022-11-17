@@ -138,7 +138,7 @@ every(4.day, 'set_slack_ids', at: '23:00') do
   end
 end
 
-every(1.day, 'update_activity_status', at: '07:00') do
+every(1.day, 'update_activity_status', at: '01:10') do
   service = Services::Overseers::Activities::UpdateStatus.new
   service.call
 end if Rails.env.production? || Rails.env.staging?
