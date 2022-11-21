@@ -36,4 +36,20 @@ class ActivityMailer < ApplicationMailer
       @activity = email_message.activity
       standard_email(email_message)
     end
+
+    def email_of_overdue_to_mangers(email_message)
+      @activity = email_message.activity
+      standard_email(email_message)
+    end
+
+    def email_of_pending_approval_to_mangers(email_message)
+      @activity = email_message.activity
+      standard_email(email_message)
+    end
+
+    def email_of_overdue_to_upper_management(email_message)
+      @activity = email_message.activity
+      standard_email(email_message)
+    end   
+    
 end
