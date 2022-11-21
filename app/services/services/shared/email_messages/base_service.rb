@@ -71,7 +71,7 @@ class Services::Shared::EmailMessages::BaseService < Services::Shared::BaseServi
 
   def send_email_message_with_sendgrid(email_message)
     mail = SendGrid::Mail.new
-    mail.from = Email.new(email: email_message.from)
+    mail.from = Email.new(email: 'itops@bulkmro.com')
     mail.subject = email_message.subject
     personalization = Personalization.new
     personalization.add_to(Email.new(email: email_message.to)) 

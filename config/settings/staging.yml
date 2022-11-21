@@ -57,7 +57,6 @@ sendgrid_smtp:
   user_name: apikey
   password: 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
   authentication: "plain"
-  enable_starttls_auto: true
 
 twilio:
   phone: +919987480784
