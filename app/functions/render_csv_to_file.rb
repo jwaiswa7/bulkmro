@@ -1,7 +1,11 @@
 class RenderCsvToFile < BaseFunction
   def self.for(record, locals = {})
     class_name = record.class.name
-    filename = [record.name, 'pending_payments'].join('-')
+    if class_name == 'Array'
+      filename = 'Array'
+    else
+      filename = [record.name, 'pending_payments'].join('-')
+    end
     # path = Rails.root.join('tmp', 'payment_collections')
     csv_data = []
     if class_name == 'Account'
@@ -17,6 +21,24 @@ class RenderCsvToFile < BaseFunction
           csv << [index + 1, company.name, company.total_amount_due, company.total_amount_received, company.total_amount_outstanding]
         end
       end
+    elsif class_name == 'Array' && record.first.class.name == 'Activity'
+      columns = [
+          'Sr No.',
+          'Activity date',
+          'Company name',
+          'Subject of an activity',
+          'Activity type',
+          'Collogues',
+          'Approval status',
+          'Activity status'
+      ]
+      csv_data = CSV.generate(write_headers: true, headers: columns) do |csv|
+        record.each_with_index do |activity, index|
+          if !activity.rejected?
+            csv << [index + 1, activity.created_at.strftime('%d-%b-%Y'), activity.company&.name, activity.subject, activity.activity_type , activity.overseers.map{|overseer| overseer.name}.join('-') , activity.approval_status , activity.activity_status ]
+          end
+        end
+      end  
     elsif
       columns = [
           'Sr No.',

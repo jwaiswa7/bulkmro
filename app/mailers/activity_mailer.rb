@@ -37,12 +37,12 @@ class ActivityMailer < ApplicationMailer
       standard_email(email_message)
     end
 
-    def email_of_overdue_to_mangers(email_message)
+    def email_of_overdue_to_managers(email_message)
       @activity = email_message.activity
       standard_email(email_message)
     end
 
-    def email_of_pending_approval_to_mangers(email_message)
+    def email_of_pending_approval_to_managers(email_message)
       @activity = email_message.activity
       standard_email(email_message)
     end
