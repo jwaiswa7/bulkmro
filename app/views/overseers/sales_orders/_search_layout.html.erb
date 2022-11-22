@@ -9,10 +9,10 @@
           <%= f.input :category, as: :select, collection: @categories, input_html: {class: 'select2-single select2-wrap-text bmro-form-input'}, :include_blank => false, label: "Category", required: false, selected: params['customer_order_status_report'].present? && params['customer_order_status_report']['category'].present? ? params['customer_order_status_report']['category'] : @categories[0] %>
         </div>
         <div class="col-12 col-md-3">
-          <%= f.input :procurement_specialist, as: :select, collection: Inquiry.procurement_specialists, input_html: {class: "select2-single bmro-form-input", :'data-placeholder' => 'Select Procurement Specialist'}, required: false, include_blank: true, selected: params['customer_order_status_report'].present? && params['customer_order_status_report']['procurement_specialist'].present? ? params['customer_order_status_report']['procurement_specialist'].to_i : '' %>
+          <%= f.input :procurement_specialist, as: :select, collection: Inquiry.procurement_specialists, input_html: {class: "select2-single bmro-form-input", :'data-placeholder' => 'Select Procurement Specialist'}, required: false, include_blank: true, selected: selected_procurement_specialist(@current_overseer, params), disabled: disable_report_select(@current_overseer)  %>
         </div>
         <div class="col-12 col-md-3">
-          <%= f.input :outside_sales_owner, as: :select, collection: Inquiry.outside_sales_owners, input_html: {class: "select2-single bmro-form-input", :'data-placeholder' => 'Select Outside Sales Owner'}, required: false, include_blank: true, selected: params['customer_order_status_report'].present? && params['customer_order_status_report']['outside_sales_owner'].present? ? params['customer_order_status_report']['outside_sales_owner'].to_i : '' %>
+          <%= f.input :outside_sales_owner, as: :select, collection: Inquiry.outside_sales_owners, input_html: {class: "select2-single bmro-form-input", :'data-placeholder' => 'Select Outside Sales Owner'}, required: false, include_blank: true, selected: selected_outside_sales_owner(@current_overseer,params) , disabled: disable_report_select(@current_overseer) %>
         </div>
       </div>
       <div class="form-row">
