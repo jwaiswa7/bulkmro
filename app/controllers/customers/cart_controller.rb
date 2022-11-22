@@ -82,7 +82,7 @@ class Customers::CartController < Customers::BaseController
 
   def update_cart_details
     authorize @cart
-    inquiry = Inquiry.where(company_id: current_customers_contact.company.id , customer_po_number: cart_params["po_reference"]).last if cart_params["po_reference"].present?
+    inquiry = Inquiry.where(company_id: cart_params["billing_company_id"] , customer_po_number: cart_params["po_reference"]).last if cart_params["po_reference"].present?
     if inquiry
       @cart.assign_attributes(cart_params)
       @cart.save
