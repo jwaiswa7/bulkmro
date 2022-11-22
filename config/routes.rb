@@ -1005,6 +1005,7 @@ Rails.application.routes.draw do
     resource :checkout, controller: :checkout do
       collection do
         get 'final_checkout'
+        get 'customer_po_autocomplete'
       end
     end
     # resources :products, only: %i[index show] do
@@ -1061,6 +1062,7 @@ Rails.application.routes.draw do
         resources :addresses do
           collection do
             get 'autocomplete'
+            get 'customer_po_autocomplete'
           end
         end
       end

@@ -95,7 +95,7 @@
 
           <div id="checkout-billing" class="collapse <%= show_if(params[:next_step].blank?) %>" data-parent="#checkout">
             <div class="card-body">
-              <%= f.input :po_reference, label: 'PO Reference Number' ,input_html: { class: 'select2-single bmro-form-input bmro-dropdown-icon bmro-width-select' , placeholder: 'e.g. ASDF19126'}, as: :select, :wrapper => :custom_multi_select, collection: Inquiry.get_current_company_inquiries_customer_po_numbers(current_customers_contact) , required: true %>
+              <%= f.input :po_reference, as: :select, collection: selected_option_or_nil(f, :po_reference) , label: 'PO Reference Number' ,input_html: { id: 'checkout_po_reference', class: "select2-ajax bmro-form-input bmro-dropdown-icon" , placeholder: 'e.g. ASDF19126' , :'data-source' => customer_po_autocomplete_customers_checkout_path }, as: :select , required: true , disabled: true %>
               <p>Select a billing company.</p>
               <% if policy(:checkout).customer_admin? %>
                 <% current_company.account.companies.each do |company| %>
