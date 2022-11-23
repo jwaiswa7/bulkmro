@@ -266,6 +266,9 @@ class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseCo
         to = ["accounts@bulkmro.com", "ajay.kondal@bulkmro.com", "charudatt.mhatre@bulkmro.com"] 
         cc = [@inquiry.company.try(:sales_manager).try(:email), @inquiry.inside_sales_owner.try(:email)]
         subject = "Request for SO Cancellation for Inquiry ##{@sales_order.inquiry.inquiry_number} Sales Order ##{@sales_order.order_number}"
+      elsif Settings.domain == 'sprint-staging.herokuapp.com'
+        to = 'samruddhi.k@bulkmro.com'
+        subject = "Testing server - Request for SO Cancellation for Inquiry ##{@sales_order.inquiry.inquiry_number} Sales Order ##{@sales_order.order_number}"
       else
         from = 'bulkmro007@gmail.com'
         to = 'bulkmro007@gmail.com'
