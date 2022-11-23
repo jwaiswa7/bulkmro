@@ -24,18 +24,20 @@ class RenderCsvToFile < BaseFunction
     elsif class_name == 'Array' && record.first.class.name == 'Activity'
       columns = [
           'Sr No.',
+          'Activity number',
           'Activity date',
           'Company name',
           'Subject of an activity',
           'Activity type',
           'Collogues',
           'Approval status',
-          'Activity status'
+          'Activity status',
+          'Created by'
       ]
       csv_data = CSV.generate(write_headers: true, headers: columns) do |csv|
         record.each_with_index do |activity, index|
           if !activity.rejected?
-            csv << [index + 1, activity.created_at.strftime('%d-%b-%Y'), activity.company&.name, activity.subject, activity.activity_type , activity.overseers.map{|overseer| overseer.name}.join('-') , activity.approval_status , activity.activity_status ]
+            csv << [index + 1, activity.activity_number , activity.created_at.strftime('%d-%b-%Y'), activity.company&.name, activity.subject, activity.activity_type , activity.overseers.map{|overseer| overseer.name}.join('-') , activity.approval_status , activity.activity_status , activity.created_by.name ]
           end
         end
       end  
