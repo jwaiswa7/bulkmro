@@ -1,4 +1,4 @@
-<p>Dear <%= @overseer.full_name %></p>
+<p>Dear <%= @overseer&.full_name %></p>
 
 <p>Due to inactivity for more than 24 hours, your activity AC #<%= @activity.inquiry&.inquiry_number %> status was changed to “Overdue”. </p>
 
