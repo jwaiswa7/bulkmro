@@ -121,16 +121,19 @@ class Activity < ApplicationRecord
   def send_overdue_email 
     return true unless activity_status == "Overdue"
     # build email message
-    emails = [contact&.email]
-    overseers.map { |overseer| emails.push overseer.email }
+    email_message = email_messages.build(activity_id: id)
 
-    email_message = email_messages.build(
+    email_message.assign_attributes(
       subject: "Activity is overdue",
-      to: emails,
-      from: 'sales@bulkmro.com'
+      to: created_by&.email,
+      from: 'itop@bulkmro.com',
+      body: ActivityMailer.overdue(email_message).body.raw_source
     )
     
-    ActivityMailer.overdue(email_message).deliver_now if email_message.save
+    if email_message.save
+      service = Services::Shared::EmailMessages::BaseService.new()
+      service.send_email_message_with_sendgrid(email_message)
+    end
     
   end
 end
