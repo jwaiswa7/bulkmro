@@ -2,7 +2,7 @@ class Services::Overseers::Overseers::GetIspReportBuckets < Services::Shared::Ba
   def initialize(all_indexed_records, overseers, params)
     @inquiry_records = all_indexed_records[:inquiry_records].aggregations['inside_sales_owners']['buckets']
     @sales_quote_records = all_indexed_records[:sales_quote_records].aggregations['inside_sales_owners']['buckets']
-    @sales_orders_records = all_indexed_records[:sales_orders_records].aggregations['inside_sales_owners'].nil?? {} : all_indexed_records[:sales_orders_records].aggregations['inside_sales_owners']['buckets']
+    @sales_orders_records = all_indexed_records[:sales_orders_records].aggregations['inside_sales_owners'].present? ? all_indexed_records[:sales_orders_records].aggregations['inside_sales_owners']['buckets'] : {}
     @purchase_order_records = all_indexed_records[:purchase_order_records].aggregations['inside_sales_owners']['buckets']
     @overseers = overseers
     if params[:isp_report].present? && params[:isp_report][:procurement_specialist].present?
