@@ -396,7 +396,7 @@ class SalesOrder < ApplicationRecord
   end
 
   def is_invoices_cancelled
-    self.invoices.pluck(:status).all?('Cancelled')
+    self.invoices.pluck(:status).all?('Cancelled') || ( self.ar_invoice_requests.pluck(:status).all?('Cancelled AR Invoice') && ( self.invoices.pluck(:status) &['Credit Note Issued: Partial','Credit Note Issued: Full']).any? )
   end
 
   def calculate_tcs_amount
