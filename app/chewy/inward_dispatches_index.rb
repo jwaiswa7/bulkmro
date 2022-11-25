@@ -14,7 +14,7 @@ class InwardDispatchesIndex < BaseIndex
     field :inquiry, value: -> (record) { record.purchase_order.inquiry.to_s }, analyzer: 'substring'
     field :status, value: -> (record) { statuses[record.status] } , type: 'integer'
     field :status_string, value: -> (record) { record.status.to_s }
-    field :ar_invoice_request_status, value: -> (record) { ar_invoice_request_statuses[record.calculative_ar_invoice_req_status] } , type: 'text', fielddata: true
+    field :ar_invoice_request_status, value: -> (record) { ar_invoice_request_statuses[record.calculative_ar_invoice_req_status] } , type: 'integer'
     field :ar_invoice_request_status_string, value: -> (record) { record.calculative_ar_invoice_req_status.to_s }
     field :po_number, value: -> (record) { record.purchase_order.po_number.to_i }, type: 'integer'
     field :po_number_string, value: -> (record) { record.purchase_order.po_number.to_s }, analyzer: 'substring'
