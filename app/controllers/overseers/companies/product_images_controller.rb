@@ -7,7 +7,6 @@ class Overseers::Companies::ProductImagesController < Overseers::Companies::Base
     to_upload.each do |image|
       product_image = ProductImage.new(image: image)
       product_image.save 
-      byebug
     end
     
     if invalid_images.count.positive?
