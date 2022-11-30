@@ -106,6 +106,38 @@
           </div>
         </div>
       </div>
+
+         <div class="card-alternative mt-3">
+      <div class="form-row mb-0 mb-md-2">
+         <div class="col-12 col-md-12 mb-2 mb-md-0">
+            <table class="w-100 datatable table table-bordered dt-responsive dt-responsive wrap-whitespace mt-0" data-fixed-header="false">
+               <thead>
+                  <tr>
+                     <th class="no-sort" >Sr. No</th>
+                     <th class="no-sort" >MPN</th>
+                     <th class="no-sort" >Product Description</th>
+                     <th class="no-sort" >Categories</th>
+                     <th class="no-sort" >Quantity</th>
+                     <th class="no-sort" >UoMs</th>
+                  </tr>
+               </thead>
+               <tbody>
+                <% @inquiry_products.each do |inquiry_product| %>
+                  <tr>
+                    <td><%= inquiry_product.sr_no %></td>
+                    <td><%= inquiry_product.product.mpn %></td>
+                    <td><%= inquiry_product.product.to_s %></td>
+                    <td><%= inquiry_product.product.category.name.to_s %></td>
+                    <td><%= inquiry_product.quantity %></td>
+                    <td><%= inquiry_product.measurement_unit %></td>
+                  </tr>
+                <% end %>
+               </tbody>
+            </table>
+         </div>
+      </div>
+            </div>
+
       <div class="card-alternative mt-3">
         <div class="form-row mb-0 mb-md-2">
           <div class="col-12 col-md-12 mb-2 mb-md-0">

@@ -185,6 +185,8 @@ class Overseers::ProductsController < Overseers::BaseController
     product_details['tax_rate_id'] = @product.best_tax_rate.id
     product_details['measurement_unit'] = @product.measurement_unit.to_s
     product_details['converted_unit_selling_price'] = @product.latest_unit_cost_price
+    product_details['mpn'] = @product.mpn
+    product_details['category'] = @product.category.to_s
     render json: product_details
   end
 
