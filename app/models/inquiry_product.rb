@@ -13,6 +13,7 @@ class InquiryProduct < ApplicationRecord
   accepts_nested_attributes_for :inquiry_product_suppliers, allow_destroy: true
   has_one :inquiry_import_row, dependent: :nullify, inverse_of: :inquiry_product
   has_many :supplier_rfqs
+  belongs_to :measurement_unit, required: false
 
   scope :with_suppliers, -> { left_outer_joins(:inquiry_product_suppliers).where.not(inquiry_product_suppliers: { id: nil }) }
 

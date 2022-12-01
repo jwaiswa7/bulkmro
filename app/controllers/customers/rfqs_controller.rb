@@ -17,7 +17,7 @@ class Customers::RfqsController < Customers::BaseController
   def create 
     authorize :rfq
     @inquiry = Inquiry.new(company_id: customer_rfq_params[:billing_company_id] , potential_amount: 1.0, subject: customer_rfq_params[:subject], opportunity_source: 'Online_order' , quote_category: 'bmro', is_sez: true, product_type: 'MRO',price_type: 'Door delivery' , contact_id:  current_customers_contact.id , shipping_contact_id: current_customers_contact.id , shipping_address_id: customer_rfq_params[:shipping_address_id] , billing_address_id: customer_rfq_params[:billing_address_id] , shipping_company_id: customer_rfq_params[:shipping_company_id] , billing_company_id: customer_rfq_params[:billing_company_id] )
-    if @inquiry.save
+    if @inquiry.save && @inquiry.update(inquiry_products_params)
       @customer_rfq = CustomerRfq.new(customer_rfq_params.merge(inquiry_id: @inquiry.id)) 
       if @customer_rfq.save 
         @email_message = @customer_rfq.email_messages.build(contact: current_customers_contact, inquiry: @customer_rfq.inquiry, company: current_customers_contact.company)
@@ -47,6 +47,7 @@ class Customers::RfqsController < Customers::BaseController
   end
 
   def show 
+    @inquiry_products = @customer_rfq.inquiry.inquiry_products.includes(:product)
     authorize :rfq
   end
 
@@ -58,6 +59,12 @@ class Customers::RfqsController < Customers::BaseController
 
   def customer_rfq_params 
     params.require(:customer_rfq).permit(:account_id, :subject, :requirement_details, :shipping_address_id , :billing_address_id , :shipping_company_id , :billing_company_id , files: [])
+  end
+
+  def inquiry_products_params 
+    params.require(:customer_rfq).permit(
+      inquiry_products_attributes: [:id, :product_id, :sr_no, :quantity, :bp_catalog_name, :bp_catalog_sku, :measurement_unit_id , :_destroy]
+    )
   end
 
 end
