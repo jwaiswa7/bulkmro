@@ -45,12 +45,12 @@
               </div>
               <div class="col-md-1 text-center">
                 <div class="form-group mb-0">
-                  <label>UoM</label>
+                  <label>Quantity</label>
                 </div>
               </div>
               <div class="col-md-1 text-center">
                 <div class="form-group mb-0">
-                  <label>Quantity</label>
+                  <label>UoM</label>
                 </div>
               </div>
               <div class="col-md-1 text-center">
@@ -70,34 +70,28 @@
                       </div>
                     </div>
                   </div>
-                  <div class="col-md-3">
+                  <div class="col-3">
                     <div class="select2-wrap">
-                      <%= inquiry_product.association :product, collection: [inquiry_product.object.product], label_method: :to_s, include_blank: "Type SKU number, name, or brand", input_html: { class: 'select2-ajax select2-wrap-text bmro-select2-wrapText', :'data-source' => autocomplete_overseers_products_path, :'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => '' }, label: false %>
+                      <%= inquiry_product.input :product_id, as: :select , collection: current_company.account.products.map {|product| [product.to_s, product.id ]} , include_blank: "Type SKU number, name, or brand", label: false , input_html: {class: "select2-single select2-wrap-text bmro-select2-wrapText"}, required: true %>
                     </div>
                   </div>
                   <div class="col-5">
-                    <div class="col-md-4">
-                      <%= inquiry_product.input :bp_catalog_name, as: :string, :label => false , placeholder: "MPN" , input_html: { :'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => '' } , readonly: true%>
+                    <div class="col-4 pl-0">
+                      <%= inquiry_product.input :bp_catalog_name, as: :string, :label => false , input_html: { :'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => '' } , readonly: true%>
                     </div>
-                    <div class=" col-md-4">
-                      <%= inquiry_product.input :bp_catalog_sku, as: :string, :label => false , placeholder: "Category" , input_html: { :'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => '' } , readonly: true %>
+                    <div class="col-4 pl-0">
+                      <%= inquiry_product.input :bp_catalog_sku, as: :string, :label => false , input_html: { :'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => '' } , readonly: true %>
                     </div>
-                    <div class=" col-md-4">
-                      <%= inquiry_product.input :bp_catalog_sku, as: :string, :label => false , placeholder: "Brand" , input_html: { id: 'brand', :'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => '' } , readonly: true %>
-                    </div>
-                  </div>
-                  <div class="col-md-1 text-center">
-                    <div class="d-flex flex-row">
-                      <div>
-                        <%= inquiry_product.input :quantity, :label => false,  input_html: { :'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => '' } %>
-                      </div>
+                    <div class="col-4 px-0">
+                      <%= inquiry_product.input :bp_catalog_sku, as: :string, :label => false , input_html: { id: 'brand', :'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => '' } , readonly: true %>
                     </div>
                   </div>
-                  <div class="col-md-1 text-center">
-                    <div class="d-flex flex-row">
-                      <div>
-                        <%= inquiry_product.association :measurement_unit, collection: MeasurementUnit.new_uom, include_blank: false, label: false , input_html: {class: 'select2-single bmro-form-input bmro-dropdown-icon'} %>
-                      </div>
+                  <div class="col-2">
+                    <div class="col-6 pl-0 text-center">
+                      <%= inquiry_product.input :quantity, :label => false,  input_html: { :'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => '' } %>
+                    </div>
+                    <div class="col-6 px-0">
+                      <%= inquiry_product.association :measurement_unit, collection: MeasurementUnit.new_uom, include_blank: false, label: false , input_html: {class: 'select2-single bmro-form-input bmro-dropdown-icon'} %>
                     </div>
                   </div>
                   <div class="col-md-1 text-center">

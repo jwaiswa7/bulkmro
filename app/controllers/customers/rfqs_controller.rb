@@ -63,7 +63,7 @@ class Customers::RfqsController < Customers::BaseController
 
   def inquiry_products_params 
     params.require(:customer_rfq).permit(
-      inquiry_products_attributes: [:id, :product_id, :sr_no, :quantity, :bp_catalog_name, :bp_catalog_sku, :measurement_unit_id , :_destroy]
+      inquiry_products_attributes: [:id, :product_id, :sr_no, :quantity, :measurement_unit_id , :_destroy]
     )
   end
 
