@@ -97,7 +97,7 @@ class Overseers::SalesInvoicesController < Overseers::BaseController
       subject: subject,
       to: @invoice.get_contact_for_email,
       body: SalesInvoiceMailer.delivery_mail(@email_message).body.raw_source,
-      auto_attach: true,
+      auto_attach: false,
       cc: ['logistics@bulkmro.com', 'sales@bulkmro.com', @invoice.inquiry.inside_sales_owner.email, @invoice.inquiry.outside_sales_owner.email].join(', ')
         )
     @params = {
