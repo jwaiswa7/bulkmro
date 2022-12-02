@@ -44,7 +44,7 @@ class Services::Customers::Charts::OrderCount < Services::Customers::Charts::Bui
           },
       }
 
-      sales_orders = SalesOrder.includes(:rows).remote_approved.where(created_at: start_at..end_at).joins(:account).where(accounts: { id: account.id })
+      sales_orders = SalesOrder.remote_approved.where(created_at: start_at..end_at).joins(:account).where(accounts: { id: account.id })
 
       sales_orders.group_by_quarter('sales_orders.created_at', format: '%b-%Y', series: true).size.each do |quarter_start, order_count|
         @data[:labels].push(get_quarter(quarter_start.to_date))

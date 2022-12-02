@@ -63,7 +63,7 @@ class Services::Customers::Charts::QuarterlyPurchaseData < Services::Customers::
           },
       }
 
-      sales_orders = SalesOrder.includes(:rows).remote_approved.where(created_at: start_at..end_at).joins(:account).where(accounts: {id: account.id})
+      sales_orders = SalesOrder.remote_approved.where(created_at: start_at..end_at).joins(:account).where(accounts: {id: account.id})
 
       quarterwise_order_totals = sales_orders.group_by_quarter(&:created_at).map { |k, v| [k.strftime('%b-%y'), v.map(&:calculated_total).sum.to_s] }.to_h
       quarterwise_products_count = sales_orders.joins(:products).group_by_quarter('sales_orders.created_at', format: '%b-%y', series: true).count.to_h

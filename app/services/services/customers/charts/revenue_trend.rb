@@ -44,7 +44,7 @@ class Services::Customers::Charts::RevenueTrend < Services::Customers::Charts::B
           },
       }
 
-      sales_orders = SalesOrder.includes(:rows).remote_approved.where(created_at: start_at..end_at).joins(:company).where(companies: { id: company.id })
+      sales_orders = SalesOrder.remote_approved.where(created_at: start_at..end_at).joins(:company).where(companies: { id: company.id })
       monthwise_order_totals = sales_orders.group_by_month(&:created_at).map { |k, v| [k.strftime('%b-%y'), v.map(&:calculated_total).sum.to_s] }.to_h
 
       (start_at..end_at).map { |a| a.strftime('%b-%y') }.uniq.each do |month|
