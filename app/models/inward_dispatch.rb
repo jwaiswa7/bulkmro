@@ -129,7 +129,7 @@ class InwardDispatch < ApplicationRecord
   end
 
   def is_inward_completed?
-    self.invoice_request.present? && (self.invoice_request.status == 'Inward Completed')
+    self.invoice_request.present? && self.invoice_request.status == 'Inward Completed' && !(self.status == 'Material Delivered' && self.calculative_ar_invoice_req_status == 'Invoiced')
   end
 
   def po_row_size
