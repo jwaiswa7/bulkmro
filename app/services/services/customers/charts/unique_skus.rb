@@ -44,7 +44,7 @@ class Services::Customers::Charts::UniqueSkus < Services::Customers::Charts::Bui
           },
       }
 
-      sales_orders = SalesOrder.includes(:rows).remote_approved.where(created_at: start_at..end_at).joins(:account).where(accounts: { id: account.id })
+      sales_orders = SalesOrder.remote_approved.where(created_at: start_at..end_at).joins(:account).where(accounts: { id: account.id })
       ordered_products = sales_orders.joins(:products)
 
       (start_at..end_at).map { |a| a.strftime('%b-%Y') }.uniq.map { |month| month.to_date.beginning_of_quarter }.uniq.each do |quarter_start|
