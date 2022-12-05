@@ -7,6 +7,8 @@ class Activity < ApplicationRecord
   include Mixins::CanBeRejected
   include Mixins::HasApproveableStatus
 
+  EMAIL_FROM_ADDRESS = 'itop@bulkmro.com'
+
   update_index('activities#activity') { self }
   pg_search_scope :locate, against: [:purpose, :company_type, :activity_type], associated_against: { created_by: [:first_name, :last_name], account: [:name], company: [:name], contact: [:first_name, :last_name], inquiry: [:inquiry_number] }, using: { tsearch: { prefix: true } }
 
@@ -24,6 +26,7 @@ class Activity < ApplicationRecord
   accepts_nested_attributes_for :contact_creation_request, reject_if: lambda { |attributes| attributes['first_name'].blank? }, allow_destroy: true
 
   before_save :send_overdue_email, if: :will_save_change_to_activity_status?
+  after_commit :send_company_creation_request_emails, on: :update
 
   has_many_attached :attachments
   scope :with_includes, -> { includes(:company, :contact, :inquiry) }
@@ -57,13 +60,13 @@ class Activity < ApplicationRecord
 
 
   enum activity_status: {
-    'Completed': 10 ,
-    'Closed': 20 ,
-    'Pending': 30 ,
-    'Overdue': 40 ,
-    'To-Do': 50 ,
-    'MOM Sent': 60 ,
-    'Customer follow-up email sent': 70 
+    'Completed': 10,
+    'Closed': 20,
+    'Pending': 30,
+    'Overdue': 40,
+    'To-Do': 50,
+    'MOM Sent': 60,
+    'Customer follow-up email sent': 70
   }
   scope :with_includes, -> { includes(:created_by, :company, :inquiry, :contact) }
 
@@ -115,25 +118,51 @@ class Activity < ApplicationRecord
     (company || inquiry || contact).to_s
   end
 
-  private 
+  private
 
-  # will send an email to the user if the activity status changes to overdue
-  def send_overdue_email 
-    return true unless activity_status == "Overdue"
-    # build email message
-    email_message = email_messages.build(activity_id: id)
+    # will send an email to the user if the activity status changes to overdue
+    def send_overdue_email
+      return true unless activity_status == 'Overdue'
+      # build email message
+      email_message = email_messages.build(activity_id: id)
 
-    email_message.assign_attributes(
-      subject: "Activity is overdue",
-      to: created_by&.email,
-      from: 'itop@bulkmro.com',
-      body: ActivityMailer.overdue(email_message).body.raw_source
-    )
-    
-    if email_message.save
-      service = Services::Shared::EmailMessages::BaseService.new()
-      service.send_email_message_with_sendgrid(email_message)
+      email_message.assign_attributes(
+        subject: 'Activity is overdue',
+        to: created_by&.email,
+        from: 'itop@bulkmro.com',
+        body: ActivityMailer.overdue(email_message).body.raw_source
+      )
+
+      if email_message.save
+        service = Services::Shared::EmailMessages::BaseService.new()
+        service.send_email_message_with_sendgrid(email_message)
+      end
     end
-    
-  end
+
+    def send_company_creation_request_emails
+      return if company_creation_request.nil?
+
+      email_message = email_messages.new
+
+      if approved?
+        email_message.assign_attributes(
+          to: created_by&.email,
+          from: EMAIL_FROM_ADDRESS,
+          subject: "#{company_creation_request.company&.name} creation request approved",
+          body: CompanyCreationRequestMailer.approved(email_message).body.raw_source
+        )
+      elsif rejected?
+        email_message.assign_attributes(
+          to: created_by&.email,
+          from: EMAIL_FROM_ADDRESS,
+          subject: "#{company_creation_request.company&.name} creation request rejected",
+          body: CompanyCreationRequestMailer.rejected(email_message).body.raw_source
+        )
+      end
+
+      if email_message.save 
+        service = Services::Shared::EmailMessages::BaseService.new()
+        service.send_email_message_with_sendgrid(email_message)
+      end
+    end
 end
