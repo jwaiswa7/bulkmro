@@ -5,8 +5,9 @@ class Overseers::Companies::ProductImagesController < Overseers::Companies::Base
 
   def create 
     to_upload.each do |image|
-      product_image = ProductImage.new(image: image)
-      product_image.save 
+      sku = image.original_filename.split(".").first
+      customer_product = CustomerProduct.find_by(sku: sku)
+      customer_product.images.attach(image)
     end
     
     if invalid_images.count.positive?
@@ -39,7 +40,7 @@ class Overseers::Companies::ProductImagesController < Overseers::Companies::Base
   # Get the files to uplod to AWS
   def to_upload 
     return uploaded_images if invalid_images.count.zero?
-    uploaded_images.map { |image| upload.push(image) unless invalid_images.include? image.original_filename.split(".").first }.compact!
+    uploaded_images.map { |image| image unless invalid_images.include? image.original_filename.split(".").first }.compact!
   end
 end
   
