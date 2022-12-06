@@ -11,7 +11,7 @@ json.data (@contacts) do |contact|
                       if is_authorized(contact, 'become')
                         row_action_button(become_overseers_contact_path(contact), 'fal fa-sign-in', 'Sign in as Contact', 'dark', :_blank)
                       end,
-                      if is_authorized(contact.company, 'new_inquiry') && policy(contact.company).new_inquiry?
+                      if contact.company.present? && is_authorized(contact.company, 'new_inquiry') && policy(contact.company).new_inquiry?
                         row_action_button_without_fa(new_overseers_inquiry_path(company_id: contact.company.to_param), 'bmro-plus-circle-icon', 'New Inquiry', 'success', :_blank)
                       end,
                   ].join(' '),
