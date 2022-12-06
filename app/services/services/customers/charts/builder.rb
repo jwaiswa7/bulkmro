@@ -1,7 +1,8 @@
 class Services::Customers::Charts::Builder < Services::Shared::BaseService
-  def initialize(daterange)
+  def initialize(daterange, company_id)
     @start_at = daterange ? daterange.split('~')[0].to_date : Date.new(2018, 4, 1).beginning_of_month
     @end_at = daterange ? daterange.split('~')[1].to_date : Date.today.end_of_month
+    @company_id = company_id
     @data = {}
     @options = {}
     @chart = { data: @data, options: @options }
@@ -18,5 +19,5 @@ class Services::Customers::Charts::Builder < Services::Shared::BaseService
     }
   end
 
-  attr_accessor :start_at, :end_at
+  attr_accessor :start_at, :end_at, :company_id
 end

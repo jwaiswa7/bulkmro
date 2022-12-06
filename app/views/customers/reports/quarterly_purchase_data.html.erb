@@ -1,5 +1,5 @@
 <%= render layout: 'customers/reports/tabs_layout' do %>
-  <%= render partial: 'customers/reports/date_form', locals: { path: 'quarterly_purchase_data', daterange: @daterange } %>
+  <%= render partial: 'customers/reports/filters', locals: { path: 'quarterly_purchase_data', daterange: @daterange } %>
 
   <h3 class="display-5 mt-3 mb-2 d-none d-md-block text-black-50">Quarterly Purchase Data</h3>
   <div class="card">

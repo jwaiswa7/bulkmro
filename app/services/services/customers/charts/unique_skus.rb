@@ -1,5 +1,5 @@
 class Services::Customers::Charts::UniqueSkus < Services::Customers::Charts::Builder
-  def initialize(daterange)
+  def initialize(daterange, company_id)
     super
   end
 
@@ -44,7 +44,8 @@ class Services::Customers::Charts::UniqueSkus < Services::Customers::Charts::Bui
           },
       }
 
-      sales_orders = SalesOrder.remote_approved.where(created_at: start_at..end_at).joins(:account).where(accounts: { id: account.id })
+      sales_orders = SalesOrder.remote_approved.where(created_at: start_at..end_at).joins(:account).joins(:company).where(accounts: {id: account.id})
+      sales_orders = sales_orders.where(companies: {id: @company_id.to_i}) unless @company_id.nil?
       ordered_products = sales_orders.joins(:products)
 
       (start_at..end_at).map { |a| a.strftime('%b-%Y') }.uniq.map { |month| month.to_date.beginning_of_quarter }.uniq.each do |quarter_start|
@@ -54,5 +55,5 @@ class Services::Customers::Charts::UniqueSkus < Services::Customers::Charts::Bui
     end
   end
 
-  attr_accessor :start_at, :end_at
+  attr_accessor :start_at, :end_at, :company_id
 end
