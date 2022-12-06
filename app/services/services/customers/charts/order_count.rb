@@ -1,5 +1,5 @@
 class Services::Customers::Charts::OrderCount < Services::Customers::Charts::Builder
-  def initialize(daterange)
+  def initialize(daterange, company_id)
     super
   end
 
@@ -44,7 +44,8 @@ class Services::Customers::Charts::OrderCount < Services::Customers::Charts::Bui
           },
       }
 
-      sales_orders = SalesOrder.remote_approved.where(created_at: start_at..end_at).joins(:account).where(accounts: { id: account.id })
+      sales_orders = SalesOrder.remote_approved.where(created_at: start_at..end_at).joins(:account).joins(:company).where(accounts: {id: account.id})
+      sales_orders = sales_orders.where(companies: {id: @company_id.to_i}) unless @company_id.nil?
 
       sales_orders.group_by_quarter('sales_orders.created_at', format: '%b-%Y', series: true).size.each do |quarter_start, order_count|
         @data[:labels].push(get_quarter(quarter_start.to_date))
@@ -53,5 +54,5 @@ class Services::Customers::Charts::OrderCount < Services::Customers::Charts::Bui
     end
   end
 
-  attr_accessor :start_at, :end_at
+  attr_accessor :start_at, :end_at, :company_id
 end

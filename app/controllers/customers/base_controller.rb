@@ -9,7 +9,7 @@ class Customers::BaseController < ApplicationController
   after_action :verify_authorized, except: [:route, :generate_punchout_order]
   before_action :redirect_if_required, except: [:route]
 
-  helper_method :current_cart, :current_company, :is_api_request?, :current_api_request, :current_wish_list
+  helper_method :current_cart, :current_company, :is_api_request?, :current_api_request, :current_wish_list, :current_account_companies
 
   private
 
@@ -114,5 +114,9 @@ class Customers::BaseController < ApplicationController
 
     def controller_namespace
       @controller_namespace ||= controller_path.split('/').first
+    end
+
+    def current_account_companies
+      current_customers_contact.account.companies 
     end
 end

@@ -1,5 +1,5 @@
 class Services::Customers::Charts::MonthlyPurchaseData < Services::Customers::Charts::Builder
-  def initialize(daterange)
+  def initialize(daterange, company_id)
     super
   end
 
@@ -63,7 +63,8 @@ class Services::Customers::Charts::MonthlyPurchaseData < Services::Customers::Ch
           },
       }
 
-      sales_orders = SalesOrder.remote_approved.where(created_at: start_at..end_at).joins(:account).where(accounts: {id: account.id})
+      sales_orders = SalesOrder.remote_approved.where(created_at: start_at..end_at).joins(:account).joins(:company).where(accounts: {id: account.id})
+      sales_orders = sales_orders.where(companies: {id: @company_id.to_i}) unless @company_id.nil?
 
       monthwise_order_totals = sales_orders.group_by_month(&:created_at).map { |k, v| [k.strftime('%b-%y'), v.map(&:calculated_total).sum.to_s] }.to_h
       monthwise_products_count = sales_orders.joins(:products).group_by_month('sales_orders.created_at', format: '%b-%y', series: true).count.to_h
@@ -77,6 +78,6 @@ class Services::Customers::Charts::MonthlyPurchaseData < Services::Customers::Ch
     end
   end
 
-  attr_accessor :start_at, :end_at
+  attr_accessor :start_at, :end_at, :company_id
 end
   
