@@ -15,8 +15,8 @@ class CustomerOrder < ApplicationRecord
   has_many :rows, dependent: :destroy, class_name: 'CustomerOrderRow'
   has_many :items, dependent: :destroy, class_name: 'CustomerOrderRow'
   has_many :comments, dependent: :destroy, class_name: 'CustomerOrderComment'
-  belongs_to :billing_address, -> (record) {where(company_id: record.company_id)}, class_name: 'Address', foreign_key: :billing_address_id, required: false
-  belongs_to :shipping_address, -> (record) {where(company_id: record.company_id)}, class_name: 'Address', foreign_key: :shipping_address_id, required: false
+  belongs_to :billing_address, foreign_key: :billing_address_id, class_name: 'Address', required: false
+  belongs_to :shipping_address, foreign_key: :shipping_address_id, class_name: 'Address', required: false
 
   has_one_attached :customer_po_sheet
 
