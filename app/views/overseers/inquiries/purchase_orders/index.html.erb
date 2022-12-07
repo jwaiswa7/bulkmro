@@ -9,6 +9,8 @@
       <th class="no-sort desktop">Supplier Name</th>
       <th>Status</th>
       <th class="no-sort desktop text-right">Line Items</th>
+      <th class="no-sort desktop text-right">Subtotal</th>
+      <th class="no-sort desktop text-right">Grand total</th>
       <th class="no-sort desktop text-right">Created At</th>
       <th class="no-sort desktop text-right">SAP Status</th>
     <% end %>
@@ -31,6 +33,8 @@
           <td><%= purchase_order.supplier.name %></td>
           <td><%= purchase_order.status || purchase_order.metadata_status  %></td>
           <td><%= purchase_order.rows.size %></td>
+          <td><%= format_currency(purchase_order.calculated_total, symbol: nil) %></td>
+          <td><%= format_currency(purchase_order.calculated_total_with_tax, symbol: nil) %></td>
           <td><%= format_date(purchase_order.created_at) %></td>
           <td><%= status_badge(purchase_order.sap_sync) %></td>
         </tr>
