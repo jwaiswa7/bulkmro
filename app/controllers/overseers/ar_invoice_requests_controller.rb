@@ -117,7 +117,6 @@ class Overseers::ArInvoiceRequestsController < Overseers::BaseController
       render json: {sucess: 'Successfully updated '}, status: 200
     else
       render json: {error: @ar_invoice_request.errors}, status: 500
-      render json: {error: @ar_invoice_request.errors}, status: 500
     end
   end
 
