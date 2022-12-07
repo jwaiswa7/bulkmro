@@ -97,6 +97,11 @@ class Overseers::Companies::CustomerProductsController < Overseers::Companies::B
     redirect_to overseers_company_path(@company)
   end
 
+  def toggle_view
+    @company.grid_view?? @company.update(grid_view: false) : @company.update(grid_view: true)
+    redirect_to overseers_company_path(@company)
+  end
+
   private
 
     def set_customer_product

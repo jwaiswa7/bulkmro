@@ -150,6 +150,7 @@ class Overseers::CompaniesController < Overseers::BaseController
     render json: {contact_id: contact.id, contact_name: contact.name, contact_email: contact.email, contact_mobile: contact.mobile}
   end
 
+
   private
 
     def set_company

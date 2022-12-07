@@ -86,4 +86,6 @@ Rails.application.configure do
   # routes, locales, etc. This feature depends on the listen gem.
   config.file_watcher = ActiveSupport::EventedFileUpdateChecker
   config.serve_static_files = true
+
+  config.webpacker.check_yarn_integrity = false
 end

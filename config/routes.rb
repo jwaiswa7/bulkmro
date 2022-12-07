@@ -788,6 +788,7 @@ Rails.application.routes.draw do
             post 'destroy_all'
             get 'export_customer_product'
             get 'autocomplete'
+            post 'toggle_view'
           end
         end
 
