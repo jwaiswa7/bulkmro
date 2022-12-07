@@ -22,10 +22,18 @@ const finalCheckout = () => {
 
     $('[name="cart[billing_company_id]"]').on('change', function () {
         let reset = true;
-        onBillingCompanyChange($(this).val(), reset);
+        onBillingCompanyChange(this, reset);
     }).find('[name="cart[billing_company_id]"]').each(function (e) {
         let reset = false;
-        onBillingCompanyChange($(this).val(), reset);
+        onBillingCompanyChange(this, reset);
+    });
+
+    $('form').on('change', 'select[name*=shipping_company_id]', function (e) {
+        let reset = true;
+        onShippingCompanyChange(this, reset);
+    }).find('select[name*=shipping_company_id]').each(function (e) {
+        let reset = false;
+        onShippingCompanyChange(this, reset);
     });
 
 };
@@ -43,14 +51,37 @@ let onShippingAddressChange = (shipping_address_id) => {
     $("#changed_shipping_address").html(selected_address);
 };
 
-let onBillingCompanyChange = (billing_company_id , reset) => {
-    if (reset) {
-        $("#checkout_po_reference").val(null);
-    }
-        $('#checkout_po_reference').removeAttr('disabled', false);
-        $('#checkout_po_reference').attr('data-source', Routes.customer_po_autocomplete_customers_company_addresses_path(billing_company_id) ).select2('destroy');
-        select2s();   
+let onBillingCompanyChange = (container, reset) => {
 
+    let optionSelected = $("option:selected", container);
+    console.log(optionSelected.val());
+
+    if (optionSelected.exists() && optionSelected.val() !== '') {
+
+        if (reset) {
+            $("#cart_billing_address_id").val(null);
+            $("#checkout_po_reference").val(null);
+        }
+        $('#cart_billing_address_id').removeAttr('disabled', false);
+        $('#checkout_po_reference').removeAttr('disabled', false);
+        $('#cart_billing_address_id').attr('data-source', Routes.autocomplete_customers_company_addresses_path(optionSelected.val())).select2('destroy');
+        $('#checkout_po_reference').attr('data-source', Routes.customer_po_autocomplete_customers_company_addresses_path(optionSelected.val())).select2('destroy');
+
+        select2s();
+    }
+};
+let onShippingCompanyChange = (container, reset) => {
+    let optionSelected = $("option:selected", container);
+
+    if (optionSelected.exists() && optionSelected.val() !== '') {
+
+        if (reset) {
+            $("#cart_shipping_address_id").val(null);
+        }
+        $('#cart_shipping_address_id').removeAttr('disabled', false);
+        $('#cart_shipping_address_id').attr('data-source', Routes.autocomplete_customers_company_addresses_path(optionSelected.val())).select2('destroy');
+        select2s();
+    }
 };
 
 export default finalCheckout
