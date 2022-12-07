@@ -229,4 +229,14 @@ class PoRequest < ApplicationRecord
       false
     end
   end
+
+  def calculated_total_with_tax
+    each_row_total_with_tax = rows.map {|row| (row.converted_total_selling_price_with_tax.to_f || 0)}
+    if each_row_total_with_tax.present?
+      (each_row_total_with_tax.compact.sum.round(2)).to_f
+    else
+      0
+    end
+  end
+
 end
