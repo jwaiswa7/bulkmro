@@ -97,7 +97,7 @@
                   <div class="col-md-1 text-center">
                     <%= inquiry_product.remove_nested_fields_link do %>
                       <i class="far status-cross-danger"></i>
-                    <% end if is_authorized(inquiry_product.object, 'destroy') && policy(inquiry_product.object).destroy? %>
+                    <% end %>
                   </div>
                 <% end %>
               </div>
