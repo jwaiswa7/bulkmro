@@ -17,6 +17,7 @@ class CustomerProduct < ApplicationRecord
   has_many :customer_order_rows
   has_many :customer_product_tags, dependent: :destroy
   has_many :tags, through: :customer_product_tags
+  has_many :wish_list_items, dependent: :destroy
 
   validates_presence_of :name
   validates_presence_of :sku
