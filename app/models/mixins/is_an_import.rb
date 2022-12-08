@@ -6,7 +6,7 @@ module Mixins::IsAnImport
   included do
     has_one_attached :file
 
-    enum import_type: { excel: 10, list: 20 }
+    enum import_type: { excel: 10, list: 20, rfq: 30 }
 
     validates_presence_of :import_type
     validates :file, file_content_type: { allow: ['application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'] }, if: -> { file.attached? }

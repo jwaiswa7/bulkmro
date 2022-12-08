@@ -746,6 +746,9 @@ Rails.application.routes.draw do
             get 'new_list_import'
             get 'excel_template'
             post 'create_list_import'
+
+            get 'new_rfq_import'
+            post 'create_rfq_import'
           end
         end
       end

@@ -59,6 +59,10 @@ class Overseers::InquiryPolicy < Overseers::ApplicationPolicy
     edit?
   end
 
+  def new_rfq_import?
+    new_excel_import?
+  end
+
   def export_all?
     allow_export?
   end

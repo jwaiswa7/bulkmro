@@ -100,6 +100,15 @@ class Overseers::Inquiries::ImportsController < Overseers::Inquiries::BaseContro
     end
   end
 
+  def new_rfq_import 
+    @rfq_import = @inquiry.imports.build(import_type: :rfq, overseer: current_overseer)
+    authorize_acl @inquiry
+  end
+
+  def create_rfq_import
+    
+  end
+
   private
 
     def set_import

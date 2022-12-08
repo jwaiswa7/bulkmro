@@ -3,11 +3,14 @@
     <% provide :hide_table_desc, true %>
     <% provide :hide_table_heading, true %>
     <div class="form-row mb-3">
-      <div class="col-6">
+      <div class="col-4">
         <a href="<%= new_excel_import_overseers_inquiry_imports_path(@inquiry) %>" class="btn-block btn bmro-button btn-success btn-rounded"><i class="fal fa-file-excel mr-1"></i><span class="d-none d-md-inline-block">Import products using excel</span><span class="d-inline-block d-md-none">Via excel</span></a>
       </div>
-      <div class="col-6">
+      <div class="col-4">
         <a href="<%= new_list_import_overseers_inquiry_imports_path(@inquiry) %>" class="btn-block btn bmro-button btn-success btn-rounded"><i class="fal fa-clipboard-list mr-1"></i><span class="d-none d-md-inline-block">Import products using list</span><span class="d-inline-block d-md-none">Via list</span></a>
+      </div>
+      <div class="col-4">
+        <a href="<%= new_rfq_import_overseers_inquiry_imports_path(@inquiry) %>" class="btn-block btn bmro-button btn-success btn-rounded"><i class="fal fa-clipboard-list mr-1"></i><span class="d-none d-md-inline-block">Create RFQ Import</span></a>
       </div>
     </div>
 
