@@ -63,6 +63,10 @@ class Overseers::InquiryPolicy < Overseers::ApplicationPolicy
     new_excel_import?
   end
 
+  def rfq_template?
+    new_rfq_import?
+  end
+
   def export_all?
     allow_export?
   end

@@ -748,6 +748,7 @@ Rails.application.routes.draw do
             post 'create_list_import'
 
             get 'new_rfq_import'
+            get 'rfq_template'
             post 'create_rfq_import'
           end
         end

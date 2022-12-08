@@ -105,8 +105,17 @@ class Overseers::Inquiries::ImportsController < Overseers::Inquiries::BaseContro
     authorize_acl @inquiry
   end
 
+  def rfq_template
+    authorize_acl @inquiry
+    respond_to do |format|
+      format.xlsx {
+        response.headers['Content-Disposition'] = 'attachment; filename="' + ["#{@inquiry.to_s} RFQ Template", 'xlsx'].join('.') + '"'
+      }
+    end
+  end
+
   def create_rfq_import
-    
+
   end
 
   private
