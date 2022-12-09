@@ -27,7 +27,7 @@ end
 
 json.columnFilters [
                        [],
-                       @sales_orders.map {|sales_order| {label: sales_order.inquiry.company.to_s, value: sales_order.company.id}}.uniq,
+                       current_customers_contact.account.companies.map{ |company| {label: company.to_s, value: company.id}}.uniq,
                        [],
                        [],
                        [],

@@ -7,7 +7,8 @@ class Customers::SalesQuotesController < Customers::BaseController
     respond_to do |format|
       format.html { }
       format.json do
-        service = Services::Customers::Finders::SalesQuotes.new(params, current_customers_contact, current_company)
+        selected_company = current_customers_contact.customer_admin? ? nil: current_company
+        service = Services::Customers::Finders::SalesQuotes.new(params, current_customers_contact, selected_company)
         service.call
 
         @indexed_sales_quotes = service.indexed_records
