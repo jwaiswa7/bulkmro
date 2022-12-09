@@ -71,8 +71,9 @@ let onProductChange = (container) => {
   let select = $(container).closest('select');
 
   if (optionSelected.exists() && optionSelected.val() !== '') {
+    // Get the product details
     $.getJSON({
-      url: Routes.get_product_details_overseers_product_path(optionSelected.val()),
+      url: Routes.product_details_customers_product_path(optionSelected.val()),
       success: function (response) {
         select.closest('div.form-row').find('[name*=bp_catalog_name]').val(response.mpn);
         select.closest('div.form-row').find('[name*=bp_catalog_sku]').val(response.category);

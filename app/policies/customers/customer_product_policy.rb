@@ -20,4 +20,8 @@ class Customers::CustomerProductPolicy < Customers::ApplicationPolicy
   def current_company_has_products?
     current_company.customer_products.exists?
   end
+
+  def product_details?
+    true
+  end
 end

@@ -72,6 +72,20 @@ class Customers::CustomerProductsController < Customers::BaseController
     @most_ordered_products = products.drop(5).map { |id, c| [Product.find(id), [c, 'times'].join(' ')] }
   end
 
+  def product_details 
+    authorize :customer_product
+    @product = Product.find(params[:id])
+    product_details = {}
+    product_details['brand'] = @product.brand.to_s
+    product_details['tax_code_id'] = @product.best_tax_code.id
+    product_details['tax_rate_id'] = @product.best_tax_rate.id
+    product_details['measurement_unit'] = @product.measurement_unit.to_s
+    product_details['converted_unit_selling_price'] = @product.latest_unit_cost_price
+    product_details['mpn'] = @product.mpn
+    product_details['category'] = @product.category.to_s
+    render json: product_details
+  end
+
 
   private
 

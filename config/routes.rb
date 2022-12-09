@@ -920,7 +920,7 @@ Rails.application.routes.draw do
     # resources :bible_sales_orders
   end
 
-  namespace 'customers' do
+  namespace 'customers' do    
     resource 'sign_in_steps', controller: 'sign_in_steps' do
       post 'reset_current_company'
       get 'edit_current_company'
@@ -971,6 +971,10 @@ Rails.application.routes.draw do
         get 'generate_all'
         get 'most_ordered_products'
         get 'autocomplete'
+      end
+
+      member do 
+        get 'product_details'
       end
     end
 
