@@ -27,7 +27,7 @@ end
 
 json.columnFilters [
                        [],
-                       @sales_quotes.map{ |sales_quote| {label: sales_quote.company.to_s, value: sales_quote.company.id}}.uniq,
+                       current_customers_contact.account.companies.map{ |company| {label: company.to_s, value: company.id}}.uniq,
                        [{ "source": autocomplete_overseers_company_contacts_path(current_company) }],
                        [],
                        [],

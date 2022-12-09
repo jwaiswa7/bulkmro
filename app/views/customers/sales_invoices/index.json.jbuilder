@@ -34,7 +34,7 @@ end
 
 json.columnFilters [
                        [],
-                       @sales_invoices.map{ |sales_invoice| {label: sales_invoice.company.to_s, value: sales_invoice.company.id}}.uniq,
+                       current_customers_contact.account.companies.map{ |company| {label: company.to_s, value: company.id}}.uniq,
                        [],
                        [],
                        [],
