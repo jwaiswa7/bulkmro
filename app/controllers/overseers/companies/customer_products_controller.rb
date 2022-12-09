@@ -51,13 +51,10 @@ class Overseers::Companies::CustomerProductsController < Overseers::Companies::B
 
   def destroy_all
     authorize_acl :customer_product
-    @company.customer_products.each do |customer_product|
-      unless customer_product.customer_order_rows.exists?
-        customer_product.destroy
-      end
-    end
 
-    redirect_to overseers_company_path(@company)
+    DestroyAllCompanyProductsJob.perform_later(@company.id)
+
+    redirect_to overseers_company_path(@company), notice: 'Request has been succcessfully submitted'
   end
 
   def export_customer_product
@@ -98,7 +95,7 @@ class Overseers::Companies::CustomerProductsController < Overseers::Companies::B
   end
 
   def toggle_view
-    @company.grid_view?? @company.update(grid_view: false) : @company.update(grid_view: true)
+    @company.grid_view? ? @company.update(grid_view: false) : @company.update(grid_view: true)
     redirect_to overseers_company_path(@company)
   end
 
