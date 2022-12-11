@@ -1,5 +1,5 @@
 class CustomerRfqsIndex < BaseIndex
-  index_scope CustomerRfq.all do
+  index_scope CustomerRfq.all
     field :id, type: 'integer'
     field :inquiry_number, value: -> (record) { record.inquiry.inquiry_number.to_i }, type: 'integer'
     field :account_id, value: -> (record) { record.account_id }, type: 'integer'
