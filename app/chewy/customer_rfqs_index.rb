@@ -8,5 +8,4 @@ class CustomerRfqsIndex < BaseIndex
     field :updated_at, type: 'date'  
     field :company_name, value:->(record) {record.inquiry.company.id}, type: 'integer'
     field :company_contact, value:->(record) {record.inquiry.contact.id}, type: 'integer'
-  end
 end
