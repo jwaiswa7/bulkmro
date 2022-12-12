@@ -36,12 +36,12 @@ slack:
   icon_emoji: ':moneybag:'
 
 sendgrid:
-  username: bulk
-  password: GhgjIH4zw3p2
-  api_key: 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
-  default_email: pradeep.ketkale@bulkmro.com
+  username: bulkmrotech
+  password: GhgjIH4zw3p2bdi97DHddP
+  api_key: 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
+  default_email: devendra.singh@bulkmro.com
 
-domain: sprint-staging.herokuapp.com
+domain: new-sprint.herokuapp.com
 
 gmail_smtp:
   address: "smtp.gmail.com"
@@ -88,14 +88,14 @@ razorpay:
   MERCHANT_KEY_SECRET: 'F1KKKL5ntCXObq4EZ6huRj32'
 
 sap:
-  ENDPOINT: 'https://35.200.144.191:50000/b1s/v1'
-  DATABASE: 'BMRO_13DEC2019'
+  ENDPOINT: 'https://35.200.244.135:50000/b1s/v1'
+  DATABASE: 'BMRO_DEV_30OCT'
   USERNAME: 'manager'
   PASSWORD: 'vm1234'
-  ATTACHMENT_ENDPOINT: 'https://35.200.144.191:22'
+  ATTACHMENT_ENDPOINT: 'https://35.200.244.135:22'
   ATTACHMENT_DIRECTORY: '/usr/sap/SAPBusinessOne/B1_SHF/Attachments'
-  ATTACHMENT_API: '35.200.144.191/b1_shf/Attachments'
-  ATTACHMENT_USERNAME: 'pradeep'
+  ATTACHMENT_API: '35.200.244.135/b1_shf/Attachments'
+  ATTACHMENT_USERNAME: 'sapuser'
   ATTACHMENT_PASSWORD: ''
 
 accounts:
