@@ -34,5 +34,5 @@ class CustomerRfq < ApplicationRecord
       if email_message.save
         CustomerRfqMailer.rfq_created(email_message).deliver_now
       end
-      end
+    end
 end
