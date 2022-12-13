@@ -6,7 +6,6 @@ json.data (@rfqs) do |rfq|
                 rfq.inquiry.company.to_s,
                 rfq.inquiry.contact.to_s,
                 rfq.subject,
-                rfq.inquiry.inside_sales_owner.to_s
             ]
   columns.delete_at(3) unless policy(current_customers_contact).admin_columns?
   json.merge! columns
@@ -19,7 +18,6 @@ json.columnFilters [
                         @rfqs.map {|rfq| { "label": rfq.inquiry.company.to_s, "value": rfq.inquiry.company.id }}.uniq,
                         @rfqs.map {|rfq| { "label": rfq.inquiry.contact.to_s, "value": rfq.inquiry.contact.id }}.uniq,
                         [],
-                        []
                     ]
 
 json.recordsTotal @rfqs.count

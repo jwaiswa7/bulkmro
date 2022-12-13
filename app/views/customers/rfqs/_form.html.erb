@@ -7,9 +7,19 @@
   <div class="bmro-Opportunity-slide target-scroll" id="Opportunity-Details"></div>
   <div>
   <div class="form-row">
-     <div class="col-12 col-md-12">
+     <div class="col-6 col-md-6">
         <%= f.input :billing_company_id, as: :select, collection: policy(:rfq).customer_admin? ? current_company.account.companies.map {|company| [company.to_s, company.id ]} : [[current_company.to_s, current_company.id ]] ,include_blank: "Billing Company" , label: 'Billing Company', input_html: {class: "select2-single bmro-dropdown-icon"}, required: true %>
+     </div>
+     <div class="col-6 col-md-6">
         <%= f.input :shipping_company_id,as: :select, collection: policy(:rfq).customer_admin? ? current_company.account.companies.map {|company| [company.to_s, company.id ]} : [[current_company.to_s, current_company.id ]] ,include_blank: "Shipping Company" , label: 'Shipping Company', input_html: {class: "select2-single bmro-dropdown-icon"}, required: true %>
+     </div>
+     <div class="col-6 col-md-6">
+       <%= f.association :billing_address, collection: selected_option_or_nil(f, :billing_address) ,include_blank: "Billing address" , label_method: :to_s, label: 'Billing address', input_html: {class: "select2-ajax bmro-form-input bmro-dropdown-icon" , :'data-source' => autocomplete_customers_addresses_path }, required: true , disabled: true %>
+     </div>
+     <div class="col-6 col-md-6">
+       <%= f.association :shipping_address, collection: selected_option_or_nil(f, :shipping_address) ,include_blank: "Shipping address" , label_method: :to_s, label: 'Shipping address', input_html: {class: "select2-ajax bmro-form-input bmro-dropdown-icon" , :'data-source' => autocomplete_customers_addresses_path }, required: true , disabled: true %>
+     </div>
+     <div class="col-12 col-md-12">
         <%= f.input :subject, label: 'Subject', input_html: { class: 'bmro-form-input' }, required: true%>
      </div>
   </div>
@@ -74,13 +84,13 @@
               </div>
            </div>
            <div class="col-1 pl-0">
-              <%= inquiry_product.input :bp_catalog_name, as: :string, :label => false , input_html: { :'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => '' } , readonly: true%>
+              <%= inquiry_product.input :bp_catalog_name, as: :text, :label => false , input_html: { :'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => '' } , readonly: true%>
            </div>
            <div class="col-1 pl-0">
-              <%= inquiry_product.input :bp_catalog_sku, as: :string, :label => false , input_html: { :'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => '' } , readonly: true %>
+              <%= inquiry_product.input :bp_catalog_sku, as: :text, :label => false , input_html: { :'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => '' } , readonly: true %>
            </div>
            <div class="col-1 px-0">
-              <%= inquiry_product.input :bp_catalog_sku, as: :string, :label => false , input_html: { id: 'brand', :'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => '' } , readonly: true %>
+              <%= inquiry_product.input :bp_catalog_sku, as: :text, :label => false , input_html: { id: 'brand', :'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => '' } , readonly: true %>
            </div>
            <div class="col-1 pl-0 text-center">
               <%= inquiry_product.input :quantity, :label => false,  input_html: { :'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => '' } %>
@@ -114,11 +124,9 @@
         </div>
         <div class="form-row">
            <div class="col-12 col-md-12">
-              <%= f.input :files, wrapper: :custom_file, input_html: {multiple: true} ,label: 'File'%>
+              <%= f.input :files, wrapper: :custom_file, input_html: {multiple: true} ,label: 'File' %>
            </div>
         </div>
-        <%= f.association :billing_address, collection: selected_option_or_nil(f, :billing_address) ,include_blank: "Billing address" , label_method: :to_s, label: 'Billing address', input_html: {class: "select2-ajax bmro-form-input bmro-dropdown-icon" , :'data-source' => autocomplete_customers_addresses_path }, required: true , disabled: true %>
-        <%= f.association :shipping_address, collection: selected_option_or_nil(f, :shipping_address) ,include_blank: "Shipping address" , label_method: :to_s, label: 'Shipping address', input_html: {class: "select2-ajax bmro-form-input bmro-dropdown-icon" , :'data-source' => autocomplete_customers_addresses_path }, required: true , disabled: true %>
         <%= button_tag(type: "submit", class: "btn bmro-button bmro-set-size  btn-block") do %>
         <i class="bmro-update-icon"></i> Create RFQ
         <% end %>
