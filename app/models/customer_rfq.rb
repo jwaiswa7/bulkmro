@@ -18,7 +18,7 @@ class CustomerRfq < ApplicationRecord
 
   scope :with_includes, -> { includes(:created_by, :updated_by, :inquiry) }
 
-  private
+  # private
 
     def send_email_notification
       return if contact.nil?
@@ -32,7 +32,7 @@ class CustomerRfq < ApplicationRecord
       )
 
       if email_message.save
-        CustomerRfqMailer.rfq_created(email_message).deliver_now
+        CustomerRfqMailer.send_rfq_created(email_message).deliver_now
       end
     end
 end

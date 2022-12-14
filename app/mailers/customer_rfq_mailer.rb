@@ -23,4 +23,11 @@ class CustomerRfqMailer < ApplicationMailer
     @inquiry = email_message.inquiry
     standard_email(email_message)
   end
+
+  def send_rfq_created(email_message)
+    @contact = email_message.contact
+    @inquiry = email_message.inquiry
+    email = htmlized_email(email_message)
+    email.delivery_method.settings = Settings.sendgrid_smtp.to_hash
+  end
 end
