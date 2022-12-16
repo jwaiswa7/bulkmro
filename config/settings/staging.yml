@@ -1,7 +1,7 @@
 omniauth:
   google_oauth2:
-    client_id: 912089915617-ucci09g0vq1qftaohocre79pk3isfehr.apps.googleusercontent.com
-    client_secret: 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
+    client_id: 912089915617-1sidmhg6q6ttfhghmb0r6gsdr81qk1n6.apps.googleusercontent.com
+    client_secret: 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
 
 email_messages:
   from: no-reply@bulkmro.com
