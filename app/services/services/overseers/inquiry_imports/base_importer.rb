@@ -18,6 +18,17 @@ class Services::Overseers::InquiryImports::BaseImporter < Services::Shared::Base
     import
   end
 
+  def call_base_for_rfq
+    delete_duplicate_rows
+    persist_inquiry_import_rows
+      ActiveRecord::Base.transaction do
+        Services::Overseers::InquiryImports::CreateRfqs.new(@inquiry, import).call
+        Services::Overseers::InquiryImports::CreateSalesQuotes.new(@inquiry, @import).call
+        # Services::Overseers::Inquiries::UpdateStatus.new(@inquiry, :sales_quote_saved).call if @inquiry.inquiry_products.present?   
+      end
+  
+  end
+
   def delete_duplicate_rows
     rows.uniq! { |row| row['sku'] }
   end

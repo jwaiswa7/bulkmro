@@ -10,9 +10,14 @@ class Overseers::Inquiries::ImportsController < Overseers::Inquiries::BaseContro
 
   def show
     authorize_acl @import
-
+    if params['show_failed_sku'] 
+      text = "Failed SKUs"
+      @import.rows.failed.map{|row| text = text +"\n"+row.sku}
+    else
+      text = @import.import_text
+    end
     respond_to do |format|
-      format.text { render plain: @import.import_text }
+      format.text { render plain: text }
     end
   end
 
@@ -116,6 +121,20 @@ class Overseers::Inquiries::ImportsController < Overseers::Inquiries::BaseContro
 
   def create_rfq_import
 
+    @rfq_import = @inquiry.imports.build(create_excel_import_params.merge(import_type: :rfq, overseer: current_overseer))
+    authorize_acl @inquiry
+
+    service = Services::Overseers::InquiryImports::RfqImporter.new(@inquiry, @rfq_import)
+
+    begin
+      if service.call
+        redirect_to overseers_inquiry_imports_path(@inquiry), notice: flash_message(@inquiry, action_name)
+      end
+    rescue Services::Overseers::InquiryImports::RfqImporter::ExcelInvalidHeader => e
+      render 'new_rfq_import'
+    rescue Services::Overseers::InquiryImports::RfqImporter::ExcelInvalidRows => e
+      render 'new_rfq_import'
+    end
   end
 
   private

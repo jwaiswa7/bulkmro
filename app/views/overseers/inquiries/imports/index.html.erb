@@ -38,7 +38,11 @@
           </td>
           <td><%= import.created_by.to_s %></td>
           <td><%= format_num(import.rows.successful.size) %></td>
-          <td><%= format_num(import.rows.failed.size) %></td>
+          <% if import.import_type == 'rfq' %>
+            <td><%= link_to import.rows.failed.size, overseers_inquiry_import_path(@inquiry , import , show_failed_sku: true , format: :text) %></td>
+          <% else %>
+            <td><%= format_num(import.rows.failed.size) %></td>
+          <% end %>
           <td><%= format_enum(import.import_type) %></td>
           <td><%= format_date(import.created_at) %></td>
         </tr>

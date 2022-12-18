@@ -18,7 +18,7 @@
                 <%= button_tag(type: "button", name: "generate_sales_quote", class: "btn btn-m btn-block btn-warning bmro-button generate_sales_quote") do %>
                   <i class="far fa-check mr-1"></i> Generate Sales Quote
                 <% end %>
-              <% elsif @inquiry.sales_quotes.present? && is_authorized(@inquiry.final_sales_quote, 'new_revision') && is_authorized(@inquiry.final_sales_quote, 'display_revision_button') && policy(@inquiry.final_sales_quote).new_revision? && policy(@inquiry.final_sales_quote).display_revision_button?  %>
+              <% elsif @inquiry.sales_quotes.present? && is_authorized(@inquiry.final_sales_quote, 'new_revision') && is_authorized(@inquiry.final_sales_quote, 'display_revision_button') && @inquiry.final_sales_quote.present? && policy(@inquiry.final_sales_quote).new_revision? && policy(@inquiry.final_sales_quote).display_revision_button?  %>
                 <%= button_tag(type: "button", name: "reset_sales_quote", class: "btn btn-m btn-block btn-warning bmro-button reset_sales_quote") do %>
                   <i class="fal fa-redo-alt mr-1"></i>Create Sales Quote Revision
                 <% end %>
