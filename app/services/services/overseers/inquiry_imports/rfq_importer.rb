@@ -50,7 +50,6 @@ class Services::Overseers::InquiryImports::RfqImporter < Services::Overseers::In
   end
 
   def set_generated_skus
-    p "gvjbhkbf"*100
     rows.each do |row|
       product = Product.find_by_sku(row['sku'])
       if product.blank? || product.not_approved? || row['min_lead_time_days'].blank? || row['max_lead_time_days'].blank? || row['unit_buying_price'].blank? || row['unit_selling_price'].blank? || row['gst_percentage'].blank? || row['tax_code'].blank? || row['vendor_code'].blank?
