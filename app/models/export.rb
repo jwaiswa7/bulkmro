@@ -33,7 +33,8 @@ class Export < ApplicationRecord
     isp_reports: 105,
     compare_companies_total_tcs: 109,
     categories: 115,
-    overseers: 120
+    overseers: 120,
+    addresses: 125
   }
   enum status: {
       'Enqueued': 1,
