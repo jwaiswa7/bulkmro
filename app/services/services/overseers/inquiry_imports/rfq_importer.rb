@@ -52,7 +52,7 @@ class Services::Overseers::InquiryImports::RfqImporter < Services::Overseers::In
   def set_generated_skus
     rows.each do |row|
       product = Product.find_by_sku(row['sku'])
-      if product.blank? || product.not_approved? || row['min_lead_time_days'].blank? || row['max_lead_time_days'].blank? || row['unit_buying_price'].blank? || row['unit_selling_price'].blank? || row['gst_percentage'].blank? || row['tax_code'].blank? || row['vendor_code'].blank?
+      if product.blank? || product.not_approved? || row['min_lead_time_weeks'].blank? || row['max_lead_time_weeks'].blank? || row['unit_buying_price'].blank? || row['unit_selling_price'].blank? || row['gst_percentage'].blank? || row['tax_code'].blank? || row['vendor_code'].blank?
         import.errors.add(:base, ['invalid excel rows, mandatory fields were not filled for every row'].join(' '))
         raise ExcelInvalidRows
       end

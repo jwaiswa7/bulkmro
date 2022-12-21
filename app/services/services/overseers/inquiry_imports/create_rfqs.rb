@@ -13,7 +13,7 @@ class Services::Overseers::InquiryImports::CreateRfqs < Services::Shared::BaseSe
       
               if product.present? && inquiry_product.present? && supplier.present? && product.inquiry_product_suppliers.present?
       
-                max_lead_time_days = row.metadata['max_lead_time_days'].to_i
+                max_lead_time_days = row.metadata['max_lead_time_weeks'].to_i * 7
                 lead_time = Time.now + max_lead_time_days.days
                 unit_cost_price = row.metadata['unit_buying_price'].to_i
                 gst = row.metadata['gst_percentage'].to_f
