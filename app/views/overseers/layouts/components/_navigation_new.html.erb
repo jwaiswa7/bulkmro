@@ -371,7 +371,11 @@
     <div class="bmro-profile-parent">
       <% if content_for?(:can_be_directly_created) && is_authorized(current_model.singularize.downcase,'new') %>
         <div class="bmro-dash-plus-icon">
-          <a href="<%= [request.path, '/', 'new'].join %>" data-toggle="tooltip" title="New <%= controller_path.split('/').last.singularize.split("_").join(" ").camelcase %>">
+          <% if current_model.singularize.downcase == 'inquiry' && request.path == '/' %>
+            <a href="<%= [request.path, 'overseers/inquiries/', 'new'].join %>" data-toggle="tooltip" title="New <%= controller_path.split('/').last.singularize.split("_").join(" ").camelcase %>">
+          <% else %>
+            <a href="<%= [request.path, '/', 'new'].join %>" data-toggle="tooltip" title="New <%= controller_path.split('/').last.singularize.split("_").join(" ").camelcase %>">
+          <% end %>
             <img alt="icon" src="<%= image_path('add-icon.png') %>" class=" bmro-cursol">
           </a>
         </div>

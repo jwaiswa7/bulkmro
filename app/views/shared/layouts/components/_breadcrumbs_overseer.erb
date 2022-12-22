@@ -60,7 +60,11 @@
       </div>
     <% end %>
     <% if content_for?(:can_be_directly_created) && is_authorized(current_model.singularize.downcase,'new') %>
-      <a href="<%= [request.path, '/', 'new'].join %>" class="mt-md-0 mt-1 mr-2 btn btn-success btn-rounded align-self-center btn-block-sm-down mr-md-1 mb-md-0 mb-1" target="_blank" >
+      <% if current_model.singularize.downcase == 'inquiry' && request.path == '/' %>
+        <a href="<%= [request.path, 'overseers/inquiries/', 'new'].join %>" class="mt-md-0 mt-1 mr-2 btn btn-success btn-rounded align-self-center btn-block-sm-down mr-md-1 mb-md-0 mb-1" target="_blank" >
+      <% else %>
+        <a href="<%= [request.path, '/', 'new'].join %>" class="mt-md-0 mt-1 mr-2 btn btn-success btn-rounded align-self-center btn-block-sm-down mr-md-1 mb-md-0 mb-1" target="_blank" >
+      <% end %>
         <i class="fa fa-plus-circle mr-1"></i>New <%= controller_path.split('/').last.singularize.split("_").join(" ").capitalize %>
       </a>
     <% end %>
