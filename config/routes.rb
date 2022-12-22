@@ -7,7 +7,7 @@ Rails.application.routes.draw do
   authenticate :overseer, lambda { |u| u.admin? } do
     mount Sidekiq::Web => '/sidekiq'
   end
-  root to: 'overseers/dashboard#show'
+  root to: 'overseers/inquiries#index'
   get '/overseers', to: redirect('/overseers/dashboard'), as: 'overseer_root'
   get '/customers', to: redirect('/customers/dashboard'), as: 'customer_root'
   get '/suppliers', to: redirect('/suppliers/dashboard'), as: 'supplier_root'
