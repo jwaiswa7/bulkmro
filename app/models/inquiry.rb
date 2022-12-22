@@ -6,6 +6,7 @@ class Inquiry < ApplicationRecord
   include Mixins::CanBeSynced
   include Mixins::HasManagers
   include Mixins::HasComments
+  include Mixins::BlockedInquiry
 
   update_index('inquiries#inquiry') {self}
   update_index('suggestions#inquiry') {self}
