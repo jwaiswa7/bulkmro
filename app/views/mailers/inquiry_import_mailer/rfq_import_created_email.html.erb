@@ -1,0 +1,17 @@
+<div class="font-family: Arial; font-size: 14.5px;">
+  <p style="color: #555;">Dear <%= @rfq_import.created_by.full_name %></p>
+  <% if @rfq_import.rows.failed.any? %>
+    <p style="color: #555;"> Upload status - Unsuccessful</p>
+    <p style="color: #555;"> Failed SKUs:</p>
+    <ul>
+      <% @rfq_import.rows.failed.each do |row| %>
+        <li style="color: #555;"> <%= row.sku %></li>
+      <% end %>
+    </ul>
+  <% else %>
+    <p style="color: #555;">Upload status - Successful </p>
+  <% end %>
+  <p style="color: #555;">
+    <%= link_to 'Click here to view Import Page in Sprint', overseers_inquiry_imports_url(inquiry_id: @inquiry.id) %>
+  </p>
+</div>

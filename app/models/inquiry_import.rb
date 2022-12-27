@@ -3,6 +3,7 @@
 class InquiryImport < ApplicationRecord
   HEADERS = %w[sr_no name brand mpn sku quantity tax_code tax_rate is_service category_id].freeze
   TEMPLATE_HEADERS = %w[sr_no name brand mpn sku quantity tax_code tax_rate is_service category_id].freeze
+  RFQ_TEMPLATE_HEADERS = %w[sequence product_name sku min_lead_time_weeks max_lead_time_weeks unit_buying_price unit_selling_price gst_percentage tax_code freight vendor_code vendor_name]
 
   include Mixins::CanBeStamped
   include Mixins::IsAnImport

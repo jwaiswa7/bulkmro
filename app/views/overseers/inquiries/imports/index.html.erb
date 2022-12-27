@@ -3,11 +3,14 @@
     <% provide :hide_table_desc, true %>
     <% provide :hide_table_heading, true %>
     <div class="form-row mb-3">
-      <div class="col-6">
+      <div class="col-4">
         <a href="<%= new_excel_import_overseers_inquiry_imports_path(@inquiry) %>" class="btn-block btn bmro-button btn-success btn-rounded"><i class="fal fa-file-excel mr-1"></i><span class="d-none d-md-inline-block">Import products using excel</span><span class="d-inline-block d-md-none">Via excel</span></a>
       </div>
-      <div class="col-6">
+      <div class="col-4">
         <a href="<%= new_list_import_overseers_inquiry_imports_path(@inquiry) %>" class="btn-block btn bmro-button btn-success btn-rounded"><i class="fal fa-clipboard-list mr-1"></i><span class="d-none d-md-inline-block">Import products using list</span><span class="d-inline-block d-md-none">Via list</span></a>
+      </div>
+      <div class="col-4">
+        <a href="<%= new_rfq_import_overseers_inquiry_imports_path(@inquiry) %>" class="btn-block btn bmro-button btn-success btn-rounded"><i class="fal fa-clipboard-list mr-1"></i><span class="d-none d-md-inline-block">Create RFQ Import</span></a>
       </div>
     </div>
 
@@ -35,7 +38,11 @@
           </td>
           <td><%= import.created_by.to_s %></td>
           <td><%= format_num(import.rows.successful.size) %></td>
-          <td><%= format_num(import.rows.failed.size) %></td>
+          <% if import.import_type == 'rfq' %>
+            <td><%= link_to import.rows.failed.size, overseers_inquiry_import_path(@inquiry , import , show_failed_sku: true , format: :text) %></td>
+          <% else %>
+            <td><%= format_num(import.rows.failed.size) %></td>
+          <% end %>
           <td><%= format_enum(import.import_type) %></td>
           <td><%= format_date(import.created_at) %></td>
         </tr>
