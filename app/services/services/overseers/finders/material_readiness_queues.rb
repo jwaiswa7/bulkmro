@@ -10,7 +10,6 @@ class Services::Overseers::Finders::MaterialReadinessQueues < Services::Overseer
       super
     end
 
-    # @purchase_orders = ApplyDatatableParams.to(PurchaseOrder.material_readiness_queue, params).joins(:po_request).where("po_requests.status = ?", 20).order("purchase_orders.created_at DESC")
     if @manually_close
       indexed_records = indexed_records.filter(filter_by_value('material_status', PurchaseOrder.material_statuses['Manually Closed']))
     else
@@ -74,8 +73,6 @@ class Services::Overseers::Finders::MaterialReadinessQueues < Services::Overseer
     if range_filters.present?
       indexed_records = range_query(indexed_records)
     end
-
-    indexed_records = indexed_records.aggregations(aggregate_by_status('po_status'))
     indexed_records
   end
 
