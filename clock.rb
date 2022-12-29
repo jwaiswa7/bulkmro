@@ -82,9 +82,9 @@ every(1.day, 'inquiry_product_inventory_update', at: '05:30') do
   service.call
 end if Rails.env.production?
 
-every(1.day, 'refresh_smart_queue', at: '06:00') do
-  RefreshSmartQueueJob.perform_later
-end if Rails.env.production?
+# every(1.day, 'refresh_smart_queue', at: '06:00') do
+#   RefreshSmartQueueJob.perform_later
+# end if Rails.env.production?
 
 every(1.day, 'product_inventory_update_for_saint_gobain', at: ['07:00', '11:00', '15:00', '19:00']) do
   service = Services::Resources::Products::UpdateInventoryForSaintGobain.new
