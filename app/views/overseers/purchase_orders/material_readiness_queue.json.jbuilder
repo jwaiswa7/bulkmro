@@ -54,17 +54,10 @@ json.data (@purchase_orders) do |purchase_order|
                   purchase_order.inquiry.inside_sales_owner.to_s,
                   (purchase_order.logistics_owner.present? ? purchase_order.logistics_owner.full_name : 'Unassigned'),
                   format_succinct_date(purchase_order.followup_date),
-                  format_succinct_date(purchase_order.revised_supplier_delivery_date),
                   (status_badge(purchase_order.get_followup_status) if purchase_order.get_followup_status.present?),
                   (purchase_order.payment_request.present? ? status_badge(purchase_order.payment_request.status) : status_badge('Payment Request: Pending')),
-                  (percentage(purchase_order.payment_request.percent_amount_paid, precision: 2) if purchase_order.payment_request.present?),
-                  format_succinct_date(purchase_order.email_sent_to_supplier_date),
-                  (purchase_order.po_request.buying_price if purchase_order.po_request.present?),
-                  (purchase_order.po_request.selling_price if purchase_order.po_request.present?),
-                  (purchase_order.po_request.po_margin_percentage if purchase_order.po_request.present?),
-                  (purchase_order.po_request.sales_order.calculated_total_margin_percentage if purchase_order.po_request.present? && purchase_order.po_request.sales_order.present?)
+                  format_succinct_date(purchase_order.revised_supplier_delivery_date)
               ]
-
   columns = Hash[columns.collect.with_index { |item, index| [index, item] }]
   json.merge! columns.merge("DT_RowClass": purchase_order.get_committed_date_status == 'Committed Date Breached' ? 'bg-highlight-danger' : '')
 end
@@ -87,13 +80,8 @@ json.columnFilters [
                        Overseer.inside.alphabetical.map {|s| {"label": s.full_name, "value": s.id.to_s}}.as_json,
                        Overseer.where(role: 'logistics').alphabetical.map {|s| {"label": s.full_name, "value": s.id.to_s}}.unshift(label: 'Unassigned', value: 0).as_json,
                        [],
-                       [],
                        PurchaseOrder.material_summary_statuses.map {|k, v| {"label": k, "value": v.to_s}}.as_json,
                        PaymentRequest.statuses.map {|k, v| {"label": k, "value": v.to_s}}.as_json,
-                       [],
-                       [],
-                       [],
-                       [],
                        []
                    ]
 

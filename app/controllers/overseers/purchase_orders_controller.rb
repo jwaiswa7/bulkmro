@@ -93,7 +93,7 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
     service.call
 
     @indexed_purchase_orders = service.indexed_records
-    @purchase_orders = service.records.try(:reverse)
+    @purchase_orders = service.records
     @model_name = 'material_readiness_queue'
     @summary_records = service.get_summary_records(@indexed_purchase_orders)
     status_service = Services::Overseers::Statuses::GetSummaryStatusBuckets.new(@summary_records, PurchaseOrder, custom_status: 'material_summary_status', main_summary_status: PurchaseOrder.material_summary_statuses)
