@@ -1,0 +1,190 @@
+<div class="col-lg-12">
+  <%= render layout: 'overseers/inquiries/tabs_layout' do %>
+    <%= simple_form_for([:overseers, @inquiry],url: update_products_overseers_inquiry_path, method: :POST, :html => { :class => 'needs-validation mt-3', :'novalidate' => '', :'data-parsley-validate' => '' }) do |f| %>
+      <%= render 'shared/snippets/form_errors', f: f %>
+      <div class="card bmro-card">
+        <div class="bmro-adjusting-form">
+          <div class="bmro-product-bottom">
+            <% if f.object.persisted? %>
+              <div class="mt-4 mb-3">
+                <h6 class="mb-1 bmro-form-heading">Products</h6>
+                <div class="form-row d-none d-md-flex col-md-12">
+                  <div class="col-md-1 text-center bmro-serial-number-products">
+                    <div class="form-group mb-0">
+                      <label>Serial No</label>
+                    </div>
+                  </div>
+                  <div class="col-md-3 text-center">
+                    <div class="form-group mb-0">
+                      <label>Product</label>
+                    </div>
+                  </div>
+                  <div class="col-md-2 text-center">
+                    <div class="form-group mb-0">
+                      <label>Customer Material Name</label>
+                    </div>
+                  </div>
+                  <div class="col-md-2 text-center">
+                    <div class="form-group mb-0">
+                      <label>Customer Material Code</label>
+                    </div>
+                  </div>
+                  <div class="col-md-1 text-center">
+                    <div class="form-group mb-0">
+                      <label>SAP Status</label>
+                    </div>
+                  </div>
+                  <div class="col-md-1 text-center">
+                    <div class="form-group mb-0">
+                      <label>Quantity</label>
+                    </div>
+                  </div>
+                  <div class="col-md-1 text-center">
+                    <div class="form-group mb-0">
+                      <label>Inventory</label>
+                    </div>
+                  </div>
+                  <div class="col-md-1 text-center">
+                    <div class="form-group mb-0">
+                      <label>Delete Row</label>
+                    </div>
+                  </div>
+                </div>
+                <%= f.nested_fields_for :inquiry_products, wrapper_tag: :div do |inquiry_product| %>
+                  <div class="form-row flex-row align-items-start w-100 col-md-12">
+                    <%= inquiry_product.hidden_field :id %>
+                    <% if inquiry_product.object.persisted? && inquiry_product.object.product.present? && inquiry_product.object.product.approved? %>
+                      <div class=" col-md-1 border-left-status-success">
+                      <% elsif inquiry_product.object.persisted? && inquiry_product.object.product.present? && inquiry_product.object.product.rejected? %>
+                        <div class=" col-md-1 border-left-status-danger">
+                        <% elsif inquiry_product.object.persisted? %>
+                          <div class=" col-md-1 border-left-status-warning">
+                          <% else %>
+                            <div class=" col-md-1">
+                            <% end %>
+                            <div class="d-flex flex-row">
+                              <div class="mr-1 mt-2">
+                                <% if inquiry_product.object.persisted? && inquiry_product.object.product.present? && inquiry_product.object.product.approved? %>
+                                  <a href="<%= overseers_product_comments_path(inquiry_product.object.product) %>" target="_blank" class="text-success" data-toggle="tooltip" title="Approved product
+                      <% if inquiry_product.object.product.last_comment %>;  <%= inquiry_product.object.product.last_comment.message %>
+                      <% end %>"><i class="far fa-comment-lines"></i></a>
+                                <% elsif inquiry_product.object.persisted? && inquiry_product.object.product.present? && inquiry_product.object.product.rejected? %>
+                                  <a href="<%= overseers_product_comments_path(inquiry_product.object.product) %>" target="_blank" class="text-danger" data-toggle="tooltip" title="Rejected product
+                      <% if inquiry_product.object.product.last_comment %>; <%= inquiry_product.object.product.last_comment.message %>
+                      <% end %>"><i class="far fa-comment-lines"></i></a>
+                                <% elsif inquiry_product.object.persisted? %>
+                                  <a href="<%= overseers_product_comments_path(inquiry_product.object.product) %>" target="_blank" class="text-warning" data-toggle="tooltip" title="Discuss product
+                      <% if inquiry_product.object.product.last_comment %>;  <%= inquiry_product.object.product.last_comment.message %>
+                      <% end %>"><i class="far fa-comment-lines"></i></a>
+                                <% else %>
+                                  <span class="text-success" data-toggle="tooltip" title="Approved product">
+                                    <i class="far fa-check"></i>
+                                  </span>
+                                <% end %>
+                              </div>
+                              <div class="flex-grow-1">
+                                <%= inquiry_product.input :sr_no, label: false, placeholder: placeholder_for(inquiry_product, :sr_no), input_html: { :'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => '' } %>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-md-3">
+                            <div class="select2-wrap">
+                              <%= inquiry_product.association :product, collection: [inquiry_product.object.product], label_method: :to_s, include_blank: "Type SKU number, name, or brand", input_html: { class: 'select2-ajax select2-wrap-text bmro-select2-wrapText', :'data-source' => autocomplete_overseers_products_path, :'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => '' }, label: false %>
+                            </div>
+                          </div>
+                          <div class=" col-md-2">
+                            <%= inquiry_product.input :bp_catalog_name, as: :string, :label => false, placeholder: placeholder_for(inquiry_product, :bp_catalog_name), input_html: { :'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => '' } %>
+                          </div>
+                          <div class=" col-md-2">
+                            <%= inquiry_product.input :bp_catalog_sku, as: :string, :label => false, placeholder: placeholder_for(inquiry_product, :bp_catalog_sku), input_html: { :'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => '' } %>
+                          </div>
+                          <div class="col-md-1 text-center mt-1">
+                            <% if inquiry_product.object.persisted? %>
+                              <%= format_boolean_label(inquiry_product.object.product.synced?, 'synced') %>
+                            <% else %>
+                              <span class="text-warning" data-toggle="tooltip" title="Save to see sync status">
+                                <i class="far fa-ban"></i>
+                              </span>
+                            <% end %>
+                          </div>
+                          <div class="col-md-1 text-center">
+                            <div class="d-flex flex-row">
+                              <div>
+                                <%= inquiry_product.input :quantity, :label => false, placeholder: placeholder_for(inquiry_product, :quantity), input_html: { :'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => '' } %>
+                              </div>
+                            </div>
+                          </div>
+                          <!-- # Below if condition is temp code-->
+                          <% if @inquiry.inquiry_number != 52898 || @inquiry.inquiry_number != 52899 || @inquiry.inquiry_number != 52900 || @inquiry.inquiry_number != 52317 %>
+                            <div class="col-md-1 text-center">
+                              <% if inquiry_product.object.persisted? && inquiry_product.object.product.present? %>
+                                <a href="<%= resync_inventory_overseers_product_path(inquiry_product.object.product) %>" target="_blank"
+                                    <% if inquiry_product.object.product.stocks.total_qty > 0 %> 
+                                      class="text-success"
+                                    <% else %>  
+                                    class="text-warning"
+                                    <% end %>title="Resync Inventory"><%= inquiry_product.object.product.stocks.total_qty %></a>
+                              <% end %>
+                            </div>
+                          <% end %>
+                          <div class="col-md-1 text-center">
+                            <%= inquiry_product.remove_nested_fields_link do %>
+                              <i class="far status-cross-danger"></i>
+                            <% end if is_authorized(inquiry_product.object, 'destroy') && policy(inquiry_product.object).destroy? %>
+                          </div>
+                        </div>
+                      <% end %>
+                      <% if f.object.persisted?%>
+                        <div class="form-row bmro-product-btn-parent">
+                          <div class="bmro-fl">
+                            <a href="<%= new_excel_import_overseers_inquiry_imports_path(@inquiry) %>" class="btn btn-block mb-2 mb-md-0 bmro-product-btn"><i class="bmro-addexcel-icon mr-1"></i>Add
+                              From Excel</a>
+                          </div>
+                          <div class="bmro-fl">
+                            <a href="<%= new_list_import_overseers_inquiry_imports_path(@inquiry) %>" class="btn btn-block mb-2 mb-md-0 bmro-product-btn"><i class="bmro-addlist-icon mr-1"></i>Add
+                              From List</a>
+                          </div>
+                          <div class="bmro-fl">
+                            <%= f.add_nested_fields_link :inquiry_products, class: 'btn btn-block mb-2 mb-md-0 bmro-product-btn' do %>
+                              <i class="bmro-addnew-icon mr-1"></i>Add New
+                            <% end %>
+                          </div>
+                          <div class="bmro-fl">
+                            <a href="<%= new_overseers_kit_path(@inquiry) %>" class="btn btn-block mb-2 mb-md-0 bmro-product-btn"><i class="bmro-createkit-icon mr-1"></i>Create
+                              a Kit</a>
+                          </div>
+                          <% if is_authorized(@inquiry, 'update') %>
+                            <div class="bmro-fl bmro-button-parent">
+                              <%= button_tag(type: "submit", class: "btn btn-block h-100") do %>
+                                <i class="bmro-update-icon"></i> <%= submit_text(@inquiry) %>
+                              <% end %>
+                            </div>
+                          <% end %>
+                        </div>
+                      <% end %>
+                    </div>
+                  <% end %>
+                </div>
+              </div>
+              <div class="card-footer bmro-card-footer bmro-mb-footer hide">
+                <div class="form-row">
+                  <% if policy(@inquiry).new_email_message? && is_authorized(@inquiry, 'new_email_message') && is_authorized(@inquiry, 'update') && policy(@inquiry).update? %>
+                    <div class="col-md-6">
+                      <a href="<%= new_overseers_inquiry_email_message_path(@inquiry) %>" class="btn-block btn btn-dark bmro-button"><i class="bmro-envelope-icon-white"></i>Send
+                        Acknowledgement</a>
+                    </div>
+                  <% end %>
+                  <% if is_authorized(@inquiry, 'update') && policy(@inquiry).update? %>
+                    <div class="mt-1 bmro-button-parent mt-md-0 <%= is_authorized(@inquiry, 'new_email_message') && policy(@inquiry).new_email_message? ? "col-md-6" : "col-md-12" %>">
+                      <%= action_button(action_name, @inquiry) %>
+                    </div>
+                  <% end %>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  <% end %>
+</div>

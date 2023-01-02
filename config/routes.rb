@@ -608,6 +608,8 @@ Rails.application.routes.draw do
         post 'duplicate'
         get 'render_modal_form'
         patch 'add_comment'
+        get 'edit_products'
+        post 'update_products'
       end
 
       collection do

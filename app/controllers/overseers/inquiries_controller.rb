@@ -1,5 +1,5 @@
 class Overseers::InquiriesController < Overseers::BaseController
-  before_action :set_inquiry, only: [:show, :edit, :update, :edit_suppliers, :update_suppliers, :export, :calculation_sheet, :stages, :relationship_map, :get_relationship_map_json, :resync_inquiry_products, :resync_unsync_inquiry_products, :duplicate, :render_modal_form, :add_comment, :render_followup_edit_form, :update_followup_date, :link_product_suppliers, :draft_rfq, :destroy_supplier]
+  before_action :set_inquiry, only: [:show, :edit, :update, :edit_suppliers, :update_suppliers, :export, :calculation_sheet, :stages, :relationship_map, :get_relationship_map_json, :resync_inquiry_products, :resync_unsync_inquiry_products, :duplicate, :render_modal_form, :add_comment, :render_followup_edit_form, :update_followup_date, :link_product_suppliers, :draft_rfq, :destroy_supplier , :edit_products, :update_products]
 
   def index
     authorize_acl :inquiry
@@ -664,6 +664,26 @@ class Overseers::InquiriesController < Overseers::BaseController
       end
     else
       render json: {error: @inquiry.errors}, status: 500
+    end
+  end
+
+  def edit_products
+    authorize_acl @inquiry
+  end
+
+  def update_products
+    inquiry_status = "inquiry_status_#{@inquiry.inquiry_number}"
+    if Rails.cache.exist?(inquiry_status)
+      Rails.cache.delete(inquiry_status)
+    end
+    Rails.cache.write(inquiry_status, @inquiry)
+    @inquiry.assign_attributes(inquiry_params.merge(overseer: current_overseer))
+    authorize_acl @inquiry
+    if @inquiry.save_and_sync
+      Services::Overseers::Inquiries::UpdateStatus.new(@inquiry, :cross_reference).call if @inquiry.inquiry_products.present?
+      redirect_to edit_products_overseers_inquiry_path(@inquiry), notice: flash_message(@inquiry, action_name)
+    else
+      render 'edit_products'
     end
   end
 
