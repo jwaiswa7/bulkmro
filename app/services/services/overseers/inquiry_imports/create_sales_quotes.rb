@@ -13,7 +13,7 @@ class Services::Overseers::InquiryImports::CreateSalesQuotes < Services::Shared:
         product = Product.active.where('lower(sku) = ? ', row.sku.downcase).try(:first)
         inquiry_product = @inquiry.inquiry_products.where(product: product).try(:first)
         supplier = Company.where(remote_uid: row.metadata['vendor_code'].to_s).try(:first)
-        inquiry_product_supplier = inquiry_product.inquiry_product_suppliers.where(supplier_id: supplier.id)&.first
+        inquiry_product_supplier = inquiry_product.inquiry_product_suppliers.where(supplier_id: supplier.id)&.first if inquiry_product&.inquiry_product_suppliers.present?
   
         if product.present? && inquiry_product.present? && supplier.present? && inquiry_product_supplier.present?
   
