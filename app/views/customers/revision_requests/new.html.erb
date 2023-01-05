@@ -1,0 +1,16 @@
+<div class="col-12">
+   <div class="card">
+      <div class="card-header">
+         Create revision for Quote #<%= @sales_quote.id %>
+      </div>
+      <div class="card-body">
+         <%= simple_form_for([:customers, @revision_request]) do |f| %>
+           <%= render 'shared/snippets/form_errors', f: f %>
+           <%= f.input :reason, placeholder: 'Type reason for request', required: true %>
+           <%= f.input :required_changes, required: true %>
+           <%= f.input :files, wrapper: :custom_file, input_html: { multiple: true, class: 'bmro-form-input bmro-dropdown-icon bmro-custom-height' }, label: 'Supporting files' %>
+           <%= f.submit class: 'btn btn-danger' %>
+         <% end %>
+      </div>
+   </div>
+</div>

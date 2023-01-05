@@ -12,6 +12,7 @@ class EmailMessage < ApplicationRecord
   belongs_to :supplier_rfq, required: false
   belongs_to :customer_rfq, required: false
   belongs_to :activity, required: false
+  belongs_to :revision_request, required: false
 
   has_many_attached :files
 
@@ -25,7 +26,8 @@ class EmailMessage < ApplicationRecord
       'Material Delivered to Customer': 50,
       'Inventory Status Update to Saint Gobain': 60,
       'Request for Quote': 70,
-      'Request for SO Cancellation': 80
+      'Request for SO Cancellation': 80,
+      'Revison request created': 90
   }
 
   after_initialize :set_defaults, if: :new_record?

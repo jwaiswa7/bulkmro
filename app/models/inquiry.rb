@@ -48,6 +48,7 @@ class Inquiry < ApplicationRecord
   has_many :suppliers, through: :inquiry_product_suppliers
   has_many :imports, class_name: 'InquiryImport', inverse_of: :inquiry
   has_many :sales_quotes, dependent: :destroy
+  has_many :revision_requests, through: :sales_quotes
   has_many :purchase_orders
   has_many :po_requests
   has_many :invoice_requests
@@ -105,7 +106,8 @@ class Inquiry < ApplicationRecord
       'Hold by Accounts': 20,
       'Order Lost': 9,
       'Regret': 10,
-      'Regret Request': 22
+      'Regret Request': 22,
+      'Revision requested': 25
   }
 
   enum pipeline_status: {

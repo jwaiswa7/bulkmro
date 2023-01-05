@@ -225,6 +225,7 @@ Rails.application.routes.draw do
       end
     end
 
+
     resources :acl_roles do
       member do
         get 'get_acl'
@@ -585,6 +586,7 @@ Rails.application.routes.draw do
     end
 
     resources :inquiries do
+      resources :revision_requests, only: :index
       member do
         get 'edit_suppliers'
         post 'update_suppliers'
@@ -985,6 +987,7 @@ Rails.application.routes.draw do
     resources :quotes, controller: :sales_quotes, only: %i[index show] do
       member do
         post 'inquiry_comments'
+        resources :revision_requests, only: %i[new create]
       end
 
       scope module: 'sales_quotes' do

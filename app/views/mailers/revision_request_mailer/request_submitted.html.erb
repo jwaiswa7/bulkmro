@@ -1,0 +1,13 @@
+<p>Hello, </p>
+
+<p><%= @revision_request.contact.name %> has requested a revision in the inquiry #<%= @inquiry.id %>. Following changes are requested by the customer -</p>
+
+<p>Reason for revision - <%= @revision_request.reason %></p>
+
+<p>Requested changes - <%= @revision_request.required_changes %> </p>
+
+<p>Attachments - Attach files here</p>
+
+<p>Please click <%= link_to "here", overseers_inquiry_url(@inquiry) %> to view the inquiry</p>
+
+<p>Thank you.</p>

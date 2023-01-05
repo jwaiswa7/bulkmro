@@ -395,7 +395,9 @@
         <%= render 'shared/snippets/form_errors', f: f %>
         <%= f.input :message, :placeholder => 'Type message', required: true, input_html: {:'data-parsely-no-valid-feedback' => ''} %>
         <%= f.submit 'Comment', name: 'Comment', class: 'btn btn-danger' %>
+        <%= link_to "Request revision", new_customers_revision_request_path, class: 'btn btn-primary' %>
       <% end %>
+      
     </div>
   </div>
 </div>
