@@ -25,7 +25,7 @@ class RevisionRequest < ApplicationRecord
     # Updates the inquiry status to revision requested once the revision request has been made
     def update_inquiry
       inquiry = sales_quote.inquiry
-      inquiry.status = 25
+      inquiry.status = 23
       inquiry.save(validate: false)
     end
 

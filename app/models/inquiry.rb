@@ -107,7 +107,7 @@ class Inquiry < ApplicationRecord
       'Order Lost': 9,
       'Regret': 10,
       'Regret Request': 22,
-      'Revision requested': 25
+      'Sales Quote Revision Requested': 23
   }
 
   enum pipeline_status: {

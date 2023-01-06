@@ -91,6 +91,8 @@ class SalesQuote < ApplicationRecord
       'Purchase Order Revision Pending'
     elsif status == 'Regret' || status == 'Order Lost'
       'Closed'
+    elsif status == 'Sales Quote Revision Requested'
+      'Revision Requested'
     end
   end
 
