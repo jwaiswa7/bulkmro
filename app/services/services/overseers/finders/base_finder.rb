@@ -330,7 +330,7 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
         "#{key}": {
             date_histogram: {
                 field: aggregation_field,
-                interval: interval,
+                calendar_interval: interval,
                 keyed: keyed,
                 order: {"_key": order}
             },
