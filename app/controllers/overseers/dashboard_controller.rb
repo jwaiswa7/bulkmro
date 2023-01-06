@@ -33,7 +33,10 @@ class Overseers::DashboardController < Overseers::BaseController
   end
 
   def sales_executive
-    @dashboard = Overseers::Dashboard.new(current_overseer)
+    @pagination = true
+    page = params[:page]
+    status = params[:status]
+    @dashboard = Overseers::Dashboard.new(current_overseer,@pagination, page ,  status)
     render template: 'overseers/dashboard/sales_executive/new_sales_dashboard'
   end
 
@@ -98,7 +101,8 @@ class Overseers::DashboardController < Overseers::BaseController
 
   def get_filtered_inquiries
     Rails.cache.fetch([self, 'get_filtered_inquiries'], expires_in: 1.hours) do
-      @dashboard = Overseers::Dashboard.new(current_overseer)
+      @pagination = params['pagination'].to_s.downcase == 'true' if params.key?('pagination')
+      @dashboard = Overseers::Dashboard.new(current_overseer,@pagination , 1)
       executive_link = params['executive_link'].to_s.downcase == 'true' if params.key?('executive_link')
       if current_overseer.sales? && current_overseer.descendant_ids.present? && !executive_link
         # for role = Inside Sales Manager
@@ -110,7 +114,7 @@ class Overseers::DashboardController < Overseers::BaseController
       elsif current_overseer.sales? && !current_overseer.descendant_ids.present?
         # for role = sales_executives
         respond_to do |format|
-          format.html {render partial: 'overseers/dashboard/common/inquiry_list_wrapper', locals: {inq_for_dash: @dashboard.inq_for_dash(executive_link).map { |inquiry| inquiry if inquiry.status == params['status'] }.compact, executivelink: executive_link }}
+          format.html {render partial: 'overseers/dashboard/common/inquiry_list_wrapper', locals: {inq_for_dash: @dashboard.inq_for_dash(executive_link , params['status']), executivelink: executive_link }}
         end
       else
         # for role = accounts
