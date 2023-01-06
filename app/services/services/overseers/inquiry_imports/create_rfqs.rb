@@ -11,7 +11,7 @@ class Services::Overseers::InquiryImports::CreateRfqs < Services::Shared::BaseSe
               inquiry_product = @inquiry.inquiry_products.where(product: product).try(:first)
               supplier = Company.where(remote_uid: row.metadata['vendor_code'].to_s).try(:first)
       
-              if product.present? && inquiry_product.present? && supplier.present? && product.inquiry_product_suppliers.present?
+              if product.present? && inquiry_product.present? && supplier.present?
       
                 max_lead_time_days = row.metadata['max_lead_time_weeks'].to_i * 7
                 lead_time = Time.now + max_lead_time_days.days
