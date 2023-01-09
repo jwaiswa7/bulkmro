@@ -32,7 +32,7 @@
         <div class="bmro-task-print bmro-Inquries-width2 bmro-fl">
           <span class="bmro-account-label-one"><%= inquiry.company.name %></span>
           <span class="bmro-account-label-two"><%= inquiry.subject %></span>
-          <span class="bmro-status-label bmro-<%= status_color(inquiry.status) %>" data-id="<%= inquiry.inquiry_number %>"><strong><%= inquiry.status %></strong></span>
+          <span class="bmro-status-label bmro-<%= status_color(inquiry.status) if inquiry.status.present? %>" data-id="<%= inquiry.inquiry_number %>"><strong><%= inquiry.status %></strong></span>
         </div>
         <!-- bmro-right-side-open-->
         <div class="bmro-Inquries-width3 bmro-fl bmro-text-right">
