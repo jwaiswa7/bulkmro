@@ -41,7 +41,7 @@ class Address < ApplicationRecord
   scope :with_includes, -> {includes(:state, :company)}
 
 
-  validates :street1, length: {minimum: 5, maximum: 100, too_long: "may not be longer than %{count} characters"}, allow_blank: true
+  validates :street1, length: {minimum: 5, maximum: 95, too_long: "may not be longer than %{count} characters"}, allow_blank: true
   validates :street2, length: {minimum: 5, maximum: 50, too_long: "may not be longer than %{count} characters"}, allow_blank: true
   validates_presence_of :state, :if => :domestic?
   validates_uniqueness_of :remote_uid, on: :update, if: Proc.new {|address| address.company_id.present?}
