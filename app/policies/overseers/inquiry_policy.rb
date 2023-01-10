@@ -92,7 +92,7 @@ class Overseers::InquiryPolicy < Overseers::ApplicationPolicy
   end
 
   def imports?
-    edit? && not_logistics?
+    edit?
   end
 
   def edit_suppliers?
