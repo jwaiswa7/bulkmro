@@ -31,6 +31,7 @@
 <section class="bmro-width-fl">
   <ul class="nav nav-tabs nav-fill bmro-nav-ul">
     <%= tab_nav_item('Inquiry', edit_overseers_inquiry_path(@inquiry), is_authorized(@inquiry,'edit') && policy(@inquiry).edit?) %>
+    <%= tab_nav_item('Products', edit_products_overseers_inquiry_path(@inquiry), is_authorized(@inquiry,'edit') && policy(@inquiry).edit?) %>
     <%= tab_nav_item('Imports', overseers_inquiry_imports_path(@inquiry), is_authorized(@inquiry,'imports') && policy(@inquiry).imports?) %>
     <%= tab_nav_item('Suppliers', edit_suppliers_overseers_inquiry_path(@inquiry), is_authorized(@inquiry,'edit_suppliers') && policy(@inquiry).edit_suppliers?) %>
     <%= tab_nav_item('RFQs', edit_supplier_rfqs_overseers_inquiry_supplier_rfqs_path(inquiry_id: @inquiry), is_authorized(@inquiry,'draft_rfq') && policy(@inquiry).draft_rfq?) %>
