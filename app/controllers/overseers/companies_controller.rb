@@ -70,6 +70,7 @@ class Overseers::CompaniesController < Overseers::BaseController
   end
 
   def show
+    @tab_name = params['tab_name'] || 'addresses'
     authorize_acl @company
   end
 

@@ -1,0 +1,19 @@
+<div class="tab-pane fade active show" id="orders" role="tabpanel">
+  <% content_for :ajax_url, flush: true do %><%= overseers_company_sales_orders_path(company) %>
+  <% end %>
+  <% content_for :header_row, flush: true do %>
+    <th class="no-sort all" width="98px">Quick Actions</th>
+    <th class="no-sort all">Order #</th>
+    <th class="no-sort desktop" data-name="status">Inquiry #</th>
+    <th class="no-sort desktop" data-name="status">Status</th>
+    <th class="no-sort desktop" data-name="remote_status">SAP Status</th>
+    <th class="no-sort desktop">Quote Total</th>
+    <th class="no-sort desktop">Order Total</th>
+    <th class="no-sort desktop" data-name="mis_date">Order Date</th>
+    <th class="no-sort desktop" data-name="created_at">Created At</th>
+  <% end %>
+  <% content_for :heading_buttons, flush: true do %>
+    <a href="#"></a>
+  <% end %>
+  <%= render 'shared/layouts/internal_datatable', entity: company, children: 'Fullfilled Order' %>
+</div>

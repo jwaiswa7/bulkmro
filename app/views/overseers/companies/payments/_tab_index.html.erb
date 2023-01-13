@@ -1,0 +1,17 @@
+  
+<div class="tab-pane fade active show" id="payments" role="tabpanel">
+  <% content_for :ajax_url, flush: true do %><%= overseers_company_customer_orders_path(company) %>
+  <% end %>
+  <% content_for :header_row, flush: true do %>
+    <th class="no-sort all" width="98px">Quick Actions</th>
+    <th class="no-sort desktop">Status</th>
+    <th class="no-sort all">Online Order</th>
+    <th class="no-sort desktop ">Payment #</th>
+    <th class="no-sort desktop">Amount</th>
+    <th class="sort desktop" data-name="created_at">Created</th>
+  <% end %>
+  <% content_for :heading_buttons, flush: true do %>
+    <a href="#"></a>
+  <% end %>
+  <%= render 'shared/layouts/internal_datatable', entity: company, children: 'online payment' %>
+</div>

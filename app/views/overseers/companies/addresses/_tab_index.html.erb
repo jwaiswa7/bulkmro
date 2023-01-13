@@ -1,0 +1,22 @@
+<div class="tab-pane fade active show" id="addresses" role="tabpanel">
+  <% content_for :ajax_url, flush: true do %><%= overseers_company_addresses_path(company_id: company.id) %>
+  <% end %>
+  <% content_for :header_row, flush: true do %>
+    <th class="no-sort" width="98px">Quick Actions</th>
+    <th class="no-sort" data-name="name">Address</th>
+    <th class="no-sort" data-name="state">State</th>
+    <th class="no-sort" data-name="city">City</th>
+    <th class="no-sort" data-name="valid_gst">Valid GST</th>
+    <th class="no-sort" data-name="gst">GST</th>
+    <th class="no-sort text-right" data-name="pincode">Pincode</th>
+    <th class="no-sort">SAP status</th>
+    <th class="no-sort desktop text-right" data-name="created_at">Created</th>
+  <% end %>
+  <% content_for :heading_buttons, flush: true do %>
+    <% if is_authorized(:address, 'new') && is_authorized(company, 'new_address') %>
+      <a href="<%= new_overseers_company_address_path(company) %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down bmro-button mb-2 mb-md-0"><i class="fal fa-plus-circle mr-1"></i>New
+        Address</a>
+    <% end %>
+  <% end %>
+  <%= render 'shared/layouts/internal_datatable', entity: company, children: 'addresses' %>
+</div>

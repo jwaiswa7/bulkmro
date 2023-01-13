@@ -1,0 +1,26 @@
+<div class="tab-pane fade active show" id="purchase-orders" role="tabpanel">
+  <% content_for :ajax_url, flush: true do %><%= overseers_company_purchase_orders_path(company_id: company.id, via_sales_orders: true) %>
+  <% end %>
+  <!--          <p class="mt-md-1 d-none d-md-block">-->
+  <!--            All inquiries filterable in any way that we want under <strong><%#= company.name %></strong>.-->
+  <!--          </p>-->
+  <% content_for :header_row, flush: true do %>
+    <th class="no-sort all" width="98px">Quick Actions</th>
+    <th class="no-sort all" data-name="po_number">Purchase #</th>
+    <th class="no-sort desktop" data-name="inquiry_number">Inquiry #</th>
+    <th class="no-sort desktop" data-name="supplier_id">Supplier</th>
+    <th class="no-sort desktop" data-name="customer_id">Customer</th>
+    <th class="no-sort all" data-name="po_status">Status</th>
+    <th class="no-sort desktop">Warehouse</th>
+    <th class="no-sort desktop">Line Items</th>
+    <th class="no-sort desktop">Total Amt.</th>
+    <th class="no-sort desktop">PO Date</th>
+    <th class="no-sort desktop" data-name="inside_sales_executive">Inside Sales</th>
+    <th class="no-sort desktop" data-name="outside_sales_executive">Outside Sales</th>
+    <th class="no-sort desktop" data-name="created_at">Created</th>
+  <% end %>
+  <% content_for :heading_buttons, flush: true do %>
+    <a href="#"></a>
+  <% end %>
+  <%= render 'shared/layouts/internal_datatable', entity: company, children: 'purchase orders' %>
+</div>
