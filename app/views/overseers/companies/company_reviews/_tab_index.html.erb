@@ -8,7 +8,7 @@
     <th class="no-sort all" data-name="survey_type_id">Review Type</th>
     <th class="no-sort all">Rating</th>
   <% end %>
-  <% content_for :heading_buttons, flush: true do %>
+  <% content_for :heading_buttons_internal_datatable, flush: true do %>
     <a href="#"></a>
   <% end %>
   <%= render 'shared/layouts/internal_datatable', entity: company, children: 'Ratings' %>

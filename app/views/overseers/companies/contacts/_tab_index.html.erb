@@ -11,7 +11,7 @@
     <th class="no-sort desktop text-right">Inquiry</th>
     <th class="desktop text-right" data-name="created_at">Created</th>
   <% end %>
-  <% content_for :heading_buttons, flush: true do %>
+  <% content_for :heading_buttons_internal_datatable, flush: true do %>
     <% if is_authorized(:contact, 'new') && is_authorized(company, 'new_contact') %>
       <a href="<%= new_overseers_contact_path(company_id: company.to_param) %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down mb-2 mb-md-0 bmro-button"><i class="fal fa-plus-circle mr-1"></i>New
         Contact</a>

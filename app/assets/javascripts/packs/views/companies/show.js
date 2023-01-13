@@ -1,6 +1,7 @@
 
 
 const show = () => {
+    window.scrollTo(0, 1000);
     let table = $('.datatable.review-table').DataTable();
 
     table.on( 'draw.dt', function () {

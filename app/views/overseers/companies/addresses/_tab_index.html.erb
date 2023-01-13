@@ -12,7 +12,7 @@
     <th class="no-sort">SAP status</th>
     <th class="no-sort desktop text-right" data-name="created_at">Created</th>
   <% end %>
-  <% content_for :heading_buttons, flush: true do %>
+  <% content_for :heading_buttons_internal_datatable, flush: true do %>
     <% if is_authorized(:address, 'new') && is_authorized(company, 'new_address') %>
       <a href="<%= new_overseers_company_address_path(company) %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down bmro-button mb-2 mb-md-0"><i class="fal fa-plus-circle mr-1"></i>New
         Address</a>

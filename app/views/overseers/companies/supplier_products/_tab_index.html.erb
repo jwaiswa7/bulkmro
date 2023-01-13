@@ -16,7 +16,7 @@
     <th class="no-sort desktop" data-name="created_at"> SAP Status</th>
     <th class="no-sort desktop" data-name="created_at"> Created At</th>
   <% end %>
-  <% content_for :heading_buttons, flush: true do %>
+  <% content_for :heading_buttons_internal_datatable, flush: true do %>
     <a href="#"></a>
   <% end %>
   <%= render 'shared/layouts/internal_datatable', entity: company, children: 'supplier products' %>
