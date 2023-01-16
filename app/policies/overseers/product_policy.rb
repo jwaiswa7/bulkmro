@@ -77,4 +77,5 @@ class Overseers::ProductPolicy < Overseers::ApplicationPolicy
   def suggestion?
     true
   end
+  
 end

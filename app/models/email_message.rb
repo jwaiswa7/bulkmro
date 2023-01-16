@@ -14,6 +14,9 @@ class EmailMessage < ApplicationRecord
   belongs_to :activity, required: false
   belongs_to :revision_request, required: false
 
+  # Added polymophic relationship
+  belongs_to :emailable, polymorphic: true
+
   has_many_attached :files
 
   validates_presence_of :from, :to, :subject

@@ -6,6 +6,12 @@
 <% provide :wrap_whitespace, true %>
 <% provide :show_date_filter, true %>
 
+<% content_for :heading_buttons do %>
+  <a href="<%= new_overseers_product_import_path %>" class="btn btn-sm btn-block btn-success bmro-button" >
+    Bulk upload
+  </a>
+<% end %>
+
 
 <div class="col-lg-12 bmro-table-layout">
 <% content_for :header_row do %>

@@ -1,0 +1,17 @@
+<% content_for :heading_buttons do %>
+  <a href="<%= bulk_uploads_excel_overseers_products_path(format: :xlsx) %>" target="_blank" class="btn btn-dark bmro-button">
+    <i class="bmro-download-icon mr-1"></i>Download Excel Template
+  </a>
+<% end %>
+
+
+<%= form_tag bulk_upload_overseers_products_path, class:'my-2 form-row' do %>
+  <div class="col-md-10">
+    <div class="form-group">
+      <input type="file" name="bulk_upload" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" class="form-control" />
+    </div>
+    <div class="form-group">
+    <%= submit_tag "Upload", class: "btn btn-sm btn-block btn-success bmro-button"%>    </div>
+  </div>
+<% end %>
+  

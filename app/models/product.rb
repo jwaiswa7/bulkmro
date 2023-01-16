@@ -3,6 +3,7 @@ class Product < ApplicationRecord
   REJECTIONS_CLASS = 'ProductRejection'
   APPROVALS_CLASS = 'ProductApproval'
 
+
   include ActiveModel::Validations
   include Mixins::CanBeStamped
   include Mixins::CanBeApproved

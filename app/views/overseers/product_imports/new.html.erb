@@ -1,0 +1,20 @@
+<% content_for :heading_buttons do %>
+  <a href="<%= excel_template_overseers_product_imports_path(format: :xlsx) %>" target="_blank" class="btn btn-dark bmro-button">
+    <i class="bmro-download-icon mr-1"></i>Download Excel Template
+  </a>
+<% end %>
+
+<%= render layout: 'shared/layouts/form' do %>
+  <%= simple_form_for([:overseers, @product_import], url: overseers_product_imports_path, :html => {:class => 'needs-validation mt-3', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
+    <%= f.hidden_field :import_type %>
+    <%= render 'shared/snippets/form_errors', f: f %>
+    <div class="card bmro-bg">
+       <div class="card-body">
+          <%= f.input :file, required: true, wrapper: :custom_file, label: 'Products Excel File', accept: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' %>
+          <div class="form-group mb-0">
+             <%= f.submit(class: 'btn btn-success bmro-button btn-block') %>
+          </div>
+       </div>
+    </div>
+  <% end %>
+<% end %>

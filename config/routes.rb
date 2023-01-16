@@ -329,6 +329,11 @@ Rails.application.routes.draw do
         get 'pending'
         get 'export_all'
         get 'export_filtered_records'
+        resources :product_imports, only: [:new, :create] do 
+          collection do 
+            get 'excel_template'
+          end
+        end
       end
 
       scope module: 'products' do
