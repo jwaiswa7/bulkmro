@@ -1,58 +1,57 @@
 <% if company.is_customer? %>
   <li class="nav-item">
-    <a class="nav-link active" data-toggle="tab" href="#addresses" role="tab">Addresses</a>
+    <%= link_to "Addresses", { action: :show, tab_name: 'addresses'}, class: "nav-link #{'active' if @tab_name == 'addresses' }"%>
   </li>
   <li class="nav-item">
-    <a class="nav-link" data-toggle="tab" href="#inquiries" role="tab">Inquiries</a>
+    <%= link_to "Inquiries", { action: :show, tab_name: 'inquiries'}, class: "nav-link #{'active' if @tab_name == 'inquiries' }"%>
   </li>
   <li class="nav-item">
-    <a class="nav-link" data-toggle="tab" href="#contacts" role="tab">Contacts</a>
+    <%= link_to "Contacts", { action: :show, tab_name: 'contacts'}, class: "nav-link #{'active' if @tab_name == 'contacts'}"%>
   </li>
   <li class="nav-item">
-    <a class="nav-link" data-toggle="tab" href="#banks" role="tab">Banks</a>
+    <%= link_to "Banks", { action: :show, tab_name: 'banks'}, class: "nav-link #{'active' if @tab_name == 'banks'}"%>
   </li>
   <li class="nav-item">
-    <a class="nav-link" data-toggle="tab" href="#products" role="tab">Products</a>
+    <%= link_to "Products", { action: :show, tab_name: 'products'}, class: "nav-link #{'active' if @tab_name == 'products'}"%>
   </li>
   <li class="nav-item">
-    <a class="nav-link" data-toggle="tab" href="#product_categories" role="tab">Product Categories</a>
+    <%= link_to "Product Categories", { action: :show, tab_name: 'product_categories'}, class: "nav-link #{'active' if @tab_name == 'product_categories'}"%>
   </li>
   <li class="nav-item">
-    <a class="nav-link" data-toggle="tab" href="#online-orders" role="tab">Online Orders</a>
+    <%= link_to "Online Orders", { action: :show, tab_name: 'online_orders'}, class: "nav-link #{'active' if @tab_name == 'online_orders'}"%>
   </li>
   <li class="nav-item">
-    <a class="nav-link" data-toggle="tab" href="#payments" role="tab">Online Payments</a>
+    <%= link_to "Online Payments", { action: :show, tab_name: 'payments'}, class: "nav-link #{'active' if @tab_name == 'payments'}"%>
   </li>
   <li class="nav-item">
-    <a class="nav-link" data-toggle="tab" href="#quotes" role="tab">Quotes</a>
+    <%= link_to "Quotes", { action: :show, tab_name: 'quotes'}, class: "nav-link #{'active' if @tab_name == 'quotes'}"%>
   </li>
   <li class="nav-item">
-    <a class="nav-link" data-toggle="tab" href="#orders" role="tab">Fulfilled Orders</a>
+    <%= link_to "Fulfilled Orders", { action: :show, tab_name: 'orders'}, class: "nav-link #{'active' if @tab_name == 'orders'}"%>
   </li>
   <li class="nav-item">
-    <a class="nav-link" data-toggle="tab" href="#invoices" role="tab">Invoices</a>
+    <%= link_to "Invoices", { action: :show, tab_name: 'invoices'}, class: "nav-link #{'active' if @tab_name == 'invoices'}"%>
   </li>
   <li class="nav-item">
-    <a class="nav-link" data-toggle="tab" href="#rating" role="tab">Ratings</a>
+    <%= link_to "Ratings", { action: :show, tab_name: 'rating'}, class: "nav-link #{'active' if @tab_name == 'rating'}"%>
   </li>
 <% elsif company.is_supplier? %>
   <li class="nav-item">
-    <a class="nav-link active" data-toggle="tab" href="#addresses" role="tab">Addresses</a>
+    <%= link_to "Addresses", { action: :show, tab_name: 'addresses'}, class: "nav-link #{'active' if @tab_name == 'addresses'}"%>
   </li>
   <li class="nav-item">
-    <a class="nav-link" data-toggle="tab" href="#contacts" role="tab">Contacts</a>
+    <%= link_to "Contacts", { action: :show, tab_name: 'contacts'}, class: "nav-link #{'active' if @tab_name == 'contacts'}"%>
   </li>
   <li class="nav-item">
-    <a class="nav-link" data-toggle="tab" href="#purchase-orders" role="tab">Purchase Orders</a>
-  </li>
-
-  <li class="nav-item">
-    <a class="nav-link" data-toggle="tab" href="#supplier-products" role="tab">Supplier Products</a>
+    <%= link_to "Purchase Orders", { action: :show, tab_name: 'purchase_orders'}, class: "nav-link #{'active' if @tab_name == 'purchase_orders'}"%>
   </li>
   <li class="nav-item">
-    <a class="nav-link" data-toggle="tab" href="#banks" role="tab">Banks</a>
+    <%= link_to "Supplier Products", { action: :show, tab_name: 'supplier_products'}, class: "nav-link #{'active' if @tab_name == 'supplier_products'}"%>
   </li>
   <li class="nav-item">
-    <a class="nav-link" data-toggle="tab" href="#rating" role="tab">Ratings</a>
+    <%= link_to "Banks", { action: :show, tab_name: 'banks'}, class: "nav-link #{'active' if @tab_name == 'banks'}"%>
+  </li>
+  <li class="nav-item">
+    <%= link_to "Ratings", { action: :show, tab_name: 'rating'}, class: "nav-link #{'active' if @tab_name == 'rating'}"%>
   </li>
 <% end %>

@@ -1,0 +1,36 @@
+<div class="tab-pane fade active show" id="products" role="tabpanel">
+  <% content_for :ajax_url, flush: true do %><%= overseers_company_customer_products_path(company) %>
+  <% end %>
+  <% content_for :header_row, flush: true do %>
+    <th class="no-sort" width="98px">Quick Actions</th>
+    <th class="no-sort">Name</th>
+    <th class="no-sort">SKU</th>
+    <th class="no-sort desktop">Customer Price</th>
+    <th class="no-sort desktop">SAP Status</th>
+    <th class="desktop text-right" data-name="created_at">Created</th>
+  <% end %>
+  <% content_for :heading_buttons_internal_datatable, flush: true do %>
+    <div>
+      <%= link_to (company.grid_view?? 'List View' : 'Grid View'), toggle_view_overseers_company_customer_products_url(company), class: "btn align-self-center btn-block-sm-down mb-2 mb-md-0 mr-1 bmro-button", method: :post, title: "Changes the customer products to #{(company.grid_view?? 'list view' : 'grid view')}" %>
+      <a href="<%= new_overseers_company_product_image_path(company)%>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down mb-2 mb-md-0 mr-1 bmro-button"><i class="bmro-plus-icon"></i>Upload images</a>
+      <% if is_authorized(:customer_product, 'generate_catalog') %>
+        <a href="<%= generate_catalog_overseers_company_customer_products_path(company) %>" data-method="post" class="btn btn-success btn-rounded align-self-center btn-block-sm-down mb-2 mb-md-0 mr-1 bmro-button" ><i class="fal fa-plus-circle mr-1"></i>Generate
+          Catalog</a>
+      <% end %>
+      <% if is_authorized(:customer_product, 'destroy_all') %>
+        <a href="<%= destroy_all_overseers_company_customer_products_path(company) %>" data-method="post" class="btn btn-danger btn-rounded align-self-center btn-block-sm-down mb-2 mb-md-0 mr-1 bmro-button"><i class="fal fa-minus-circle mr-1"></i>Destroy
+          Catalog</a>
+      <% end %>
+      <% if is_authorized(:customer_product, 'new') %>
+        <a href="<%= new_overseers_company_customer_product_path(company) %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down mb-2 mb-md-0 mr-1 bmro-button"><i class="fal fa-plus-circle mr-1"></i>New
+          Customer Product</a>
+      <% end %>
+      <a href="<%= new_excel_customer_product_import_overseers_company_imports_path(company) %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down mb-2 mb-md-0 bmro-button"><i class="fal fa-file-excel mr-1"></i>Add
+        products using excel</a>
+      <% if company.customer_products.count > 0 && is_authorized(:customer_product, 'export_customer_product') %>
+        <a href="<%= export_customer_product_overseers_company_customer_products_path(company, format: :csv) %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down mb-2 mb-md-0 bmro-button"><i class="fal fa-download mr-1"></i>Company Product Export</a>
+      <% end %>
+    </div>
+  <% end %>
+  <%= render 'shared/layouts/internal_datatable', entity: company, children: 'products' %>
+</div>

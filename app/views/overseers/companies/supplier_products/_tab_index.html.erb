@@ -1,0 +1,23 @@
+<div class="tab-pane fade active show" id="supplier-products" role="tabpanel">
+  <% content_for :ajax_url, flush: true do %><%= overseers_company_supplier_products_path(company) %>
+  <% end %>
+  <!--          <p class="mt-md-1 d-none d-md-block">-->
+  <!--            All inquiries filterable in any way that we want under <strong><%#= company.name %></strong>.-->
+  <!--          </p>-->
+  <% content_for :header_row, flush: true do %>
+    <th class="no-sort all" data-width="98px">Quick Actions</th>
+    <th class="no-sort desktop" data-name="product_id">Name</th>
+    <th class="no-sort all" data-name="sku">SKU</th>
+    <th class="no-sort desktop" data-name="brand_id">Brand</th>
+    <th class="no-sort desktop">Category</th>
+    <th class="no-sort all" data-name="supplier_price">Supplier Price</th>
+    <th class="no-sort desktop">MPN</th>
+    <th class="no-sort desktop" data-name="is_active"> Active</th>
+    <th class="no-sort desktop" data-name="created_at"> SAP Status</th>
+    <th class="no-sort desktop" data-name="created_at"> Created At</th>
+  <% end %>
+  <% content_for :heading_buttons_internal_datatable, flush: true do %>
+    <a href="#"></a>
+  <% end %>
+  <%= render 'shared/layouts/internal_datatable', entity: company, children: 'supplier products' %>
+</div>

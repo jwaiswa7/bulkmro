@@ -1,0 +1,18 @@
+<div class="tab-pane fade active show" id="quotes" role="tabpanel">
+  <% content_for :ajax_url, flush: true do %><%= overseers_company_sales_quotes_path(company) %>
+  <% end %>
+  <% content_for :header_row, flush: true do %>
+    <th class="no-sort all" data-width="98px">Quick Actions</th>
+    <th class="no-sort all">Doc ID</th>
+    <th class="no-sort all">Sent At</th>
+    <th class="no-sort all">Created By</th>
+    <th class="no-sort all">Line Items</th>
+    <th class="no-sort all">Total(Excl. Tax)</th>
+    <th class="no-sort all">Total(Incl. Tax)</th>
+    <th class="no-sort all">Created At</th>
+  <% end %>
+  <% content_for :heading_buttons_internal_datatable, flush: true do %>
+    <a href="#"></a>
+  <% end %>
+  <%= render 'shared/layouts/internal_datatable', entity: company, children: 'quotes' %>
+</div>
