@@ -80,7 +80,7 @@ class Overseer < ApplicationRecord
   end
 
   def to_s
-    [self.first_name, ' ', self.last_name&.chars&.first, '.'].join('')
+    [self.first_name, ' ', self.last_name].join('')
   end
 
   def self.default_approver
