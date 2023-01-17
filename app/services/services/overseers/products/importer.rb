@@ -89,7 +89,7 @@ class Services::Overseers::Products::Importer < Services::Shared::BaseService
       rows.each do |row|
         serial_number = row['sr_no']
         row.shift
-        product = Product.create(row)
+        product = Product.new(row)
         if product.save_and_sync
           approve_product(product)
         else

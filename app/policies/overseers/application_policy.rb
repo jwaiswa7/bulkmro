@@ -42,6 +42,10 @@ class Overseers::ApplicationPolicy
     overseer.admin?
   end
 
+  def super_admin? 
+    overseer.is_super_admin?
+  end
+
   def manager?
     overseer.manager?
   end

@@ -1,11 +1,13 @@
 class Overseers::ProductImportsController < Overseers::BaseController
   def new
-    @product_import = ProductImport.new
+    @product_import = ProductImport.new 
+    authorize @product_import
   end
 
 
   def create
     @product_import = ProductImport.new(product_import_params.merge(overseer: current_overseer))
+    authorize @product_import
     if @product_import.save 
       ProductImportJob.perform_later(@product_import.id)
       redirect_to overseers_products_path, notice: 'Processing upload'
