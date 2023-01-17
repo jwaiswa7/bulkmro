@@ -17,7 +17,7 @@ json.data (@products) do |customer_product|
                   customer_product.sku,
                   customer_product.customer_price,
                   format_boolean_label(customer_product.product.synced?, 'synced'),
-                  format_boolean(customer_product.images.present?)
+                  format_boolean(customer_product.images.present?),
                   format_succinct_date(customer_product.product.created_at)
               ]
 end
