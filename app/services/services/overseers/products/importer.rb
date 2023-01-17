@@ -90,7 +90,7 @@ class Services::Overseers::Products::Importer < Services::Shared::BaseService
         serial_number = row['sr_no']
         row.shift
         product = Product.create(row)
-        if product.save
+        if product.save_and_sync
           approve_product(product)
         else
           @failed_imports.push [serial_number, product.name, Date.today.to_s, product.errors.full_messages.join(',')]
