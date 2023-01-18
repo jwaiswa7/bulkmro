@@ -129,7 +129,7 @@ class Services::Overseers::Products::Importer < Services::Shared::BaseService
         row['measurement_unit'] = MeasurementUnit.find_by(name: row['measurement_unit']) # get the measurement unit id
         row['brand'] = Brand.find_by(name: row['brand']) # set the brand
         row['tax_code'] = TaxCode.find_by(code: row['tax_code']) # set the tax code
-        row['tax_rate'] = TaxRate.find(row['tax_rate']) # set the tax rate
+        row['tax_rate'] = TaxRate.find_by(tax_percentage: row['tax_rate']) # set the tax rate
         row['created_by'] = product_import.overseer
 
         rows.push row
