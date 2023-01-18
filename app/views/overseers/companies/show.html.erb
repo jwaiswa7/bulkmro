@@ -8,7 +8,7 @@
       </h3>
 
       <% if is_authorized(@company, 'edit') %>
-        <a href="<%= edit_overseers_account_company_path(@company.account, @company) %>" class="btn btn-warning bmro-button btn-rounded align-self-center btn-block-sm-down mb" ><i class="bmro-update-icon"></i>Edit
+        <a href="<%= edit_overseers_account_company_path(@company.account, @company) %>" target='_blank' class="btn btn-warning bmro-button btn-rounded align-self-center btn-block-sm-down mb" ><i class="bmro-update-icon"></i>Edit
           Company</a>
       <% end %>
     </div>
@@ -93,7 +93,7 @@
                   <strong class="d-block bmro-summary-heading">Industry</strong>
                   <div class="bmro-summary-data">
                     <%= @company.industry %>
-                  </div>  
+                  </div>
                 </div>
               <% end %>
 
@@ -120,7 +120,7 @@
                   <strong class="d-block bmro-summary-heading">Priority</strong>
                   <div class="bmro-summary-data">
                     <%= @company.priority.titleize %>
-                  </div>  
+                  </div>
                 </div>
               <% end %>
 
@@ -244,7 +244,7 @@
                   <strong class="d-block bmro-summary-heading">Default manager</strong>
                   <div class="bmro-summary-data">
                     <%= @company.sales_manager %>
-                  </div>  
+                  </div>
                 </div>
               <% end %>
 
@@ -253,7 +253,7 @@
                   <strong class="d-block bmro-summary-heading">Default Logistics Owner</strong>
                   <div class="bmro-summary-data">
                     <%= @company.logistics_owner %>
-                  </div>  
+                  </div>
                 </div>
               <% end %>
             </div>
