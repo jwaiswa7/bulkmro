@@ -5,7 +5,7 @@ class Resources::ApplicationResource
 
   def self.new_session_id
      response = HTTParty.post(
-       'https://35.200.244.135:50000/b1s/v1/Login',
+       'http://sap-api.bulkmro.com/b1s/v1/Login',
          body: {CompanyDB: Settings.sap.DATABASE, UserName: Settings.sap.USERNAME, Password: Settings.sap.PASSWORD}.to_json,
          verify: false,
          debug_output: $stdout,

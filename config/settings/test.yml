@@ -89,7 +89,7 @@ razorpay:
   MERCHANT_KEY_SECRET: 'F1KKKL5ntCXObq4EZ6huRj32'
 
 sap:
-  ENDPOINT: 'https://35.200.244.135:50000/b1s/v1'
+  ENDPOINT: 'http://sap-api.bulkmro.com/b1s/v1'
   DATABASE: 'BMRO_DEV_30OCT'
   USERNAME: 'manager'
   PASSWORD: 'vm1234'
