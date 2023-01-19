@@ -90,6 +90,7 @@ class Services::Overseers::Products::Importer < Services::Shared::BaseService
         serial_number = row['sr_no']
         row.shift
         product = Product.new(row)
+        product.is_bulk_upload = true
         if product.save_and_sync
           approve_product(product)
         else

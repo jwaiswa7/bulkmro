@@ -38,7 +38,7 @@ class Product < ApplicationRecord
   has_many :purchase_orders, through: :purchase_order_rows
   has_many :stocks, class_name: 'WarehouseProductStock', inverse_of: :product, dependent: :destroy
 
-  attr_accessor :applicable_tax_percentage
+  attr_accessor :applicable_tax_percentage, :is_bulk_upload
 
   enum product_type: { item: 10, service: 20 }
 
@@ -53,6 +53,11 @@ class Product < ApplicationRecord
   self.order(sku: :asc, mpn: :desc)
   after_initialize :set_defaults, if: :new_record?
   validate :unique_name?
+
+  # validations for bulk product uploads
+  validates_presence_of :brand, if: :is_bulk_upload, message: "doesn't exist"
+  validates_presence_of :tax_code, if: :is_bulk_upload, message: "doesn't exist"
+  # End validations for bulk product uploads
 
   def unique_name?
     if self.not_rejected? && Product.not_rejected.where(name: self.name, is_active: true).count > 1 && self.is_active
