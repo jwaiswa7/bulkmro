@@ -12,7 +12,6 @@ json.data (@products) do |customer_product|
                         row_action_button(overseers_company_customer_product_path(customer_product.company, customer_product), 'trash', 'Delete product', 'danger', '', :delete)
                       end
                   ].join(' '),
-                  # customer_product.name.to_s.truncate(50),
                   link_to(customer_product.name.to_s.truncate(50), overseers_company_customer_product_path(customer_product.company, customer_product), target: '_blank'),
                   customer_product.sku,
                   customer_product.customer_price,
@@ -22,6 +21,7 @@ json.data (@products) do |customer_product|
               ]
 end
 
-json.recordsTotal @company.customer_products.count
-json.recordsFiltered @products.total_count
+
+json.recordsTotal @indexed_addresses.total_count
+json.recordsFiltered @indexed_addresses.total_count
 json.draw params[:draw]
