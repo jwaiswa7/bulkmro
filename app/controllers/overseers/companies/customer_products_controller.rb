@@ -2,9 +2,24 @@ class Overseers::Companies::CustomerProductsController < Overseers::Companies::B
   before_action :set_customer_product, only: [:show, :edit, :update, :destroy]
 
   def index
-    @products = ApplyDatatableParams.to(@company.customer_products, params.reject! {|k, v| k == 'company_id'})
-    authorize_acl @products
+
+    authorize_acl :product
+
+    base_filter = {
+        base_filter_key: 'company_id',
+        base_filter_value: @company.id
+    }
+    respond_to do |format|
+      format.html { }
+      format.json do
+        service = Services::Overseers::Finders::CustomerProducts.new(params.merge(base_filter), current_overseer)
+        service.call
+        @indexed_addresses = service.indexed_records
+        @products = service.records
+      end
+    end
   end
+
 
   def autocomplete
     account = Account.find(params[:account_id]) if params[:account_id].present?

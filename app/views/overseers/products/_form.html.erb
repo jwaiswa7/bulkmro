@@ -14,7 +14,10 @@
       </div>
       <div class="form-row">
         <div class="col-6">
-          <%= f.input :sku, input_html: { class: 'bmro-form-input' } %>
+          <div class="form-group">
+            <label for="sku">Sku</label>
+            <input class="form-control disabled" id="sku" disabled value="<%= @product.sku %>">
+          </div>
         </div>
         <div class="col-6">
           <%= f.input :mpn, input_html: { class: 'bmro-form-input' }, label: "Manufacturer Part Number" %>
