@@ -7,6 +7,7 @@ import inquiriesIndex from "./index";
 import inquiriesKraReport from "./kraReport";
 import inquiriesTatReport from "./tatReport";
 import pipelineReport from "./pipelineReport";
+import inquiriesEditProducts from "./editProducts";
 
 
 let inquiries = {
@@ -18,7 +19,8 @@ let inquiries = {
     index: inquiriesIndex,
     kraReport: inquiriesKraReport,
     tatReport: inquiriesTatReport,
-    pipelineReport: pipelineReport
+    pipelineReport: pipelineReport,
+    editProducts: inquiriesEditProducts
 }
 
 export default inquiries
