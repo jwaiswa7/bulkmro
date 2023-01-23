@@ -65,6 +65,11 @@ class PoRequestRow < ApplicationRecord
     0
   end
 
+  def unit_selling_price_with_discount
+    return self.unit_selling_price - (100 - self.discount_percentage)/100 if self.discount_percentage.present? && self.discount_percentage > 0.0
+    self.unit_selling_price
+  end
+
   def converted_total_selling_price
     sales_quote_row.present? && sales_quote_row.conversion_rate.present? ? (self.total_selling_price / sales_quote_row.conversion_rate) : self.total_selling_price
   end
@@ -91,6 +96,18 @@ class PoRequestRow < ApplicationRecord
     else
       0.0
     end
+  end
+
+  def subtotal
+    self.unit_selling_price_with_discount * self.quantity
+  end
+
+  def tax_value
+    self.subtotal * self.tax_rate.tax_percentage / 100
+  end
+
+  def total_incl_tax
+    self.subtotal + self.tax_value
   end
 
   def converted_total_buying_price

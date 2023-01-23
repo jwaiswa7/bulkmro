@@ -217,6 +217,15 @@
             <th class="no-sort">
               <span data-toggle="tooltip" title="Total With Tax">T. Price</span>
             </th>
+            <th class="no-sort">
+              <span data-toggle="tooltip" title="Subtotal">Subtotal</span>
+            </th>
+            <th class="no-sort">
+              <span data-toggle="tooltip" title="Tax Value">Tax Value</span>
+            </th>
+            <th class="no-sort">
+              <span data-toggle="tooltip" title="Total Incl. tax">Total Incl. tax</span>
+            </th>
           </tr>
           </thead>
           <tbody>
@@ -260,6 +269,15 @@
               </td>
               <td>
                 <span><%= format_currency(row.converted_total_selling_price_with_tax.to_f) %></span>
+              </td>
+              <td>
+                <span><%= row.subtotal %></span>
+              </td>
+              <td>
+                <span><%= row.tax_value %></span>
+              </td>
+              <td>
+                <span><%= row.total_incl_tax %></span>
               </td>
             </tr>
           <% end %>
