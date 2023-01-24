@@ -263,15 +263,15 @@ class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseCo
       @email_message = @sales_order.email_messages.build(overseer: current_overseer, inquiry: @inquiry, email_type: 'Request for SO Cancellation')
       if Settings.domain == 'sprint.bulkmro.com'
         from = @inquiry.inside_sales_owner.try(:email)
-        to = ["accounts@bulkmro.com", "ajay.kondal@bulkmro.com", "charudatt.mhatre@bulkmro.com"] 
+        to = ["accounts@bulkmro.com", "ajay.kondal@bulkmro.com", "charudatt.mhatre@bulkmro.com"]
         cc = [@inquiry.company.try(:sales_manager).try(:email), @inquiry.inside_sales_owner.try(:email)]
         subject = "Request for SO Cancellation for Inquiry ##{@sales_order.inquiry.inquiry_number} Sales Order ##{@sales_order.order_number}"
       elsif Settings.domain == 'sprint-staging.herokuapp.com'
-        to = 'samruddhi.k@bulkmro.com'
+        to = ['samruddhi.k@bulkmro.com']
         subject = "Testing server - Request for SO Cancellation for Inquiry ##{@sales_order.inquiry.inquiry_number} Sales Order ##{@sales_order.order_number}"
       else
         from = 'bulkmro007@gmail.com'
-        to = 'bulkmro007@gmail.com'
+        to = ['bulkmro007@gmail.com']
         cc = ['bhumika.desai@bulkmro.com']
         subject = "Testing server - Request for SO Cancellation for Inquiry ##{@sales_order.inquiry.inquiry_number} Sales Order ##{@sales_order.order_number}"
       end
@@ -283,7 +283,7 @@ class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseCo
         body: SalesOrderMailer.request_cancel_so_email(@email_message).body.raw_source
       )
       if @email_message.save
-        if SalesOrderMailer.send_request_cancel_so_email(@email_message).deliver_now
+        if SalesOrderMailer.send_request_cancel_so_email(@email_message , to).deliver_now
           render json: {notice: 'Email sent to Accounts team for cancellation!'}, status: 200
         else
           render json: {error: 'Email not sent! Something went wrong!!'}, status: 500

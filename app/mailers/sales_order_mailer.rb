@@ -45,11 +45,14 @@ class SalesOrderMailer < ApplicationMailer
     standard_email(email_message)
   end
 
-  def send_request_cancel_so_email(email_message)
+  def send_request_cancel_so_email(email_message , tos)
     @overseer = email_message.overseer
     @sales_order = email_message.sales_order
     @inquiry = email_message.inquiry
-    email = htmlized_email(email_message)
-    email.delivery_method.settings.merge!(user_name: @overseer.email, password: @overseer.smtp_password)
+    tos.each do | to |
+      email_message.to = to
+      email = htmlized_email(email_message)
+      email.delivery_method.settings.merge!(user_name: @overseer.email, password: @overseer.smtp_password)
+    end
   end
 end
