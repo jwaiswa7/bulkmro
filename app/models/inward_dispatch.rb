@@ -155,8 +155,8 @@ class InwardDispatch < ApplicationRecord
 
   def calculative_ar_invoice_req_status
     if self.sales_order.present?
-      product_ids_array = self.rows.pluck(:product_id).uniq
-      ar_invoice_request_id = ArInvoiceRequest.where('inward_dispatch_ids @> ?', [self.id].to_json).pluck(:id)
+      product_ids_array = self.sales_order.rows.pluck(:product_id).uniq
+      ar_invoice_request_id = ArInvoiceRequest.where("inward_dispatch_ids @> ?", [self.id].to_json).select("DISTINCT ON (sales_invoice_id) id").map(&:id)
       ar_invoce_rows = ArInvoiceRequestRow.where(product_id: product_ids_array, ar_invoice_request_id: ar_invoice_request_id)
       if ar_invoce_rows.pluck(:ar_invoice_request_id).length > 0
         inward_dispatch_rows = InwardDispatchRow.where(inward_dispatch_id: self.id, product_id: product_ids_array)
