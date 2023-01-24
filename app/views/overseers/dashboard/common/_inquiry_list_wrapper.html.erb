@@ -6,7 +6,7 @@
   <div class="bmro-star-parent bmro-reset-button bmro-inquiry-show-hide bmro-cursol">
     <label class="bmro-cursol">Undo</label>
   </div>
-  <div class="bmro-star-parent bmro-reset-button bmro-cursol" onClick="window.location.reload();">
+  <div class="bmro-star-parent bmro-reset-button bmro-cursol" onClick="window.location.href=window.location.href.split('?')[0];">
     <label class="bmro-cursol">Reset All</label>
   </div>
 </div>
@@ -40,5 +40,8 @@
         </div>
       </div>
     <% end %>
+    <div class="bmro-width100" style = margin-top: 1%>
+      <%= paginate inq_for_dash, window: 1, outer_window: 1 ,remote: false, params: {controller: '/overseers/dashboard', action: 'sales_executive' , format: ''} ,param_name: :page  if @pagination%>
+    </div>
   </div>
 </div>

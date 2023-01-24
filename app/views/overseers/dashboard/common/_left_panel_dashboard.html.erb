@@ -5,7 +5,7 @@
         <div class="bmro-dash-box">
           <% if @dashboard.main_statuses(executivelink).is_a?(Array) %>
             <% @dashboard.main_statuses(executivelink).each do |status| %>
-              <div class="bmro-same-box col status-box" data-status="<%= status %>" data-executive-link="<%= executivelink %>">
+              <div class="bmro-same-box col status-box" data-status="<%= status %>" data-executive-link="<%= executivelink %>" data-pagination="<%= @pagination %>">
                 <label><%= status %></label>
                 <h5><%= @dashboard.get_status_metrics(status)[:'count'] %></h5>
                 <span><%= format_currency(@dashboard.get_status_metrics(status)[:'value']) %></span>

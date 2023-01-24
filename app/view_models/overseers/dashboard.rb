@@ -1,10 +1,22 @@
 class Overseers::Dashboard
-  def initialize(current_overseer)
+  def initialize(current_overseer, pagination = false, page = nil ,inq_status = nil)
     @overseer = current_overseer
+    @page = page
+    @pagination = pagination
+    @inq_status = inq_status
+    @per = 5
   end
 
   def inquiries
     Inquiry.with_includes.where(inside_sales_owner_id: overseer.id).where('updated_at > ? OR quotation_followup_date > ?', Date.new(2018, 04, 01), Date.new(2018, 04, 01)).where.not(status: ['Order Won', 'Order Lost', 'Regret', 'Regret Request']).order(updated_at: :desc).compact
+  end
+
+  def inquiries_with_pagination
+    Kaminari.paginate_array(Inquiry.with_includes.where(inside_sales_owner_id: overseer.id).where('updated_at > ? OR quotation_followup_date > ?', Date.new(2018, 04, 01), Date.new(2018, 04, 01)).where.not(status: ['Order Won', 'Order Lost', 'Regret', 'Regret Request']).order(updated_at: :desc).compact).page(page).per(per)
+  end
+
+  def filtered_inquiries_with_pagination(status)
+    Kaminari.paginate_array(Inquiry.with_includes.where(inside_sales_owner_id: overseer.id).where('updated_at > ? OR quotation_followup_date > ?', Date.new(2018, 04, 01), Date.new(2018, 04, 01)).where.not(status: ['Order Won', 'Order Lost', 'Regret', 'Regret Request']).order(updated_at: :desc).map { |inquiry| inquiry if inquiry.status == status }.compact).page(page).per(per)
   end
 
   def inquiries_for_manager
@@ -73,10 +85,15 @@ class Overseers::Dashboard
     inq_for_sales_manager_dash.map { |id, inquiries| [Overseer.find_by_id(id).name, inquiries] }.to_h
   end
 
-  def inq_for_dash(executivelink = nil)
+  def inq_for_dash(executivelink = nil , inquiry_status = nil)
+    status_name = inquiry_status.present? ?  inquiry_status : inq_status.present? ?  inq_status : nil
     if self.overseer.sales?
       if self.overseer.descendant_ids.present? && !executivelink
         inquiries_for_manager
+      elsif status_name.present? && pagination
+        filtered_inquiries_with_pagination(status_name)
+      elsif pagination
+        inquiries_with_pagination
       else
         recent_inquiries
       end
@@ -336,5 +353,5 @@ class Overseers::Dashboard
     filtered_account_list
   end
 
-  attr_accessor :overseer
+  attr_accessor :overseer , :page , :per , :pagination , :inq_status
 end
