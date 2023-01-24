@@ -81,7 +81,7 @@ class PoRequest < ApplicationRecord
     'Change in Unit Price': 8,
     'Customer PO amended': 9,
     'Customer PO cancelled': 10,
-    'Supplier refused to deliver': 11, 
+    'Supplier refused to deliver': 11,
     'Other': 12
   }
 
@@ -231,7 +231,7 @@ class PoRequest < ApplicationRecord
   end
 
   def calculated_total_with_tax
-    each_row_total_with_tax = rows.map {|row| (row.converted_total_selling_price_with_tax.to_f || 0)}
+    each_row_total_with_tax = rows.map {|row| (row.total_incl_tax.to_f || 0)}
     if each_row_total_with_tax.present?
       (each_row_total_with_tax.compact.sum.round(2)).to_f
     else
