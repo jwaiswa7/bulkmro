@@ -9,15 +9,21 @@ const editProducts = () => {
 
 
     $(document).on("fields_added.nested_form_fields", function (event, param) {
-        $('.serial_number:last').val($('.serial_number:visible').length);
-
-      });
-      $(document).on("fields_removed.nested_form_fields", function (event, param) {
-
-        for (var i = 0; i < $('.serial_number:visible').length; i++) {
-          $($('.serial_number:visible')[i]).val(i + 1)
+        if ($('.serial_number:visible').length > 1) {
+            var secondLastSerial = $('.serial_number:visible').eq(-2).val();
+            $('.serial_number:last').val(parseInt(secondLastSerial) + 1);
+        }
+        else {
+            $('.serial_number:last').val('1');
         }
     });
+
+    //   $(document).on("fields_removed.nested_form_fields", function (event, param) {
+
+    //     for (var i = 0; i < $('.serial_number:visible').length; i++) {
+    //       $($('.serial_number:visible')[i]).val(i + 1)
+    //     }
+    // });
 
 }
 
