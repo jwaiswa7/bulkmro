@@ -2,6 +2,7 @@
   <%= render layout: 'overseers/inquiries/tabs_layout' do %>
     <%= simple_form_for([:overseers, @inquiry],url: update_products_overseers_inquiry_path, method: :POST, :html => { :class => 'needs-validation mt-3', :'novalidate' => '', :'data-parsley-validate' => '' }) do |f| %>
       <%= render 'shared/snippets/form_errors', f: f %>
+      <%= f.hidden_field :company_id %>
       <div class="card bmro-card">
         <div class="bmro-adjusting-form">
           <div class="bmro-product-bottom">
@@ -83,7 +84,7 @@
                                 <% end %>
                               </div>
                               <div class="flex-grow-1">
-                                <%= inquiry_product.input :sr_no, label: false, placeholder: placeholder_for(inquiry_product, :sr_no), input_html: { :'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => '' } %>
+                                <%= inquiry_product.input :sr_no, label: false, placeholder: placeholder_for(inquiry_product, :sr_no), input_html: { class: 'serial_number' , :'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => '', readonly: true } %>
                               </div>
                             </div>
                           </div>
@@ -119,9 +120,9 @@
                             <div class="col-md-1 text-center">
                               <% if inquiry_product.object.persisted? && inquiry_product.object.product.present? %>
                                 <a href="<%= resync_inventory_overseers_product_path(inquiry_product.object.product) %>" target="_blank"
-                                    <% if inquiry_product.object.product.stocks.total_qty > 0 %> 
+                                    <% if inquiry_product.object.product.stocks.total_qty > 0 %>
                                       class="text-success"
-                                    <% else %>  
+                                    <% else %>
                                     class="text-warning"
                                     <% end %>title="Resync Inventory"><%= inquiry_product.object.product.stocks.total_qty %></a>
                               <% end %>
