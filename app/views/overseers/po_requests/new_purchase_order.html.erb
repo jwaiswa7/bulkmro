@@ -211,15 +211,13 @@
             <th class="no-sort">
               <span data-toggle="tooltip" title="HSN / SAC Code">T. Code</span>
             </th>
+             <th class="no-sort">
+              <span data-toggle="tooltip" title="Subtotal">Subtotal</span>
+            </th>
             <th class="no-sort">
               <span data-toggle="tooltip" title="Tax Rate">T. Rate</span>
             </th>
-            <th class="no-sort">
-              <span data-toggle="tooltip" title="Total With Tax">T. Price</span>
-            </th>
-            <th class="no-sort">
-              <span data-toggle="tooltip" title="Subtotal">Subtotal</span>
-            </th>
+
             <th class="no-sort">
               <span data-toggle="tooltip" title="Tax Value">Tax Value</span>
             </th>
@@ -264,20 +262,17 @@
               <td>
                 <span><%= row.tax_code.try(:code) %></span>
               </td>
+               <td>
+                <span><%= format_currency(row.subtotal) %></span>
+              </td>
               <td>
                 <span><%= row.tax_rate.tax_percentage.to_f %>%</span>
               </td>
               <td>
-                <span><%= format_currency(row.converted_total_selling_price_with_tax.to_f) %></span>
+                <span><%= format_currency(row.tax_value)%></span>
               </td>
               <td>
-                <span><%= row.subtotal %></span>
-              </td>
-              <td>
-                <span><%= row.tax_value %></span>
-              </td>
-              <td>
-                <span><%= row.total_incl_tax %></span>
+                <span><%= format_currency(row.total_incl_tax) %></span>
               </td>
             </tr>
           <% end %>
