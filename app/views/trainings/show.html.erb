@@ -5,6 +5,5 @@
 <% if @training['type'] == "text" %>
     <%= render "trainings/pages/#{@training['slug']}" %>
 <% else %>
-<h1>View type</h1>
-Embed video in the page
+<iframe width="560" height="315" src=<%= @training['url'] %> frameborder="0" allowfullscreen></iframe></iframe>
 <% end %>
