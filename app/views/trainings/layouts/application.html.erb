@@ -36,41 +36,13 @@
                   <span class="item">Home</span>
                   </a>
                </li>
-               <li>
-                  <a href="#">
-                  <span class="item">My Dashboard</span>
-                  </a>
-               </li>
-               <li>
-                  <a href="#">
-                  <span class="item">People</span>
-                  </a>
-               </li>
-               <li>
-                  <a href="#">
-                  <span class="item">Perfomance</span>
-                  </a>
-               </li>
-               <li>
-                  <a href="#">
-                  <span class="item">Development</span>
-                  </a>
-               </li>
-               <li>
-                  <a href="#">
-                  <span class="item">Reports</span>
-                  </a>
-               </li>
-               <li>
-                  <a href="#">
-                  <span class="item">Admin</span>
-                  </a>
-               </li>
-               <li>
-                  <a href="#">
-                  <span class="item">Settings</span>
-                  </a>
-               </li>
+               <% @trainings.each do |training| %>
+                 <li>
+                    <a href="<%= training_path(id: training['slug']) %>">
+                    <span class="item"><%= training['title'] %></span>
+                    </a>
+                 </li>
+               <% end %>
             </ul>
          </div>
          <!--menu item-->

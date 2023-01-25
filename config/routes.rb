@@ -22,9 +22,7 @@ Rails.application.routes.draw do
     devise_for :contacts, controllers: {sessions: 'suppliers/sessions', passwords: 'suppliers/passwords'}, path: :suppliers
   end
 
-  namespace :trainings do 
-    root to: "home#index"
-  end
+  resources :trainings, only: %i[index show]
 
   namespace :customers, path: '/' do
     devise_for :contacts, controllers: {sessions: 'customers/sessions', passwords: 'customers/passwords'}, path: :customers

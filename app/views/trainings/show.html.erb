@@ -1,0 +1,10 @@
+<% content_for :title do %>
+  <%= @training['title'] %>
+<% end %>
+
+<% if @training['type'] == "text" %>
+    <%= render "trainings/pages/#{@training['slug']}" %>
+<% else %>
+<h1>View type</h1>
+Embed video in the page
+<% end %>
