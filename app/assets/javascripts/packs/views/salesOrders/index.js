@@ -123,13 +123,17 @@ let orderCancelAccount = (class_name) => {
             $(this).attr('disabled', true);
             $('.sprint-loader').show();
             let formSelector = "#" + $(this).closest('form').attr('id');
+            let form = $(formSelector)[0];
+            let formData = new FormData(form);
             let url = $(this).data('url');
             $(formSelector).attr('method', '');
             $.ajax({
                 url: url,
                 type: "POST",
-                data: $(this).closest('form').serialize(),
+                data: formData,
                 dataType: "json",
+                processData: false,
+                contentType: false,
                 success: function success(data) {
                     $('#cancelSalesOrder').modal('hide');
                     $.notify({
