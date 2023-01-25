@@ -12,12 +12,12 @@
   title: Create GRPO request
   slug: create_grpo_request
   type: video
-  url: "https://drive.google.com/file/d/1XcFXYlB1I-iU--8Ni-2gGmsmqlZjCWys/view?usp=share_link"
+  url: "https://bulkmro-public-files.s3.amazonaws.com/Logistics/create_grpo_request.mp4"
 - 
   title: Create Inward dispatch
   slug: create_inward_dispatch
   type: video
-  url: "https://drive.google.com/file/d/1K7QJH_8Zw0Zt9cit4Yk3sgm9jzmsTMMY/view?usp=share_link"
+  url: "https://bulkmro-public-files.s3.amazonaws.com/Logistics/create_inward_dispatch.mp4"
 - 
   title: Create New quotation
   slug: create_new_quotation
@@ -32,7 +32,7 @@
   title: Create Outward dispatch
   slug: create_outward_dispatch
   type: video
-  url: "https://drive.google.com/file/d/1ibPc5NFAR1LE5V5ZhI0yWp_MdfAE1XxW/view?usp=share_link"
+  url: "https://bulkmro-public-files.s3.amazonaws.com/Logistics/create_outward_dispatch.mp4"
 - 
   title: Create Supplier PO
   slug: create_supplier_po
@@ -59,10 +59,10 @@
   type: video
   url: "https://drive.google.com/file/d/1aN2WeQFsW5YFtpTBds59wO9NrkO1OPtR/view?usp=share_link"
 - 
-  title: Update material rediness flow
-  slug: update_material_rediness_flow
+  title: Update material rediness follow_up
+  slug: update_material_rediness_follow_up
   type: video
-  url: "https://drive.google.com/file/d/15krTQfLLZu5Fjq-nrR4DJNgcY3Uae3gb/view?usp=share_link"
+  url: "https://bulkmro-public-files.s3.amazonaws.com/Logistics/update_material_rediness_follow_up.mp4"
 - 
   title: Add products to Sprint
   slug: add_products_to_sprint
