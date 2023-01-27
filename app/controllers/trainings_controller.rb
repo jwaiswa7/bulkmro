@@ -1,6 +1,7 @@
 class TrainingsController < ApplicationController
   layout 'trainings/layouts/application'
-
+  
+  before_action :authenticate_overseer!
   before_action :get_trainings
   before_action :get_training, only: :show
 
@@ -14,7 +15,7 @@ class TrainingsController < ApplicationController
 
   def get_trainings
     @trainings = YAML.load_file(Rails.root.join('config/trainings.yml'))
-    @categories = @trainings.map {|t| t['category']}.uniq.sort
+    @categories = ["Catalog","Sales","Logistics","Reports","Customer Portal","Miscellaneous"]
     @training_ordered = Hash.new
     @categories.each do | category|
       @training_ordered[category] = @trainings.select {|training| training['category'] == category }
