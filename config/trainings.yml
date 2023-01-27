@@ -2,79 +2,85 @@
   title: Abbreviations
   slug: abbreviations
   type: text
-  category: Catalog
+  category: Miscellaneous
   url: "cool"
 - 
   title: AR Invoice requests
   slug: ar_invoice_requests
   type: video
-  category: Catalog
+  category: Logistics
   url: "https://bulkmro-public-files.s3.amazonaws.com/Logistics/create_ar_invoice_request.mp4"
+-
+  title: AR Invoice user guide
+  slug: ar_invoice_user_guide
+  type: text
+  category: Logistics
+  url: "https://docs.google.com/document/d/1Jnid9ZhcLd1AbigeMZbf-UJagalfLD27p764fD5H9Qg/edit?usp=share_link" 
 - 
   title: Create GRPO request
   slug: create_grpo_request
   type: video
-  category: Catalog
+  category: Logistics
   url: "https://bulkmro-public-files.s3.amazonaws.com/Logistics/create_grpo_request.mp4"
 - 
   title: Create Inward dispatch
   slug: create_inward_dispatch
   type: video
-  category: Catalog
+  category: Logistics
   url: "https://bulkmro-public-files.s3.amazonaws.com/Logistics/create_inward_dispatch.mp4"
 - 
   title: Create New quotation
   slug: create_new_quotation
   type: video
-  category: Catalog
-  url: "https://drive.google.com/file/d/1kOajXT-URWgKKcI4Ty3Q_j-ilJSxMeIQ/view?usp=share_link"
+  category: Sales
+  url: "https://bulkmro-public-files.s3.amazonaws.com/Sales/create_new_quotation.mp4"
 - 
   title: Create New sales order
   slug: create_new_sales_order
   type: video
-  category: Catalog
-  url: "https://drive.google.com/file/d/1FsY_0j7Qk9GV08iVsptvMEWFzPnk0dKd/view?usp=share_link"
+  category: Sales
+  url: "https://bulkmro-public-files.s3.amazonaws.com/Sales/create_new_sales_order.mp4"
 - 
   title: Create Outward dispatch
   slug: create_outward_dispatch
   type: video
-  category: Catalog
+  category: Logistics
   url: "https://bulkmro-public-files.s3.amazonaws.com/Logistics/create_outward_dispatch.mp4"
 - 
   title: Create Supplier PO
   slug: create_supplier_po
   type: video
-  category: Catalog
-  url: "https://drive.google.com/file/d/1ehQse36BKvMMzsWh22PiqcNlbvbLUdyI/view?usp=share_link"
+  category: Sales
+  url: "https://bulkmro-public-files.s3.amazonaws.com/Sales/create_supplier_po.mp4"
 - 
   title: Create New Inquiry
   slug: create_new_inquiry
   type: video
-  category: Catalog
-  url: "https://drive.google.com/file/d/1G5CiFUdLjmd0VMRwcwjvIt22tK7BfePd/view?usp=share_link"
+  category: Sales
+  url: "https://bulkmro-public-files.s3.amazonaws.com/Sales/create_new_inquiry.mp4"
 - 
-  title: Link Supplier
+  title: Mass Link Supplier
   slug: link_supplier
   type: video
-  category: Catalog
-  url: "https://drive.google.com/file/d/1ka7mzNaaeywlQy2GJ6dhFvcmPk4T_lPw/view?usp=share_link"
+  category: Sales
+  url: "https://bulkmro-public-files.s3.amazonaws.com/Sales/mass_link_supplier.mp4"
 - 
   title: Customer Portal
   slug: customer_portal
   type: text
-  category: Catalog
+  category: Miscellaneous
   url: "https://docs.google.com/document/d/1XG8kdCXgwl2ZiHH3wcdOLTNBaB5XIm3qIeHc-DaP6kA/edit?usp=share_link"
 - 
-  title: Bulk upload feature
-  slug: bulk_upload_feature
+  title: RFQ Bulk upload feature
+  slug: rfq_bulk_upload_feature
   type: video
-  category: Catalog
-  url: "https://drive.google.com/file/d/1aN2WeQFsW5YFtpTBds59wO9NrkO1OPtR/view?usp=share_link"
+  category: Sales
+  url: "https://bulkmro-public-files.s3.amazonaws.com/Sales/rfq_bulk_upload_feature.mp4"
 - 
   title: Update material rediness followup
   slug: update_material_rediness_follow_up
   type: video
-  category: Catalog
+  category: Logistics
   url: "https://bulkmro-public-files.s3.amazonaws.com/Logistics/update_material_rediness_follow_up.mp4"
 - 
   title: Add new products
@@ -124,3 +130,51 @@
   type: video
   category: Customer Portal
   url: "https://bulkmro-public-files.s3.amazonaws.com/Customer+Portal/wish_list.mp4"
+- 
+  title: Understanding the customer order report
+  slug: customer_order_report
+  type: text
+  category: Reports
+  url: "https://docs.google.com/document/d/14Pv7o24qgVjQXtQVYVKDnkx-wzv3Ef-okZNgeXu6vUE/edit?usp=share_link"
+- 
+  title: Activities Report
+  slug: activities_report
+  type: video
+  category: Sales
+  url: "https://bulkmro-public-files.s3.amazonaws.com/Sales/activities_flow.mp4"
+- 
+  title: Activities reminder and notifications
+  slug: activities_reminder_and_notifications
+  type: video
+  category: Sales
+  url: "https://bulkmro-public-files.s3.amazonaws.com/Sales/activities_reminder_and_notifications.mp4"
+- 
+  title: RFQ bulk Upload user guide
+  slug: rfq_bulk_user_guide
+  type: text
+  category: Sales
+  url: "https://docs.google.com/document/d/1XuRBLOf0wKVkO5Bkqjt-Sj6z6AhM0orIPGj7yZK0KHg/edit?usp=share_link"
+- 
+  title: Cancel POs form the system
+  slug: cancel_pos_from_the_system
+  type: text
+  category: Sales
+  url: "https://docs.google.com/document/d/1owu_xB1xRE5I_Gvm9uklvbzlUw-KjL6byqKbjv6_GbE/edit?usp=share_link"
+- 
+  title: Cancel POs form the system by manager
+  slug: cancel_pos_from_the_system_by_manager
+  type: text
+  category: Sales
+  url: "https://docs.google.com/document/d/1owu_xB1xRE5I_Gvm9uklvbzlUw-KjL6byqKbjv6_GbE/edit?usp=share_link"
+- 
+  title: PO cancellation request by ISP
+  slug: po_cancellation_request_by_isp
+  type: text
+  category: Sales
+  url: "https://docs.google.com/document/d/1dshy83SaK-ftQ68D2vViD4aNK9V_CdRwd2JzoEPmHkI/edit?usp=share_link"
+- 
+  title: Create sales order
+  slug: create_sales_order
+  type: text
+  category: Sales
+  url: "https://docs.google.com/document/d/1UrrRzXJ3Ox-JptwVHBUsJGN_0VarWT0l6R5sceS8JFY/edit?usp=share_link"
