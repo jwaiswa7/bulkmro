@@ -24,17 +24,9 @@ body{
 
 .wrapper .sidebar ul li a{
   display: block;
-  padding: 13px 30px;
-  border-bottom: 1px solid #fff;
+  padding: 5px 0px 5px 10px;
   color: #fff;
-  font-size: 16px;
   position: relative;
-}
-
-.wrapper .sidebar ul li a .icon{
-  color: #dee4ec;
-  width: 30px;
-  display: inline-block;
 }
 
 .wrapper .sidebar ul li a:hover,
@@ -59,4 +51,24 @@ body{
 
 ol * {
   list-style: auto;
+}
+.card {
+  background: #FF8800;
+  border-bottom: none;
+  border-left: none;
+  border-right: none;
+}
+
+.card-header {
+  border-bottom: none;
+}
+
+.card-body {
+  padding: 0px;
+}
+
+.card-header a {
+  font-weight: bold;
+  color: #eee;
+  font-size: 16px;
 }

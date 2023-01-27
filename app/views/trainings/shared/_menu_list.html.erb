@@ -1,0 +1,9 @@
+<ul>
+   <% menu_items.each do |training| %>
+     <li>
+        <a href="<%= training_path(id: training['slug']) %>">
+        <span class="item"><%= training['title'] %></span>
+        </a>
+     </li>
+   <% end %>
+</ul>
