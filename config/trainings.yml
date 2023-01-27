@@ -130,3 +130,9 @@
   type: video
   category: Customer Portal
   url: "https://bulkmro-public-files.s3.amazonaws.com/Customer+Portal/wish_list.mp4"
+- 
+  title: Understanding the customer order report
+  slug: customer_order_report
+  type: text
+  category: Reports
+  url: "https://docs.google.com/document/d/14Pv7o24qgVjQXtQVYVKDnkx-wzv3Ef-okZNgeXu6vUE/edit?usp=share_link"
