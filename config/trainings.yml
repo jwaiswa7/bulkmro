@@ -2,69 +2,125 @@
   title: Abbreviations
   slug: abbreviations
   type: text
+  category: Catalog
   url: "cool"
 - 
   title: AR Invoice requests
   slug: ar_invoice_requests
   type: video
+  category: Catalog
   url: "https://bulkmro-public-files.s3.amazonaws.com/Logistics/create_ar_invoice_request.mp4"
 - 
   title: Create GRPO request
   slug: create_grpo_request
   type: video
+  category: Catalog
   url: "https://bulkmro-public-files.s3.amazonaws.com/Logistics/create_grpo_request.mp4"
 - 
   title: Create Inward dispatch
   slug: create_inward_dispatch
   type: video
+  category: Catalog
   url: "https://bulkmro-public-files.s3.amazonaws.com/Logistics/create_inward_dispatch.mp4"
 - 
   title: Create New quotation
   slug: create_new_quotation
   type: video
+  category: Catalog
   url: "https://drive.google.com/file/d/1kOajXT-URWgKKcI4Ty3Q_j-ilJSxMeIQ/view?usp=share_link"
 - 
   title: Create New sales order
   slug: create_new_sales_order
   type: video
+  category: Catalog
   url: "https://drive.google.com/file/d/1FsY_0j7Qk9GV08iVsptvMEWFzPnk0dKd/view?usp=share_link"
 - 
   title: Create Outward dispatch
   slug: create_outward_dispatch
   type: video
+  category: Catalog
   url: "https://bulkmro-public-files.s3.amazonaws.com/Logistics/create_outward_dispatch.mp4"
 - 
   title: Create Supplier PO
   slug: create_supplier_po
   type: video
+  category: Catalog
   url: "https://drive.google.com/file/d/1ehQse36BKvMMzsWh22PiqcNlbvbLUdyI/view?usp=share_link"
 - 
   title: Create New Inquiry
   slug: create_new_inquiry
   type: video
+  category: Catalog
   url: "https://drive.google.com/file/d/1G5CiFUdLjmd0VMRwcwjvIt22tK7BfePd/view?usp=share_link"
 - 
   title: Link Supplier
   slug: link_supplier
   type: video
+  category: Catalog
   url: "https://drive.google.com/file/d/1ka7mzNaaeywlQy2GJ6dhFvcmPk4T_lPw/view?usp=share_link"
 - 
   title: Customer Portal
   slug: customer_portal
   type: text
+  category: Catalog
   url: "https://docs.google.com/document/d/1XG8kdCXgwl2ZiHH3wcdOLTNBaB5XIm3qIeHc-DaP6kA/edit?usp=share_link"
 - 
   title: Bulk upload feature
   slug: bulk_upload_feature
   type: video
+  category: Catalog
   url: "https://drive.google.com/file/d/1aN2WeQFsW5YFtpTBds59wO9NrkO1OPtR/view?usp=share_link"
 - 
-  title: Update material rediness follow_up
+  title: Update material rediness followup
   slug: update_material_rediness_follow_up
   type: video
+  category: Catalog
   url: "https://bulkmro-public-files.s3.amazonaws.com/Logistics/update_material_rediness_follow_up.mp4"
 - 
-  title: Add products to Sprint
-  slug: add_products_to_sprint
+  title: Add new products
+  slug: add_new_products
   type: text
+  category: Catalog
   url: "https://docs.google.com/document/d/1KhLRDI1WK1GTeuwPKy9n4IbtPG3ZwkRuXrmP9a3vhaA/edit?usp=share_link"
+- 
+  title: Add multiple products
+  slug: add_multiple_products
+  type: text
+  category: Catalog
+  url: "https://docs.google.com/document/d/1bM4XGtb1dJHLcIWIDlQleqzamEy8APSDJ0ZgD4a9oCI/edit?usp=share_link"
+- 
+  title: Admin user access
+  slug: customer_admin_user_access
+  type: video
+  category: Customer Portal
+  url: "https://bulkmro-public-files.s3.amazonaws.com/Customer+Portal/customer_admin_user_access.mp4"
+- 
+  title: Portal Overview
+  slug: customer_portal_overview
+  type: video
+  category: Customer Portal
+  url: "https://bulkmro-public-files.s3.amazonaws.com/Customer+Portal/customer_portal_overview.mp4"
+- 
+  title: Order approval
+  slug: customer_order_approval
+  type: video
+  category: Customer Portal
+  url: "https://bulkmro-public-files.s3.amazonaws.com/Customer+Portal/customer_order_approval.mp4"
+- 
+  title: Place an order
+  slug: place_an_order
+  type: video
+  category: Customer Portal
+  url: "https://bulkmro-public-files.s3.amazonaws.com/Customer+Portal/customer_portal_place_order.mp4"
+- 
+  title: RFQ
+  slug: r_f_q
+  type: video
+  category: Customer Portal
+  url: "https://bulkmro-public-files.s3.amazonaws.com/Customer+Portal/rfq_for_customer_portal.mp4"
+- 
+  title: Wish List
+  slug: wish_list
+  type: video
+  category: Customer Portal
+  url: "https://bulkmro-public-files.s3.amazonaws.com/Customer+Portal/wish_list.mp4"

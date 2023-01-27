@@ -29,21 +29,34 @@
       <div class="wrapper">
          <!--Top menu -->
          <div class="sidebar">
-            <!--profile image & text-->
-            <ul>
-               <li>
-                  <a href="<%= trainings_path %>" class="active">
-                  <span class="item">Home</span>
-                  </a>
-               </li>
-               <% @trainings.each do |training| %>
-                 <li>
-                    <a href="<%= training_path(id: training['slug']) %>">
-                    <span class="item"><%= training['title'] %></span>
-                    </a>
-                 </li>
-               <% end %>
-            </ul>
+         <ul>
+            <li>
+               <a href="<%= root_path %>">
+               <span class="item">Back to App</span>
+               </a>
+            </li>
+            <li>
+               <a href="<%= trainings_path %>">
+               <span class="item">Trainings home</span>
+               </a>
+            </li>
+         </ul>
+         <div id="accordion">
+         <% @categories.each_with_index do | category, index| %>
+           <div class="card">
+             <div class="card-header">
+               <a class="card-link" data-toggle="collapse" href="#collapse<%= category.titleize.delete(" ") %>">
+                 <%= category %>
+               </a>
+             </div>
+             <div id="collapse<%= category.titleize.delete(" ") %>" class="collapse" data-parent="#accordion">
+               <div class="card-body">
+               <%= render :partial => 'trainings/shared/menu_list', :locals => {:menu_items => @training_ordered[category] } %>
+               </div>
+             </div>
+           </div>
+         <% end %>
+       </div>
          </div>
          <!--menu item-->
          <div class="main">
