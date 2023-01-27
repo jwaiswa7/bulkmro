@@ -8,19 +8,25 @@
   title: AR Invoice requests
   slug: ar_invoice_requests
   type: video
-  category: Undefined
+  category: Logistics
   url: "https://bulkmro-public-files.s3.amazonaws.com/Logistics/create_ar_invoice_request.mp4"
+-
+  title: AR Invoice user guide
+  slug: ar_invoice_user_guide
+  type: text
+  category: Logistics
+  url: "https://docs.google.com/document/d/1Jnid9ZhcLd1AbigeMZbf-UJagalfLD27p764fD5H9Qg/edit?usp=share_link" 
 - 
   title: Create GRPO request
   slug: create_grpo_request
   type: video
-  category: Undefined
+  category: Logistics
   url: "https://bulkmro-public-files.s3.amazonaws.com/Logistics/create_grpo_request.mp4"
 - 
   title: Create Inward dispatch
   slug: create_inward_dispatch
   type: video
-  category: Undefined
+  category: Logistics
   url: "https://bulkmro-public-files.s3.amazonaws.com/Logistics/create_inward_dispatch.mp4"
 - 
   title: Create New quotation
@@ -38,7 +44,7 @@
   title: Create Outward dispatch
   slug: create_outward_dispatch
   type: video
-  category: Undefined
+  category: Logistics
   url: "https://bulkmro-public-files.s3.amazonaws.com/Logistics/create_outward_dispatch.mp4"
 - 
   title: Create Supplier PO
@@ -74,7 +80,7 @@
   title: Update material rediness followup
   slug: update_material_rediness_follow_up
   type: video
-  category: Undefined
+  category: Logistics
   url: "https://bulkmro-public-files.s3.amazonaws.com/Logistics/update_material_rediness_follow_up.mp4"
 - 
   title: Add new products
