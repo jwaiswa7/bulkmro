@@ -14,7 +14,7 @@ class TrainingsController < ApplicationController
 
   def get_trainings
     @trainings = YAML.load_file(Rails.root.join('config/trainings.yml'))
-    @categories = @trainings.map {|t| t['category']}.uniq
+    @categories = @trainings.map {|t| t['category']}.uniq.sort
     @training_ordered = Hash.new
     @categories.each do | category|
       @training_ordered[category] = @trainings.select {|training| training['category'] == category }
