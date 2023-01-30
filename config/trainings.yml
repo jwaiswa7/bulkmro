@@ -47,6 +47,12 @@
   category: Sales
   url: "https://bulkmro-public-files.s3.amazonaws.com/Sales/create_supplier_po.mp4"
 - 
+  title: RFQ bulk Upload user guide
+  slug: rfq_bulk_user_guide
+  type: text
+  category: Sales
+  url: "https://docs.google.com/document/d/1XuRBLOf0wKVkO5Bkqjt-Sj6z6AhM0orIPGj7yZK0KHg/edit?usp=share_link"
+- 
   title: Create New Inquiry
   slug: create_new_inquiry
   type: video
@@ -169,32 +175,20 @@
   category: Sales
   url: "https://bulkmro-public-files.s3.amazonaws.com/Sales/activities_reminder_and_notifications.mp4"
 - 
-  title: RFQ bulk Upload user guide
-  slug: rfq_bulk_user_guide
-  type: text
-  category: Sales
-  url: "https://docs.google.com/document/d/1XuRBLOf0wKVkO5Bkqjt-Sj6z6AhM0orIPGj7yZK0KHg/edit?usp=share_link"
-- 
-  title: Cancel POs form the system
-  slug: cancel_pos_from_the_system
-  type: text
-  category: Sales
-  url: "https://docs.google.com/document/d/1owu_xB1xRE5I_Gvm9uklvbzlUw-KjL6byqKbjv6_GbE/edit?usp=share_link"
-- 
-  title: Cancel POs form the system by manager
+  title: Cancel POs Form The System By Manager
   slug: cancel_pos_from_the_system_by_manager
   type: text
   category: Sales
   url: "https://docs.google.com/document/d/1owu_xB1xRE5I_Gvm9uklvbzlUw-KjL6byqKbjv6_GbE/edit?usp=share_link"
 - 
-  title: PO cancellation request by ISP
+  title: PO Cancellation Request By ISP
   slug: po_cancellation_request_by_isp
   type: text
   category: Sales
-  url: "https://docs.google.com/document/d/1dshy83SaK-ftQ68D2vViD4aNK9V_CdRwd2JzoEPmHkI/edit?usp=share_link"
+  url: "https://docs.google.com/document/d/1dshy83SaK-ftQ68D2vViD4aNK9V_CdRwd2JzoEPmHkI/edit?usp=sharing"
 - 
-  title: Create sales order
-  slug: create_sales_order
+  title: Sales Order Cancellation
+  slug: sales_order_cancellation
   type: text
   category: Sales
-  url: "https://docs.google.com/document/d/1UrrRzXJ3Ox-JptwVHBUsJGN_0VarWT0l6R5sceS8JFY/edit?usp=share_link"
+  url: "https://docs.google.com/document/d/1UrrRzXJ3Ox-JptwVHBUsJGN_0VarWT0l6R5sceS8JFY/edit?usp=sharing"
