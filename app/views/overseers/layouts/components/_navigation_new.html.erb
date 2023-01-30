@@ -50,6 +50,12 @@
               Release Notes
             </a>
           </div>
+          <div id="faq">
+            <a href="<%= trainings_path %>" class="bmro-dashbord-click bmro-big-heading bmro-dash-heading-menu">
+              Trainings
+            </a>
+          </div>
+
           <!--          <div class="bmro-select-level-one-to-see-second-and-third" id="nav-favourites-heading">-->
           <!--            <p class="bmro-level-one-heading bmro-heading-docs m-0">Favourites</p>-->
           <!--          </div>-->
@@ -392,9 +398,6 @@
         <div class="dropdown-menu bmro-drop-pos" aria-labelledby="dropdownMenuButton">
           <%= link_to edit_overseers_profile_path, class: 'bmro-dropdown-item bmro-new-size bmro-new-fw' do %>
             <i class="bmro-profile-icon"></i>&nbsp;My Profile
-          <% end %>
-          <%= link_to trainings_path, class: 'bmro-dropdown-item bmro-new-size bmro-new-fw', target: :_blank do %>
-            <i class="brmo-question-circle"></i>&nbsp;Trainings
           <% end %>
           <%= link_to destroy_overseer_session_path, method: :delete, :class => 'bmro-dropdown-item bmro-new-size bmro-new-fw' do %>
             <i class="bmro-signout-icon"></i>&nbsp;Sign Out
