@@ -1,10 +1,4 @@
 - 
-  title: Abbreviations
-  slug: abbreviations
-  type: text
-  category: Miscellaneous
-  url: "cool"
-- 
   title: AR Invoice requests
   slug: ar_invoice_requests
   type: video
@@ -64,12 +58,38 @@
   type: video
   category: Sales
   url: "https://bulkmro-public-files.s3.amazonaws.com/Sales/mass_link_supplier.mp4"
+
 - 
-  title: Customer Portal
-  slug: customer_portal
+  title: Filter Supplier By Brands
+  slug: filter_supplier_by_brands
+  type: video
+  category: Miscellaneous
+  url: "https://bulkmro-public-files.s3.amazonaws.com/filter_suppliers_by_brand.mp4"
+- 
+  title: Request Quotation Revision User Guide
+  slug: request_quotation_revision_user_guide
   type: text
   category: Miscellaneous
-  url: "https://docs.google.com/document/d/1XG8kdCXgwl2ZiHH3wcdOLTNBaB5XIm3qIeHc-DaP6kA/edit?usp=share_link"
+  url: "https://docs.google.com/document/d/1FoiIW4gTX2aWyzhr5OKwBdbohszPaexa03-j3_r8ZRo/edit?usp=sharing"
+- 
+  title: On-boarding Guidelines
+  slug: on_boarding_guidelines
+  type: text
+  category: Miscellaneous
+  url: "https://docs.google.com/document/d/1DNGJPKRVI5Yu1eBSHpoQZvlXC_UW07gVoYcO6pnbseI/edit?usp=sharing"
+- 
+  title: Abbreviations
+  slug: abbreviations
+  type: text
+  category: Miscellaneous
+  url: "https://docs.google.com/document/d/1JXCHyNnNOSE9GuLHN3QuX0e-07JuyuHG8IN94jR4QiU/edit?usp=sharing"
+- 
+  title: Helpdesk User Manual
+  slug: helpdesk_user_manual
+  type: text
+  category: Miscellaneous
+  url: "https://docs.google.com/document/d/1gpCaA3jLdFDPYuqWC_VI3IPhsJdulC3C-Qy6N6iw5w4/edit?usp=sharing"
+
 - 
   title: RFQ Bulk upload feature
   slug: rfq_bulk_upload_feature
