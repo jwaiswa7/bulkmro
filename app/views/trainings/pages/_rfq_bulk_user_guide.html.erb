@@ -1,0 +1,184 @@
+<p><br></p>
+<p><strong>RFQ Bulk Upload</strong></p>
+<p><br></p>
+<p>When an user is adding more than 50 products, it is a very laborious process to map individual vendors to the product by entering the buying price and tax details. Hence, we require the system to bulk upload through excel.</p>
+<p><br></p>
+<p><strong>Pre-requisites</strong></p>
+<p><br></p>
+<ol>
+    <li>
+        <p>The inquiry should be created in Sprint.</p>
+    </li>
+    <li>
+        <p>The products should have a SKU number / BM number and should be synced with SAP.</p>
+    </li>
+    <li>
+        <p>The products that you wish to quote should be added to the required inquiry before uploading the RFQ import template.&nbsp;</p>
+    </li>
+    <li>
+        <p>All the mandatory fields have to be filled in the Excel template.</p>
+    </li>
+</ol>
+<p><br></p>
+<p>How to use this feature?</p>
+<p>Follow the steps given below to create RFQ import and sales quotation by uploading the excel template.</p>
+<p><br></p>
+<ol>
+    <li>
+        <p>First open the inquiry by navigating through the path - Menu &gt; Sales &gt; Inquiry List. Enter the inquiry number in the search bar and click on the inquiry number. A new page should open in the new tab.</p>
+    </li>
+</ol>
+<p><br></p>
+<ol start="2">
+    <li>
+        <p>Click on the&nbsp;imports&nbsp;tab of the inquiry. In case you cannot view the imports tab, replace the &lsquo;/edit&rsquo; part of the page link by &lsquo;imports&rsquo;. &nbsp;For example, to open the imports tab replace the highlighted part of the link (<a href="https://sprint.bulkmro.com/overseers/inquiries/qqfYwv/edit">https://sprint.bulkmro.com/overseers/inquiries/qqfYwv/edit</a>)&nbsp;by&nbsp;/imports.&nbsp;You will view following page on the screen</p>
+    </li>
+</ol>
+<p><img src="https://lh5.googleusercontent.com/8XDsbe3FfFFADOAgEO-kGQPDpk3HOAx8tynNJo-gt7l98y3_LwCycL1kOM8XLp9xoyITTfo3yPLyOJIjVUpkGtpptpEGBckjfKJl66H_y2_hC7MRamSOtWjIZddxFK2uE0xzX35Mu5x-Eucu1ATyGYwfjBcX-pp9UGTA9LpA-zaA2LjUBaKkunE6l01Q6Q" width="624" height="153"></p>
+<ol start="3">
+    <li>
+        <p>Click on the &lsquo;Create RFQ Import&rsquo; button. This will open another page where you can download the template.<img src="https://lh6.googleusercontent.com/nBwV2SVAHADFTwSf10qNWuL8DVcWozJ12WOXINP6oWWBtPXMS7EtN70SwK4_v83albUOrS2mV6VFKE3u7OrLSgwnubBQTDAgzIk3zz4HMgUaqgV5ZID4v9PezChZgGvBH_K8kCTI7KE0iuP_J7kVPxhjhervPhftukKYEjX9kHftCFv13I-0ck5hBvRNjA" width="624" height="165"></p>
+    </li>
+    <li>
+        <p>Click on the &lsquo;Download RFQ Template&rsquo; button. This will download an Excel template to your computer. Locate and open that Excel file. The template should look like this
+            </p>
+            <img src="https://lh6.googleusercontent.com/e3LD-k5gN5yTqC7GcZ0oo4TN_FYiEqznQfNncuIjjgmSOaaDgLEe5Nmp4bWxwGlqBn37rbglagpzc1NqR4rhpVAB8ig5ezXHFQysSyuAbvXyBM_WweAJ_3xd4Y7U3roOsr6kxsmBVUNEoFd9YxWVu6-X5LoSmT-JNhO99xqaNv7JWGWJ6bG0oGRA_xG6-w" width="624" height="107">
+    </li>
+</ol>
+<p><br></p>
+<ol start="5">
+    <li>
+        <p>Enter values in the columns as given below-&nbsp;</p>
+        <ol>
+            <li>
+                <p>&nbsp;Sequence-&nbsp;</p>
+            </li>
+        </ol>
+    </li>
+</ol>
+<p>This is a serial number field in which order you wish to display the line items in your quotation. This is not a mandatory field so you can keep it blank if you want.</p>
+<ol start="2">
+    <li>
+        <p>&nbsp;Product Name -&nbsp;</p>
+    </li>
+</ol>
+<p>&nbsp;In this field you can enter the product description you wish to print on the quotation / sales order / invoice. You can keep this field blank if you do not have a custom description. The system will automatically capture the product name from the database for the selected SKU / BM number. This is not a mandatory field.</p>
+<ol start="3">
+    <li>
+        <p>&nbsp;SKU-</p>
+    </li>
+</ol>
+<p>Enter the BM number of the product. This is a&nbsp;Mandatory&nbsp;field.</p>
+<ol start="4">
+    <li>
+        <p>&nbsp;Min_lead_time_weeks -&nbsp;</p>
+    </li>
+</ol>
+<p>Enter the number of minimum lead time in weeks to be printed on the quotation.&nbsp;</p>
+<ol start="5">
+    <li>
+        <p>Max_lead_time_weeks -&nbsp;</p>
+    </li>
+</ol>
+<p>Enter the number of maximum lead time in weeks to be printed on the quotation.</p>
+<ol start="6">
+    <li>
+        <p>Unit Buying Price -</p>
+    </li>
+</ol>
+<p>Enter the unit buying price of the product. This is a mandatory field.&nbsp;</p>
+<ol start="7">
+    <li>
+        <p>Unit Selling Price -</p>
+    </li>
+</ol>
+<p>Enter the unit selling price. This is a mandatory field.</p>
+<ol start="8">
+    <li>
+        <p>Gst_percentage -</p>
+    </li>
+</ol>
+<p>Enter the tax rate in numbers. For example, if your tax rate is 18% then enter 18. Do&nbsp;NOT&nbsp;enter &lsquo;%&rsquo; or 0.18. This is a mandatory field.</p>
+<ol start="9">
+    <li>
+        <p>Tax code-&nbsp;</p>
+    </li>
+</ol>
+<p>Enter the correct 8-digit HSN/ 6-digit SAC code in the field. Please note that your sales order will be rejected if the 8-digit HSN / 6-digit SAC code you entered is incorrect. To avoid any repetition, please make sure to enter the correct code. This is a mandatory field.</p>
+<ol start="10">
+    <li>
+        <p>Freight -&nbsp;</p>
+    </li>
+</ol>
+<p>Enter the total freight value in INR if any. This is not a mandatory field.</p>
+<ol start="11">
+    <li>
+        <p>Vendor Code -</p>
+    </li>
+</ol>
+<p>Enter the SAP business ID of the supplier you are buying the product from. You can find the SAP business ID on the company&rsquo;s page. This is a mandatory field.<img src="https://lh6.googleusercontent.com/wXGlZyzTzMqTEAW_nFQxJBamFOpxDMKWkc_ibTN5GuTIPS4Df6knuCD7zXF8Prnk9nhbiJGmtkzdgrBhlD5evSRE3twDK0gDqSmX2n54UI4euHbx_K8OwoIdhVl6COo5Job4XKQ4q96xC2drk7snFxEdXaZtcTQNi2xXuySfZZ3wMuz2A-SiKBXUfb76jA" width="562" height="151"></p>
+<ol start="12">
+    <li>
+        <p>Vendor_name</p>
+    </li>
+</ol>
+<p>Enter the Supplier name if you want. This is not a mandatory field.</p>
+<ol start="6">
+    <li>
+        <p>Once you fill all the mandatory fields, your template should look like this
+            </p>
+            <img src="https://lh4.googleusercontent.com/kwJhGUFZORfUKEF9rtaAadCazJx2cFsi05L-pvXTSOLeAjBYVdpNtY2OfZ4Mz8CC5f98ggbeKw7CwLUUElbvIqr4Ad9cPJhncgG-fDXntOxsDJjHq2x4O6jW9HG2zoQwxKoTXKysjGicERs2sRU8JYT0WSfP2m8ifOR33BG4Fwa6OTfOFZM8aUkSsRPwOw" width="597" height="214">
+    </li>
+    <li>
+        <p>Now save and close the Excel file. Open the inquiry imports page again from where you downloaded the template. Click on &lsquo;Browse&rsquo; and upload the saved template.&nbsp;</p>
+    </li>
+    <li>
+        <p>While the process runs in the background, you are not required to stay on the page. You can navigate to the other page to perform other tasks. Once the import is complete, you will receive an email notification as shown below.</p>
+    </li>
+</ol>
+<p><img src="https://lh5.googleusercontent.com/YcI-2VOw_f3_DRmVLsFh8gJv2iTNrblPEnoyt1P0b-mmrupJwtfrBvjrKrxNHJ4CXGQqFVcfGI1-henYzzSHzJUrtLHvwEM0Av88UHkQBU2Qj25fnGb1AwsyWA-nJZs6EAso8JPMjfqBB58XN9pPg8-l9aPFOP-EdYtZRVUZrcbR7ce0IOU315TaVkQEZg" width="633" height="138"></p>
+<ol start="9">
+    <li>
+        <p>The link in the email should navigate you to the &lsquo;Imports page&rsquo; as shown below
+            </p>
+            <img src="https://lh5.googleusercontent.com/iFniGX1Kk2OfYPtChNWhjjaeoPjavOH5T35XoxYlTXvRft39-6b4OCnpyzTWJd7PbQZ4k_7G6S0YbCdrl1bQdoX5Dfmy4_4Vp4qO3eKvs1XhZE_j-7twqbcTuMfKRyA4Vz27SFxkC24gUcqgte2u6qyL8CKEUdpjh-AbYpGqjjM8zb-3Gd5ndA6pFr-Abw" width="654" height="231">
+    </li>
+    <li>
+        <p>If you click on the number under the &lsquo;Failed&rsquo; column, you can view the BM numbers that are not uploaded. In this case your quotation will be saved as a draft on the &lsquo;Sales Quotes&rsquo; tab. You can make the changes manually and save the quotation. In case you require to upload the template again, please make sure that you save the quotation draft before proceeding with the upload.&nbsp;
+            </p>
+            <img src="https://lh3.googleusercontent.com/4sYqIXY3PUY9xQSIxkVzV43VMzQ-85IpxRTBV5Kb8KBXNo0xONwxp6QcdxMzVCbDW_qKjmVSQCG1_WWHJ8Q20hst2ZPxvGT74pYSeFFMxKp3mWmaG7qeGehxej0mLQfforOAmYb3FdjPKIjlMbofVqVgL1KjeDpgSSi5KiXFNESZIu6QYbBy9uk-tFXdBw" width="654" height="219">
+    </li>
+</ol>
+<p><br></p>
+<ol start="11">
+    <li>
+        <p>In the case where all the products are uploaded successfully, the system will automatically save a quotation itself. You are only required to email the quotation from Sprint in order to change its status to 'Quotation Sent'</p>
+    </li>
+</ol>
+<p><br></p>
+<p><strong>Important things to remember:</strong></p>
+<p><br></p>
+<ol>
+    <li>
+        <p>Make sure to enter correct data in the correct format in the Excel template.&nbsp;</p>
+    </li>
+    <li>
+        <p>Make sure you enter all the mandatory fields in the Excel template.</p>
+    </li>
+    <li>
+        <p>Please do not click the refresh page while the upload is taking place. The process will run in the background and you can navigate to other pages while it completes the import.</p>
+    </li>
+    <li>
+        <p>Make sure to add only those BM numbers to the RFQ template that you have added to the inquiry. It will give you an error if the BM number is not found in an inquiry.&nbsp;</p>
+    </li>
+    <li>
+        <p>Please enter the total freight value in the freight column and not the unit freight.&nbsp;</p>
+    </li>
+    <li>
+        <p>Entering the vendor code is a mandatory requirement, hence make sure you add a vendor code in the template.&nbsp;</p>
+    </li>
+</ol>
+<p><br></p>
+<p>Video Tutorial</p>
+<p><br></p>
+<p><a href="https://drive.google.com/file/d/1aN2WeQFsW5YFtpTBds59wO9NrkO1OPtR/view?usp=sharing">Click here&nbsp;</a>for the video tutorial of this feature.</p>
