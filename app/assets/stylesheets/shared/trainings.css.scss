@@ -16,6 +16,7 @@ body{
   margin-bottom: 20px;
 }
 
+
 .wrapper .sidebar{
   background: #FF8800;
   position: fixed;
@@ -72,6 +73,10 @@ ol * {
 
 .card-body {
   padding: 0px;
+}
+
+.training_link {
+  color: #FF8800 !important;
 }
 
 .card-header a {
