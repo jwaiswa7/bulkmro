@@ -78,12 +78,6 @@
   category: Miscellaneous
   url: "https://bulkmro-public-files.s3.amazonaws.com/filter_suppliers_by_brand.mp4"
 - 
-  title: Request Quotation Revision User Guide
-  slug: request_quotation_revision_user_guide
-  type: text
-  category: Miscellaneous
-  url: "https://docs.google.com/document/d/1FoiIW4gTX2aWyzhr5OKwBdbohszPaexa03-j3_r8ZRo/edit?usp=sharing"
-- 
   title: On-boarding Guidelines
   slug: on_boarding_guidelines
   type: text
@@ -156,6 +150,12 @@
   type: video
   category: Customer Portal
   url: "https://bulkmro-public-files.s3.amazonaws.com/Customer+Portal/wish_list.mp4"
+- 
+  title: Request Quotation Revision User Guide
+  slug: request_quotation_revision_user_guide
+  type: text
+  category: Customer Portal
+  url: "https://docs.google.com/document/d/1FoiIW4gTX2aWyzhr5OKwBdbohszPaexa03-j3_r8ZRo/edit?usp=sharing"
 - 
   title: Understanding the customer order report
   slug: customer_order_report
