@@ -9,6 +9,8 @@ class PoRequestRow < ApplicationRecord
   has_one :purchase_order_row
   # has_one :product, through: :inquiry_product
 
+  validates :valid_end_time, not_in_past: true
+
   # has_one :product, :through => :sales_order_row
 
   belongs_to :product, validate: false
