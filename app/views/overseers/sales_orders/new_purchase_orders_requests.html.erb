@@ -61,8 +61,14 @@
           <%= f.simple_fields_for :po_requests, @po_requests.values do |po_request| %>
             <div class="simple-row target-scroll" id="Top">
               <p class="text">
+                <div class="row">
+                  <div class="col-1">
                 <span class="lead text-black-50 text-small mt-1 mr-1">#<%= (@po_requests.index(po_request.object) || 0) %></span>
-                <strong><%= po_request.object.supplier.to_s %>: <%= po_request.object.supplier.try(:legacy_email) %></strong>
+                </div>
+                <div class="col-3">
+                <%= po_request.association :supplier,collection: [po_request.object.supplier], label_method: :to_s, include_blank: "Type Supplier", input_html: {class: 'select2-ajax select2-wrap-text bmro-select2-wrapText', :'data-source' => autocomplete_overseers_suppliers_path, :'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''}, label: false %>
+                </div>
+                </div>
                 <% if @po_requests.values.map(&:supplier).length > 1 %>
                   <%= link_to_remove_association po_request, {class: 'btn btn-danger align-self-center bmro-button', wrapper_class: 'simple-row', "data-v": "", "data-v-on:click": "dropRow(_index_)"} do %>
                     Remove Supplier
@@ -72,15 +78,15 @@
               </p>
             </div>
             <hr class="<%= f.object.po_requests.last == po_request.object ? 'd-none' : '' %>"/>
-            <% @index = @index + 1 %>
-          <% end %>
-        </div>
-        <div class="card-footer bmro-card-footer">
-          <% if is_authorized(@sales_order, 'create_purchase_orders_requests') %>
-            <%= button_tag(type: "submit", class: "btn btn-warning btn-block bmro-button") do %>
-              <i class="bmro-eye-icon mr-1"></i> Preview PO request
-            <% end %>
-          <% end %>
+             <% @index = @index + 1 %>
+             <% end %>
+                </div>
+                <div class="card-footer bmro-card-footer">
+              <% if is_authorized(@sales_order, 'create_purchase_orders_requests') %>
+                <%= button_tag(type: "submit", class: "btn btn-warning btn-block bmro-button") do %>
+                  <i class="bmro-eye-icon mr-1"></i> Preview PO request
+                <% end %>
+              <% end %>
 <!--          <div class="bmro-add-new-parant bmro-new-slide-on">-->
 <!--            <div class="bmro-add-new bmro-product-btn-parent">-->
 <!--              <div class="bmro-fl">-->

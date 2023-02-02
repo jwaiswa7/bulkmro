@@ -5,8 +5,28 @@ import updateOnContactSelect from "../poRequests/updateOnContactSelect";
 import validateLeadDate from "../poRequests/validateLeadDate";
 import massLeadDateUpdate from "../poRequests/massLeadDateUpdate";
 import onScrollandClickSideMenu from '../common/ScrollandClickSideMenu';
+import select2s from "../../components/select2s";
+
 
 const newPurchaseOrdersRequests = () => {
+
+    $('form').on('change', 'select[name*=supplier_id]', function (e) {
+        let reset = true;
+        onSupplierChange(this, reset);
+    }).find('select[name*=supplier_id]').each(function (e) {
+        let reset = false;
+        onSupplierChange(this, reset);
+    });
+
+
+    $('form').on('change', 'select[name*=contact_id]', function (e) {
+        let reset = true;
+        onContactChange(this, reset);
+    }).find('select[name*=contact_id]').each(function (e) {
+        let reset = false;
+        onContactChange(this, reset);
+    })
+
     $('#warehouse-div').attr('data-warehouse-id',$('#sales_order_po_requests_attributes_0_bill_to_id option:selected').data('warehouse-state'));
 
     $('#sales_order_po_requests_attributes_0_bill_to_id').on('change',function(){
@@ -36,4 +56,54 @@ const newPurchaseOrdersRequests = () => {
     onScrollandClickSideMenu();
 };
 
+let onSupplierChange = (container, reset) => {
+    let optionSelected = $("option:selected", container);
+    let select = $(container).closest('select');
+
+
+    if (optionSelected.exists() && optionSelected.val() !== '') {
+        if (reset) {
+            $("#sales_order_po_requests_attributes_0_bill_from_id").val(null);
+            $("#sales_order_po_requests_attributes_0_ship_from_id").val(null);
+            $("#sales_order_po_requests_attributes_0_contact_id").val(null);
+
+        }
+        $('form').find('input[name*=contact_phone]').val('');
+        $('form').find('input[name*=contact_email]').val('');
+        $('#sales_order_po_requests_attributes_0_bill_from_id').attr('data-source', Routes.autocomplete_overseers_company_addresses_path(optionSelected.val())).select2('destroy');
+        $('#sales_order_po_requests_attributes_0_ship_from_id').attr('data-source', Routes.autocomplete_overseers_company_addresses_path(optionSelected.val())).select2('destroy');
+        $('#sales_order_po_requests_attributes_0_contact_id').attr('data-source', Routes.autocomplete_overseers_company_contacts_path(optionSelected.val())).select2('destroy');
+
+
+        select2s();
+    }
+
+};
+
+let onContactChange = (container) => {
+    let optionSelected = $("option:selected", container);
+    let select = $(container).closest('select');
+
+    if (optionSelected.exists() && optionSelected.val() !== '') {
+        $.ajax({
+            url: Routes.get_contacts_overseers_companies_path(),
+            data: {attribute_id: optionSelected.val() },
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function success(data) {
+                if(data.contact_email){
+                    $('form').find('input[name*=contact_email]').val(data.contact_email);
+                }else{
+                    $('form').find('input[name*=contact_email]').val('');
+                }
+                if(data.contact_mobile){
+                    $('form').find('input[name*=contact_phone]').val(data.contact_mobile);
+                }else{
+                    $('form').find('input[name*=contact_phone]').val('');
+                }
+            },
+        })
+    }
+};
 export default newPurchaseOrdersRequests
+
