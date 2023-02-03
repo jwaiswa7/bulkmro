@@ -59,20 +59,21 @@ const newPurchaseOrdersRequests = () => {
 let onSupplierChange = (container, reset) => {
     let optionSelected = $("option:selected", container);
     let select = $(container).closest('select');
-
+    let containerId = $(container).closest('select').attr('id');
+    let containerIdString = containerId.substring(0, containerId.length - 11);
 
     if (optionSelected.exists() && optionSelected.val() !== '') {
         if (reset) {
-            $("#sales_order_po_requests_attributes_0_bill_from_id").val(null);
-            $("#sales_order_po_requests_attributes_0_ship_from_id").val(null);
-            $("#sales_order_po_requests_attributes_0_contact_id").val(null);
+            $(`#${containerIdString}bill_from_id`).val(null);
+            $(`#${containerIdString}ship_from_id`).val(null);
+            $(`#${containerIdString}contact_id`).val(null);
 
         }
         $('form').find('input[name*=contact_phone]').val('');
         $('form').find('input[name*=contact_email]').val('');
-        $('#sales_order_po_requests_attributes_0_bill_from_id').attr('data-source', Routes.autocomplete_overseers_company_addresses_path(optionSelected.val())).select2('destroy');
-        $('#sales_order_po_requests_attributes_0_ship_from_id').attr('data-source', Routes.autocomplete_overseers_company_addresses_path(optionSelected.val())).select2('destroy');
-        $('#sales_order_po_requests_attributes_0_contact_id').attr('data-source', Routes.autocomplete_overseers_company_contacts_path(optionSelected.val())).select2('destroy');
+        $(`#${containerIdString}bill_from_id`).attr('data-source', Routes.autocomplete_overseers_company_addresses_path(optionSelected.val())).select2('destroy');
+        $(`#${containerIdString}ship_from_id`).attr('data-source', Routes.autocomplete_overseers_company_addresses_path(optionSelected.val())).select2('destroy');
+        $(`#${containerIdString}contact_id`).attr('data-source', Routes.autocomplete_overseers_company_contacts_path(optionSelected.val())).select2('destroy');
 
 
         select2s();
