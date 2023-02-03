@@ -28,49 +28,12 @@
   type: text
   category: Logistics
   url: "https://docs.google.com/document/d/1Jnid9ZhcLd1AbigeMZbf-UJagalfLD27p764fD5H9Qg/edit?usp=share_link" 
--
-  title: Create New quotation
-  slug: create_new_quotation
-  type: video
-  category: Sales
-  url: "https://bulkmro-public-files.s3.amazonaws.com/Sales/create_new_quotation.mp4"
 - 
   title: Create Outward dispatch
   slug: create_outward_dispatch
   type: video
   category: Logistics
   url: "https://bulkmro-public-files.s3.amazonaws.com/Logistics/create_outward_dispatch.mp4"
-- 
-  title: Create New sales order
-  slug: create_new_sales_order
-  type: video
-  category: Sales
-  url: "https://bulkmro-public-files.s3.amazonaws.com/Sales/create_new_sales_order.mp4"
-- 
-  title: Create Supplier PO
-  slug: create_supplier_po
-  type: video
-  category: Sales
-  url: "https://bulkmro-public-files.s3.amazonaws.com/Sales/create_supplier_po.mp4"
-- 
-  title: RFQ bulk Upload user guide
-  slug: rfq_bulk_user_guide
-  type: text
-  category: Sales
-  url: "https://docs.google.com/document/d/1XuRBLOf0wKVkO5Bkqjt-Sj6z6AhM0orIPGj7yZK0KHg/edit?usp=share_link"
-- 
-  title: Create New Inquiry
-  slug: create_new_inquiry
-  type: video
-  category: Sales
-  url: "https://bulkmro-public-files.s3.amazonaws.com/Sales/create_new_inquiry.mp4"
-- 
-  title: Mass Link Supplier
-  slug: link_supplier
-  type: video
-  category: Sales
-  url: "https://bulkmro-public-files.s3.amazonaws.com/Sales/mass_link_supplier.mp4"
-
 - 
   title: Filter Supplier By Brands
   slug: filter_supplier_by_brands
@@ -95,13 +58,6 @@
   type: text
   category: Miscellaneous
   url: "https://docs.google.com/document/d/1gpCaA3jLdFDPYuqWC_VI3IPhsJdulC3C-Qy6N6iw5w4/edit?usp=sharing"
-
-- 
-  title: RFQ Bulk upload feature
-  slug: rfq_bulk_upload_feature
-  type: video
-  category: Sales
-  url: "https://bulkmro-public-files.s3.amazonaws.com/Sales/rfq_bulk_upload_feature.mp4"
 - 
   title: Add new products
   slug: add_new_products
@@ -162,6 +118,7 @@
   type: text
   category: Reports
   url: "https://docs.google.com/document/d/14Pv7o24qgVjQXtQVYVKDnkx-wzv3Ef-okZNgeXu6vUE/edit?usp=share_link"
+
 - 
   title: Activities Report
   slug: activities_report
@@ -175,11 +132,53 @@
   category: Sales
   url: "https://bulkmro-public-files.s3.amazonaws.com/Sales/activities_reminder_and_notifications.mp4"
 - 
-  title: Cancel POs Form The System By Manager
-  slug: cancel_pos_from_the_system_by_manager
+  title: Create New Inquiry
+  slug: create_new_inquiry
+  type: video
+  category: Sales
+  url: "https://bulkmro-public-files.s3.amazonaws.com/Sales/create_new_inquiry.mp4"
+- 
+  title: Mass Link Supplier
+  slug: link_supplier
+  type: video
+  category: Sales
+  url: "https://bulkmro-public-files.s3.amazonaws.com/Sales/mass_link_supplier.mp4"
+-
+  title: Create New quotation
+  slug: create_new_quotation
+  type: video
+  category: Sales
+  url: "https://bulkmro-public-files.s3.amazonaws.com/Sales/create_new_quotation.mp4"
+- 
+  title: RFQ bulk Upload user guide
+  slug: rfq_bulk_user_guide
   type: text
   category: Sales
-  url: "https://docs.google.com/document/d/1owu_xB1xRE5I_Gvm9uklvbzlUw-KjL6byqKbjv6_GbE/edit?usp=share_link"
+  url: "https://docs.google.com/document/d/1XuRBLOf0wKVkO5Bkqjt-Sj6z6AhM0orIPGj7yZK0KHg/edit?usp=share_link"
+- 
+  title: RFQ Bulk upload feature
+  slug: rfq_bulk_upload_feature
+  type: video
+  category: Sales
+  url: "https://bulkmro-public-files.s3.amazonaws.com/Sales/rfq_bulk_upload_feature.mp4"
+- 
+  title: Create New sales order
+  slug: create_new_sales_order
+  type: video
+  category: Sales
+  url: "https://bulkmro-public-files.s3.amazonaws.com/Sales/create_new_sales_order.mp4"
+- 
+  title: Sales Order Cancellation
+  slug: sales_order_cancellation
+  type: text
+  category: Sales
+  url: "https://docs.google.com/document/d/1UrrRzXJ3Ox-JptwVHBUsJGN_0VarWT0l6R5sceS8JFY/edit?usp=sharing"
+- 
+  title: Create Supplier PO
+  slug: create_supplier_po
+  type: video
+  category: Sales
+  url: "https://bulkmro-public-files.s3.amazonaws.com/Sales/create_supplier_po.mp4"
 - 
   title: PO Cancellation Request By ISP
   slug: po_cancellation_request_by_isp
@@ -187,8 +186,9 @@
   category: Sales
   url: "https://docs.google.com/document/d/1dshy83SaK-ftQ68D2vViD4aNK9V_CdRwd2JzoEPmHkI/edit?usp=sharing"
 - 
-  title: Sales Order Cancellation
-  slug: sales_order_cancellation
+  title: Cancel POs Form The System By Manager
+  slug: cancel_pos_from_the_system_by_manager
   type: text
   category: Sales
-  url: "https://docs.google.com/document/d/1UrrRzXJ3Ox-JptwVHBUsJGN_0VarWT0l6R5sceS8JFY/edit?usp=sharing"
+  url: "https://docs.google.com/document/d/1owu_xB1xRE5I_Gvm9uklvbzlUw-KjL6byqKbjv6_GbE/edit?usp=share_link"
+
