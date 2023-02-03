@@ -1,0 +1,90 @@
+*{
+  list-style: none;
+  text-decoration: none;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Open Sans', sans-serif;
+}
+
+body{
+  background: #fff;
+}
+
+.content{
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+
+.wrapper .sidebar{
+  background: #FF8800;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 300px;
+  height: 100%;
+  padding: 20px 0;
+  transition: all 0.5s ease;
+}
+
+.wrapper .sidebar ul li a{
+  display: block;
+  padding: 5px 0px 5px 10px;
+  color: #fff;
+  position: relative;
+}
+
+.wrapper .sidebar ul li a:hover,
+.wrapper .sidebar ul li a.active{
+    color: #FF8800;
+
+    background:white;
+}
+
+
+.wrapper .sidebar ul li a:hover:before,
+.wrapper .sidebar ul li a.active:before{
+    display: block;
+}
+
+.wrapper .main{
+  margin-left: 350px;
+  margin-top: 30px;
+  margin-right: 50px;
+  font-size: 16px;
+}
+
+ol * {
+  list-style: auto;
+  margin-bottom: 1.5em;
+}
+
+.card {
+  background: #FF8800;
+  border-bottom: none;
+  border-left: none;
+  border-right: none;
+}
+
+.card-header {
+  border-bottom: none;
+}
+
+.card-body {
+  padding: 0px;
+}
+
+.training_link {
+  color: #FF8800 !important;
+}
+
+.card-header a {
+  font-weight: bold;
+  color: #eee;
+  font-size: 16px;
+}
+
+.training_img {
+  width: 1000px;
+}

@@ -1,0 +1,9 @@
+<% content_for :title do %>
+  <%= @training['title'] %>
+<% end %>
+
+<% if @training['type'] == "text" %>
+    <%= render "trainings/pages/#{@training['slug']}" %>
+<% else %>
+<iframe width="560" height="315" src=<%= @training['url'] %> frameborder="0" allowfullscreen></iframe></iframe>
+<% end %>

@@ -1,0 +1,66 @@
+<h2>Overview:</h2>
+<p>The Catalog team is performing an activity to import standard products from the catalog of certain brands like Taparia and SKF. Currently they are required to follow this process manually. To minimize their efforts, we propose a feature to bulk import products in the database</p>
+
+<h2>Process</h2>
+<ol>
+  <li>
+    <p>
+    Click here to visit the Product list page as given below
+    </p>
+    <%= image_tag "trainings/multipe_products6.png", class: "training_img" %>
+  </li>
+  <li>
+    <p>
+    Click on the “Bulk Upload” button. You will be redirected to the following page
+    </p>
+    <%= image_tag "trainings/multipe_products2.png", class: "training_img" %>
+  </li>
+  <li>
+    <p>
+    Click on the “Download Excel Template” button. An Excel file will be downloaded to your computer. The excel file will be as given below. 
+    </p>
+    <%= image_tag "trainings/multipe_products1.png", class: "training_img" %>
+  </li>
+  <li>
+    <p>
+    Enter the data in the template.
+    </p>
+    <%= image_tag "trainings/multipe_products8.png", class: "training_img" %>
+  </li>
+  <li>
+    <p>
+    Click on save and close the template file. Open Sprint to upload the saved file.
+    </p>
+  </li>
+  <li>
+    <p>
+    Upload the template file and click on the “Create Product Import” button
+    </p>
+    <%= image_tag "trainings/multipe_products4.png", class: "training_img" %>
+  </li>
+  <li>
+    <p>
+    The process will run at that background. Once the upload is complete, you will receive an email notification as given below.
+    </p>
+    <%= image_tag "trainings/multipe_products5.png", class: "training_img" %>
+  </li>
+  <li>
+    <p>
+    The email attachment will have an error report file to highlight the unsuccessful upload results along with the error message. The report will look like this. 
+    </p>
+    <%= image_tag "trainings/multipe_products7.png", class: "training_img" %>
+  </li>
+  <li>
+    <p>
+    The email attachment will have an error report file to highlight the unsuccessful upload results along with the error message. The report will look like this. 
+    </p>
+  </li>
+</ol>
+<h2>Pre-requisites</h2>
+<ol>
+  <li>The users must enter all the mandatory fields.</li>
+  <li>The user must enter correct data in the required format</li>
+  <li>The brand name must exist in the database before the upload.</li>
+  <li>The active category_id must be entered in the given field (category_id can be found on <a href="<%= overseers_categories_path %>" class="training_link" >this page</a>)</li>
+  <li>The tax Code has to be correct and must exist in the sprint database before the upload. In case of invalid tax code, the system will skip the row and that particular product will not be uploaded.</li>
+</ol>

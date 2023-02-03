@@ -1,0 +1,125 @@
+<h2>Given below is the step by step approach of how to add new products in Sprint.</h2>
+<ol type="1">
+   <li>
+      <p>Open the inquiry to which you want to add new products, and scrlil down to the products section.</p>
+      <%= image_tag "trainings/new_product5.png", class: "training_img" %>
+   </li>
+   <li>Click on the ‘Add from Excel’ button. A new page will appear on your browser.
+   </li>
+   <li>
+      <p>Click on the Download Template button given on the top right corner. An excel file should be downloaded on your computer.</p>
+      <%= image_tag "trainings/new_product3.png", class: "training_img" %>
+   </li>
+   <li>
+      <p>Open the excel template and fill the following fields in the given format.</p>
+      <%= image_tag "trainings/new_product1.png" , class: "training_img" %>
+   </li>
+   <li>
+      <table class="table">
+         <thead>
+            <tr>
+               <th>Field Name</th>
+               <th>Action</th>
+               <th>Field Type</th>
+            </tr>
+         </thead>
+         <tbody>
+            <tr>
+               <td>Sr. No</td>
+               <td>Enter serial number beginning from 1.</td>
+               <td>Not Mandatory</td>
+            </tr>
+            <tr>
+               <td>name</td>
+               <td>Enter name in correct format ‘BRAND NAME Product Name, Product Specifications - MPN’ </td>
+               <td>Mandatory</td>
+            </tr>
+            <tr>
+               <td>brand</td>
+               <td>
+                  <ul>
+                     <li>Enter brand name in capital font</li>
+                     <li>For unbranded products, enter STANDARD as the brand name.</li>
+                     <li>Enter SERVICE as the brand name if it is a service product</li>
+                     <li>Confirm if your brand exits in Sprint</li>
+                  </ul>
+               </td>
+               <td>Mandatory</td>
+            </tr>
+            <tr>
+               <td>mpn</td>
+               <td>Enter manufacturer part number (MPN). Keep it blank if not available</td>
+               <td>Not mandatory</td>
+            </tr>
+            <tr>
+               <td>sku</td>
+               <td>
+                  You can enter SKU number if your product already exists in the database and you want to add it to the inquiry. <br/>
+                  This option is made available to add multiple products to the inquiry.<br/>
+                  You are not required to enter details like name, mpn, brand, if you have the SKU number.<br/>
+               </td>
+               <td>Not mandatory</td>
+            </tr>
+            <tr>
+               <td>quantity</td>
+               <td>Enter required product quantity</td>
+               <td>Mandatory</td>
+            </tr>
+            <tr>
+               <td>tax_code</td>
+               <td>
+                  Enter correct 8-digit HSN Code for physical products and 6-digit SAC code beginning with 99XXXX for service products.<br/>
+                  Check the correct tax codes <a href="https://docs.google.com/spreadsheets/d/12QhYMCv6pGSkapajsLl8GVqiqqGDaAGrl37FcTsHlXU/edit?usp=sharing" class="training_link">here</a>
+               </td>
+               <td>Mandatory</td>
+            </tr>
+            <tr>
+               <td>tax_rate</td>
+               <td>Enter the correct tax rate in numbers. Do not enter ‘%’. If your tax rate is 18% then enter 18.</td>
+               <td>Mandatory</td>
+            </tr>
+            <tr>
+               <td>is_service</td>
+               <td>Enter YES if it is a service product, else enter NO</td>
+               <td>Not mandatory</td>
+            </tr>
+            <tr>
+               <td>category_id</td>
+               <td>
+                  If you know the product category, enter the category_id here.<br/>
+                  You can find the category_id on <a href="<%= overseers_categories_path %>" class="training_link" >this page.</a> <br/>
+                  Make sure the selected category is active.<br/>
+               </td>
+               <td>Not mandatory</td>
+            </tr>
+         </tbody>
+      </table>
+      <p>Product Name format as as given below -</p>
+      <%= image_tag "trainings/new_product6.png", class: "training_img" %>
+   </li>
+   <li>
+      <p>Once you enter all the required details and save the file. The open the imports page on the inquiry tab</p>
+      <%= image_tag "trainings/new_product3.png", class: "training_img" %>
+   </li>
+   <li>
+      <p>Upload the saved excel file and click on ‘Create Inquiry Import’. You will be directed to the new page as given below.</p>
+      <%= image_tag "trainings/new_product2.png", class: "training_img" %>
+   </li>
+   <li>You may see a few suggestions to select similar to your products. Ensure that you are not creating any duplicate product. In case you find your product in the suggestions, click on the suggested option. In case you do not know the category id, you can select from the given drop down on this page. Once you have filled all the information, click on update inquiry import
+   </li>
+   <li>
+      <p>Your product will be added to the inquiry as below. </p>
+      <%= image_tag "trainings/new_product4.png", class: "training_img" %>
+   </li>
+   <li>If you see the vertical orange line at the beginning of the product row, it means that the catalog team is yet to approve your product. If this line is in green color that means your product is approved. If this line is in red color, it means that your product is rejected by the catalog team.
+   </li>
+   <li>If your product is not synced with SAP it shows NOT SYNCED as given in the above image. Please note that only approved products can be synced with SAP. If your product is approved but not synced, please check the <a href="https://sprint.bulkmro.com/faq">FAQ page</a> to understand the reasons.
+   </li>
+</ol>
+<h2>Possible reasons of Product rejections</h2>
+<ol>
+   <li>Incorrect product format</li>
+   <li>Incorrect specifications</li>
+   <li>Incorrect tax code and / or tax rate</li>
+   <li>Duplicate entry.</li>
+</ol>

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <%= render 'shared/layouts/components/meta' %>
+      <%= render 'shared/layouts/components/fonts' %>
+      <%= render 'shared/layouts/components/stylesheets' %>
+      <%= render 'shared/layouts/components/ga' %>
+      <%= render 'shared/layouts/components/scripts' %>
+      <%= javascript_include_tag 'trainings/application', 'data-turbolinks-track': 'reload' %>
+      <%= stylesheet_link_tag 'shared/trainings.css', media: 'all', 'data-turbolinks-track': 'reload' %>
+      <!-- Google Tag Manager -->
+      <% if Rails.env.production? %>
+      <script>
+         document.addEventListener('turbolinks:load', function(event) {
+             var url = event.data.url;  dataLayer.push({
+                 'event':'pageView',
+                 'virtualUrl': url
+             });
+         });(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+                 new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+             j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+             'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+         })(window,document,'script','dataLayer','GTM-PDPC36K');
+      </script>
+      <% end %>
+      <!-- End Google Tag Manager -->
+   </head>
+   <body data-controller="<%= controller_name %>" data-controller-action="<%= action_name %>" data-currency-name="<%= Settings.currency.name %>">
+      <div class="wrapper">
+         <!--Top menu -->
+         <div class="sidebar">
+         <ul>
+            <li>
+               <a href="<%= root_path %>">
+               <span class="item">Back to App</span>
+               </a>
+            </li>
+            <li>
+               <a href="<%= trainings_path %>">
+               <span class="item">Trainings home</span>
+               </a>
+            </li>
+         </ul>
+         <div id="accordion">
+         <% @categories.each_with_index do | category, index| %>
+           <div class="card">
+             <div class="card-header">
+               <a class="card-link" data-toggle="collapse" href="#collapse<%= category.titleize.delete(" ") %>">
+                 <%= category %>
+               </a>
+             </div>
+             <div id="collapse<%= category.titleize.delete(" ") %>" class="collapse" data-parent="#accordion">
+               <div class="card-body">
+               <%= render :partial => 'trainings/shared/menu_list', :locals => {:menu_items => @training_ordered[category] } %>
+               </div>
+             </div>
+           </div>
+         <% end %>
+       </div>
+         </div>
+         <!--menu item-->
+         <div class="main">
+            <div class="row">
+              <div class="col-md-12 text-justify">
+                <h1>
+                  <%= yield :title %>
+                </h1>
+                <%#= render "trainings/shared/search_form" %>
+                <div class="content">
+                  <%= yield %>
+                </div>
+              </div>
+           </div>
+        </div>
+      </div>
+      </div>
+   </body>
+</html>
