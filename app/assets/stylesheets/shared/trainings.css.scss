@@ -67,6 +67,22 @@ ol * {
   border-right: none;
 }
 
+.search-card {
+  background-color: #eee;
+  border-radius: 5px;
+  padding: 0 0 0 10px;
+}
+
+.search-list li {
+  margin-bottom: 0.5em;
+}
+
+.search-list li category {
+  font-weight: bold;
+  margin-right: 5px;
+  color: #FF8800;
+}
+
 .card-header {
   border-bottom: none;
 }

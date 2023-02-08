@@ -6,7 +6,6 @@
       <%= render 'shared/layouts/components/stylesheets' %>
       <%= render 'shared/layouts/components/ga' %>
       <%= render 'shared/layouts/components/scripts' %>
-      <%= javascript_include_tag 'trainings/application', 'data-turbolinks-track': 'reload' %>
       <%= stylesheet_link_tag 'shared/trainings.css', media: 'all', 'data-turbolinks-track': 'reload' %>
       <!-- Google Tag Manager -->
       <% if Rails.env.production? %>
@@ -65,7 +64,6 @@
                 <h1>
                   <%= yield :title %>
                 </h1>
-                <%#= render "trainings/shared/search_form" %>
                 <div class="content">
                   <%= yield %>
                 </div>
@@ -74,5 +72,6 @@
         </div>
       </div>
       </div>
+      <%= javascript_include_tag 'trainings/application', 'data-turbolinks-track': 'reload' %>
    </body>
 </html>

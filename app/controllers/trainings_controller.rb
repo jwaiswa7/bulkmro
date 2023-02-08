@@ -11,6 +11,12 @@ class TrainingsController < ApplicationController
   def show
   end
 
+  def search 
+    search_word = params[:search]
+    @results = @trainings.map {|training| training if training['title'].downcase.include?  search_word }.compact
+    render json: @results
+  end
+
   private
 
   def get_trainings
