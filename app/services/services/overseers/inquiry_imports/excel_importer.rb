@@ -41,6 +41,8 @@ class Services::Overseers::InquiryImports::ExcelImporter < Services::Overseers::
       row = excel_header_row.zip(excel_row).to_h
       if excel_row.compact.length > 1 && (row['sku'].present? || row['mpn'].present?)
         if (row['tax_code'].present? && row['tax_code'].to_s.gsub('.0', '').length == 8) || (row['tax_code'].blank?)
+          # check if the tax code is active, if it's not active, then make it blank
+          (row['tax_code'] = '') if TaxCode.find_by(code: row['tax_code'])&.is_active?
           rows.push row
         else
           import.errors.add(:base, ["Tax Code length should be 8 digit for Product Name - ' #{row['name']} '."].join(' '))
