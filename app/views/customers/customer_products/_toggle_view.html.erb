@@ -1,7 +1,7 @@
 <div class='px-2' %>
   <% if @view && @view == 'grid' %>
-    <a href="<%= customers_products_path(view: 'list' ) %>" class="btn btn-sm btn-light px-2" data-toggle="tooltip" title="Change to list View"><i class="fal fa-list-ul"></i></a>
+    <a href="<%= customers_products_path(view: 'list' ) %>" class="btn btn-pad-11 btn-sm btn-light px-2" data-toggle="tooltip" title="Change to list View"><i class="fal fa-list-ul"></i></a>
   <% else %>
-    <a href="<%= customers_products_path(view: 'grid' ) %>" class="btn btn-sm btn-light px-2" data-toggle="tooltip" title="Change to grid View"><i class="fal fa-grip-horizontal"></i></a>
+    <a href="<%= customers_products_path(view: 'grid' ) %>" class="btn btn-pad-11 btn-sm btn-light px-2" data-toggle="tooltip" title="Change to grid View"><i class="fal fa-grip-horizontal"></i></a>
   <% end %>
 </div>
