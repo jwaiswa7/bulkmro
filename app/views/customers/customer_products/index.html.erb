@@ -9,8 +9,8 @@
 
   <% content_for :heading_buttons do %>
     <div class="btn-group" style="<%= 'margin-top: 4.5rem; z-index: 999' if current_overseer.nil? %>" >
+      <%= render partial: 'toggle_view' %>
       <%= render partial: 'sort'%>
-      </br>
       <%= render partial: 'filter' %>
     </div>
   <% end %>

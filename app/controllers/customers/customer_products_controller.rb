@@ -1,12 +1,11 @@
 class Customers::CustomerProductsController < Customers::BaseController
   before_action :set_customer_product, only: [:show, :to_cart]
+  before_action :set_view, only: :index
   before_action :set_data_for_saint_gobain, :set_data_for_henkel, only: [:index, :show]
   include DisplayHelper
 
   def index
     authorize :customer_product
-
-    @view = @current_company.grid_view? ? 'grid' : 'list'
 
     if params[:view] == 'list'
       params[:per] = 20
@@ -88,6 +87,15 @@ class Customers::CustomerProductsController < Customers::BaseController
 
 
   private
+
+    def set_view
+      # @view = @current_company.grid_view? ? 'grid' : 'list'
+      @view = if params[:view].present? && params[:view] == 'grid'
+        'grid'
+      else
+        'list'
+      end
+    end
 
     def sort_by
       case params[:sort]
