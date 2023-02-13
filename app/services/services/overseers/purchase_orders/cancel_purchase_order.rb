@@ -14,7 +14,7 @@ class Services::Overseers::PurchaseOrders::CancelPurchaseOrder < Services::Share
           @status = { status: 'failed', message: remote_status['message'] }
         end
       elsif purchase_order.remote_uid.blank?
-        @status = { status: 'failed', message: 'Remote uid not found' }
+        @status = purchase_order_cancel(purchase_order, purchase_order_params)
       end
     else
       @status = { empty_message: 'true', message: 'Comment message is required' }
