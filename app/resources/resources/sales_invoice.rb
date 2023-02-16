@@ -20,6 +20,12 @@ class Resources::SalesInvoice < Resources::ApplicationResource
         remote_rows = remote_response['DocumentLines']
 
         ActiveRecord::Base.transaction do
+
+          sales_invoice.rows.where(sku: nil).each do |row|
+            metadata = row.metadata
+            sku = metadata["sku"]
+            row.update(sku: sku) if sku.present?
+          end
           sales_invoice.rows.where(sku: nil).destroy_all
 
           billing_address = sales_invoice.inquiry.billing_company.addresses.where(remote_uid: remote_response['PayToCode']).first || sales_invoice.inquiry.billing_address
@@ -86,7 +92,7 @@ class Resources::SalesInvoice < Resources::ApplicationResource
                   base_weee_tax_applied_row_amnt: nil,
                   tcs_amount: (tcs_amount.present? ? tcs_amount : 0.0)
               }
-            sales_invoice_row.save
+            sales_invoice_row.save!
             break if is_kit
           end if remote_rows.present?
         end
