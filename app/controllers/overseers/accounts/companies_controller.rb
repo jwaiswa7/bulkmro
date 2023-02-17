@@ -75,7 +75,7 @@ class Overseers::Accounts::CompaniesController < Overseers::Accounts::BaseContro
     @company = @account.companies.build(company_params.merge(overseer: current_overseer))
     authorize_acl @company
 
-    if @company.save_and_sync
+    if @company.save!
       @company.update_attributes(remote_uid: @company.id)
       redirect_to overseers_company_path(@company), notice: flash_message(@company, action_name)
     else
@@ -137,6 +137,7 @@ class Overseers::Accounts::CompaniesController < Overseers::Accounts::BaseContro
           :cen_proof,
           :logo,
           :is_msme,
+          :default_currency,
           :is_active,
           :is_unregistered_dealer,
           :is_international,

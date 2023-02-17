@@ -82,25 +82,28 @@
         </div>
       </div>
     <% end %>
-
-
-    <div class="form-row">
-      <div class="col-4">
-               <%= f.input :is_msme, as: :radio_buttons, :wrapper => :vertical_collection_inline, label: 'Is MSME?' %>
-      </div>
-      <div class="col-4">
-            <%= f.input :is_unregistered_dealer, :wrapper => :vertical_collection_inline, as: :radio_buttons, label: 'Is unregistered dealer?' %>
-      </div>
-      <div class="col-4">
-            <%= f.input :is_international, :wrapper => :vertical_collection_inline, as: :radio_buttons, label: 'Is international?' %>
-      </div>
-    </div>
+<div class="form-row">
+  <div class="col-4">
+    <%= f.input :is_msme, as: :radio_buttons, wrapper: :vertical_collection_inline, label: 'Is MSME?' %>
+  </div>
+  <div class="col-4">
+    <%= f.input :is_unregistered_dealer, wrapper: :vertical_collection_inline, as: :radio_buttons, label: 'Is unregistered dealer?' %>
+  </div>
+  <div class="col-4">
+    <%= f.input :is_international, wrapper: :vertical_collection_inline, as: :radio_buttons, label: 'Is international?' %>
+  </div>
+</div>
 
     <div class="form-row">
-      <div class="col-12 col-md-6">
+      <div class="col-2 form-group">
+        <%= f.label :default_currency, 'Default Currency', class: 'form-control-label text-capitalize ' %>
+        <%= f.select :default_currency, options_for_select(Company.default_currencies.keys.map { |k| [k, k] } , f.object.default_currency ), {}, class: ' select2-single bmro-form-input  bmro-dropdown-icon' , disabled: true%>
+        <%= f.hidden_field :default_currency, id: 'company_default_currency_hidden' %>
+      </div>
+      <div class="col-12 col-md-5">
         <%= f.input :pan, label: 'PAN', input_html: {minlength: 10, maxlength: 10, class: "bmro-form-input bmro-bg"} %>
       </div>
-      <div class="col-12 col-md-6">
+      <div class="col-12 col-md-5">
         <%= f.input :pan_proof, wrapper: :custom_file, required: false, accept: 'image/png, application/pdf, image/jpeg', label: 'PAN Proof'  %>
       </div>
     </div>

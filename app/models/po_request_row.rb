@@ -46,6 +46,16 @@ class PoRequestRow < ApplicationRecord
     end
   end
 
+  def total_price_with_selected_currency
+    if self.unit_price_with_selected_currency.present?
+      if self.quantity.present?
+        self.unit_price_with_selected_currency * self.quantity
+      else
+        self.unit_price_with_selected_currency
+      end
+    end
+  end
+
   def unit_price_per_quantity
     self.quantity.present? ? ((self.converted_total_selling_price || 0) / self.quantity) : 0
   end
