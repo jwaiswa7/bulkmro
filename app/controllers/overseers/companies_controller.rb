@@ -168,6 +168,8 @@ class Overseers::CompaniesController < Overseers::BaseController
           :default_payment_option_id,
           :default_billing_address_id,
           :default_shipping_address_id,
+          :default_currency,
+          :is_international,
           :inside_sales_owner_id,
           :outside_sales_owner_id,
           :sales_manager_id,

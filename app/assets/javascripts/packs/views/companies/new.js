@@ -1,4 +1,7 @@
+import Edit from './edit';
+
 const newAction = () => {
+    Edit();
     $('input[name=account]').on('click', function () {
         var inputValue = $(this).attr("value");
         if ($(this).val() == "new") {

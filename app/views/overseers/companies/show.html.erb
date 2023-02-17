@@ -193,6 +193,15 @@
               <strong class="d-block bmro-summary-heading">Is unregistered dealer?</strong>
               <%= format_boolean(@company.is_unregistered_dealer) %>
             </div>
+            <div class="col-6 col-md-3 mb-2 bmro-summary-data">
+              <strong class="d-block bmro-summary-heading">Is International?</strong>
+              <%= format_boolean(@company.is_international) %>
+            </div>
+
+            <div class="col-6 col-md-3 mb-2 bmro-summary-data">
+              <strong class="d-block bmro-summary-heading">Default Currency</strong>
+              <%= @company.default_currency %>
+            </div>
           </div>
         </div>
 

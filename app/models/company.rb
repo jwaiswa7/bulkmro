@@ -70,6 +70,21 @@ class Company < ApplicationRecord
 
   scope :with_invoices, -> { includes(:invoices).where.not(sales_invoices: { id: nil }) }
 
+  enum default_currency: {
+     'INR': 'INR',
+     'USD': 'USD',
+     'EUR': 'EUR',
+     'JPY': 'JPY',
+     'GBP': 'GBP',
+     'AUD': 'AUD',
+     'CAD': 'CAD',
+     'CHF': 'CHF',
+     'CNH': 'CNH',
+     'HKD': 'HKD',
+     'NZD': 'NZD'
+  }
+
+
   enum company_type: {
     proprietorship: 10,
     private_limited: 20,
@@ -118,13 +133,13 @@ class Company < ApplicationRecord
 
   # returns a comma separated list of the company's product categories if it's a supplier company
   # if the categories are more than 10, then it will return the first 10 with 3 dots ...
-  def supplier_product_categories 
+  def supplier_product_categories
     return if account.nil?
     return unless is_supplier?
     categories = supplier_products.map { |m| m.category.to_s}.uniq
     categories.count > 10 ? "#{categories.first(10).join(', ')} ..." : categories.join(', ')
   end
-  
+
   # returns an array of the company's products category ids if it's a supplier company
   def supplied_product_category
     return if account.nil?
