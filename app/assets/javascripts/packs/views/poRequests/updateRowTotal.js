@@ -5,6 +5,12 @@ const updateRowTotal = () => {
         updateTotal(element);
     });
 
+    $('form').on('keyup', 'input[name*=quantity],input[name*=unit_price_with_selected_currency]', function (e) {
+        updateTotalss(e.target);
+    }).find('input[name*=quantity],input[name*=unit_price_with_selected_currency]').each(function (e, element) {
+        updateTotalss(element);
+    });
+
     $('form').on('change', 'select[name*=tax_rate_id]', function (e) {
         updateTotal(e.target);
     }).find('select[name*=tax_rate_id]').each(function (e, element) {
@@ -33,6 +39,20 @@ let updateTotal = (element) => {
     $(totalTaxElement).val(toDecimal(total_tax));
     $(totalPriceWithTaxElement).val(toDecimal(total_price + total_tax));
 }
+
+let updateTotalss = (element) => {
+
+    let container = $(element).closest('.po-request-row');
+    let totalPriceElement = $(container).find('input[name$="total_price_with_selected_currency]"]');
+
+    let quantity = toDecimal(container.find('input[name*=quantity]').val());
+    let unitPrice = toDecimal($(container).find('input[name*=unit_price_with_selected_currency]').val());
+
+    let total_price = quantity * unitPrice;
+
+    $(totalPriceElement).val(toDecimal(total_price));
+}
+
 
 let toDecimal = (value, precision = 2) => {
     if (isNaN(parseFloat(value))) {
