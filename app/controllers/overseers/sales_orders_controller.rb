@@ -399,7 +399,9 @@ class Overseers::SalesOrdersController < Overseers::BaseController
                     :lead_time,
                     :measurement_unit_id,
                     :discount_percentage,
-                    :unit_price
+                    :unit_price,
+                    :default_currency,
+                    :unit_price_with_selected_currency
                 ],
             comments_attributes: [
             :created_by_id,
