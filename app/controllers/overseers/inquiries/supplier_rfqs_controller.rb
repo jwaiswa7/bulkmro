@@ -32,8 +32,9 @@ class Overseers::Inquiries::SupplierRfqsController < Overseers::Inquiries::BaseC
   end
 
   def edit_supplier_rfqs
-    if params['isp_ids'].present?
-      @inquiry_product_suppliers = InquiryProductSupplier.where(id: params['isp_ids'])
+    @isp_ids = params['isp_ids']
+    if @isp_ids.present?
+      @inquiry_product_suppliers = InquiryProductSupplier.where(id: @isp_ids)
     else
       @inquiry_product_suppliers = @inquiry.inquiry_product_suppliers
     end
