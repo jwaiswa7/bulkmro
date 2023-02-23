@@ -12,6 +12,7 @@ import alertsAutohide from "./components/alertsAutohide";
 import tinyHtmlEditor from "./components/tinyHtmlEditor";
 import datePicker from "./components/datePicker";
 import futureDatePicker from "./components/futureDatePicker";
+import futureDatePicker1 from "./components/futureDatePicker1";
 import stickyBits from "./components/stickyBits";
 import daterangePicker from "./components/daterangePicker";
 import notify from "./components/notify";
@@ -47,6 +48,7 @@ app.initializeComponents = () => {
     tinyHtmlEditor();
     datePicker();
     futureDatePicker();
+    futureDatePicker1();
     stickyBits();
     daterangePicker();
     notify();

@@ -298,7 +298,7 @@
             <%= po_request_row.input :converted_total_selling_price_with_tax, input_html: {value: po_request_row.object.converted_total_selling_price_with_tax, class: 'bmro-form-input'}, disabled: true, label: 'Total Selling Price with Tax' %>
           </div>
           <div class="col-12 col-md-2">
-            <%= po_request_row.input :lead_time, as: :string, input_html: {:'data-toggle' => 'futureDatePicker', :'data-customer-committed-date' => !stock ? f.object.sales_order.try(:customer_committed_date) : '', :class => 'lead-time', class: 'bmro-form-input'}, label: 'Lead Date', required: true %>
+            <%= po_request_row.input :lead_time, as: :string, input_html: {:'data-toggle' => 'futureDatePicker1', :'data-customer-committed-date' => !stock ? f.object.sales_order.try(:customer_committed_date) : '', :class => 'lead-time', class: 'bmro-form-input', value: (Date.today + 1.week) }, label: 'Lead Date', required: true %>
           </div>
           <div class="col-12 col-md-2">
             <%= po_request_row.input :bp_catalog_name, as: :string, input_html: {value: po_request_row.object.bp_catalog_name, class: 'bmro-form-input'}, label: 'Supplier Material Description' %>

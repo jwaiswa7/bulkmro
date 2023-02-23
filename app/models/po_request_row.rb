@@ -10,6 +10,7 @@ class PoRequestRow < ApplicationRecord
   # has_one :product, through: :inquiry_product
 
   validates :lead_time, not_in_past: true
+  validate :valid_lead_time
 
   # has_one :product, :through => :sales_order_row
 
@@ -171,5 +172,11 @@ class PoRequestRow < ApplicationRecord
 
   def has_sales_order_row?
     self.sales_order_row.present?
+  end
+
+  private 
+
+  def valid_lead_time
+    errors.add(:lead_time, 'is before tomorrow') if lead_time && lead_time < (Date.today + 1.day)
   end
 end
