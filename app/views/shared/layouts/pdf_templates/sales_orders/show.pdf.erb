@@ -233,6 +233,8 @@
                 <th align="center" valign="center">
                   <b><span>Total<br>
                     (<%= record.inquiry.currency || Currency.inr %>)</span></b></th>
+                <th align="center" valign="center">
+                  <b><span>Lead Time</span></b></th>
               </tr>
               </thead>
               <tbody>
@@ -280,6 +282,8 @@
                   <td align="right" style="font-size: 9px;border-bottom: 1px solid #3c3c3c; text-align: right" valign="top">
                     <span><%= format_currency(item.converted_total_selling_price_with_tax, precision: 2, symbol: '') %></span>
                   </td>
+                  <td align="left" valign="top">
+                    <span><%= format_succinct_date(item.lead_time) %><br></span></td>
                 </tr>
               <% end %>
               <% if record.check_company_total_amount && SalesOrder::TCS_APPLICABLE %>
