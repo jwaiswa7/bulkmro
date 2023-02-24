@@ -56,7 +56,7 @@ class SalesOrder < ApplicationRecord
 
   TCS_APPLICABLE = false
   delegate :conversion_rate, to: :inquiry_currency
-  attr_accessor :confirm_ord_values, :confirm_tax_rates, :confirm_hsn_codes, :confirm_billing_address, :confirm_shipping_address, :confirm_purchase_order_number, :confirm_payment_terms, :confirm_tax_types, :confirm_customer_po_no, :confirm_attachments, :confirm_billing_warehouse, :confirm_shipping_warehouse
+  attr_accessor :confirm_ord_values, :confirm_tax_rates, :confirm_hsn_codes, :confirm_billing_address, :confirm_shipping_address, :confirm_purchase_order_number, :confirm_payment_terms, :confirm_tax_types, :confirm_customer_po_no, :confirm_attachments, :confirm_billing_warehouse, :confirm_shipping_warehouse, :lead_time
   delegate :inside_sales_owner, :outside_sales_owner, :inside_sales_owner_id, :outside_sales_owner_id, :opportunity_type, :customer_committed_date, to: :inquiry, allow_nil: true
   delegate :currency_sign, to: :sales_quote
 

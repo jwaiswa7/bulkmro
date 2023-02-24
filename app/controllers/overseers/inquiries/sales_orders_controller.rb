@@ -338,6 +338,7 @@ class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseCo
               :sales_quote_row_id,
               :quantity,
               :product_id,
+              :lead_time,
               :_destroy
           ],
           comments_attributes: [

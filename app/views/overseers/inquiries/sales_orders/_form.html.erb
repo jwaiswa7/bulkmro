@@ -36,6 +36,20 @@
               <%= f.input :conversion_rate, disabled: true, input_html: {"data-v-model": "", } %>
             </div>
           </div>
+          <div class="form-row col-md-10">
+            <div class="col-md-1 mt-4">
+              <%= check_box_tag "select_all_products", true, false %>
+                <label class="" for="select_all_products">Select All</label>
+            </div>
+
+            <div class="col-md-2">
+              <%= f.input :lead_time, as: :string, label: 'Common Date', input_html: {:'data-toggle' => 'futureDatePicker', class: 'bmro-form-input'} %>
+            </div>
+
+            <div class="col-md-2 mt-lg-3">
+              <div class="bmro-button float-right btn btn-danger" id="set-common-date">Set Common Date</div>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -51,6 +65,9 @@
               Remove
             <% end %>
             <h6 class="text-uppercase mb-0">
+              <span>
+                <%= check_box_tag 'row_ids[]', row.index, false, id: "row_id_#{row.index}" %>
+              </span>
               <span class="lead text-black-50 text-small mt-1 mr-1">#<%= row.object.sales_quote_row.sr_no %></span>
               <strong><%= row.object.sales_quote_row.product.sku %> - <%= row.object.sales_quote_row.inquiry_product.bp_catalog_name? ? row.object.sales_quote_row.inquiry_product.bp_catalog_name : row.object.sales_quote_row.inquiry_product.product.name %> <% if is_authorized(row.object.sales_quote_row.inquiry_product.product, 'sku_purchase_history') && policy(row.object.sales_quote_row.inquiry_product.product).sku_purchase_history? %>
                   <a class="ml-2 text-small" href="<%= sku_purchase_history_overseers_product_path(row.object.sales_quote_row.inquiry_product.product) %>" target="_blank"><i class="fal fa-history mr-1 text-small"></i>History</a><% end %>
@@ -96,8 +113,12 @@
             </div>
 
             <div class="form-row">
-              <div class="col-12 col-md-1">
+              <div class="col-6 col-md-3">
                 <%= row.input :quantity, input_html: {"data-bind": ""} %>
+              </div>
+
+              <div class="col-6 col-md-3">
+                <%= row.input :lead_time, required: true, as: :string, input_html: {:'data-toggle' => 'futureDatePicker', class: 'bmro-form-input row_lead_time'} %>
               </div>
             </div>
           </div>
