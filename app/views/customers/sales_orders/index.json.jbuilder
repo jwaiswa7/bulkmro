@@ -21,8 +21,16 @@ json.data (@sales_orders) do |sales_order|
                   sap_status(sales_order.get_invoiced_qty, sales_order.total_qty),
                   format_date(sales_order.created_at)
               ]
+
+  amax_columns = [
+    format_date(sales_order.inquiry.customer_order_date), 
+    format_date(sales_order.inquiry.customer_po_received_date),
+    format_date(sales_order.inquiry.customer_po_delivery_date), 
+    format_date(sales_order.revised_committed_delivery_date)
+  ]
   columns.delete_at(1) unless policy(current_customers_contact).admin_columns?
   json.merge! columns
+  json.merge! amax_columns
 end
 
 json.columnFilters [
@@ -37,7 +45,11 @@ json.columnFilters [
                        [],
                        [],
                        [],
-                       [{label: "Delivered", value: 1}, {label: "Processed", value: 3}]
+                       [{label: "Delivered", value: 1}, {label: "Processed", value: 3}], 
+                       [],
+                       [],
+                       [],
+                       [],
 
                    ]
 

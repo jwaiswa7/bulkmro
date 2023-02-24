@@ -26,6 +26,14 @@
   <th class="no-sort desktop " data-name="">Actual Delivery Date</th>
   <th class="no-sort desktop " data-name="order_status">Order Status</th>
   <th class="no-sort all text-left" data-name="created_at">Created</th>
+  <% if policy(current_customers_contact).amax_columns? %>
+    <!-- amax columns -->
+    <th class="no-sort all text-left">Customer order date</th>
+    <th class="no-sort all text-left">Actual PO received date</th>
+    <th class="no-sort all text-left">Customer PO delivery date</th>
+    <th class="no-sort all text-left">Bulk MRO Revised delivery date</th> 
+  <% end %>
+  
 <% end %>
 
 <% content_for :filter_row do %>
@@ -44,6 +52,13 @@
   <td data-filter="false"></td>
   <td data-filter="dropdown"></td>
   <td data-filter="daterange"></td>
+  <% if policy(current_customers_contact).amax_columns? %>
+    <!-- amax columns -->
+    <td data-filter="false"></td>
+    <td data-filter="false"></td>
+    <td data-filter="false"></td>
+    <td data-filter="false"></td>
+  <% end %>
 <% end %>
 
 <div class="col-lg-12">
