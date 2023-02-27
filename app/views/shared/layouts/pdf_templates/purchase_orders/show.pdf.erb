@@ -208,18 +208,7 @@
                 <th align="center" valign="center">
                   <b><span>Subtotal<br>
                     (INR)</span></b></th>
-                <% if (locals[:purchase_order].company&.is_international) %>
-                <th align="center" valign="center">
-                  <b><span>Default Currency<br>
-                    </span></b></th>
-                <th align="center" valign="center">
-                  <b><span>Unit Price with Selected Currency<br>
-                    </span></b></th>
-                    <th align="center" valign="center">
-                  <b><span>Total Price with Selected Currecny<br>
-                    </span></b></th>
 
-                <% end %>
                 <% if (locals[:metadata][:PopTaxRate].to_s.include? "IG") || (locals[:metadata][:ItemLine][0][:PopTaxRate].to_s.include? "IG") %>
                   <th align="center" valign="center">
                     <b><span>IGST<br>
@@ -245,12 +234,24 @@
                     Amt</span></b></th>
 
                 <% end %>
-                <th align="center" style="text-align: center;border-top: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;border-top-right-radius: 5px; background: #d3d3d3;border-bottom:1px solid #3c3c3c;border-left:1px solid #3c3c3c;" valign="center">
+                <th align="center" valign="center">
                   <b><span style="color:#000000">Total<br>
                     (INR)</span></b></th>
+                    <% if (locals[:purchase_order].company&.is_international) %>
+                <th align="center" valign="center">
+                  <b><span> Currency<br>
+                    </span></b></th>
+                <th align="center" valign="center">
+                  <b><span>Unit Price in Selected Currency<br>
+                    </span></b></th>
+                    <th align="center" valign="center">
+                  <b><span>Total Price in Selected Currecny<br>
+                    </span></b></th>
+                <% end %>
                 <th align="center" valign="center">
                   <b><span>Lead Date<br>
                     </span></b></th>
+
               </tr>
               </thead>
               <tbody>
@@ -289,17 +290,7 @@
                     <span><%= number_to_currency(item.total_selling_price, precision: 2, unit: '') %></span>
                   </td>
 
-                  <% if   (locals[:purchase_order].company&.is_international) %>
-                    <td align="center" valign="top">
-                      <span><%= item.po_request_row&.default_currency %></span>
-                    </td>
-                    <td align="center" valign="top">
-                      <span><%= number_to_currency(item.po_request_row&.unit_price_with_selected_currency, precision: 2, unit: '') %></span>
-                    </td>
-                     <td align="center" valign="top">
-                      <span><%= number_to_currency(item.po_request_row&.total_price_with_selected_currency, precision: 2, unit: '') %></span>
-                    </td>
-                  <% end %>
+
                   <% if (locals[:metadata][:PopTaxRate].to_s.include? "IG") || (locals[:metadata][:ItemLine][0][:PopTaxRate].to_s.include? "IG") %>
                     <td align="center" valign="top">
                       <span><%= item.po_request_tax_rate %>%</span>
@@ -327,6 +318,17 @@
                   <td align="right" valign="top">
                     <span><%= number_to_currency(item.total_selling_price_with_tax, precision: 2, unit: '') %></span>
                   </td>
+                   <% if   (locals[:purchase_order].company&.is_international) %>
+                    <td align="center" valign="top">
+                      <span><%= item.po_request_row&.default_currency %></span>
+                    </td>
+                    <td align="center" valign="top">
+                      <span><%= number_to_currency(item.po_request_row&.unit_price_with_selected_currency, precision: 2, unit: '') %></span>
+                    </td>
+                     <td align="center" valign="top">
+                      <span><%= number_to_currency(item.po_request_row&.total_price_with_selected_currency, precision: 2, unit: '') %></span>
+                    </td>
+                  <% end %>
                   <td>
                   <span><%= item.po_request_row.lead_time %></span>
                 </td>
@@ -395,17 +397,6 @@
                 <td align="center" valign="top">
                   <span></span>
                 </td>
-                <% if (locals[:purchase_order].company&.is_international) %>
-                  <td align="center" valign="top">
-                    <span></span>
-                  </td>
-                  <td align="right" valign="top">
-                    <b><span></span></b>
-                  </td>
-                  <td align="center" valign="top">
-                    <span></span>
-                  </td>
-                <%end%>
                 <% if (locals[:metadata][:PoTaxRate].to_s.include? "IG") || (locals[:metadata][:ItemLine][0][:PopTaxRate].to_s.include? "IG") %>
                   <td align="right" valign="top">
                     <b><span><%= number_to_currency(locals[:purchase_order].calculated_total_tax, precision: 2, unit: '') %></span></b>
@@ -430,6 +421,17 @@
                 <td align="center" valign="top">
                   <span></span>
                 </td>
+                <% if (locals[:purchase_order].company&.is_international) %>
+                  <td align="center" valign="top">
+                    <span></span>
+                  </td>
+                  <td align="right" valign="top">
+                    <b><span></span></b>
+                  </td>
+                  <td align="center" valign="top">
+                    <span></span>
+                  </td>
+                <%end%>
               </tr>
               </tbody>
             </table>
