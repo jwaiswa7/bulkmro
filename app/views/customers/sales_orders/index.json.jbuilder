@@ -22,15 +22,18 @@ json.data (@sales_orders) do |sales_order|
                   format_date(sales_order.created_at)
               ]
 
-  amax_columns = [
+  amat_columns = [
     format_date(sales_order.inquiry.customer_order_date), 
     format_date(sales_order.inquiry.customer_po_received_date),
     format_date(sales_order.inquiry.customer_po_delivery_date), 
-    format_date(sales_order.revised_committed_delivery_date)
+    format_date(sales_order.revised_committed_delivery_date), 
+    sales_order.inquiry.po_requests.map{|po_request| po_request.supplier&.name}, 
+    sales_order.inquiry.purchase_orders.map {|purchase_order| purchase_order.po_number},
+    sales_order.inquiry.purchase_orders.map {|purchase_order| format_date(purchase_order&.po_request&.sent_at)}
   ]
   columns.delete_at(1) unless policy(current_customers_contact).admin_columns?
   json.merge! columns
-  json.merge! amax_columns
+  json.merge! amat_columns if policy(current_customers_contact).amat_columns?
 end
 
 json.columnFilters [
@@ -50,7 +53,9 @@ json.columnFilters [
                        [],
                        [],
                        [],
-
+                       [],
+                       [],
+                       []
                    ]
 
 json.recordsTotal @sales_orders.count
