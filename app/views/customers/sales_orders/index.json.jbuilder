@@ -27,9 +27,9 @@ json.data (@sales_orders) do |sales_order|
     format_date(sales_order.inquiry.customer_po_received_date),
     format_date(sales_order.inquiry.customer_po_delivery_date), 
     format_date(sales_order.revised_committed_delivery_date), 
-    sales_order.inquiry.po_requests.map{|po_request| po_request.supplier&.name}, 
-    sales_order.inquiry.purchase_orders.map {|purchase_order| purchase_order.po_number},
-    sales_order.inquiry.purchase_orders.map {|purchase_order| format_date(purchase_order&.po_request&.sent_at)}
+    sales_order.inquiry.po_requests.map{|po_request| po_request.supplier&.name}.compact.join(' '), 
+    sales_order.inquiry.purchase_orders.map {|purchase_order| purchase_order.po_number}.compact.join(' '),
+    sales_order.inquiry.purchase_orders.map {|purchase_order| format_date(purchase_order&.po_request&.sent_at)}.compact.join(' ')
   ]
   columns.delete_at(1) unless policy(current_customers_contact).admin_columns?
   json.merge! columns
