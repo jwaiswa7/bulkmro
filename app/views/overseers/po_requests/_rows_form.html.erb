@@ -273,13 +273,13 @@
         <div class="form-row">
           <div class="col-2 form-group">
         <%= po_request_row.label :default_currency, 'Select Currency', class: 'form-control-label text-capitalize ' %>
-        <%= po_request_row.select :default_currency, options_for_select(Company.default_currencies.keys.map { |k| [k, k] }  , po_request_row.object.default_currency || f.object.supplier.default_currency || 'INR'), {}, class: ' select2-single bmro-form-input bmro-bg bmro-dropdown-icon' , disabled: !f.object.supplier.is_international %>
+        <%= po_request_row.select :default_currency, options_for_select(Company.default_currencies.keys.map { |k| [k, k] }  , po_request_row.object.default_currency || f.object.supplier&.default_currency || 'INR'), {}, class: ' select2-single bmro-form-input bmro-bg bmro-dropdown-icon' , disabled: !f.object.supplier&.is_international %>
       </div>
           <div class="col-12 col-md-2">
             <%= po_request_row.input :unit_price, input_html: {value: po_request_row.object.unit_price || po_request_row.object.unit_price_per_quantity.round(2), class: 'bmro-form-input'}, disabled: false, required: true %>
           </div>
           <div class="col-12 col-md-2">
-            <%= po_request_row.input :unit_price_with_selected_currency, input_html: {value: po_request_row.object.unit_price_with_selected_currency || 0 , class: 'bmro-form-input'}, disabled: false, required: true, label: 'UP in Selected Currency' , disabled: !f.object.supplier.is_international%>
+            <%= po_request_row.input :unit_price_with_selected_currency, input_html: {value: po_request_row.object.unit_price_with_selected_currency || 0 , class: 'bmro-form-input'}, disabled: false, required: true, label: 'UP in Selected Currency' , disabled: !f.object.supplier&.is_international%>
           </div>
           <div class="col-12 col-md-1">
             <%= po_request_row.input :discount_percentage, input_html: {value: po_request_row.object.discount_percentage || 0, class: 'bmro-form-input'}, label: 'Disc. %', disabled: false %>
@@ -292,7 +292,7 @@
             <%= po_request_row.input :converted_total_tax, input_html: {value: po_request_row.object.converted_total_tax, class: 'bmro-form-input'}, disabled: true, label: 'Total Tax' %>
           </div>
           <div class="col-12 col-md-2">
-            <%= po_request_row.input :total_price_with_selected_currency, input_html: {value: po_request_row.object.total_price_with_selected_currency, class: 'bmro-form-input'}, disabled: true, label: 'TP in Selected Currency' , disabled: !f.object.supplier.is_international %>
+            <%= po_request_row.input :total_price_with_selected_currency, input_html: {value: po_request_row.object.total_price_with_selected_currency, class: 'bmro-form-input'}, disabled: true, label: 'TP in Selected Currency' , disabled: !f.object.supplier&.is_international %>
           </div>
           <div class="col-12 col-md-2">
             <%= po_request_row.input :converted_total_selling_price_with_tax, input_html: {value: po_request_row.object.converted_total_selling_price_with_tax, class: 'bmro-form-input'}, disabled: true, label: 'Total Selling Price with Tax' %>
