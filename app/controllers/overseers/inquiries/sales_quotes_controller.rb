@@ -87,11 +87,16 @@ class Overseers::Inquiries::SalesQuotesController < Overseers::Inquiries::BaseCo
   end
 
   def reset_quote
-    authorize_acl @sales_quote
-    @inquiry.update_attributes(quotation_uid: '')
-    @inquiry.final_sales_quote.update_attributes(remote_uid: '')
-    # @inquiry.final_sales_quote.save_and_sync
-    redirect_to overseers_inquiry_sales_quotes_path(@inquiry), notice: flash_message(@inquiry, action_name)
+    if @inquiry.valid?
+      authorize_acl @sales_quote
+      @inquiry.update_attributes(quotation_uid: '')
+      @inquiry.final_sales_quote.update_attributes(remote_uid: '')
+      # @inquiry.final_sales_quote.save_and_sync
+      redirect_to overseers_inquiry_sales_quotes_path(@inquiry), notice: flash_message(@inquiry, action_name)
+    else
+      flash[:notice] = 'Inquiry Dates are Invalid'
+      redirect_to request.referer
+    end
   end
 
 
@@ -115,11 +120,17 @@ class Overseers::Inquiries::SalesQuotesController < Overseers::Inquiries::BaseCo
   end
 
   def sales_quote_reset_by_manager
-    if params['inquiry']['comments_attributes']['0']['message'].present?
-      service = Services::Overseers::SalesQuotes::SalesQuoteResetByManager.new(@sales_quote, params.merge(overseer: current_overseer))
-      service.call
+    if @inquiry.valid?
+      if params['inquiry']['comments_attributes']['0']['message'].present?
+        service = Services::Overseers::SalesQuotes::SalesQuoteResetByManager.new(@sales_quote, params.merge(overseer: current_overseer))
+        service.call
+        flash[:notice] = 'Inquiry has been successfully changed.'
+        render json: {url: overseers_inquiry_sales_quotes_path(@inquiry)}, status: 200
+      else
+        render json: {error: {base: 'Reset Quote Reason must be present.'}}, status: 500
+      end
     else
-      render json: {error: {base: 'Reset Quote Reason must be present.'}}, status: 500
+      render json: {error: {base: 'Inquiry Dates are Invalid'}}, status: 500
     end
     authorize_acl @sales_quote
   end
