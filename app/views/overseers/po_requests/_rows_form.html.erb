@@ -279,7 +279,7 @@
             <%= po_request_row.input :unit_price, input_html: {value: po_request_row.object.unit_price || po_request_row.object.unit_price_per_quantity.round(2), class: 'bmro-form-input'}, disabled: false, required: true %>
           </div>
           <div class="col-12 col-md-2">
-            <%= po_request_row.input :unit_price_with_selected_currency, input_html: {value: po_request_row.object.unit_price_with_selected_currency || 0 , class: 'bmro-form-input'}, disabled: false, required: true, label: 'UP in Selected Currency' , disabled: !f.object.supplier&.is_international%>
+            <%= po_request_row.input :unit_price_with_selected_currency, input_html: {value: po_request_row.object.unit_price_with_selected_currency || 0 , class: 'bmro-form-input'}, disabled: false, required: false, label: 'UP in Selected Currency' , disabled: !f.object.supplier&.is_international%>
           </div>
           <div class="col-12 col-md-1">
             <%= po_request_row.input :discount_percentage, input_html: {value: po_request_row.object.discount_percentage || 0, class: 'bmro-form-input'}, label: 'Disc. %', disabled: false %>
