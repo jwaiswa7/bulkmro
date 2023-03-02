@@ -228,7 +228,7 @@ class Services::Overseers::SalesOrders::FetchCustomerOrderStatusReportData < Ser
         actual_material_readiness_date: purchase_order_details.present? && purchase_order_details[:actual_material_readiness_date].present? ? purchase_order_details[:actual_material_readiness_date] : '',
         pickup_date: purchase_order_details.present? && purchase_order_details[:pickup_date].present? ? purchase_order_details[:pickup_date] : '',
         inward_date: purchase_order_details.present? && purchase_order_details[:inward_date].present? ? purchase_order_details[:inward_date] : '',
-        lead_time: purchase_order_details.present? && purchase_order_details[:lead_time].present? ? purchase_order_details[:lead_time] : '',
+        lead_time: so_row['lead_time'].present? ? so_row['lead_time'] : '',
         outward_date: invoice_details.present? && invoice_details['outward_date'].present? ? invoice_details['outward_date'] : '',
         customer_delivery_date: invoice_details.present? && invoice_details['customer_delivery_date'].present? ? invoice_details['customer_delivery_date'] : '',
         delivery_status: invoice_details.present? && invoice_details['delivery_status'].present? ? invoice_details['delivery_status'] : 'Not Delivered',

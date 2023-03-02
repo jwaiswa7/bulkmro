@@ -18,6 +18,20 @@ const newAction = () => {
     $('body').on('change.select2', function (e, params) {
 
     });
+
+    $('#select_all_products').change(function () {
+        $('input[name="row_ids[]"]').each(function () {
+          $(this).prop('checked', $('#select_all_products').prop("checked")).trigger('change');
+        });
+    });
+
+    $('#set-common-date').click(function () {
+        $('input[name="row_ids[]"]').each(function () {
+          if($(this).is(":checked")) {
+            $(this).closest('.option-wrapper').find('.row_lead_time').val($('#sales_order_lead_time').val());
+            }
+        });
+    });    
 };
 
 let destroySelect = () => {

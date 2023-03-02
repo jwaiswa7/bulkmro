@@ -317,7 +317,7 @@ class Overseers::SalesOrdersController < Overseers::BaseController
       @sales_orders = sales_orders
     end
 
-    export_service = Services::Overseers::Exporters::CustomerOrderStatusReportsExporter.new([], current_overseer, @sales_orders, [])
+    export_service = Services::Overseers::Exporters::CustomerOrderStatusReportsExporter.new(params['customer_order_status_report']['category'], current_overseer, @sales_orders, [])
     export_service.call
 
     redirect_to url_for(Export.customer_order_status_reports.not_filtered.last.report)

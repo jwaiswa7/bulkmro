@@ -30,7 +30,11 @@ json.data (@customer_order_status_records) do |sales_order|
                   sales_order[:mis_date].present? ? format_date_without_time(Date.parse(sales_order[:mis_date])) : '-',
                   sales_order[:created_at].present? ? format_date_without_time(Date.parse(sales_order[:created_at])) : '-',
                   sales_order[:customer_order_date].present? ? format_date_without_time(Date.parse(sales_order[:customer_order_date])) : '-',
-                  sales_order[:customer_po_delivery_date].present? ? format_date_without_time(Date.parse(sales_order[:customer_po_delivery_date])) : '-',
+                  if params['customer_order_status_report'].present? && params['customer_order_status_report']['category'] == 'By BM'
+                    sales_order[:lead_time].present? ? format_date_without_time(Date.parse(sales_order[:lead_time])) : '-'
+                  else
+                    sales_order[:customer_po_delivery_date].present? ? format_date_without_time(Date.parse(sales_order[:customer_po_delivery_date])) : '-'
+                  end,
                   sales_order[:customer_po_received_date].present? ? format_date_without_time(Date.parse(sales_order[:customer_po_received_date])) : '-',
                   sales_order[:cp_committed_date].present? ? format_date_without_time(Date.parse(sales_order[:cp_committed_date])) : '-',
                   sales_order[:revised_committed_delivery_date].present? ? format_date_without_time(Date.parse(sales_order[:revised_committed_delivery_date])) : '-',

@@ -199,6 +199,9 @@
             <th class="no-sort">
               <span data-toggle="tooltip" title="Total Freight">T. Freight</span>
             </th>
+            <th class="no-sort">
+              <span data-toggle="tooltip" title="Lead Time">Lead Time</span>
+            </th>
           </tr>
           </thead>
           <tbody>
@@ -239,6 +242,9 @@
               </td>
               <td>
                 <span><%= format_currency(row.freight_cost_subtotal, symbol: sales_order.currency_sign) %></span>
+              </td>
+              <td>
+                <span><%= format_succinct_date(row.lead_time) %></span>
               </td>
             </tr>
           <% end %>
