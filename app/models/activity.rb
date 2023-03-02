@@ -11,6 +11,7 @@ class Activity < ApplicationRecord
 
   update_index('activities#activity') { self }
   pg_search_scope :locate, against: [:purpose, :company_type, :activity_type], associated_against: { created_by: [:first_name, :last_name], account: [:name], company: [:name], contact: [:first_name, :last_name], inquiry: [:inquiry_number] }, using: { tsearch: { prefix: true } }
+  scope :latest_activities, -> {where('created_at > ?', '2023-03-01 00:00:00')}
 
   has_many :activity_overseers
   has_many :email_messages, dependent: :destroy
@@ -160,7 +161,7 @@ class Activity < ApplicationRecord
         )
       end
 
-      if email_message.save 
+      if email_message.save
         service = Services::Shared::EmailMessages::BaseService.new()
         service.send_email_message_with_sendgrid(email_message)
       end
