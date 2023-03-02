@@ -22,9 +22,9 @@ Rails.application.routes.draw do
     devise_for :contacts, controllers: {sessions: 'suppliers/sessions', passwords: 'suppliers/passwords'}, path: :suppliers
   end
 
-  resources :trainings, only: %i[index show] do 
+  resources :trainings, only: %i[index show] do
     get :search, on: :collection
-  end 
+  end
 
   namespace :customers, path: '/' do
     devise_for :contacts, controllers: {sessions: 'customers/sessions', passwords: 'customers/passwords'}, path: :customers
@@ -333,8 +333,8 @@ Rails.application.routes.draw do
         get 'pending'
         get 'export_all'
         get 'export_filtered_records'
-        resources :product_imports, only: [:new, :create] do 
-          collection do 
+        resources :product_imports, only: [:new, :create] do
+          collection do
             get 'excel_template'
           end
         end
@@ -788,6 +788,7 @@ Rails.application.routes.draw do
         get 'company_report'
         get 'export_company_report'
         get 'get_contacts'
+        get 'get_company_details'
       end
       member do
         get 'render_rating_form'
@@ -937,7 +938,7 @@ Rails.application.routes.draw do
     # resources :bible_sales_orders
   end
 
-  namespace 'customers' do    
+  namespace 'customers' do
     resource 'sign_in_steps', controller: 'sign_in_steps' do
       post 'reset_current_company'
       get 'edit_current_company'
@@ -990,7 +991,7 @@ Rails.application.routes.draw do
         get 'autocomplete'
       end
 
-      member do 
+      member do
         get 'product_details'
       end
     end
@@ -1057,7 +1058,7 @@ Rails.application.routes.draw do
       end
     end
 
-    resource :wish_list, controller: :wish_list,  except: :index do 
+    resource :wish_list, controller: :wish_list,  except: :index do
       post "add_item"
     end
 
@@ -1098,7 +1099,7 @@ Rails.application.routes.draw do
     end
 
     resources :rfqs
-  
+
   end
 
   namespace 'suppliers' do

@@ -58,10 +58,8 @@ const newPurchaseOrdersRequests = () => {
 
 let onSupplierChange = (container, reset) => {
     let optionSelected = $("option:selected", container);
-    let select = $(container).closest('select');
     let containerId = $(container).closest('select').attr('id');
     let containerIdString = containerId.substring(0, containerId.length - 11);
-
     if (optionSelected.exists() && optionSelected.val() !== '') {
         if (reset) {
             $(`#${containerIdString}bill_from_id`).val(null);
@@ -74,9 +72,8 @@ let onSupplierChange = (container, reset) => {
         $(`#${containerIdString}bill_from_id`).attr('data-source', Routes.autocomplete_overseers_company_addresses_path(optionSelected.val())).select2('destroy');
         $(`#${containerIdString}ship_from_id`).attr('data-source', Routes.autocomplete_overseers_company_addresses_path(optionSelected.val())).select2('destroy');
         $(`#${containerIdString}contact_id`).attr('data-source', Routes.autocomplete_overseers_company_contacts_path(optionSelected.val())).select2('destroy');
-
-
         select2s();
+        setCompanyDetail(container , optionSelected.val() );
     }
 
 };
@@ -106,5 +103,36 @@ let onContactChange = (container) => {
         })
     }
 };
+
+let setCompanyDetail = ( container ,company_id ) => {
+    let row = $(container).closest(".supplier-row");
+
+    $.ajax({
+        url: Routes.get_company_details_overseers_companies_path(),
+        data: {attribute_id: company_id},
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function success(data) {
+            if(data.is_international){
+                row.find('input[name*=selected_currency_up]').prop("disabled", false);
+                row.find('input[name*=selected_currency_up]').prop("required", true);
+                row.find('select[name*=default_currency]').prop("disabled", false);
+                row.find('input[name*=selected_currency]').prop("required", true);
+                row.find('select[name*=default_currency]').val(data.default_currency).trigger('change');
+            }
+            else{
+                row.find('input[name*=selected_currency_up]').prop("disabled", true);
+                row.find('input[name*=selected_currency_up]').prop("required", false);
+                row.find('select[name*=default_currency]').prop("disabled", true);
+                row.find('input[name*=selected_currency]').prop("required", false);
+                row.find('input[name*=selected_currency_up]').val('');
+                row.find('input[name$="total_price_with_selected_currency]"]').val('');
+                row.find('select[name*=default_currency]').val('INR').trigger('change');
+            }
+        },
+    })
+};
+
+
 export default newPurchaseOrdersRequests
 

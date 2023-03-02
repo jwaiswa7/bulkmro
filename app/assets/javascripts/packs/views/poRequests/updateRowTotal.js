@@ -45,8 +45,8 @@ let updateTotalss = (element) => {
     let container = $(element).closest('.po-request-row');
     let totalPriceElement = $(container).find('input[name$="total_price_with_selected_currency]"]');
 
-    let quantity = toDecimal(container.find('input[name*=quantity]').val());
-    let unitPrice = toDecimal($(container).find('input[name*=unit_price_with_selected_currency]').val());
+    let quantity = toDecimal($(container).find('input[name*=quantity]').val());
+    let unitPrice = toDecimal($(container).find('input[name*=selected_currency_up]').val());
 
     let total_price = quantity * unitPrice;
 
