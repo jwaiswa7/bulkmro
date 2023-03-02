@@ -63,13 +63,25 @@
   slug: add_new_products
   type: text
   category: Catalog
-  url: "https://docs.google.com/document/d/1KhLRDI1WK1GTeuwPKy9n4IbtPG3ZwkRuXrmP9a3vhaA/edit?usp=share_link"
+  url: ""
 - 
   title: Add multiple products
   slug: add_multiple_products
   type: text
   category: Catalog
-  url: "https://docs.google.com/document/d/1bM4XGtb1dJHLcIWIDlQleqzamEy8APSDJ0ZgD4a9oCI/edit?usp=share_link"
+  url: ""
+- 
+  title: Submit Company Creation request
+  slug: submit_company_creation_request
+  type: text
+  category: Catalog
+  url: ""
+- 
+  title: Approve Company Creation request
+  slug: approve_company_creation_request
+  type: text
+  category: Catalog
+  url: ""
 - 
   title: Admin user access
   slug: customer_admin_user_access
