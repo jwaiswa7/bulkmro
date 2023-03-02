@@ -4,7 +4,7 @@ class Services::Overseers::Exporters::InquiriesExporter < Services::Overseers::E
     @model = Inquiry
     @export_name = 'inquiries'
     @path = Rails.root.join('tmp', filename)
-    @columns = ['inquiry_number', 'order_number', 'created_at', 'customer_committed_date', 'updated_at', 'quote_type', 'quote_date', 'last_quote_date', 'status', 'opportunity_type', 'inside_sales_owner', 'ise_city', 'outside_sales_owner', 'ose_city', 'company_alias', 'company_name', 'customer', 'key_acc_manager', 'subject', 'currency', 'potential amount', 'overall_margin(%)', 'total (Exc. Tax)', 'products count', 'comments', 'reason', 'customer_order_date', 'customer_po_number']
+    @columns = ['inquiry_number', 'order_number', 'created_at', 'customer_committed_date', 'updated_at', 'quote_type', 'quote_date', 'last_quote_date', 'status', 'opportunity_type', 'inside_sales_owner', 'ise_city', 'outside_sales_owner', 'ose_city', 'company_alias', 'company_name', 'customer', 'key_acc_manager', 'subject', 'currency', 'potential amount', 'overall_margin(%)', 'total (Exc. Tax)', 'products count', 'comments', 'reason', 'customer_order_date', 'customer_po_number', 'billing_address', 'shipping_address']
     @start_at = Date.new(2018, 04, 01)
   end
 
@@ -51,7 +51,9 @@ class Services::Overseers::Exporters::InquiriesExporter < Services::Overseers::E
         comments: record.comments.pluck(:message).join(','),
         reason: '',
         customer_order_date: record.customer_order_date,
-        customer_po_number: record.customer_po_number
+        customer_po_number: record.customer_po_number,
+        billing_address: record.inquiry&.billing_address&.to_singleline_s,
+        shipping_address: record.inquiry&.shipping_address&.to_singleline_s
       )
     end
     # filtered = @ids.present?
