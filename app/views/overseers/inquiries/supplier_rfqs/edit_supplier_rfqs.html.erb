@@ -63,10 +63,13 @@
                   <% if inquiry_product_supplier.object.id.present? %>
                     <% if @isp_ids.present? %>
                       <% if @isp_ids.include?("#{inquiry_product_supplier.object.id}") %>
-                        <%= render 'overseers/inquiries/supplier_rfqs/product_suppliers' %>
+                        <%= render 'overseers/inquiries/supplier_rfqs/product_suppliers', inquiry_product_supplier: inquiry_product_supplier,  shown_title: shown_title %>
                       <% end %>
                     <% else %>
-                      <%= render 'overseers/inquiries/supplier_rfqs/product_suppliers' %>
+                      <%= render 'overseers/inquiries/supplier_rfqs/product_suppliers' inquiry_product_supplier: inquiry_product_supplier,  shown_title: shown_title %>
+                    <% end %>
+                    <% if f.object.inquiry_product_suppliers.count > 1 %>
+                      <hr>
                     <% end %>
                   <% end %>
                 <% end %>
