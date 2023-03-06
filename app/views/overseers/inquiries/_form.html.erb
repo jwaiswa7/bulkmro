@@ -126,6 +126,17 @@
             <%= f.input :product_type, :wrapper => :custom_multi_select, as: :select, collection: enum_to_collection(Inquiry.product_types, keep_raw: true), required: true, input_html: { class: 'select2-single bmro-form-input bmro-dropdown-icon' }, disabled: is_authorized(f.object, 'restrict_fields_on_completed_orders') && policy(f.object).restrict_fields_on_completed_orders? %>
           </div>
         </div>
+          <div class="form-row">
+          <div class="col-6 col-md-4">
+            <%= f.input :is_inquiry_offline, wrapper: :vertical_collection_inline, as: :radio_buttons, label: 'Is Offline', checked: f.object.is_inquiry_offline.present? %>
+          </div>
+           <div class="col-6 col-md-4">
+            <%= f.input :upload_sales_quote, wrapper: :custom_file, label: 'Upload Sales Quote', hint: f.object.upload_sales_quote.attached? ? "#{link_to '<i class="bmro-download-icon"></i>'.html_safe, url_for(f.object&.upload_sales_quote), class: 'ml-1 btn btn-success bmro-button bmro-margin-neg', target: '_blank', :"data-toggle" => 'tooltip', :status => f.object&.upload_sales_quote&.filename}".html_safe : " " , required: true %>
+          </div>
+          <div class="col-6 col-md-4">
+            <%= f.input :upload_vendor_quote, wrapper: :custom_file, label: 'Upload Vendor Quote', hint: f.object.upload_vendor_quote.attached? ? "#{link_to '<i class="bmro-download-icon"></i>'.html_safe, url_for(f.object&.upload_vendor_quote), class: 'ml-1 btn btn-success bmro-button bmro-margin-neg', target: '_blank', :"data-toggle" => 'tooltip', :status => f.object&.upload_vendor_quote&.filename}".html_safe : " ", required: true %>
+          </div>
+        </div>
         <div class="bmro-dotted-line bmro-dotted-mt"></div>
         <div class="mt-3">
           <h6 class="mb-1 bmro-form-heading bmro-Billing-slide target-scroll" id="Billing">Billing / Shipping
