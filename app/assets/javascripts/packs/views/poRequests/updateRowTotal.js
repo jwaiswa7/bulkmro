@@ -5,9 +5,9 @@ const updateRowTotal = () => {
         updateTotal(element);
     });
 
-    $('form').on('keyup', 'input[name*=quantity],input[name*=unit_price_with_selected_currency]', function (e) {
+    $('form').on('keyup', 'input[name*=quantity],input[name*=selected_currency_up]', function (e) {
         updateTotalss(e.target);
-    }).find('input[name*=quantity],input[name*=unit_price_with_selected_currency]').each(function (e, element) {
+    }).find('input[name*=quantity],input[name*=selected_currency_up]').each(function (e, element) {
         updateTotalss(element);
     });
 

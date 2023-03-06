@@ -279,7 +279,7 @@
             <%= po_request_row.input :unit_price, input_html: {value: po_request_row.object.unit_price || po_request_row.object.unit_price_per_quantity.round(2), class: 'bmro-form-input'}, disabled: false, required: true %>
           </div>
           <div class="col-12 col-md-2">
-            <%= po_request_row.input :unit_price_with_selected_currency, input_html: {name: "selected_currency_up ", value: po_request_row.object.unit_price_with_selected_currency || 0 , class: 'bmro-form-input'}, disabled: false, required: false, label: 'UP in Selected Currency' , disabled: !f.object.supplier&.is_international%>
+            <%= po_request_row.input :selected_currency_up, input_html: { value: po_request_row.object.selected_currency_up || 0 , class: 'bmro-form-input'}, disabled: false, required: false, label: 'UP in Selected Currency' , disabled: !f.object.supplier&.is_international%>
           </div>
           <div class="col-12 col-md-1">
             <%= po_request_row.input :discount_percentage, input_html: {value: po_request_row.object.discount_percentage || 0, class: 'bmro-form-input'}, label: 'Disc. %', disabled: false %>
@@ -292,7 +292,7 @@
             <%= po_request_row.input :converted_total_tax, input_html: {value: po_request_row.object.converted_total_tax, class: 'bmro-form-input'}, disabled: true, label: 'Total Tax' %>
           </div>
           <div class="col-12 col-md-2">
-            <%= po_request_row.input :total_price_with_selected_currency, input_html: {value: po_request_row.object.total_price_with_selected_currency, class: 'bmro-form-input'}, disabled: true, label: 'TP in Selected Currency' , disabled: !f.object.supplier&.is_international %>
+            <%= po_request_row.input :total_price_with_selected_currency, input_html: {value: po_request_row.object.total_price_with_selected_currency, class: 'bmro-form-input'}, disabled: true, label: 'TP in Selected Currency' , disabled: true %>
           </div>
           <div class="col-12 col-md-2">
             <%= po_request_row.input :converted_total_selling_price_with_tax, input_html: {value: po_request_row.object.converted_total_selling_price_with_tax, class: 'bmro-form-input'}, disabled: true, label: 'Total Selling Price with Tax' %>

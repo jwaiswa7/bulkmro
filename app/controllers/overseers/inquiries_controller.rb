@@ -830,7 +830,9 @@ class Overseers::InquiriesController < Overseers::BaseController
                     :unit_price,
                     :conversion,
                     :lead_time,
-                    :discount_percentage
+                    :discount_percentage,
+                    :default_currency,
+                    :selected_currency_up
                 ],
                 comments_attributes: [
                     :created_by_id,

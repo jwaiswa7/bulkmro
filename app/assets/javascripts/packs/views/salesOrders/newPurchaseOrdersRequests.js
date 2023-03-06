@@ -126,7 +126,7 @@ let setCompanyDetail = ( container ,company_id ) => {
                 row.find('select[name*=default_currency]').prop("disabled", true);
                 row.find('input[name*=selected_currency]').prop("required", false);
                 row.find('input[name*=selected_currency_up]').val('');
-                row.find('input[name$="total_price_with_selected_currency]"]').val('');
+                row.find('input[name*="total_price_with_selected_currency]"]').val('');
                 row.find('select[name*=default_currency]').val('INR').trigger('change');
             }
         },

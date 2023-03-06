@@ -323,7 +323,7 @@
                       <span><%= item.po_request_row&.default_currency %></span>
                     </td>
                     <td align="center" valign="top">
-                      <span><%= number_to_currency(item.po_request_row&.unit_price_with_selected_currency, precision: 2, unit: '') %></span>
+                      <span><%= number_to_currency(item.po_request_row&.selected_currency_up, precision: 2, unit: '') %></span>
                     </td>
                      <td align="center" valign="top">
                       <span><%= number_to_currency(item.po_request_row&.total_price_with_selected_currency, precision: 2, unit: '') %></span>

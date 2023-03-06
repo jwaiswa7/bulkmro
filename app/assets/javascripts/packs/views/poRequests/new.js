@@ -108,7 +108,7 @@ let setCompanyDetail = ( company_id ) => {
                 $('form').find('select[name*=default_currency]').prop("disabled", true);
                 $('form').find('input[name*=selected_currency]').prop("required", false);
                 $('form').find('input[name*=selected_currency_up]').val('');
-                $('form').find('input[name$="total_price_with_selected_currency]"]').val('');
+                $('form').find('input[name*="total_price_with_selected_currency]"]').val('');
                 $('form').find('select[name*=default_currency]').val('INR').trigger('change');
             }
         },
