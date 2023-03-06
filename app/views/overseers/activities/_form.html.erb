@@ -89,7 +89,7 @@
               <%= f.input :purpose_for_others ,label: "Specify if selected others", input_html: {class: 'bmro-form-input' ,id: 'activity_purpose_others'} , disabled: true %>
             </div>
           </div>
-          <%= f.association :overseers, collection: Overseer.all ,label: 'Colleagues' , placeholder:  "Select other overseers" , input_html: {class: 'custom-select2-search select2-multiple ', multiple: true } %>
+          <%= f.association :overseers, collection: Overseer.all ,label: 'Assigned to' , placeholder:  "Select other overseers" , input_html: {class: 'custom-select2-search select2-multiple ', multiple: true } %>
           <%= f.input :points_discussed, input_html: {class: 'bmro-form-input bmro-input-values' } %>
           <%= f.input :actions_required, input_html: {class: 'bmro-form-input bmro-input-values' } %>
           <%= f.input :internal_remarks, input_html: {class: 'bmro-form-input bmro-input-values' } %>
@@ -143,7 +143,7 @@
               <div class="col-12 mt-3">
                 <%= button_tag(type: "submit", class: "btn btn-warning btn-block bmro-button") do %>
                   <i class="fal fa-pen"></i> <%= submit_text(@activity) %>
-                <% end %> 
+                <% end %>
               </div>
             <% end %>
           </div>
