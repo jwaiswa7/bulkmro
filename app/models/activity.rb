@@ -86,6 +86,7 @@ class Activity < ApplicationRecord
     self.purpose ||= :'First Meeting/Intro Meeting'
     self.activity_type ||= :'Meeting'
     self.activity_date ||= Date.today
+    self.due_date ||= Date.today
     self.activity_status ||= :'To-Do'
   end
 

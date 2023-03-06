@@ -168,6 +168,7 @@ class Overseers::ActivitiesController < Overseers::BaseController
         :subject,
         :purpose,
         :activity_date,
+        :due_date,
         :activity_type,
         :points_discussed,
         :actions_required,
