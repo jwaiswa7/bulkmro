@@ -1,5 +1,34 @@
-<%= render layout: 'overseers/dashboard/show' do %>
-
-<%= render partial: 'count' %>
-<%= render partial: 'summary' %>
-<% end %>
+<div class="row">
+   <div class="col-6" style='margin: 0px; padding: 0px'>
+      <div class=''>
+         <div class='card' style='height: 45vh; width: 100%; '>
+            <div class='card-body'>
+              <h4 style='font-size: 1rem'>Inquiry count by status</h4>
+            </div>
+         </div>
+         <div class='card' style='height: 45vh; width: 100%; '>
+            <div class='card-body'>
+              <h4 style='font-size: 1rem'>Inquiry count by location</h4>
+            </div>
+         </div>
+      </div>
+   </div>
+   <div class="col-4">
+      <div class=''>
+         <div class='card' style='height: 90vh'>
+            <div class='card-body'>
+              <h4 style='font-size: 1rem'>Inquiry count by ISP & status</h4>
+            </div>
+         </div>
+      </div>
+   </div>
+   <div class="col-2" style='height: 90vh'>
+      <div class=''>
+         <div class='card' style='height: 90vh'>
+            <div class='card-body'>
+               Other chart
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
