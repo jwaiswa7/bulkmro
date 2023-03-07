@@ -52,8 +52,8 @@ class Services::Overseers::Exporters::InquiriesExporter < Services::Overseers::E
         reason: '',
         customer_order_date: record.customer_order_date,
         customer_po_number: record.customer_po_number,
-        billing_address: record.inquiry&.billing_address&.to_singleline_s,
-        shipping_address: record.inquiry&.shipping_address&.to_singleline_s
+        billing_address: record.billing_address&.to_singleline_s,
+        shipping_address: record.shipping_address&.to_singleline_s
       )
     end
     # filtered = @ids.present?
