@@ -1,0 +1,65 @@
+<div class="form-row mt-2 mt-lg-4">
+<% if is_authorized(:account, 'index') %>
+  <div class="col-md-3">
+    <div class="card mb-3">
+      <div class="card-body">
+        <div class="text-center">
+          <p class="text-uppercase mb-1"><strong>Accounts</strong></p>
+          <h3 class="mb-0"><%= number_with_delimiter(Account.all.size, delimiter: ',') %></h3>
+        </div>
+      </div>
+      <div class="card-footer">
+        <a href="<%= overseers_accounts_path %>" class="bmro-button btn btn-lg btn-block align-self-center">
+          See Accounts
+        </a>
+      </div>
+    </div>
+  </div>
+<% end %>
+<% if is_authorized(:company, 'index') %>
+  <div class="col-md-3">
+    <div class="card mb-3">
+      <div class="card-body">
+        <div class="text-center">
+          <p class="text-uppercase text-black-50 mb-1"><strong>Companies</strong>
+          </p>
+          <h3 class="mb-0"><%= number_with_delimiter(Company.all.size, delimiter: ',') %></h3>
+        </div>
+      </div>
+      <div class="card-footer">
+        <a href="<%= overseers_companies_path %>" class="bmro-button btn btn-lg btn-block align-self-center">See Companies</a>
+      </div>
+    </div>
+  </div>
+<% end %>
+<% if is_authorized(:contact, 'index') %>
+  <div class="col-md-3">
+    <div class="card mb-3">
+      <div class="card-body">
+        <div class="text-center">
+          <p class="text-uppercase mb-1"><strong>Contacts</strong></p>
+          <h3 class="mb-0"><%= number_with_delimiter(Contact.all.size, delimiter: ',') %></h3>
+        </div>
+      </div>
+      <div class="card-footer">
+        <a href="<%= overseers_contacts_path %>" class="bmro-button btn btn-lg btn-block align-self-center">See Contacts</a>
+      </div>
+    </div>
+  </div>
+<% end %>
+<% if is_authorized(:product, 'index') %>
+  <div class="col-md-3">
+    <div class="card mb-3">
+      <div class="card-body">
+        <div class="text-center">
+          <p class="text-uppercase mb-1"><strong>Products</strong></p>
+          <h3 class="mb-0"><%= number_with_delimiter(Product.all.size, delimiter: ',') %></h3>
+        </div>
+      </div>
+      <div class="card-footer">
+        <a href="<%= overseers_products_path %>" class="bmro-button btn btn-lg btn-block align-self-center">See Products</a>
+      </div>
+    </div>
+  </div>
+<% end %>
+</div>
