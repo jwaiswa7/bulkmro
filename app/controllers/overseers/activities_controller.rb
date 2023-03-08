@@ -1,7 +1,7 @@
 class Overseers::ActivitiesController < Overseers::BaseController
   before_action :set_activity, only: [:edit, :update, :approve, :reject]
   before_action :set_notification, only: [:create]
-  
+
   def index
     service = Services::Overseers::Finders::Activities.new(params)
     service.call
@@ -56,15 +56,17 @@ class Overseers::ActivitiesController < Overseers::BaseController
       activity_number = Services::Resources::Shared::UidGenerator.generate_activity_number
       @activity.update_attributes(activity_number: activity_number)
 
+      Services::Overseers::Activities::SendEmailAtCreation.new(@activity , current_overseer).call
       @notification.send_activity_created(
-                                            @activity, 
-                                            action_name.to_sym, 
+                                            @activity,
+                                            action_name.to_sym,
                                             @activity,
                                             edit_overseers_activity_path(@activity)
                                           )
 
-      # approve
-      redirect_to overseers_activities_path, notice: flash_message(@activity, action_name)
+      approve
+
+      # redirect_to overseers_activities_path, notice: flash_message(@activity, action_name)
     else
       render 'new'
     end
