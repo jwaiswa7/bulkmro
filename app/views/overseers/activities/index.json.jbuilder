@@ -50,8 +50,13 @@ json.data (@activities) do |activity|
                   format_currency(activity.expenses),
                   activity.points_discussed,
                   activity.actions_required,
+                  status_badge(activity.activity_status),
+                  activity.subject,
+                  format_succinct_date(activity.due_date),
+                  activity.overseers.map {|o| o.to_s}.compact.join('</br></br>'),
                   format_succinct_date(activity.created_at),
-                  status_badge(activity.approval_status)
+
+
               ]
 end
 json.columnFilters [

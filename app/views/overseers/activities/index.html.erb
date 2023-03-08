@@ -47,8 +47,11 @@
   <th class="no-sort text-right" width="75px">Misc. Expenses</th>
   <th class="no-sort text-left" width="230px">Points Discussed</th>
   <th class="no-sort text-left" width="150px">Actions Required</th>
-  <th class="desktop text-left" width="70px" data-name="created_at">Created</th>
-    <th class="desktop text-right">Activity Status</th>
+    <th class="no-sort desktop text-right">Status</th>
+  <th class="no-sort desktop text-left">Subject</th>
+  <th class="no-sort desktop text-right" width="50px">Due Date</th>
+  <th class="no-sort desktop text-right" width="80px">Assigned To</th>
+  <th class="desktop text-left" width="50px" data-name="created_at">Created</th>
   <% end %>
 <% content_for :filter_row do %>
   <td data-filter="false"></td>
@@ -67,8 +70,11 @@
   <td data-filter="false"></td>
   <td data-filter="false"></td>
   <td data-filter="false"></td>
-  <td data-filter="daterange"></td>
   <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="daterange"></td>
 <% end %>
 
   <%= render layout: 'shared/layouts/datatable' do %>
