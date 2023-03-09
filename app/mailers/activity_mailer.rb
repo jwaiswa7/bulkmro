@@ -1,6 +1,6 @@
 class ActivityMailer < ApplicationMailer
     default template_path: "mailers/#{self.name.underscore}"
-  
+
     def minutes_of_meeting(email_message)
       @overseer = email_message.overseer
       @activity = email_message.activity
@@ -10,7 +10,7 @@ class ActivityMailer < ApplicationMailer
     def send_minutes_of_meeting(email_message)
       @overseer = email_message.overseer
       @activity = email_message.activity
-      
+
       attach_files(email_message.files)
       email = htmlized_email(email_message)
       email.delivery_method.settings.merge!(user_name: @overseer.email, password: @overseer.smtp_password)
@@ -25,7 +25,7 @@ class ActivityMailer < ApplicationMailer
     def send_follow_up(email_message)
       @overseer = email_message.overseer
       @activity = email_message.activity
-      
+
       attach_files(email_message.files)
       email = htmlized_email(email_message)
       email.delivery_method.settings.merge!(user_name: @overseer.email, password: @overseer.smtp_password)
@@ -50,6 +50,12 @@ class ActivityMailer < ApplicationMailer
     def email_of_overdue_to_upper_management(email_message)
       @activity = email_message.activity
       standard_email(email_message)
-    end   
-    
+    end
+
+    def email_activity_creation(email_message , assignee)
+      @activity = email_message.activity
+      @assignee = assignee
+      standard_email(email_message)
+    end
+
 end
