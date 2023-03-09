@@ -14,8 +14,8 @@ json.data (@activities) do |activity|
                         row_action_button(overseers_contact_creation_request_path(activity.contact_creation_request), 'eye', 'View Contact Creation Request', 'info  ')
                       end,
                   ].join(' '),
-                  activity.created_by.to_s,
-                  format_date(activity.activity_date),
+                  activity.subject,
+                  status_badge(activity.activity_status),
                   if activity.activity_account.present?
                     conditional_link(activity.activity_account.to_s, overseers_account_path(activity.activity_account), is_authorized(activity, 'activity_account'))
                   end,
@@ -31,14 +31,10 @@ json.data (@activities) do |activity|
                   else
                     ''
                   end,
-                  if activity.contact_creation_request.present?
-                    status_badge(activity.contact_creation_request.status)
-                  else
-                    ''
-                  end,
                   if activity.inquiry.present?
                     link_to format_id(activity.inquiry.inquiry_number), edit_overseers_inquiry_path(activity.inquiry)
                   end,
+                  activity.created_by.to_s,
                   if activity.inquiry.present?
                     status_badge(activity.inquiry.commercial_status)
                   end,
@@ -50,11 +46,9 @@ json.data (@activities) do |activity|
                   format_currency(activity.expenses),
                   activity.points_discussed,
                   activity.actions_required,
-                  status_badge(activity.activity_status),
-                  activity.subject,
-                  format_succinct_date(activity.due_date),
                   activity.overseers.map {|o| o.to_s}.compact.join('</br></br>'),
-                  format_succinct_date(activity.created_at),
+                  format_date(activity.activity_date),
+                  format_succinct_date(activity.due_date),
 
 
               ]
@@ -62,13 +56,13 @@ end
 json.columnFilters [
                        [],
                        [],
-                       Overseer.outside.map { |value| { 'label' => value.name.to_s, 'value' => value.id } }.as_json,
+                       [],
                        [],
                        [{ "source": autocomplete_overseers_accounts_path }],
                        [{ "source": autocomplete_overseers_companies_path }],
                        [],
                        [],
-                       [],
+                       Overseer.outside.map { |value| { 'label' => value.name.to_s, 'value' => value.id } }.as_json,
                        [],
                        [{ "source": autocomplete_overseers_contacts_path }],
                        Activity.purposes.map { |k, v| { "label": k, "value": v.to_s } }.as_json,
