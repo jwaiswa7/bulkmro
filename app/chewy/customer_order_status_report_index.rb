@@ -39,6 +39,7 @@ class CustomerOrderStatusReportIndex < BaseIndex
       field :sku, value: -> (record) { record.get_product.try(:sku) }, analyzer: 'sku_substring'
       field :name, value: -> (record) { record.get_product.try(:name) }, analyzer: 'substring'
       field :total_selling_price, value: -> (record) { record.converted_total_selling_price}, type: 'integer'
+      field :lead_time, value: -> (record) { record.lead_time}, type: 'date'
     end
 
     # inquiry purchase orders when po requests not present
