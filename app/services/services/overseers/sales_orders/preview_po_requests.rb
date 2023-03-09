@@ -35,7 +35,7 @@ class Services::Overseers::SalesOrders::PreviewPoRequests < Services::Shared::Ba
             else
               measurement_unit_id = Product.find(row_hash[:product_id]).try(:measurement_unit).id
             end
-            po_requests[po_request_hash[:supplier_id]].rows.build(sales_order_row_id: row_hash[:sales_order_row_id], quantity: row_hash[:quantity], product_id: row_hash[:product_id], brand_id: row_hash[:brand_id], tax_code_id: row_hash[:tax_code_id], tax_rate_id: row_hash[:tax_rate_id], measurement_unit_id: measurement_unit_id, unit_price: row_hash[:unit_price], discount_percentage: row_hash[:discount_percentage], lead_time: row_hash[:lead_time],  default_currency: row_hash[:default_currency], unit_price_with_selected_currency: row_hash[:unit_price_with_selected_currency])
+            po_requests[po_request_hash[:supplier_id]].rows.build(sales_order_row_id: row_hash[:sales_order_row_id], quantity: row_hash[:quantity], product_id: row_hash[:product_id], brand_id: row_hash[:brand_id], tax_code_id: row_hash[:tax_code_id], tax_rate_id: row_hash[:tax_rate_id], measurement_unit_id: measurement_unit_id, unit_price: row_hash[:unit_price], discount_percentage: row_hash[:discount_percentage], lead_time: row_hash[:lead_time],  default_currency: row_hash[:default_currency], selected_currency_up: row_hash[:selected_currency_up])
           end
         end
       end

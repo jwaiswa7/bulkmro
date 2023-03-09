@@ -401,7 +401,7 @@ class Overseers::SalesOrdersController < Overseers::BaseController
                     :discount_percentage,
                     :unit_price,
                     :default_currency,
-                    :unit_price_with_selected_currency
+                    :selected_currency_up
                 ],
             comments_attributes: [
             :created_by_id,

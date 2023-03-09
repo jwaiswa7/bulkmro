@@ -26,6 +26,8 @@
           <%= po_request.hidden_field :delivery_type %>
           <%= po_request.hidden_field :transport_mode %>
 
+
+
           <strong class="d-block text-uppercase">
             <span class="lead text-black-50 text-small mt-1 mr-1">#<%= (po_request.index + 1) || 0 %></span>
             <%= po_request.object.supplier.to_s %>
@@ -162,6 +164,8 @@
               <%= po_request_row.hidden_field :discount_percentage %>
               <%= po_request_row.hidden_field :unit_price %>
               <%= po_request_row.hidden_field :lead_time %>
+              <%= po_request_row.hidden_field :default_currency %>
+              <%= po_request_row.hidden_field :selected_currency_up %>
 
               <% if po_request_row.present? %>
 

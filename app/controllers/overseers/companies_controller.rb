@@ -151,6 +151,10 @@ class Overseers::CompaniesController < Overseers::BaseController
     render json: {contact_id: contact.id, contact_name: contact.name, contact_email: contact.email, contact_mobile: contact.mobile}
   end
 
+  def get_company_details
+    company = Company.find(params['attribute_id'])
+    render json: {is_international: company&.is_international , default_currency: company&.default_currency }
+  end
 
   private
 

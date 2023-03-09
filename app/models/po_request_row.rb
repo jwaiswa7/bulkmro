@@ -48,11 +48,11 @@ class PoRequestRow < ApplicationRecord
   end
 
   def total_price_with_selected_currency
-    if self.unit_price_with_selected_currency.present?
+    if self.selected_currency_up.present?
       if self.quantity.present?
-        self.unit_price_with_selected_currency * self.quantity
+        self.selected_currency_up * self.quantity
       else
-        self.unit_price_with_selected_currency
+        self.selected_currency_up
       end
     end
   end
@@ -174,7 +174,7 @@ class PoRequestRow < ApplicationRecord
     self.sales_order_row.present?
   end
 
-  private 
+  private
 
   def valid_lead_time
     errors.add(:lead_time, 'is before tomorrow') if lead_time && lead_time < (Date.today + 1.day)

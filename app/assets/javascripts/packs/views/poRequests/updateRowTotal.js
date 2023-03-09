@@ -5,9 +5,9 @@ const updateRowTotal = () => {
         updateTotal(element);
     });
 
-    $('form').on('keyup', 'input[name*=quantity],input[name*=unit_price_with_selected_currency]', function (e) {
+    $('form').on('keyup', 'input[name*=quantity],input[name*=selected_currency_up]', function (e) {
         updateTotalss(e.target);
-    }).find('input[name*=quantity],input[name*=unit_price_with_selected_currency]').each(function (e, element) {
+    }).find('input[name*=quantity],input[name*=selected_currency_up]').each(function (e, element) {
         updateTotalss(element);
     });
 
@@ -45,8 +45,8 @@ let updateTotalss = (element) => {
     let container = $(element).closest('.po-request-row');
     let totalPriceElement = $(container).find('input[name$="total_price_with_selected_currency]"]');
 
-    let quantity = toDecimal(container.find('input[name*=quantity]').val());
-    let unitPrice = toDecimal($(container).find('input[name*=unit_price_with_selected_currency]').val());
+    let quantity = toDecimal($(container).find('input[name*=quantity]').val());
+    let unitPrice = toDecimal($(container).find('input[name*=selected_currency_up]').val());
 
     let total_price = quantity * unitPrice;
 

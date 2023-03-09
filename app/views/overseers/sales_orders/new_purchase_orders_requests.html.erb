@@ -61,6 +61,7 @@
           <%= f.simple_fields_for :po_requests, @po_requests.values do |po_request| %>
             <div class="simple-row target-scroll" id="Top">
               <p class="text">
+               <div class="supplier-row">
                 <div class="row">
                   <div class="col-1">
                 <span class="lead text-black-50 text-small mt-1 mr-1">#<%= (@po_requests.index(po_request.object) || 0) %></span>
@@ -76,6 +77,7 @@
                 <% end %>
                 <%= render 'overseers/po_requests/rows_form', f: po_request, supplier_index: @index, product_path: service_autocomplete_overseers_products_path, stock: false %>
               </p>
+             </div>
             </div>
             <hr class="<%= f.object.po_requests.last == po_request.object ? 'd-none' : '' %>"/>
              <% @index = @index + 1 %>

@@ -367,7 +367,7 @@ class Overseers::PoRequestsController < Overseers::BaseController
           :cancellation_remarks,
           :commercial_terms_and_conditions,
           comments_attributes: [:id, :message, :created_by_id, :updated_by_id],
-          rows_attributes: [:id, :sales_order_row_id, :product_id, :_destroy, :status, :quantity, :tax_code_id, :tax_rate_id, :measurement_unit_id,:brand_id, :discount_percentage, :unit_price, :lead_time, :converted_unit_selling_price, :product_unit_selling_price, :conversion, :bp_catalog_name, :bp_catalog_sku, :default_currency, :unit_price_with_selected_currency],
+          rows_attributes: [:id, :sales_order_row_id, :product_id, :_destroy, :status, :quantity, :tax_code_id, :tax_rate_id, :measurement_unit_id,:brand_id, :discount_percentage, :unit_price, :lead_time, :converted_unit_selling_price, :product_unit_selling_price, :conversion, :bp_catalog_name, :bp_catalog_sku, :default_currency, :selected_currency_up],
           attachments: []
       )
     end
