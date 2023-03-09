@@ -3,28 +3,10 @@ class Overseers::DashboardController < Overseers::BaseController
 
   def show
     authorize_acl :dashboard
-
-    # if Rails.env.development?
-    #   render 'default_dashboard'
-    # else
-    if current_overseer.sales?
-      if current_overseer.descendant_ids.present?
-        redirect_to sales_manager_overseers_dashboard_path
-      else
-        redirect_to sales_executive_overseers_dashboard_path
-      end
-    elsif session['user_role_for_dashboard'] == 'Accounts'
-      redirect_to accounts_overseers_dashboard_path
-    elsif current_overseer.admin?
-      @dashboard = Rails.cache.fetch('admin_dashboard_data') do
-        service = Services::Overseers::Dashboards::Admin.new
-        @dashboard = service.call
-      end
-      render 'admin_dashboard'
-    else
-      render 'default_dashboard'
-    end
-    # end
+    @data = Services::Overseers::Chart::InquiriesByStatuses.new.call 
+    @data_location = Services::Overseers::Chart::InquiriesByLocation.new.call
+    @data_bar = Services::Overseers::Chart::InquiriesByIsp.new.call
+    render 'admin_dashboard'
   end
 
   def sales_manager

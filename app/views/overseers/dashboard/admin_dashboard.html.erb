@@ -4,11 +4,13 @@
          <div class='card' style='height: 45vh; width: 100%; '>
             <div class='card-body'>
               <h4 style='font-size: 1rem'>Inquiry count by status</h4>
+              <%= pie_chart @data, {height: '200px', legend: { display: true, position: 'right' }} %>
             </div>
          </div>
          <div class='card' style='height: 45vh; width: 100%; '>
             <div class='card-body'>
               <h4 style='font-size: 1rem'>Inquiry count by location</h4>
+              <%= pie_chart @data_location, {height: '200px', legend: { display: true, position: 'right' }} %>
             </div>
          </div>
       </div>
@@ -18,17 +20,25 @@
          <div class='card' style='height: 90vh'>
             <div class='card-body'>
               <h4 style='font-size: 1rem'>Inquiry count by ISP & status</h4>
+              <%= bar_chart @data_bar, { indexAxis: 'y' } %>
             </div>
          </div>
       </div>
    </div>
-   <div class="col-2" style='height: 90vh'>
-      <div class=''>
-         <div class='card' style='height: 90vh'>
-            <div class='card-body'>
-               Other chart
-            </div>
-         </div>
+   <div class="col-2">
+      <div class='' style='height: 90vh; overflow-x: scroll;'>
+         <ul class="list-unstyled">
+           <% 10.times do %>
+            <li >
+              <div class='card'>
+                 <div class='card-body'>
+                  <h2><%= rand(10..20) %>K</h2>
+                  <p>Inquiries Count</p>
+                 </div>
+              </div>
+            </li>
+           <% end %>
+         </ul>  
       </div>
    </div>
 </div>
