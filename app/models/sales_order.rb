@@ -56,7 +56,7 @@ class SalesOrder < ApplicationRecord
 
   TCS_APPLICABLE = false
   delegate :conversion_rate, to: :inquiry_currency
-  attr_accessor :confirm_ord_values, :confirm_tax_rates, :confirm_hsn_codes, :confirm_billing_address, :confirm_shipping_address, :confirm_purchase_order_number, :confirm_payment_terms, :confirm_tax_types, :confirm_customer_po_no, :confirm_attachments, :confirm_billing_warehouse, :confirm_shipping_warehouse, :lead_time
+  attr_accessor :confirm_ord_values, :confirm_tax_rates, :confirm_hsn_codes, :confirm_billing_address, :confirm_shipping_address, :confirm_purchase_order_number, :confirm_payment_terms, :confirm_tax_types, :confirm_customer_po_no, :confirm_attachments, :confirm_billing_warehouse, :confirm_shipping_warehouse, :lead_time, :confirm_shipping_warehouse_gst, :confirm_billing_warehouse_gst, :confirm_shipping_address_gst, :confirm_billing_address_gst, :confirm_billing_warehouse_pincode, :confirm_shipping_warehouse_pincode, :confirm_billing_address_pincode, :confirm_shipping_address_pincode, :confirm_delivery_dates, :confirm_order_quantity, :confirm_unit_price, :confirm_customer_order_date, :confirm_customer_name
   delegate :inside_sales_owner, :outside_sales_owner, :inside_sales_owner_id, :outside_sales_owner_id, :opportunity_type, :customer_committed_date, to: :inquiry, allow_nil: true
   delegate :currency_sign, to: :sales_quote
 
@@ -143,6 +143,20 @@ class SalesOrder < ApplicationRecord
       "Wrong Shipping Warehouse": 'Wrong Shipping Warehouse',
       "Wrong Billing Address": 'Wrong Billing Address',
       "Wrong Shipping Address": 'Wrong Shipping Address',
+      "Wrong Billing Warehouse GST": 'Wrong Billing Warehouse GST',
+      "Wrong Billing Address GST": 'Wrong Billing Address GST',
+      "Wrong Shipping Warehouse GST": 'Wrong Shipping Warehouse GST',
+      "Wrong Shipping Address GST": 'Wrong Shipping Address GST',
+      "Wrong Billing Warehouse Pincode": 'Wrong Billing Warehouse Pincode',
+      "Wrong Billing Address Pincode": 'Wrong Billing Address Pincode',
+      "Wrong Shipping Warehouse Pincode": 'Wrong Shipping Warehouse Pincode',
+      "Wrong Shipping Address Pincode": 'Wrong Shipping Address Pincode',
+      "Wrong Delivery Dates": 'Wrong Delivery Dates',
+      "Wrong Order Quantity": 'Wrong Order Quantity',
+      "Wrong Unit Price": 'Wrong Unit Price',
+      "Wrong Customer Order Date": 'Wrong Customer Order Date',
+      "Wrong Customer Name": 'Wrong Customer Name',
+
 =begin
       "Wrong Attachments": 'Wrong Attachments',
 =end
@@ -198,15 +212,15 @@ class SalesOrder < ApplicationRecord
     self.status || self.legacy_request_status
   end
 
-  def customer_order_status 
+  def customer_order_status
      if invoices.any?
-       invoice = invoices.last 
+       invoice = invoices.last
        if invoice.delivery_date.present? || invoice.mis_date.present?
         "Delivered"
-       else 
+       else
         "Processed"
        end
-     else 
+     else
        "Processed"
      end
   end
