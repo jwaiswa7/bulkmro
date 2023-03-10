@@ -33,24 +33,23 @@
     <th class="no-sort all bmro-material-queue checkbox" width="45px"></th>
   <% end %>
   <th class="no-sort all" width="98px">Quick Actions</th>
-  <th class="no-sort desktop text-left" width="80px">Subject</th>
+  <th class="no-sort desktop text-left" width="40px">Subject</th>
   <th class="no-sort desktop text-right" width="40px">Status</th>
   <th class="no-sort text-left" width="50px" data-name="account_id">Account</th>
-  <th class="no-sort text-left" width="130px" data-name="company_id">Company</th>
-  <th class="no-sort text-left" width="100px">Company Creation Request Status</th>
+  <th class="no-sort text-left" width="50px" data-name="company_id">Company</th>
+  <th class="no-sort text-left" width="70px">Company Creation Request Status</th>
   <th class="sort desktop text-right" width="30px" data-name="inquiry_number">Inquiry</th>
-  <th class="no-sort text-left" width="70px" data-name="created_by_id">Created By</th>
-  <th class="no-sort text-left" width="70px">Commercial Status</th>
-  <th class="no-sort text-left" width="80px" data-name="contact_id">Contact Name</th>
-  <th class="no-sort text-left" width="60px" data-name="purpose_id">Purpose</th>
-  <th class="no-sort text-left" width="40px" data-name="activity_type_id">Type</th>
-  <th class="no-sort text-right" width="75px">Misc. Expenses</th>
-  <th class="no-sort text-left" width="230px">Points Discussed</th>
-  <th class="no-sort text-left" width="150px">Actions Required</th>
-
-  <th class="no-sort desktop text-right" width="80px">Assigned To</th>
-  <th class="sort all text-left" width="50px" data-name="activity_date">Activity Date</th>
+  <th class="no-sort text-left" width="40px" data-name="created_by_id">Created By</th>
+  <th class="no-sort desktop text-right" width="40px">Assigned To</th>
+  <th class="no-sort text-left" width="40px">Points Discussed</th>
+  <th class="no-sort text-left" width="40px">Actions Required</th>
+  <th class="sort all text-left" width="40px" data-name="activity_date">Activity Date</th>
   <th class="no-sort desktop text-right" width="50px">Due Date</th>
+  <th class="no-sort text-left" width="200px">Commercial Status</th>
+  <th class="no-sort text-left" width="300px" data-name="contact_id">Contact Name</th>
+  <th class="no-sort text-left" width="40px" data-name="purpose_id">Purpose</th>
+  <th class="no-sort text-left" width="50px" data-name="activity_type_id">Type</th>
+  <th class="no-sort text-right" width="75px">Misc. Expenses</th>
   <% end %>
 <% content_for :filter_row do %>
   <td data-filter="false"></td>
@@ -62,15 +61,16 @@
   <td data-filter="false"></td>
   <td data-filter="false"></td>
   <td data-filter="dropdown"></td>
-  <td data-filter="false"></td>
-  <td data-filter="ajax"></td>
-  <td data-filter="dropdown"></td>
-  <td data-filter="dropdown"></td>
-  <td data-filter="false"></td>
+
   <td data-filter="false"></td>
   <td data-filter="false"></td>
   <td data-filter="false"></td>
   <td data-filter="daterange"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="ajax"></td>
+  <td data-filter="dropdown"></td>
+  <td data-filter="dropdown"></td>
   <td data-filter="false"></td>
 <% end %>
 

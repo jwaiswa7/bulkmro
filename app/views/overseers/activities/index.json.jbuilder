@@ -35,7 +35,12 @@ json.data (@activities) do |activity|
                     link_to format_id(activity.inquiry.inquiry_number), edit_overseers_inquiry_path(activity.inquiry)
                   end,
                   activity.created_by.to_s,
-                  if activity.inquiry.present?
+                  activity.overseers.map {|o| o.to_s}.compact.join('</br></br>'),
+                  activity.points_discussed,
+                  activity.actions_required,
+                  format_date(activity.activity_date),
+                  format_succinct_date(activity.due_date),
+                   if activity.inquiry.present?
                     status_badge(activity.inquiry.commercial_status)
                   end,
                   if activity.contact.present?
@@ -44,11 +49,6 @@ json.data (@activities) do |activity|
                   format_enum(activity.purpose),
                   format_enum(activity.activity_type),
                   format_currency(activity.expenses),
-                  activity.points_discussed,
-                  activity.actions_required,
-                  activity.overseers.map {|o| o.to_s}.compact.join('</br></br>'),
-                  format_date(activity.activity_date),
-                  format_succinct_date(activity.due_date),
 
 
               ]
@@ -64,13 +64,14 @@ json.columnFilters [
                        [],
                        Overseer.outside.map { |value| { 'label' => value.name.to_s, 'value' => value.id } }.as_json,
                        [],
+                       [],
+                       [],
+                       [],
+                       [],
+                       [],
                        [{ "source": autocomplete_overseers_contacts_path }],
                        Activity.purposes.map { |k, v| { "label": k, "value": v.to_s } }.as_json,
                        Activity.activity_types.map { |k, v| { "label": k, "value": v.to_s } }.as_json,
-                       [],
-                       [],
-                       [],
-                       [],
                        []
                    ]
 
