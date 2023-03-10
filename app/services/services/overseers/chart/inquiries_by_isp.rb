@@ -3,33 +3,64 @@ class Services::Overseers::Chart::InquiriesByIsp
 
   def call 
     {
-        labels: ["Amit Goyal", "Ashwin Goyal", "Creative Bulkmro", "Jeetendra Sharma", "Sarika Tanawade", "Swati Bhosale"],
-        datasets: [{
-          axis: 'y',
-          label: 'My First Dataset',
-          data: [65, 59, 80, 81, 56, 55, 40],
-          fill: false,
-          backgroundColor: [
-            'rgba(255, 99, 132, 0.2)',
-            'rgba(255, 159, 64, 0.2)',
-            'rgba(255, 205, 86, 0.2)',
-            'rgba(75, 192, 192, 0.2)',
-            'rgba(54, 162, 235, 0.2)',
-            'rgba(153, 102, 255, 0.2)',
-            'rgba(201, 203, 207, 0.2)'
-          ],
-          borderColor: [
-            'rgb(255, 99, 132)',
-            'rgb(255, 159, 64)',
-            'rgb(255, 205, 86)',
-            'rgb(75, 192, 192)',
-            'rgb(54, 162, 235)',
-            'rgb(153, 102, 255)',
-            'rgb(201, 203, 207)'
-          ],
-          borderWidth: 1
-        }]
-      };
+      data: data, 
+      options: options
+    }
+  end
+
+  private 
+  def data 
+    {
+      labels: ["Amit Goyal", "Ashwin Goyal", "Creative Bulkmro", "Jeetendra Sharma", "Sarika Tanawade", "Swati Bhosale"],
+      datasets: [{
+        axis: 'y',
+        label: 'My First Dataset',
+        data: [65, 59, 80, 81, 56, 55, 40],
+        fill: false,
+        backgroundColor: [
+          'rgba(137,219,253,255)',
+          'rgba(137,219,253,255)',
+          'rgba(137,219,253,255)',
+          'rgba(137,219,253,255)',
+          'rgba(137,219,253,255)',
+          'rgba(137,219,253,255)',
+          'rgba(137,219,253,255)'
+
+        ],
+        borderWidth: 1
+      },
+      {
+        axis: 'y',
+        label: 'My second Dataset',
+        data: [83, 83, 72, 85, 43, 60, 86],
+        fill: false,
+        backgroundColor: [
+          'rgba(176,122,106,255)',
+          'rgba(176,122,106,255)',
+          'rgba(176,122,106,255)',
+          'rgba(176,122,106,255)',
+          'rgba(176,122,106,255)',
+          'rgba(176,122,106,255)',
+          'rgba(176,122,106,255)'
+
+        ],
+        borderWidth: 1
+      }]
+    };
+  end
+
+  def options 
+    {
+      indexAxis: 'y',
+      scales: {
+        x: {
+          stacked: true,
+        },
+        y: {
+          stacked: true
+        }
+      }
+    }
   end
 end
       

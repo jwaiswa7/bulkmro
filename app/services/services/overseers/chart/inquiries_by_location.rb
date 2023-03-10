@@ -1,12 +1,17 @@
 class Services::Overseers::Chart::InquiriesByLocation
   def initialize
-    @locations = ["location 0", "location 1", "location 2", "location 3", "location 4"]
-    @values = [25,20,20,25,10]
+    @locations = %w[Mumbai
+      Ahmedabad
+      Delhi
+      Hyderabad
+      Pune
+      Vadodara]
+    @values = locations.map{|location| rand(10..100) }
   end
 
   def call 
     
-    colors =  ["rgb(230, 25, 75)", "rgb(60, 180, 75)", "rgb(255, 225, 25)", "rgb(90, 115, 34)", "rgb(0, 130, 200)"]
+    colors =  ["rgba(137,219,253,255)", "rgba(176,122,106,255)", "rgba(247,218,209,255)", "rgba(32,138,179,255)", "rgb(194,186,188)", "rgba(112,126,126,255)"]
 
     {
         labels: locations,
@@ -23,4 +28,3 @@ class Services::Overseers::Chart::InquiriesByLocation
 
   attr_accessor :locations, :values
 end
-    

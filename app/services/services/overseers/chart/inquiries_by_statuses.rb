@@ -1,22 +1,19 @@
 class Services::Overseers::Chart::InquiriesByStatuses
   def initialize
-    @statuses = Inquiry.statuses.keys.first(10)
-    @values = Inquiry.statuses.values.first(10)
+    @statuses = ["Order Won", "Quotation Sent", "Order Lost", "Acknowledgement Mail", "New Inquiry", "Regret Request", "Cross Reference", "Preparing Quotation", "SO Draft: Pending", "Rejected by Accounts", "Expected Order"]
+    @values =  [34, 48, 31, 35, 50, 31, 23, 35, 20, 44, 25]
   end
 
   def call 
-    total = values.sum
-
-    data_set = values.map { |val| ((val/total.to_f)*100).round(2)}
     
-    colors =  ["rgb(230, 25, 75)", "rgb(60, 180, 75)", "rgb(255, 225, 25)", "rgb(90, 115, 34)", "rgb(0, 130, 200)", "rgb(245, 130, 48)", "rgb(145, 30, 180)", "rgb(70, 240, 240)", "rgb(240, 50, 230)", "rgb(210, 245, 60)", "rgb(250, 190, 212)", "rgb(0, 128, 128)", "rgb(220, 190, 255)", "rgb(170, 110, 40)", "rgb(255, 250, 200)", "rgb(128, 0, 0)","rgb(97, 68, 76)", "rgb(170, 255, 195)", "rgb(128, 128, 0)", "rgb(255, 215, 180)", "rgb(0, 0, 128)", "rgb(128, 128, 128)", "rgb(255, 255, 255)", "rgb(0, 0, 0)"]
+    colors =  ["rgba(137,219,253,255)", "rgba(176,122,106,255)", "rgba(247,218,209,255)", "rgba(32,138,179,255)", "rgb(194,186,188)", "rgba(112,126,126,255)", "rgba(24,93,121,255)", "rgba(224,68,167,255)", "rgba(82,78,71,255)", "rgba(86,7,13,255)", "rgba(54,126,111,255)"]
 
     {
         labels: statuses,
         datasets: [{
           label: 'My First Dataset',
-          data: data_set,
-          backgroundColor: colors.first(10),
+          data: values,
+          backgroundColor: colors,
           hoverOffset: 4
         }]
       };
