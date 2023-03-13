@@ -231,7 +231,7 @@
                     <% end if @inquiry.supplier_quotes.attached? %>
                   </div>
                   <div class="col-6 mt-2">
-                    <%= f.input :confirm_attachments, as: :boolean, wrapper: :custom_boolean, label: 'Confirm attachments' %>
+                    <%= f.input :confirm_attachments, as: :boolean, wrapper: :custom_boolean, label: 'Confirm attachments', :required => true %>
                     <%= f.input :all_check , as: :boolean, wrapper: :custom_boolean, input_html:{id: "select-all-checkbox"}, label: 'select All Product' %>
                   </div>
                 <% end %>
