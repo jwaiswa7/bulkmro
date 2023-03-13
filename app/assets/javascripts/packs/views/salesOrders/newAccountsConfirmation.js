@@ -4,6 +4,16 @@ const newAccountsConfirmation = () => {
     // $('.account-rejection').click();
     // $('input[type=checkbox]').removeAttr('required');
 
+    const $selectAllCheckbox = $('#select-all-checkbox');
+    const $selectableCheckboxes = $('.selectable-checkbox');
+
+    $selectAllCheckbox.on('change', function() {
+        const isChecked = $selectAllCheckbox.prop('checked');
+        $selectableCheckboxes.prop('checked', isChecked);
+        $selectableCheckboxes.trigger('change');
+        checkCheckboxStatus()
+    });
+
     $('.new_accounts_confirmation input[type=checkbox]').click(function (f) {
         checkCheckboxStatus();
         let target = f.currentTarget.id;
@@ -35,7 +45,7 @@ const newAccountsConfirmation = () => {
 
 
 let checkCheckboxStatus = () => {
-    if ($('.new_accounts_confirmation input[type="checkbox"]').not(':checked').length == 0) {
+    if ($('.new_accounts_confirmation input[type="checkbox"][required]').not(':checked').length == 0) {
         $('#salesOrderApproverMessage').modal('show')
         if ($('#salesOrderApproverMessage').length == 0){
             $('.account-approval').prop('disabled', false);

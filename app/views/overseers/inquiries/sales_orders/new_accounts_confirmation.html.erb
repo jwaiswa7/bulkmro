@@ -231,7 +231,8 @@
                     <% end if @inquiry.supplier_quotes.attached? %>
                   </div>
                   <div class="col-6 mt-2">
-                    <%= f.input :confirm_attachments, as: :boolean, wrapper: :custom_boolean, label: 'Confirm attachments', :required => true %>
+                    <%= f.input :confirm_attachments, as: :boolean, wrapper: :custom_boolean, label: 'Confirm attachments' %>
+                    <%= f.input :all_check , as: :boolean, wrapper: :custom_boolean, input_html:{id: "select-all-checkbox"}, label: 'select All Product' %>
                   </div>
                 <% end %>
               </div>
@@ -240,8 +241,6 @@
                 <thead>
                 <tr>
                   <th class="no-sort">
-        <input type="checkbox" id="select-all" onchange="selectAllProducts()">
-                     <label for="select_all">Select All</label>
                     <span data-toggle="tooltip" title="Serial Number">Sr.</span>
                   </th>
                   <th class="no-sort product-width-adjustment">
@@ -304,9 +303,12 @@
                 <tbody>
                 <% @sales_order.rows.each do |row| %>
                   <tr>
-                    <td class="text-right">
-          <input type="checkbox" class="select-product" onchange="updateSelectAll()">
-                      <span>#<%= row.sr_no %></span>
+                    <td class="text-center">
+                      <div class="custom-control custom-checkbox">
+                      <input name="sales_order[row_check_<%=row.sr_no%>]" type="hidden" value="0">
+                      <input class="custom-control-input boolean required selectable-checkbox" id = "select-row-box-<%=row.sr_no%>"  required="required"  aria-required="true" type="checkbox" value="1" name="sales_order[row_check_<%=row.sr_no%>]" >
+                      <label class="custom-control-label text-capitalize boolean  required" for="select-row-box-<%=row.sr_no%>"><%= row.sr_no %></label>
+                    </div>
                     </td>
                     <td>
                       <span><%= row.sales_quote_row %></span>
@@ -484,23 +486,3 @@
     </div>
   </div>
 <%end %>
-
-<script>
-  function selectAllProducts() {
-    const checkboxes = document.getElementsByClassName("select-product");
-    for (let i = 0; i < checkboxes.length; i++) {
-      checkboxes[i].checked = document.getElementById("select-all").checked;
-    }
-  }
-  function updateSelectAll() {
-    const checkboxes = document.getElementsByClassName("select-product");
-    let allChecked = true;
-    for (let i = 0; i < checkboxes.length; i++) {
-      if (!checkboxes[i].checked) {
-        allChecked = false;
-        break;
-      }
-    }
-    document.getElementById("select-all").checked = allChecked;
-  }
-</script>
