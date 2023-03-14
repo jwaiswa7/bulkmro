@@ -1,6 +1,5 @@
 <%= simple_form_for([:overseers, @inquiry], :html => { :class => 'needs-validation mt-3', :'novalidate' => '', :'data-parsley-validate' => '' }) do |f| %>
   <%= f.hidden_field :company_id %>
-
   <%= render 'shared/snippets/form_errors', f: f %>
   <div class="card bmro-card">
     <div class="bmro-adjusting-form">
