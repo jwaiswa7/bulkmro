@@ -486,3 +486,16 @@
     </div>
   </div>
 <%end %>
+
+<script>
+  const selectAllCheckbox = document.querySelector('#select-all-checkbox');
+  const selectableCheckboxes = document.querySelectorAll('.selectable-checkbox');
+
+  selectAllCheckbox.addEventListener('change', function() {
+    const isChecked = selectAllCheckbox.checked;
+    selectableCheckboxes.forEach(function(checkbox) {
+      checkbox.checked = isChecked;
+      checkbox.dispatchEvent(new Event('change'));
+    });
+});
+</script>

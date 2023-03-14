@@ -5,14 +5,15 @@ const newAccountsConfirmation = () => {
     // $('input[type=checkbox]').removeAttr('required');
 
     const $selectAllCheckbox = $('#select-all-checkbox');
-    const $selectableCheckboxes = $('.selectable-checkbox');
 
     $selectAllCheckbox.on('change', function() {
-        const isChecked = $selectAllCheckbox.prop('checked');
-        $selectableCheckboxes.prop('checked', isChecked);
-        $selectableCheckboxes.trigger('change');
         checkCheckboxStatus()
     });
+
+    $(document).on('change', '.datatable .selectable-checkbox', function() {
+        checkCheckboxStatus();
+    });
+
 
     $('.new_accounts_confirmation input[type=checkbox]').click(function (f) {
         checkCheckboxStatus();
