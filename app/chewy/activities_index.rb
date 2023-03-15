@@ -7,6 +7,7 @@ class ActivitiesIndex < BaseIndex
     field :created_by, value: -> (record) {record.created_by.to_s}, analyzer: 'substring'
     field :account_id, value: -> (record) {record.account.id if record.account.present?}, type: 'integer'
     field :activity_date, value: -> (record) {record.activity_date}, type: 'date'
+    field :due_date, value: -> (record) {record.due_date}, type: 'date'
     field :approval_status, value: -> (record) {record.approved? ? 'approved' : record.rejected? ? 'rejected' : 'pending'}
     field :account_name, value: -> (record) {record.activity_account.to_s}, analyzer: 'substring'
     field :company_id, value: -> (record) {record.activity_company.id if record.company.present?}, type: 'integer'
