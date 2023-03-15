@@ -19,6 +19,22 @@
               <li class="bmro-status-cancel sales_order_confirm_tax_rates"> Tax Rates</li>
               <li class="bmro-status-cancel sales_order_confirm_tax_types"> Tax Types</li>
               <li class="bmro-status-cancel sales_order_confirm_ord_values"> Order Values</li>
+              <li class="bmro-status-cancel sales_order_confirm_billing_warehouse_gst"> Billing Warehouse GST</li>
+              <li class="bmro-status-cancel sales_order_confirm_billing_address_gst"> Billing Address GST</li>
+              <li class="bmro-status-cancel sales_order_confirm_shipping_warehouse_gst"> Shipping Warehouse GST</li>
+              <li class="bmro-status-cancel sales_order_confirm_shipping_address_gst"> Shipping Address GST</li>
+              <li class="bmro-status-cancel sales_order_confirm_billing_warehouse_pincode"> Billing Warehouse Pincode</li>
+              <li class="bmro-status-cancel sales_order_confirm_shipping_warehouse_pincode"> Shipping Warehouse Pincode</li>
+              <li class="bmro-status-cancel sales_order_confirm_billing_address_pincode"> Billing Address Pincode</li>
+              <li class="bmro-status-cancel sales_order_confirm_shipping_address_pincode"> Shipping Address Pincode</li>
+              <li class="bmro-status-cancel sales_order_confirm_delivery_dates"> Delivery Dates</li>
+              <li class="bmro-status-cancel sales_order_confirm_order_quantity"> Order Quantity</li>
+              <li class="bmro-status-cancel sales_order_confirm_unit_price"> Unit Price</li>
+              <li class="bmro-status-cancel sales_order_confirm_customer_order_date"> Customer Order Date</li>
+              <li class="bmro-status-cancel sales_order_confirm_customer_name"> Customer Name</li>
+
+
+
             </ul>
           </div>
         </div>
@@ -65,6 +81,10 @@
                 <div class="col-6 col-md-3">
                   <strong class="d-block">Customer Order Date</strong>
                   <%= @inquiry.customer_order_date %>
+                  <%= f.input :confirm_customer_order_date, as: :boolean, wrapper: :custom_boolean, :required => true %>
+                  <%= f.input :confirm_customer_name, as: :boolean, wrapper: :custom_boolean, :required => true %>
+
+
                 </div>
                 <div class="col-6 col-md-2 mt-2 mt-md-0">
                   <strong class="d-block">Customer Committed Date</strong>
@@ -121,9 +141,17 @@
                 <div class="form-row">
                   <div class="col-md-6 mt-2">
                     <%= f.input :confirm_billing_warehouse, as: :boolean, wrapper: :custom_boolean, :required => true %>
+                    <%= f.input :confirm_billing_warehouse_gst, as: :boolean, wrapper: :custom_boolean,  label: 'Confirm GST Number', :required => true %>
+                    <%= f.input :confirm_billing_warehouse_pincode, as: :boolean, wrapper: :custom_boolean,  label: 'Confirm Billing Pincode', :required => true %>
+
+
                   </div>
                   <div class="col-md-6 mt-2">
                     <%= f.input :confirm_shipping_warehouse, as: :boolean, wrapper: :custom_boolean, :required => true %>
+                    <%= f.input :confirm_shipping_warehouse_gst, as: :boolean, wrapper: :custom_boolean,  label: 'Confirm GST Number', :required => true %>
+                    <%= f.input :confirm_shipping_warehouse_pincode, as: :boolean, wrapper: :custom_boolean,  label: 'Confirm Shipping Pincode', :required => true %>
+
+
                   </div>
                 </div>
 
@@ -153,9 +181,16 @@
                 <div class="form-row">
                   <div class="col-md-6 mt-2">
                     <%= f.input :confirm_billing_address, as: :boolean, wrapper: :custom_boolean, :required => true %>
+                    <%= f.input :confirm_billing_address_gst, as: :boolean, wrapper: :custom_boolean,  label: 'Confirm GST Number', :required => true %>
+                    <%= f.input :confirm_billing_address_pincode, as: :boolean, wrapper: :custom_boolean,  label: 'Confirm Billing Pincode', :required => true %>
+
+
                   </div>
                   <div class="col-md-6 mt-2">
                     <%= f.input :confirm_shipping_address, as: :boolean, wrapper: :custom_boolean, :required => true %>
+                    <%= f.input :confirm_shipping_address_gst, as: :boolean, wrapper: :custom_boolean,  label: 'Confirm GST Number', :required => true %>
+                    <%= f.input :confirm_shipping_address_pincode, as: :boolean, wrapper: :custom_boolean,  label: 'Confirm Shipping Pincode', :required => true %>
+
                   </div>
                 </div>
               </div>
@@ -197,9 +232,11 @@
                   </div>
                   <div class="col-6 mt-2">
                     <%= f.input :confirm_attachments, as: :boolean, wrapper: :custom_boolean, label: 'Confirm attachments', :required => true %>
+                    <%= f.input :all_check , as: :boolean, wrapper: :custom_boolean, input_html:{id: "select-all-checkbox"}, label: 'select All Product' %>
                   </div>
                 <% end %>
               </div>
+
               <table class="w-100 table table-bordered dt-responsive datatable wrap-whitespace" data-fixed-header="false">
                 <thead>
                 <tr>
@@ -266,8 +303,12 @@
                 <tbody>
                 <% @sales_order.rows.each do |row| %>
                   <tr>
-                    <td class="text-right">
-                      <span>#<%= row.sr_no %></span>
+                    <td class="text-center">
+                      <div class="custom-control custom-checkbox">
+                      <input name="sales_order[row_check_<%=row.sr_no%>]" type="hidden" value="0">
+                      <input class="custom-control-input boolean required selectable-checkbox" id = "select-row-box-<%=row.sr_no%>"  required="required"  aria-required="true" type="checkbox" value="1" name="sales_order[row_check_<%=row.sr_no%>]" >
+                      <label class="custom-control-label text-capitalize boolean  required" for="select-row-box-<%=row.sr_no%>"><%= row.sr_no %></label>
+                    </div>
                     </td>
                     <td>
                       <span><%= row.sales_quote_row %></span>
@@ -328,15 +369,25 @@
                 <% end %>
                 </tbody>
               </table>
+
               <div class="form-row">
-                <div class="col-4">
+                <div class="col-2">
                   <%= f.input :confirm_hsn_codes, as: :boolean, wrapper: :custom_boolean, label: 'Confirm HSN Codes', :required => true %>
                 </div>
-                <div class="col-4">
+                <div class="col-2">
+                <%= f.input :confirm_order_quantity, as: :boolean, wrapper: :custom_boolean, label: 'Confirm order quantity', :required => true %>
+                </div>
+                <div class="col-2">
                   <%= f.input :confirm_tax_rates, as: :boolean, wrapper: :custom_boolean, label: 'Confirm Tax Rates', :required => true %>
                 </div>
-                <div class="col-4">
+                 <div class="col-2">
+                  <%= f.input :confirm_unit_price, as: :boolean, wrapper: :custom_boolean, label: 'Confirm Unit Price', :required => true %>
+                </div>
+                <div class="col-2">
                   <%= f.input :confirm_tax_types, as: :boolean, wrapper: :custom_boolean, label: 'Confirm Tax Types', :required => true %>
+                </div>
+                <div class="col-2">
+                  <%= f.input :confirm_delivery_dates, as: :boolean, wrapper: :custom_boolean, :required => true %>
                 </div>
               </div>
             </div>
@@ -373,6 +424,7 @@
                 </div>
                 <div class="col-5 col-md-2 mt-2 mt-md-0 d-flex align-items-center">
                   <%= f.input :confirm_ord_values, as: :boolean, wrapper: :custom_boolean, label: 'Confirm order values', :required => true %>
+
                 </div>
               </div>
             </div>
@@ -434,3 +486,16 @@
     </div>
   </div>
 <%end %>
+
+<script>
+  const selectAllCheckbox = document.querySelector('#select-all-checkbox');
+  const selectableCheckboxes = document.querySelectorAll('.selectable-checkbox');
+
+  selectAllCheckbox.addEventListener('change', function() {
+    const isChecked = selectAllCheckbox.checked;
+    selectableCheckboxes.forEach(function(checkbox) {
+      checkbox.checked = isChecked;
+      checkbox.dispatchEvent(new Event('change'));
+    });
+});
+</script>
