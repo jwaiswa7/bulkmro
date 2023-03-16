@@ -6,6 +6,7 @@ class Overseers::DashboardController < Overseers::BaseController
     @data = Services::Overseers::Chart::InquiriesByStatuses.new.call 
     @data_location = Services::Overseers::Chart::InquiriesByLocation.new.call
     @data_bar = Services::Overseers::Chart::InquiriesByIsp.new.call
+    @inquiry_summary = Services::Overseers::Chart::InquirySummary.new.call
     render 'admin_dashboard'
   end
 

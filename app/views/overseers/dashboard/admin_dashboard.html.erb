@@ -30,12 +30,12 @@
    <div class="col-2">
       <div class='' style='height: 90vh; overflow-x: scroll;'>
          <ul class="list-unstyled">
-           <% 10.times do %>
+           <% @inquiry_summary.each do |key, value| %>
             <li >
               <div class='card'>
                  <div class='card-body'>
-                  <h2><%= rand(10..20) %>K</h2>
-                  <p>Inquiries Count</p>
+                  <h2><%= number_to_human(value, :format => '%n%u', :precision => 4, :units => { :thousand => 'K', :million => 'M', :billion => 'B' }) %></h2>
+                  <p><%= key.to_s.humanize %></p>
                  </div>
               </div>
             </li>
