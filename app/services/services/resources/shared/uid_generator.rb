@@ -67,5 +67,27 @@ class Services::Resources::Shared::UidGenerator < Services::Shared::BaseService
     end
   end
 
+  def self.generate_task_number(id)
+    current_year = Date.today.year % 100
+    current_month = Date.today.month % 100
+    previous_record = Task.where.not(task_id: nil).last
+    if previous_record
+      if previous_record.task_id.present?
+        series = "%03d" % (previous_record.task_id.from(4).to_i + 1)
+        if current_month > 9
+          "#{current_year}#{current_month}#{series}"
+        else
+          "#{current_year}0#{current_month}#{series}"
+        end
+      end
+    else
+      if current_month > 9
+        "#{current_year}#{current_month}001"
+      else
+        "#{current_year}0#{current_month}001"
+      end
+    end
+  end
+
   attr_accessor :sales_quote
 end

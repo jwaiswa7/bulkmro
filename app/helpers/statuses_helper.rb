@@ -219,8 +219,20 @@ module StatusesHelper
       'status-color-green'
     when 'Not Sync'
       'status-color-red'
-    when :'Supplier PO: Sent to Supplier'
+    when :'To-do'
+      'status-color-blue'
+    when :'In-progress'
+      'status-color-yellow'
+    when :'Overdue'
+      'status-color-red'
+      when :'Completed'
       'status-color-green'
+    when :'High'
+      'status-color-red'
+    when :'Medium'
+      'status-color-yellow'
+    when :'Low'
+      'status-color-blue'
     else
       'status-color-red'
     end
@@ -254,10 +266,10 @@ module StatusesHelper
   end
 
   def sap_status(invoiced_qty, total_qty)
-    if invoiced_qty == 0 
-      format_badge("Processing", 'color-yellow') 
+    if invoiced_qty == 0
+      format_badge("Processing", 'color-yellow')
     elsif invoiced_qty > 0 && invoiced_qty < total_qty
-      format_badge("Partially Delivered", 'color-yellow') 
+      format_badge("Partially Delivered", 'color-yellow')
     else
       format_badge("Delivered", 'color-green')
     end
@@ -277,12 +289,12 @@ module StatusesHelper
       format_badge(text, 'color-dark-green')
     end
   end
-  
+
   # sets the status of the customer order based on the existance of an invoice delivery date
   def customer_order_status(sales_order)
-    
+
     sales_order.customer_order_status == "Delivered" ? format_badge("Delivered", 'color-green') : format_badge("Processing", 'color-yellow')
-    
+
   end
 
 
