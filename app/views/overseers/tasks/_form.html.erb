@@ -27,7 +27,11 @@
             </div>
              <div class="row">
              <div class="col-4">
-           <%= f.input :company_id, as: :select, collection: [f.object.company], input_html: {class: "select2-ajax bmro-form-input bmro-dropdown-icon" , placeholder: 'Select Company' , :'data-source' => autocomplete_overseers_suppliers_path, :'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''}, label: "Company" %>
+            <% if f.object.persisted? %>
+              <%= f.input :company_id, as: :select, disabled: true, collection: [f.object.company], label: "Company" %>
+            <% else %>
+              <%= f.input :company_id, as: :select, collection: [f.object.company], input_html: {class: "select2-ajax bmro-form-input bmro-dropdown-icon" , placeholder: 'Select Company' , :'data-source' => autocomplete_overseers_suppliers_path, :'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''}, label: "Company" %>
+            <% end %>
             </div>
             <div class="col-8  mb-2">
             <div class="d-block d-md-flex align-items-end">
