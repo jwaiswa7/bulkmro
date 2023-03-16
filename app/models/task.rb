@@ -37,3 +37,4 @@ class Task < ApplicationRecord
     'Accounts': 60
   }
 
+end
