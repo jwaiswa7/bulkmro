@@ -23,6 +23,10 @@ class Services::Overseers::Chart::InquirySummary
         Inquiry.where(status: 9).count
     end
 
+    def rejected_count 
+        
+    end
+
     def conversion_rate 
         ((num_order_won/inquiry_count.to_f)*100).round(2)
     end

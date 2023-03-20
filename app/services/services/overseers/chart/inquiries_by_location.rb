@@ -1,6 +1,8 @@
 class Services::Overseers::Chart::InquiriesByLocation
   def initialize
-    @locations = Inquiry.select(:bill_from_id).includes(:bill_from).map { |i| i.bill_from&.address&.city_name}
+    start_of_financial_year = Date.today.beginning_of_financial_year
+    end_of_financial_year = Date.today.end_of_financial_year
+    @locations = Inquiry.where(created_at: start_of_financial_year .. end_of_financial_year).select(:bill_from_id).includes(:bill_from).map { |i| i.bill_from&.address&.city_name}
   end
 
   def call

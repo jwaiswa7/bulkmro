@@ -1,14 +1,18 @@
 class Services::Overseers::Chart::InquiriesByIsp
 
   def initialize 
-    # @inquiries = Inquiry.select(:inside_sales_owner_id,:status).includes(:inside_sales_owner)
-    # @statuses = Inquiry.statuses
-    # @status_hash = Hash.new
-    @inquiries = Inquiry.first(50)
+    start_of_financial_year = Date.today.beginning_of_financial_year
+    end_of_financial_year = Date.today.end_of_financial_year
+    @inquiries = Inquiry.where(created_at: start_of_financial_year .. end_of_financial_year)
+    @inside_sales_owner_hash = Hash.new
+    @status_count_hash = Hash.new
+    @statuses =  Inquiry.statuses
   end
   
 
   def call 
+    build_inside_sales_owner_hash
+    build_status_count_hash
     {
       data: data ,
       options: options
@@ -16,66 +20,49 @@ class Services::Overseers::Chart::InquiriesByIsp
   end
 
   private 
-  attr_accessor :inquiries , :statuses, :status_hash
+  attr_accessor :inquiries , :statuses, :status_hash, :inside_sales_owner_hash, :status_count_hash
 
-  def inside_sales_owners 
-    inquiries.map{|inquiry| inquiry.inside_sales_owner&.name}.uniq
+  def build_inside_sales_owner_hash 
+    inquiries.map{|inquiry| inside_sales_owner_hash[inquiry.inside_sales_owner&.name] = inquiry.inside_sales_owner_id}.uniq
   end
 
-  def inside_sales_owner_ids 
-    inquiries.map{|inquiry| inquiry.inside_sales_owner_id }.uniq
+  def build_status_count_hash
+    inside_sales_owner_hash.each do |name, id|
+      status_count_hash[name] = statuses.values.map{|s| inquiries.where(inside_sales_owner_id: id, status: s).count}
+    end
   end
 
-  # def status_series
-  #   status_names = statuses.keys 
-
-  #   inside_sales_owner_ids.each_with_index do |user_id, id_index|
-  #     user_name = inside_sales_owners[id_index]
-  #     user_status_count = inquiries.where(inside_sales_owner_id: user_id).map{|x| x.status}.group_by{|e| e}.map{|k, v| [k, v.length]}.to_h
-  #     status_array = status_names.map{|status| 0 }
-  #     user_status_count.each do |k,v|
-  #       index = status_names.index(k)
-  #       next if index.nil?
-  #       status_array[index] = v
-  #     end
-  #     status_hash[user_name] = status_array
-  #   end
-  #   status_hash
-  # end
-
-  def labels 
-    inquiries.map{ |inquiry| inquiry.inside_sales_owner.name }.uniq
+  def data_sets 
+    data_array = []
+    statuses.keys.each_with_index do |status, i|
+      hash = {
+        axis: 'y',
+        label: status,
+        data: status_count_hash.values.map{|v| v[i]},
+        fill: false,
+        backgroundColor: status_count_hash.values.map{ |v| colors[i]}
+      }
+      data_array.push hash
+    end
+    data_array
   end
 
-  def data_set 
-    labels.map{|label| rand(10..100)}
+  def colors
+    [
+      'rgba(137,219,253,255)', 'rgba(176,122,106,255)', 'rgba(247,218,209,255)', 'rgba(32,138,179,255)',
+      'rgb(194,186,188)', 'rgba(112,126,126,255)', 'rgba(24,93,121,255)', 'rgba(224,68,167,255)', 'rgba(82,78,71,255)',
+      'rgba(86,7,13,255)', 'rgba(54,126,111,255)', 'rgb(25, 83, 95)', 'rgb(141, 153, 174)', 'rgb(78, 2, 80)',
+      'rgb(150, 230, 179)', 'rgb(218, 62, 82)', 'rgb(216, 17, 89)'
+    ]
   end
 
-  def first_colors 
-    labels.map {|label| 'rgba(137,219,253,255)'}
-  end
 
-  def second_colors 
-    labels.map {|label| 'rgba(176,122,106,255)'}
-  end
+  
 
   def data 
     {
-      labels: labels,
-      datasets: [{
-        axis: 'y',
-        label: 'My First Dataset',
-        data: data_set,
-        fill: false,
-        backgroundColor: first_colors,
-      },
-      {
-        axis: 'y',
-        label: 'My second Dataset',
-        data:  data_set,
-        fill: false,
-        backgroundColor: second_colors,
-      }]
+      labels: inside_sales_owner_hash.keys,
+      datasets: data_sets
     };
   end
 

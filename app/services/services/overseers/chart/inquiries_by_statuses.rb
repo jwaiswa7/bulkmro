@@ -1,6 +1,8 @@
 class Services::Overseers::Chart::InquiriesByStatuses
   def initialize
-    @inquiries = Inquiry.select(:status).group(:status).count
+    start_of_financial_year = Date.today.beginning_of_financial_year
+    end_of_financial_year = Date.today.end_of_financial_year
+    @inquiries = Inquiry.where(created_at: start_of_financial_year .. end_of_financial_year).select(:status).group(:status).count
   end
 
   def call
