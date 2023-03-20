@@ -1,0 +1,20 @@
+<div class="font-family: Arial; font-size: 14.5px;">
+  <p style="color: #555;">Dear <%= @assignee   %></p>
+
+  <p style="color: #555;">Task ID- <%= @task.task_id %></b></p>
+  <p style="color: #555;">Created By- <%= @task.created_by.to_s %></b></p>
+  <p style="color: #555;">Subject - <%= @task.subject %></p></b>
+  <p style="color: #555;">Due Date - <%= format_succinct_date(@task.due_date) %></p></b>
+  <p style="color: #555;">Click <%= link_to "here", edit_overseers_task_url(@task) %> to view the task.</p></b>
+
+  <br/>
+  <p style="color: #555;">Thank you<br></p>
+</div>
+
+
+
+
+
+
+
+

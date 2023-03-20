@@ -120,6 +120,10 @@ Rails.application.routes.draw do
     end
 
     resources :tasks do
+      member do
+        get 'render_modal_form'
+        patch 'add_comment'
+      end
     end
 
     resources :remote_requests do
