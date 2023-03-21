@@ -141,7 +141,15 @@ end
 every(1.day, 'update_activity_status', at: '01:10') do
   service = Services::Overseers::Activities::UpdateStatus.new
   service.call
+end if Rails.env.production?
+
+
+every(1.day, 'update_task_status', at: '01:20') do
+  service = Services::Overseers::Tasks::UpdateStatus.new
+  service.call
 end if Rails.env.production? || Rails.env.staging?
+
+
 
 # every(1.day, 'send_inventory_status_to_saint_gobain_customer', at: '19:30') do
 #   InventoryStatusMailer.send_inventory_status_to_customer.deliver_now
