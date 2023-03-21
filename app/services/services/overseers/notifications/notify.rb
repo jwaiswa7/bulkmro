@@ -274,7 +274,6 @@ class Services::Overseers::Notifications::Notify < Services::Shared::Notificatio
       task.overseers.uniq.each do | to |
         @to = to
         end
-      end
     elsif task.created_by.parent.present?
       @to = task.created_by.parent
       end
