@@ -2,13 +2,9 @@ class Task < ApplicationRecord
 
   after_initialize :set_default_status
 
-  private
 
-  def set_default_status
-    self.status ||= :'To-do'
-  end
 
-  COMMENTS_CLASS = 'CreateTaskComment'
+  COMMENTS_CLASS = 'TaskComment'
 
   include Mixins::CanBeStamped
   include Mixins::HasComments
@@ -49,5 +45,16 @@ class Task < ApplicationRecord
     'Admin': 50,
     'Accounts': 60
   }
+
+  def to_s
+    "#{task_id}"
+  end
+
+  private
+
+  def set_default_status
+    self.status ||= :'To-do'
+  end
+
 
 end

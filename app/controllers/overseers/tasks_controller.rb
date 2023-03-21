@@ -1,5 +1,5 @@
 class Overseers::TasksController < Overseers::BaseController
-  before_action :set_task, only: [:edit, :update, :show, :render_comment_form, :render_modal_form, :add_comment]
+  before_action :set_task, only: [:edit, :update, :show]
 
 
   def index
@@ -80,36 +80,6 @@ end
     end
   end
 
-  def render_modal_form
-    authorize_acl @task
-    respond_to do |format|
-      if params[:title] == 'Comment'
-        format.html {render partial: 'overseers/tasks/add_comment', locals: {obj: @task, url: add_comment_overseers_task_path(@task), view_more: overseers_task_path(@task)}}
-      else
-        ""
-      end
-    end
-  end
-
-  def add_comment
-    @task.assign_attributes(task.merge(overseer: current_overseer))
-    authorize_acl @task
-    @task.skip_grpo_number_validation = true
-    if @task.valid?
-      if params['task']['comments_attributes']['0']['message'].present?
-        ActiveRecord::Base.transaction do
-          @task.save!
-          @task_comment = TaskComment.new(message: '', task: @task, overseer: current_overseer)
-        end
-        render json: {success: 1, message: 'Successfully updated '}, status: 200
-      else
-        render json: {error: {base: 'Field cannot be blank!'}}, status: 500
-      end
-    else
-      ""
-    end
-  end
-
 
   private
 
@@ -129,9 +99,6 @@ end
       :created_by,
       :due_date,
       :created_at,
-      :comments,
-      :message,
-      comments_attributes: [:id, :message, :created_by_id, :updated_by_id],
       overseer_ids: [],
       attachments: []
     )

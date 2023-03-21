@@ -348,42 +348,7 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
     }
   end
 
-
-  def filter_by_array_or_value(array_field , key_field , value)
-  {
-    "bool": {
-      "should": [
-        {
-          "term": {"#{key_field}": "#{value}"},
-        },
-        {
-          "terms": {"#{array_field}": [value]},
-        }
-      ]
-    }
-  }
-  end
-
-
-def filter_by_test(array_field , key_field , value)
-
-  {
-
-  "bool": {
-    "should": [
-      {
-        "term": {"#{key_field}": "#{value}"},
-      },
-      {
-        "terms": {"#{array_field}": [value]},
-      }
-    ]
-  }
-  }
-  end
-
-
-  def filter_by_testing(array_field , key_field , values)
+  def filter_by_array_or_value(array_field , key_field , values)
   {
     "bool": {
       "should": [
@@ -397,7 +362,7 @@ def filter_by_test(array_field , key_field , value)
         },
         {
           "terms": {
-            "my_int_field": [20, 40]
+            "#{key_field}": values
           }
         }
       ]

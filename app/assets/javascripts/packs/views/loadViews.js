@@ -110,6 +110,8 @@ import supplierRfqs from "./supplierRfqs/init"
 //Supplier Portal RFQ
 import rfq from "./rfq/init"
 
+import tasks from "./tasks/init"
+
 //Delivery Challan
 import deliveryChallans from "./deliveryChallans/init"
 
@@ -157,7 +159,8 @@ let loader = {
     rfq: rfq,
     cart: cart,
     deliveryChallans: deliveryChallans,
-    creditNotes: creditNotes
+    creditNotes: creditNotes,
+    tasks: tasks
 };
 
 // Imports

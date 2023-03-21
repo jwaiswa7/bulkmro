@@ -9,7 +9,7 @@ class Services::Overseers::Finders::Tasks < Services::Overseers::Finders::BaseFi
 
   def all_records
     indexed_records = if current_overseer.present? && !current_overseer.allow_inquiries?
-      TasksIndex.all.filter(filter_by_testing('assignees' , 'created_by_id', current_overseer.self_and_descendant_ids )).order(sort_definition)
+      TasksIndex.all.filter(filter_by_array_or_value('assignees' , 'created_by_id', current_overseer.self_and_descendant_ids )).order(sort_definition)
    else
     TasksIndex.all.order(sort_definition)
    end

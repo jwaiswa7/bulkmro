@@ -17,6 +17,7 @@ class TasksIndex < BaseIndex
     field :assignees, value: -> (record) {record.overseers.pluck(:id).uniq} , fielddata: true
     field :created_by_id, value: -> (record) {record.created_by.id if record.created_by.present?}, type: 'integer'
     field :test, value: -> (record) {1}, type: 'integer'
+    field :due_date, value: -> (record) {record.due_date}, type: 'date'
 
     field :created_at, type: 'date'
     field :updated_at, type: 'date'
