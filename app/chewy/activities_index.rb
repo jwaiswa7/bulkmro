@@ -20,6 +20,7 @@ class ActivitiesIndex < BaseIndex
     field :purpose, value: -> (record) {record.purpose}, analyzer: 'substring'
     field :activity_type_id, value: -> (record) {activity_types[record.activity_type]}, type: 'integer'
     field :activity_type, value: -> (record) {record.activity_type}, analyzer: 'substring'
+    field :assignees, value: -> (record) {record.overseers.pluck(:id).uniq} , fielddata: true
     field :created_at, type: 'date'
     field :updated_at, type: 'date'
   end
