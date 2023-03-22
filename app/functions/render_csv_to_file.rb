@@ -40,6 +40,23 @@ class RenderCsvToFile < BaseFunction
             csv << [index + 1, activity.activity_number , activity.created_at.strftime('%d-%b-%Y'), activity.company&.name, activity.subject, activity.activity_type , activity.overseers.map{|overseer| overseer.name}.join('-') , activity.approval_status , activity.activity_status , activity.created_by.name ]
           end
         end
+      end
+    elsif class_name == 'Array' && record.first.class.name == 'Task'
+      columns = [
+          'Sr No.',
+          'Task ID',
+          'Subject',
+          'Status',
+          'Priority',
+          'Assignee',
+          'Created by',
+          'Due date',
+          'Latest comment'
+      ]
+      csv_data = CSV.generate(write_headers: true, headers: columns) do |csv|
+        record.each_with_index do |task, index|
+          csv << [index + 1, task.task_id , task.subject.strftime('%d-%b-%Y'), task.status, task.priority, task.overseers.map{|overseer| overseer.name}.join('-'), task.created_by&.name, task.due_date&.strftime('%d-%b-%Y') , task.task_status , task.last_comment ]
+        end
       end  
     elsif
       columns = [

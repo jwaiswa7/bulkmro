@@ -149,8 +149,6 @@ every(1.day, 'update_task_status', at: '01:20') do
   service.call
 end if Rails.env.production? || Rails.env.staging?
 
-
-
 # every(1.day, 'send_inventory_status_to_saint_gobain_customer', at: '19:30') do
 #   InventoryStatusMailer.send_inventory_status_to_customer.deliver_now
 # end if Rails.env.production?
