@@ -7,13 +7,6 @@ class Customers::CustomerProductsController < Customers::BaseController
   def index
     authorize :customer_product
 
-    if params[:view] == 'list'
-      params[:per] = 20
-    else
-      params[:page] = 1 unless params[:page].present?
-      params[:per] = 24
-    end
-
     account = Account.find(2431)
     service = Services::Customers::Finders::CustomerProducts.new(params.merge(published: true), current_customers_contact, current_company, sort_by: sort_by, sort_order: 'desc')
     service.call
@@ -26,12 +19,6 @@ class Customers::CustomerProductsController < Customers::BaseController
     if @is_henkel
       @default_quantity = 0
     end
-
-    # Incomplete feature
-    # @tags = CustomerProduct.all.map(&:tags).flatten.uniq.collect{ |t| [t.id, t.name] }
-    # @checked_tags = (params['custom_filters']['tags'].nil? ? [] : params['custom_filters']['tags'].map(&:to_i)) if params['custom_filters'].present?
-
-    @customer_products_paginate = @indexed_customer_products.page(params[:page]) if params[:page].present?
   end
 
   def autocomplete
