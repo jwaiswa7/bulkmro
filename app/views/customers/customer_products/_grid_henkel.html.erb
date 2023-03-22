@@ -28,13 +28,16 @@
     <% end %>
   </section>
 <% end %>
-
+<form action="/customers/products">
 <div class="input-group input-group-round">
   <div class="input-group-prepend">
     <span class="input-group-text"><i class="material-icons"></i></span>
   </div>
   <input type="search" name="q" class="form-control filter-list-input" placeholder="Enter search term/keywords" value="<%= params[:q] %>">
+  <input type='hidden' name='view', value='grid' %>
+  <button type="submit">Search</button>
 </div>
+</form>
 
 <div class="form-row mt-2" id="product-grid">
   <% if customer_products.count > 0 %>
@@ -88,7 +91,7 @@
   <% end %>
 
   <div class="col-12 mt-2">
-    <div class="text-center mb-2 text-uppercase"><%= page_entries_info customer_products_paginate, entry_name: 'products' %></div>
-    <%= paginate customer_products_paginate, remote: false, :params => {:view => "grid_view", :q => params[:q]} %>
+    <div class="text-center mb-2 text-uppercase"><%= page_entries_info @indexed_customer_products, entry_name: 'products' %></div>
+    <%= paginate @indexed_customer_products, remote: false, :params => {:view => "grid", :q => params[:q]} %>
   </div>
 </div>
