@@ -41,7 +41,7 @@ class RenderCsvToFile < BaseFunction
           end
         end
       end
-    elsif class_name == 'Array' && record.first.class.name == 'Task'
+    elsif record.first.class.name == 'Task'
       columns = [
           'Sr No.',
           'Task ID',

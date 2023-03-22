@@ -10,6 +10,7 @@ class Services::Overseers::Tasks::UpdateStatus < Services::Shared::BaseService
     send_email_user_manager_after_14_days()
     send_mail_when_overdue()
     send_task_daily_report_to_managers()
+    send_overall_task_daily_report()
   end
 
   def update_status_to_overdue
@@ -101,18 +102,30 @@ class Services::Overseers::Tasks::UpdateStatus < Services::Shared::BaseService
     tasks_with_managers.each do | manager_id , tasks|
       if manager_id.present?
         manager = Overseer.find(manager_id)
-        @email_message = tasks.first.email_messages.build(overseer: Overseer.system_overseer)
-        @email_message.assign_attributes(
-            to: manager.email ,
-            subject: "Tasks and Status Report",
-            body: TaskMailer.email_of_daily_task_digest_report(@email_message, manager).body.raw_source,
-          )
-        @email_message.files.attach(io: File.open(RenderCsvToFile.for(tasks)), filename: 'daily_task_digest_report.csv')
-        if @email_message.save
-          service = Services::Shared::EmailMessages::BaseService.new()
-          service.send_email_message_with_sendgrid(@email_message)
-        end
+        send_daily_task_report(tasks, manager)
       end
+    end
+  end
+
+  def send_overall_task_daily_report
+    tasks = Task.where.not(status: :Completed)
+    manager = Overseer.find_by_email("nikita.shah@bulkmro.com")
+    if manager.present?
+      send_daily_task_report(tasks, manager)
+    end
+  end
+
+  def send_daily_task_report tasks, manager
+    @email_message = tasks.first.email_messages.build(overseer: Overseer.system_overseer)
+    @email_message.assign_attributes(
+        to: manager.email ,
+        subject: "Tasks and Status Report",
+        body: TaskMailer.email_of_daily_task_digest_report(@email_message, manager).body.raw_source,
+      )
+    @email_message.files.attach(io: File.open(RenderCsvToFile.for(tasks)), filename: 'daily_task_digest_report.csv')
+    if @email_message.save
+      service = Services::Shared::EmailMessages::BaseService.new()
+      service.send_email_message_with_sendgrid(@email_message)
     end
   end
 
