@@ -18,7 +18,6 @@ class Services::Overseers::Chart::InquiriesByStatuses
       {
         labels: statuses,
         datasets: [{
-          label: 'My First Dataset',
           data: values,
           backgroundColor: colors,
           borderWidth: border_width,
@@ -30,7 +29,7 @@ class Services::Overseers::Chart::InquiriesByStatuses
     def options
       {
         height: '200px',
-        legend: { display: true, position: 'right' },
+        legend: { display: false, position: 'right' },
       }
     end
 

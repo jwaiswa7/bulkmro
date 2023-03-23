@@ -6,7 +6,8 @@ class Services::Overseers::Chart::InquiriesByIsp
     @inquiries = Inquiry.where(created_at: start_of_financial_year .. end_of_financial_year)
     @inside_sales_owner_hash = Hash.new
     @status_count_hash = Hash.new
-    @statuses =  Inquiry.statuses
+    statuses = @inquiries.pluck(:status).uniq
+    @statuses =  Inquiry.statuses.select {|k,v| statuses.include?(k) }
   end
   
 
@@ -76,7 +77,8 @@ class Services::Overseers::Chart::InquiriesByIsp
         yAxes: [{
             stacked: true
         }]
-    }
+      }, 
+      legend: {display: true}
     }
   end
 end
