@@ -19,8 +19,6 @@
 
     <%= render layout: 'shared/layouts/datatable' do %>
       <% @sales_invoices.each do |sales_invoice| %>
-      <% net_amount = sales_invoice.metadata['base_grand_total'].to_f - sales_invoice.metadata['base_tax_amount'].to_f %> 
-      <% tax_amount = sales_invoice.metadata['base_tax_amount'].to_f %> 
       <% credit_memo_amount = sales_invoice.credit_notes.present? ? sales_invoice.credit_notes.first.memo_amount.to_f : 0.0 %> 
         <tr>
           <td>
@@ -57,15 +55,28 @@
           <td><%= status_badge(sales_invoice.status) %></td>
           <td><%= sales_invoice.sales_order.order_number %></td>
           <td><%= sales_invoice.rows.size %></td>
-          <td><%= format_currency(net_amount, precision: 2, symbol: nil) %></td>
-          <td><%= format_currency(tax_amount, precision: 2, symbol: nil) %></td>
+          <td><%= format_currency(sales_invoice.net_amount, precision: 2, symbol: nil) %></td>
+          <td><%= format_currency(sales_invoice.tax_amount, precision: 2, symbol: nil) %></td>
           <td><%= sales_invoice.status == "Invoiced" ? "-" : format_currency(credit_memo_amount, precision: 2, symbol: nil) %></td>
-          <td><%= format_currency((net_amount + tax_amount) - credit_memo_amount, precision: 2, symbol: nil) %></td>
+          <td><%= format_currency((sales_invoice.net_amount + sales_invoice.tax_amount) - credit_memo_amount, precision: 2, symbol: nil) %></td>
           <td><%= format_date(sales_invoice.mis_date || sales_invoice.metadata["sales_invoice"]["created_at"].to_date) if sales_invoice.metadata["sales_invoice"].present? && sales_invoice.metadata["sales_invoice"]["created_at"].present? %></td>
           <td><%= format_date(sales_invoice.created_at) %></td>
 
         </tr>
       <% end %>
+      <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td><span data-toggle="tooltip" title="The totals do not include amount from Cancelled documents."><%= format_currency(@sales_invoices.total_net_amount, precision: 2, symbol: nil) %></span></td>
+        <td><span data-toggle="tooltip" title="The totals do not include amount from Cancelled documents."><%= format_currency(@sales_invoices.total_tax_amount, precision: 2, symbol: nil) %></span></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
     <% end %>
   <% end %>
 </div>

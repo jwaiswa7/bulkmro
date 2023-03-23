@@ -414,4 +414,20 @@ class SalesInvoice < ApplicationRecord
       # ((self.metadata['base_subtotal_incl_tax'].to_f / self.metadata['base_to_order_rate'].to_f) * (0.075 / 100))
     end
   end
+
+  def net_amount
+    metadata['base_grand_total'].to_f - metadata['base_tax_amount'].to_f
+  end
+
+  def tax_amount
+    metadata['base_tax_amount'].to_f
+  end
+
+  def self.total_net_amount
+    where.not(status: :Cancelled).sum(&:net_amount)
+  end
+
+  def self.total_tax_amount
+    where.not(status: :Cancelled).sum(&:tax_amount)
+  end
 end
