@@ -69,7 +69,7 @@ class Services::Overseers::Chart::InquiriesByIsp
 
   def options 
     {
-      height: 700,
+      height: 5000,
       scales: {
         xAxes: [{
             stacked: true
