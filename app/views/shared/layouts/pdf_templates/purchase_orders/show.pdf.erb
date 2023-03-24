@@ -20,90 +20,90 @@
           <div style="border:1px solid; border-radius: 5px;">
             <table border="0" cellspacing="0" style="width: 100%;">
               <tbody>
-              <tr>
-                <td align="left" colspan="5" style="width:25%; padding-left: 10px;" valign="top">
-                  <b><span>Bulk MRO Reference #</span></b> <span style="float:right">:</span>
-                </td>
-                <td align="left" colspan="5" style="width:25%;padding-left: 10px;" valign="top">
-                  <span><%= locals[:metadata][:PoEnquiryId] %></span>
-                </td>
-                <td align="left" colspan="5" style="width:25%;padding-left: 10px;" valign="top">
-                  <b><span>Purchase Order Date</span></b> <span style="float:right">:</span>
-                </td>
-                <td align="left" colspan="6" style="width:25%; padding-left: 10px;" valign="top">
-                  <span>
-                    <%= Date.parse(locals[:metadata][:PoDate]).strftime("%d-%b-%Y") if locals[:metadata][:PoDate].present? %>
-                  </span>
-                </td>
-              </tr>
-              <tr>
-                <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
-                  <b><span>Contact Person</span></b>
-                  <span style="float:right">:</span>
-                </td>
-                <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
-                  <span><%= locals[:purchase_order].inquiry.inside_sales_owner.full_name || "Mr. Ajay Rathod" %></span>
-                </td>
-                <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
-                  <b><span>Contact #</span></b>
-                  <span style="float:right">:</span>
-                </td>
-                <td align="left" colspan="6" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
-                  <% if locals[:purchase_order].inquiry.inside_sales_owner.mobile || locals[:purchase_order].inquiry.inside_sales_owner.telephone %>
-                    <span><%= locals[:purchase_order].inquiry.inside_sales_owner.phone %></span>
-                  <% else %>
-                    <span>+91-7977261810</span>
-                  <% end %>
-                </td>
-              </tr>
-              <tr>
-                <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c; padding-left: 10px;" valign="top">
-                  <b><span>Committed Delivery Date</span></b> <span style="float:right">:</span>
-                </td>
-                <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c; padding-left: 10px;" valign="top">
-                  <span>
-                    <%= locals[:metadata][:PoSupplyDate].present? ? Date.parse(locals[:metadata][:PoSupplyDate]).strftime("%d-%b-%Y") : Date.parse(locals[:metadata][:PoDate]).strftime("%d-%b-%Y") %>
-                  </span>
-                </td>
-                <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
-                  <b><span>Freight</span></b> <span style="float:right">:</span>
-                </td>
-                <td align="left" colspan="6" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
-                  <span><%= locals[:metadata][:PoFreight] || locals[:purchase_order].get_freight %></span>
-                </td>
-              </tr>
-              <tr>
-                <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c; padding-left: 10px;" valign="top">
-                  <b><span>Packing & Forwarding</span></b> <span style="float:right">:</span>
-                </td>
-                <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c; padding-left: 10px;" valign="top">
-                  <span><%= locals[:metadata][:packing] %></span>
-                </td>
-                <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
-                  <b><span>Mode of Transport</span></b> <span style="float:right">:</span>
-                </td>
-                <td align="left" colspan="6" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
-                  <span><%= locals[:purchase_order].transport_mode.present? ? locals[:purchase_order].transport_mode : locals[:metadata][:PoModeOfTrasport] %></span>
-                </td>
-              </tr>
-              <tr>
-                <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
-                  <b><span>Delivery Terms </span></b> <span style="float:right">:</span>
-                </td>
-                <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c; padding-left: 10px;" valign="top">
-                  <span><%= locals[:purchase_order].delivery_type.present? ? locals[:purchase_order].delivery_type : locals[:metadata][:PoDeliveryTerms] %></span>
-                </td>
-                <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c; padding-left: 10px;" valign="top">
-                  <b><span>Payment Terms</span></b> <span style="float:right">:</span>
-                </td>
-                <td align="left" colspan="6" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
-                  <% if locals[:payment_terms].present? %>
-                    <span><%= locals[:payment_terms].name.to_s %></span>
-                  <% else %>
-                    -
-                  <% end %>
-                </td>
-              </tr>
+                <tr>
+                  <td align="left" colspan="5" style="width:25%; padding-left: 10px;" valign="top">
+                    <b><span>Bulk MRO Reference #</span></b> <span style="float:right">:</span>
+                  </td>
+                  <td align="left" colspan="5" style="width:25%;padding-left: 10px;" valign="top">
+                    <span><%= locals[:metadata][:PoEnquiryId] %></span>
+                  </td>
+                  <td align="left" colspan="5" style="width:25%;padding-left: 10px;" valign="top">
+                    <b><span>Purchase Order Date</span></b> <span style="float:right">:</span>
+                  </td>
+                  <td align="left" colspan="6" style="width:25%; padding-left: 10px;" valign="top">
+                    <span>
+                      <%= Date.parse(locals[:metadata][:PoDate]).strftime("%d-%b-%Y") if locals[:metadata][:PoDate].present? %>
+                    </span>
+                  </td>
+                </tr>
+                <tr>
+                  <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
+                    <b><span>Contact Person</span></b>
+                    <span style="float:right">:</span>
+                  </td>
+                  <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
+                    <span><%= locals[:purchase_order].inquiry.inside_sales_owner.full_name || "Mr. Ajay Rathod" %></span>
+                  </td>
+                  <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
+                    <b><span>Contact #</span></b>
+                    <span style="float:right">:</span>
+                  </td>
+                  <td align="left" colspan="6" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
+                    <% if locals[:purchase_order].inquiry.inside_sales_owner.mobile || locals[:purchase_order].inquiry.inside_sales_owner.telephone %>
+                      <span><%= locals[:purchase_order].inquiry.inside_sales_owner.phone %></span>
+                    <% else %>
+                      <span>+91-7977261810</span>
+                    <% end %>
+                  </td>
+                </tr>
+                <tr>
+                  <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c; padding-left: 10px;" valign="top">
+                    <b><span>Committed Delivery Date</span></b> <span style="float:right">:</span>
+                  </td>
+                  <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c; padding-left: 10px;" valign="top">
+                    <span>
+                      <%= locals[:metadata][:PoSupplyDate].present? ? Date.parse(locals[:metadata][:PoSupplyDate]).strftime("%d-%b-%Y") : Date.parse(locals[:metadata][:PoDate]).strftime("%d-%b-%Y") %>
+                    </span>
+                  </td>
+                  <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
+                    <b><span>Freight</span></b> <span style="float:right">:</span>
+                  </td>
+                  <td align="left" colspan="6" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
+                    <span><%= locals[:metadata][:PoFreight] || locals[:purchase_order].get_freight %></span>
+                  </td>
+                </tr>
+                <tr>
+                  <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c; padding-left: 10px;" valign="top">
+                    <b><span>Packing & Forwarding</span></b> <span style="float:right">:</span>
+                  </td>
+                  <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c; padding-left: 10px;" valign="top">
+                    <span><%= locals[:metadata][:packing] %></span>
+                  </td>
+                  <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
+                    <b><span>Mode of Transport</span></b> <span style="float:right">:</span>
+                  </td>
+                  <td align="left" colspan="6" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
+                    <span><%= locals[:purchase_order].transport_mode.present? ? locals[:purchase_order].transport_mode : locals[:metadata][:PoModeOfTrasport] %></span>
+                  </td>
+                </tr>
+                <tr>
+                  <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
+                    <b><span>Delivery Terms </span></b> <span style="float:right">:</span>
+                  </td>
+                  <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c; padding-left: 10px;" valign="top">
+                    <span><%= locals[:purchase_order].delivery_type.present? ? locals[:purchase_order].delivery_type : locals[:metadata][:PoDeliveryTerms] %></span>
+                  </td>
+                  <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c; padding-left: 10px;" valign="top">
+                    <b><span>Payment Terms</span></b> <span style="float:right">:</span>
+                  </td>
+                  <td align="left" colspan="6" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
+                    <% if locals[:payment_terms].present? %>
+                      <span><%= locals[:payment_terms].name.to_s %></span>
+                    <% else %>
+                      -
+                    <% end %>
+                  </td>
+                </tr>
               </tbody>
             </table>
           </div>
@@ -118,29 +118,29 @@
             <br clear="all">
             <table border="0" cellspacing="0" style="width: 100%; margin-top: 10px;">
               <tbody>
-              <tr>
-                <td class="address-wrapper" style="height: auto;width: 49%;">
-                  <% if locals[:purchase_order].billing_address.present? %>
-                    <%= locals[:purchase_order].billing_address.name if locals[:purchase_order].billing_address.name.present? %><br>
-                    <%= locals[:purchase_order].billing_address.to_multiline_s if locals[:purchase_order].billing_address.present? %>
-                    <br>
-                    Tel: <%= locals[:purchase_order].supplier_contact || (locals[:supplier].default_company_contact.present? ? locals[:supplier].default_company_contact.contact&.phone : '') %>
-                    <br>
-                    GST No. : <%= locals[:purchase_order].billing_address.try(:gst) %><br>
-                  <% end %>
-                </td>
-                <td style="width: 2%;"></td>
-                <td class="address-wrapper" style="height: auto;width: 49%;">
-                  <% if locals[:purchase_order].present? %>
-                    <%= locals[:purchase_order].shipping_address.name if locals[:purchase_order].shipping_address.name.present? %><br>
-                    <%= locals[:purchase_order].shipping_address&.to_multiline_s %>
-                    <br>
-                    Tel: <%= locals[:purchase_order].supplier_contact || (locals[:supplier].default_company_contact.present? ? locals[:supplier].default_company_contact.contact&.phone : '') %>
-                    <br>
-                    GST No.: <%= locals[:purchase_order].shipping_address.try(:gst) %> <br>
-                  <% end %>
-                </td>
-              </tr>
+                <tr>
+                  <td class="address-wrapper" style="height: auto;width: 49%;">
+                    <% if locals[:purchase_order].billing_address.present? %>
+                      <%= locals[:purchase_order].billing_address.name if locals[:purchase_order].billing_address.name.present? %><br>
+                      <%= locals[:purchase_order].billing_address.to_multiline_s if locals[:purchase_order].billing_address.present? %>
+                      <br>
+                      Tel: <%= locals[:purchase_order].supplier_contact || (locals[:supplier].default_company_contact.present? ? locals[:supplier].default_company_contact.contact&.phone : '') %>
+                      <br>
+                      GST No. : <%= locals[:purchase_order].billing_address.try(:gst) %><br>
+                    <% end %>
+                  </td>
+                  <td style="width: 2%;"></td>
+                  <td class="address-wrapper" style="height: auto;width: 49%;">
+                    <% if locals[:purchase_order].present? %>
+                      <%= locals[:purchase_order].shipping_address.name if locals[:purchase_order].shipping_address.name.present? %><br>
+                      <%= locals[:purchase_order].shipping_address&.to_multiline_s %>
+                      <br>
+                      Tel: <%= locals[:purchase_order].supplier_contact || (locals[:supplier].default_company_contact.present? ? locals[:supplier].default_company_contact.contact&.phone : '') %>
+                      <br>
+                      GST No.: <%= locals[:purchase_order].shipping_address.try(:gst) %> <br>
+                    <% end %>
+                  </td>
+                </tr>
               </tbody>
             </table>
           </div>
@@ -155,25 +155,25 @@
             <br clear="all">
             <table border="0" cellspacing="0" style="width: 100%; margin-top: 10px;">
               <tbody>
-              <tr>
-                <td class="address-wrapper" style="height: auto;width: 49%;">
-                  <%= (locals[:purchase_order].warehouse.address.name.to_s + '<br>').html_safe if locals[:purchase_order].warehouse.address.name.present? %>
-                  <% if locals[:purchase_order].warehouse.present? %>
-                    <%= locals[:purchase_order].warehouse.address.to_multiline_s %><br>
-                    GST No.: <%= locals[:purchase_order].warehouse.address.gst %><br>
-                  <% end %>
-                  PAN No.: AAGCB7343G
-                </td>
-                <td style="width: 2%;"></td>
-                <td class="address-wrapper" style="height: auto;width: 49%;">
-                  <%= (locals[:purchase_order].warehouse_ship_from.address.name.to_s + '<br>').html_safe if locals[:purchase_order].warehouse_ship_from.address.name.present? %>
-                  <% if locals[:purchase_order].warehouse_ship_from.present? %>
-                    <%= locals[:purchase_order].warehouse_ship_from.address.to_multiline_s %><br>
-                    GST No.: <%= locals[:purchase_order].warehouse_ship_from.address.gst %><br>
-                  <% end %>
-                  PAN No.: AAGCB7343G
-                </td>
-              </tr>
+                <tr>
+                  <td class="address-wrapper" style="height: auto;width: 49%;">
+                    <%= (locals[:purchase_order].warehouse.address.name.to_s + '<br>').html_safe if locals[:purchase_order].warehouse.address.name.present? %>
+                    <% if locals[:purchase_order].warehouse.present? %>
+                      <%= locals[:purchase_order].warehouse.address.to_multiline_s %><br>
+                      GST No.: <%= locals[:purchase_order].warehouse.address.gst %><br>
+                    <% end %>
+                    PAN No.: AAGCB7343G
+                  </td>
+                  <td style="width: 2%;"></td>
+                  <td class="address-wrapper" style="height: auto;width: 49%;">
+                    <%= (locals[:purchase_order].warehouse_ship_from.address.name.to_s + '<br>').html_safe if locals[:purchase_order].warehouse_ship_from.address.name.present? %>
+                    <% if locals[:purchase_order].warehouse_ship_from.present? %>
+                      <%= locals[:purchase_order].warehouse_ship_from.address.to_multiline_s %><br>
+                      GST No.: <%= locals[:purchase_order].warehouse_ship_from.address.gst %><br>
+                    <% end %>
+                    PAN No.: AAGCB7343G
+                  </td>
+                </tr>
               </tbody>
             </table>
           </div>
@@ -181,258 +181,266 @@
           <div style="width: 100%;">
             <table border="0" cellspacing="0" class="pdf-table" style="font-size: 12px;">
               <thead>
-              <tr>
-                <th align="center" valign="center">
-                  <b><span>Sr.<br>
-                    No.</span></b></th>
-                <th align="center" valign="center">
-                  <b><span>SKU</span></b></th>
-                <th align="center" valign="center">
-                  <b><span>Mfr<br>
-                    Model</span></b></th>
-                <th align="center" valign="center">
-                  <b><span>Description</span></b></th>
-                <th align="center" valign="center">
-                  <b><span>Make</span></b></th>
-                <th align="center" valign="center">
-                  <b><span>HSN/<br>
-                    SAC<br>
-                    Code</span></b></th>
-                <th align="center" valign="center">
-                  <b><span>UOM</span></b></th>
-                <th align="center" valign="center">
-                  <b><span>Qty</span></b></th>
-                <th align="center" valign="center">
-                  <b><span>Unit Price<br>
-                    (INR)</span></b></th>
-                <th align="center" valign="center">
-                  <b><span>Subtotal<br>
-                    (INR)</span></b></th>
-
-                <% if (locals[:metadata][:PopTaxRate].to_s.include? "IG") || (locals[:metadata][:ItemLine][0][:PopTaxRate].to_s.include? "IG") %>
+                <tr>
                   <th align="center" valign="center">
-                    <b><span>IGST<br>
-                    Rate</span></b></th>
+                    <b><span>Sr.<br>
+                        No.</span></b></th>
                   <th align="center" valign="center">
-                    <b><span>IGST<br>
-                    Amt</span></b></th>
-                <% else %>
+                    <b><span>SKU</span></b></th>
                   <th align="center" valign="center">
-                    <b><span>Tax<br>
-                    Rate</span></b></th>
+                    <b><span>Mfr<br>
+                        Model</span></b></th>
                   <th align="center" valign="center">
-                    <b><span>CGST<br>
-                    Rate</span></b></th>
+                    <b><span>Description</span></b></th>
                   <th align="center" valign="center">
-                    <b><span>CGST<br>
-                    Amt</span></b></th>
+                    <b><span>Make</span></b></th>
                   <th align="center" valign="center">
-                    <b><span>SGST<br>
-                    Rate</span></b></th>
+                    <b><span>HSN/<br>
+                        SAC<br>
+                        Code</span></b></th>
                   <th align="center" valign="center">
-                    <b><span>SGST<br>
-                    Amt</span></b></th>
-
-                <% end %>
-                <th align="center" valign="center">
-                  <b><span style="color:#000000">Total<br>
-                    (INR)</span></b></th>
-                    <% if (locals[:purchase_order].company&.is_international) %>
-                <th align="center" valign="center">
-                  <b><span> Currency<br>
-                    </span></b></th>
-                <th align="center" valign="center">
-                  <b><span>Unit Price in Selected Currency<br>
-                    </span></b></th>
+                    <b><span>UOM</span></b></th>
+                  <th align="center" valign="center">
+                    <b><span>Qty</span></b></th>
+                  <% if !(locals[:purchase_order].company&.is_international) %>
                     <th align="center" valign="center">
-                  <b><span>Total Price in Selected Currecny<br>
-                    </span></b></th>
-                <% end %>
-                <th align="center" valign="center">
-                  <b><span>Lead Date<br>
-                    </span></b></th>
-
-              </tr>
+                      <b><span>Unit Price<br>
+                          (INR)</span></b></th>
+                  <% end %>
+                  <th align="center" valign="center">
+                    <b><span>Subtotal<br>
+                        (INR)</span></b></th>
+                  <% if (locals[:metadata][:PopTaxRate].to_s.include? "IG") || (locals[:metadata][:ItemLine][0][:PopTaxRate].to_s.include? "IG") %>
+                    <th align="center" valign="center">
+                      <b><span>IGST<br>
+                          Rate</span></b></th>
+                    <th align="center" valign="center">
+                      <b><span>IGST<br>
+                          Amt</span></b></th>
+                  <% else %>
+                    <th align="center" valign="center">
+                      <b><span>Tax<br>
+                          Rate</span></b></th>
+                    <th align="center" valign="center">
+                      <b><span>CGST<br>
+                          Rate</span></b></th>
+                    <th align="center" valign="center">
+                      <b><span>CGST<br>
+                          Amt</span></b></th>
+                    <th align="center" valign="center">
+                      <b><span>SGST<br>
+                          Rate</span></b></th>
+                    <th align="center" valign="center">
+                      <b><span>SGST<br>
+                          Amt</span></b></th>
+                  <% end %>
+                  <% if !(locals[:purchase_order].company&.is_international) %>
+                    <th align="center" valign="center">
+                      <b><span style="color:#000000">Total<br>
+                          (INR)</span></b></th>
+                  <% end %>
+                  <% if (locals[:purchase_order].company&.is_international) %>
+                    <th align="center" valign="center">
+                      <b><span> Currency<br>
+                        </span></b></th>
+                    <th align="center" valign="center">
+                      <b><span>Unit Price in Selected Currency<br>
+                        </span></b></th>
+                    <th align="center" valign="center">
+                      <b><span>Total Price in Selected Currecny<br>
+                        </span></b></th>
+                  <% end %>
+                  <th align="center" valign="center">
+                    <b><span>Lead Date<br>
+                      </span></b></th>
+                </tr>
               </thead>
               <tbody>
-              <% locals[:purchase_order].rows.order(:created_at).each_with_index do |item, index| %>
-                <tr>
-                  <td align="center" valign="top">
-                    <span><%= index + 1 %></span>
-                  </td>
-                  <td align="center" valign="top">
-                    <span><%= item.product.present? ? item.product.sku : item.sku %></span>
-                  </td>
-                  <td align="center" valign="top">
-                    <span><%= item.product.present? ? item.product.mpn : '' %></span>
-                  </td>
-                  <td align="left" valign="top">
-                    <span><%= item.po_request_description.present? ? item.po_request_description : item.metadata['PopProductName'] %></span>
-                  </td>
-                  <td align="center" valign="top">
-                    <span><%= item.product.present? ? item.product.brand.to_s : item.brand %></span>
-                  </td>
-                  <td align="center" valign="top">
-                    <span>
-                      <%= item.tax_code_six_digits %>
-                    </span>
-                  </td>
-                  <td align="center" valign="top">
-                    <span><%= item.measurement_unit  %></span>
-                  </td>
-                  <td align="center" valign="top">
-                    <span><%= number_to_currency(item.quantity, precision: 2, unit: '') %></span>
-                  </td>
-                  <td align="right" valign="top">
-                    <span><%= number_to_currency(item.unit_selling_price, precision: 2, unit: '') %></span>
-                  </td>
-                  <td align="right" valign="top">
-                    <span><%= number_to_currency(item.total_selling_price, precision: 2, unit: '') %></span>
-                  </td>
-
-
-                  <% if (locals[:metadata][:PopTaxRate].to_s.include? "IG") || (locals[:metadata][:ItemLine][0][:PopTaxRate].to_s.include? "IG") %>
+                <% locals[:purchase_order].rows.order(:created_at).each_with_index do |item, index| %>
+                  <tr>
                     <td align="center" valign="top">
-                      <span><%= item.po_request_tax_rate %>%</span>
+                      <span><%= index + 1 %></span>
                     </td>
+                    <td align="center" valign="top">
+                      <span><%= item.product.present? ? item.product.sku : item.sku %></span>
+                    </td>
+                    <td align="center" valign="top">
+                      <span><%= item.product.present? ? item.product.mpn : '' %></span>
+                    </td>
+                    <td align="left" valign="top">
+                      <span><%= item.po_request_description.present? ? item.po_request_description : item.metadata['PopProductName'] %></span>
+                    </td>
+                    <td align="center" valign="top">
+                      <span><%= item.product.present? ? item.product.brand.to_s : item.brand %></span>
+                    </td>
+                    <td align="center" valign="top">
+                      <span>
+                        <%= item.tax_code_six_digits %>
+                      </span>
+                    </td>
+                    <td align="center" valign="top">
+                      <span><%= item.measurement_unit  %></span>
+                    </td>
+                    <td align="center" valign="top">
+                      <span><%= number_to_currency(item.quantity, precision: 2, unit: '') %></span>
+                    </td>
+                    <% if !(locals[:purchase_order].company&.is_international) %>
+                      <td align="right" valign="top">
+                        <span><%= number_to_currency(item.unit_selling_price, precision: 2, unit: '') %></span>
+                      </td>
+                    <% end %>
                     <td align="right" valign="top">
-                      <span><%= number_to_currency(item.total_tax, precision: 2, unit: '') %></span>
+                      <span><%= number_to_currency(item.total_selling_price, precision: 2, unit: '') %></span>
+                    </td>
+                    <% if (locals[:metadata][:PopTaxRate].to_s.include? "IG") || (locals[:metadata][:ItemLine][0][:PopTaxRate].to_s.include? "IG") %>
+                      <td align="center" valign="top">
+                        <span><%= item.po_request_tax_rate %>%</span>
+                      </td>
+                      <td align="right" valign="top">
+                        <span><%= number_to_currency(item.total_tax, precision: 2, unit: '') %></span>
+                      </td>
+                    <% else %>
+                      <td align="center" valign="top">
+                        <span><%= item.po_request_tax_rate %>%</span>
+                      </td>
+                      <td align="center" valign="top">
+                        <span><%= number_to_currency((item.po_request_tax_rate.to_f / 2), precision: 2, unit: '') %>%</span>
+                      </td>
+                      <td align="right" valign="top">
+                        <span><%= number_to_currency(item.total_tax / 2, precision: 2, unit: '') %></span>
+                      </td>
+                      <td align="center" valign="top">
+                        <span><%= number_to_currency((item.po_request_tax_rate.to_f / 2), precision: 2, unit: '') %>%</span>
+                      </td>
+                      <td align="center" valign="top">
+                        <span><%= number_to_currency(item.total_tax / 2, precision: 2, unit: '') %><br>
+                        </span>
+                      </td>
+                    <% end %>
+                    <% if !(locals[:purchase_order].company&.is_international) %>
+                      <td align="right" valign="top">
+                        <span><%= number_to_currency(item.total_selling_price_with_tax, precision: 2, unit: '') %></span>
+                      </td>
+                    <% end %>
+                    <% if   (locals[:purchase_order].company&.is_international) %>
+                      <td align="center" valign="top">
+                        <span><%= item.po_request_row&.default_currency %></span>
+                      </td>
+                      <td align="center" valign="top">
+                        <span><%= number_to_currency(item.po_request_row&.selected_currency_up, precision: 2, unit: '') %></span>
+                      </td>
+                      <td align="center" valign="top">
+                        <span><%= number_to_currency(item.po_request_row&.total_price_with_selected_currency, precision: 2, unit: '') %></span>
+                      </td>
+                    <% end %>
+                    <td>
+                      <span><%= item.po_request_row.lead_time %></span>
+                    </td>
+                  </tr>
+                <% end %>
+                <%# company = locals[:purchase_order].company %>
+                <%# if company.check_company_total_amount(locals[:purchase_order]) %>
+                <!--                <tr class="pdf-table-total-row-tcs">-->
+                <!--                  <td align="center" valign="top"><span>&nbsp;</span></td>-->
+                <!--                  <td align="center" valign="top"><span><b><span>TCS Amt @0.075%</span></b></span></td>-->
+                <!--                  <td align="center" valign="top"><span></span></td>-->
+                <!--                  <td align="center" valign="top"><span></span></td>-->
+                <!--                  <td align="center" valign="top"><span></span></td>-->
+                <!--                  <td align="center" valign="top"><span></span></td>-->
+                <!--                  <td align="center" valign="top"><span></span></td>-->
+                <!--                  <td align="center" valign="top"><span></span></td>-->
+                <!--                  <td align="center" valign="top"><span></span></td>-->
+                <!--                  <td align="right" style="text-align: right;" valign="top"><b><span></span></b></td>-->
+                <!--                  <td align="center" valign="top"><span></span></td>-->
+                <%# if (locals[:metadata][:PoTaxRate].to_s.include? "IG") || (locals[:metadata][:ItemLine][0][:PopTaxRate].to_s.include? "IG") %>
+                <!--                    <td align="center" valign="top"><span></span></td>-->
+                <!--                    <td align="right" style="text-align: right;" valign="top"><b><span></span></b>-->
+                <!--                    </td>-->
+                <%# else %>
+                <!--                    <td align="center" valign="top"><span></span></td>-->
+                <!--                    <td align="right" style="text-align: right;" valign="top"><b><span></span></b></td>-->
+                <!--                    <td align="center" style="text-align: right;" valign="top"><span></span></td>-->
+                <!--                    <td align="right" style="text-align: right;" valign="top"><b><span></span></b></td>-->
+                <%# end %>
+                <!--                  <td align="right" style="font-size: 9px;text-align: right;border-bottom-right-radius: 5px;" valign="top">-->
+                <!--                    <b><span><%#= format_currency(locals[:purchase_order].calculate_tcs_amount, precision: 2, symbol: '') %></span></b>-->
+                <!--                  </td>-->
+                <!--                </tr>-->
+                <%# end %>
+                <tr class="pdf-table-total-row">
+                  <td align="center" valign="top">
+                    <span></span>
+                  </td>
+                  <td align="center" valign="top">
+                    <span><b><span>Total</span></b></span>
+                  </td>
+                  <td align="center" valign="top">
+                    <span></span>
+                  </td>
+                  <td align="center" valign="top">
+                    <span></span>
+                  </td>
+                  <td align="center" valign="top">
+                    <span></span>
+                  </td>
+                  <td align="center" valign="top">
+                    <span></span>
+                  </td>
+                  <td align="center" valign="top">
+                    <span></span>
+                  </td>
+                  <td align="center" valign="top">
+                    <span></span>
+                  </td>
+                  <% if !(locals[:purchase_order].company&.is_international) %>
+                    <td align="center" valign="top">
+                      <span></span>
+                    </td>
+                  <% end %>
+                  <td align="right" valign="top">
+                    <b><span><%= number_to_currency(locals[:purchase_order].calculated_total, precision: 2, unit: '') %></span></b>
+                  </td>
+                  <td align="center" valign="top">
+                    <span></span>
+                  </td>
+                  <% if (locals[:metadata][:PoTaxRate].to_s.include? "IG") || (locals[:metadata][:ItemLine][0][:PopTaxRate].to_s.include? "IG") %>
+                    <td align="right" valign="top">
+                      <b><span><%= number_to_currency(locals[:purchase_order].calculated_total_tax, precision: 2, unit: '') %></span></b>
                     </td>
                   <% else %>
                     <td align="center" valign="top">
-                      <span><%= item.po_request_tax_rate %>%</span>
-                    </td>
-                    <td align="center" valign="top">
-                      <span><%= number_to_currency((item.po_request_tax_rate.to_f / 2), precision: 2, unit: '') %>%</span>
+                      <span></span>
                     </td>
                     <td align="right" valign="top">
-                      <span><%= number_to_currency(item.total_tax / 2, precision: 2, unit: '') %></span>
+                      <b><span><%= number_to_currency(locals[:purchase_order].calculated_total_tax / 2, precision: 2, unit: '') %></span></b>
                     </td>
                     <td align="center" valign="top">
-                      <span><%= number_to_currency((item.po_request_tax_rate.to_f / 2), precision: 2, unit: '') %>%</span>
+                      <span></span>
                     </td>
-                    <td align="center" valign="top">
-                      <span><%= number_to_currency(item.total_tax / 2, precision: 2, unit: '') %><br></span>
+                    <td align="right" valign="top">
+                      <b><span><%= number_to_currency(locals[:purchase_order].calculated_total_tax / 2, precision: 2, unit: '') %></span></b>
                     </td>
                   <% end %>
-                  <td align="right" valign="top">
-                    <span><%= number_to_currency(item.total_selling_price_with_tax, precision: 2, unit: '') %></span>
+                  <% if !(locals[:purchase_order].company&.is_international) %>
+                    <td align="right" valign="top">
+                      <b><span><%= number_to_currency(locals[:purchase_order].calculated_total_with_tax, precision: 2, unit: '') %></span></b>
+                    </td>
+                  <% end %>
+                  <td align="center" valign="top">
+                    <span></span>
                   </td>
-                   <% if   (locals[:purchase_order].company&.is_international) %>
+                  <% if (locals[:purchase_order].company&.is_international) %>
                     <td align="center" valign="top">
-                      <span><%= item.po_request_row&.default_currency %></span>
+                      <span></span>
+                    </td>
+                    <td align="right" valign="top">
+                      <b><span></span></b>
                     </td>
                     <td align="center" valign="top">
-                      <span><%= number_to_currency(item.po_request_row&.selected_currency_up, precision: 2, unit: '') %></span>
+                      <span></span>
                     </td>
-                     <td align="center" valign="top">
-                      <span><%= number_to_currency(item.po_request_row&.total_price_with_selected_currency, precision: 2, unit: '') %></span>
-                    </td>
-                  <% end %>
-                  <td>
-                  <span><%= item.po_request_row.lead_time %></span>
-                </td>
+                  <%end%>
                 </tr>
-              <% end %>
-              <%# company = locals[:purchase_order].company %>
-              <%# if company.check_company_total_amount(locals[:purchase_order]) %>
-<!--                <tr class="pdf-table-total-row-tcs">-->
-<!--                  <td align="center" valign="top"><span>&nbsp;</span></td>-->
-<!--                  <td align="center" valign="top"><span><b><span>TCS Amt @0.075%</span></b></span></td>-->
-<!--                  <td align="center" valign="top"><span></span></td>-->
-<!--                  <td align="center" valign="top"><span></span></td>-->
-<!--                  <td align="center" valign="top"><span></span></td>-->
-<!--                  <td align="center" valign="top"><span></span></td>-->
-<!--                  <td align="center" valign="top"><span></span></td>-->
-<!--                  <td align="center" valign="top"><span></span></td>-->
-<!--                  <td align="center" valign="top"><span></span></td>-->
-<!--                  <td align="right" style="text-align: right;" valign="top"><b><span></span></b></td>-->
-<!--                  <td align="center" valign="top"><span></span></td>-->
-                  <%# if (locals[:metadata][:PoTaxRate].to_s.include? "IG") || (locals[:metadata][:ItemLine][0][:PopTaxRate].to_s.include? "IG") %>
-<!--                    <td align="center" valign="top"><span></span></td>-->
-<!--                    <td align="right" style="text-align: right;" valign="top"><b><span></span></b>-->
-<!--                    </td>-->
-                  <%# else %>
-<!--                    <td align="center" valign="top"><span></span></td>-->
-<!--                    <td align="right" style="text-align: right;" valign="top"><b><span></span></b></td>-->
-<!--                    <td align="center" style="text-align: right;" valign="top"><span></span></td>-->
-<!--                    <td align="right" style="text-align: right;" valign="top"><b><span></span></b></td>-->
-                  <%# end %>
-<!--                  <td align="right" style="font-size: 9px;text-align: right;border-bottom-right-radius: 5px;" valign="top">-->
-<!--                    <b><span><%#= format_currency(locals[:purchase_order].calculate_tcs_amount, precision: 2, symbol: '') %></span></b>-->
-<!--                  </td>-->
-<!--                </tr>-->
-              <%# end %>
-              <tr class="pdf-table-total-row">
-                <td align="center" valign="top">
-                  <span></span>
-                </td>
-                <td align="center" valign="top">
-                  <span><b><span>Total</span></b></span>
-                </td>
-                <td align="center" valign="top">
-                  <span></span>
-                </td>
-                <td align="center" valign="top">
-                  <span></span>
-                </td>
-                <td align="center" valign="top">
-                  <span></span>
-                </td>
-                <td align="center" valign="top">
-                  <span></span>
-                </td>
-                <td align="center" valign="top">
-                  <span></span>
-                </td>
-                <td align="center" valign="top">
-                  <span></span>
-                </td>
-                <td align="center" valign="top">
-                  <span></span>
-                </td>
-                <td align="right" valign="top">
-                  <b><span><%= number_to_currency(locals[:purchase_order].calculated_total, precision: 2, unit: '') %></span></b>
-                </td>
-                <td align="center" valign="top">
-                  <span></span>
-                </td>
-                <% if (locals[:metadata][:PoTaxRate].to_s.include? "IG") || (locals[:metadata][:ItemLine][0][:PopTaxRate].to_s.include? "IG") %>
-                  <td align="right" valign="top">
-                    <b><span><%= number_to_currency(locals[:purchase_order].calculated_total_tax, precision: 2, unit: '') %></span></b>
-                  </td>
-                <% else %>
-                  <td align="center" valign="top">
-                    <span></span>
-                  </td>
-                  <td align="right" valign="top">
-                    <b><span><%= number_to_currency(locals[:purchase_order].calculated_total_tax / 2, precision: 2, unit: '') %></span></b>
-                  </td>
-                  <td align="center" valign="top">
-                    <span></span>
-                  </td>
-                  <td align="right" valign="top">
-                    <b><span><%= number_to_currency(locals[:purchase_order].calculated_total_tax / 2, precision: 2, unit: '') %></span></b>
-                  </td>
-                <% end %>
-                <td align="right" valign="top">
-                  <b><span><%= number_to_currency(locals[:purchase_order].calculated_total_with_tax, precision: 2, unit: '') %></span></b>
-                </td>
-                <td align="center" valign="top">
-                  <span></span>
-                </td>
-                <% if (locals[:purchase_order].company&.is_international) %>
-                  <td align="center" valign="top">
-                    <span></span>
-                  </td>
-                  <td align="right" valign="top">
-                    <b><span></span></b>
-                  </td>
-                  <td align="center" valign="top">
-                    <span></span>
-                  </td>
-                <%end%>
-              </tr>
               </tbody>
             </table>
           </div>
@@ -446,85 +454,84 @@
             <div id="noteInvoiceContainer" style="border:1px solid; border-radius: 5px;">
               <table border="0" cellspacing="0" style="width: 100%;">
                 <tbody>
-                <tr>
-                  <td align="left" colspan="16" style="background: #d3d3d3; padding-left: 10px;border-bottom: 1px solid #3c3c3c" valign="top">
-                    <b><span>Commercial Terms and Conditions:</span></b></td>
-                </tr>
-                <tr>
-                  <td height="" style="padding-left:10px;" valign="top">1.</td>
-
-                  <td align="left" valign="top">
+                  <tr>
+                    <td align="left" colspan="16" style="background: #d3d3d3; padding-left: 10px;border-bottom: 1px solid #3c3c3c" valign="top">
+                      <b><span>Commercial Terms and Conditions:</span></b></td>
+                  </tr>
+                  <tr>
+                    <td height="" style="padding-left:10px;" valign="top">1.</td>
+                    <td align="left" valign="top">
                       <span>Seller to email Original Invoice to logistics@bulkmro.com after Order is dispatched.
                       </span>
-                  </td>
-                </tr>
-                <tr>
-                  <td height="" style="padding-left:10px;" valign="top">2.</td>
-                  <td align="left" valign="top">
+                    </td>
+                  </tr>
+                  <tr>
+                    <td height="" style="padding-left:10px;" valign="top">2.</td>
+                    <td align="left" valign="top">
                       <span>In the case of (a) any delays in receiving invoice, (b) errors or omissions in invoice, or (c) lack of supporting documentation required by the terms of the Purchase Order, Buyer will have cause to withhold settlement and shall not lose any discount privilege that applied to the products affected by such action or in action.
-                    </span>
-                  </td>
-                </tr>
-                <tr>
-                  <td height="" style="padding-left:10px;" valign="top">3.</td>
-                  <td align="left" valign="top">
-                    <span>All payments will be issued to Seller at the location specified in Seller’s block on the Purchase Order, unless proper authority for deviation is supplied to Buyer’s Accounts Payable Department</span>
-                  </td>
-                </tr>
-                <tr>
-                  <td height="" style="padding-left:10px;" valign="top">4.</td>
-                  <td align="left" valign="top"><span>
-                      Time of delivery, as provided, is of the essence. Seller must notify Buyer as soon as possible but not later than 3 business days in advance of delivery schedule that will not be met or if material is on back order.</span>
-                  </td>
-                </tr>
-                <tr>
-                  <td height="" style="padding-left:10px;" valign="top">5.</td>
-                  <td align="left" valign="top">
-                    <span>If Seller for any reason does not meet the time of delivery as to all goods ordered, Buyer may at it's option either approve the revised delivery schedule, reduce the total quantity covered by the Purchase Order by the amount of omitted shipments reducing the price pro rata, or terminate the Purchase Order, without liability for any such revision, reduction or termination. In such cases the Seller shall promptly refund any advances received from the customer.</span>
-                    <!--                    <span>Bulk MRO shall not be liable for any third party claims arising out of the use of quoted goods. The customer shall keep Bulk MRO indemnified from/against all such claims.</span>-->
-                  </td>
-                </tr>
+                      </span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td height="" style="padding-left:10px;" valign="top">3.</td>
+                    <td align="left" valign="top">
+                      <span>All payments will be issued to Seller at the location specified in Seller’s block on the Purchase Order, unless proper authority for deviation is supplied to Buyer’s Accounts Payable Department</span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td height="" style="padding-left:10px;" valign="top">4.</td>
+                    <td align="left" valign="top"><span>
+                        Time of delivery, as provided, is of the essence. Seller must notify Buyer as soon as possible but not later than 3 business days in advance of delivery schedule that will not be met or if material is on back order.</span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td height="" style="padding-left:10px;" valign="top">5.</td>
+                    <td align="left" valign="top">
+                      <span>If Seller for any reason does not meet the time of delivery as to all goods ordered, Buyer may at it's option either approve the revised delivery schedule, reduce the total quantity covered by the Purchase Order by the amount of omitted shipments reducing the price pro rata, or terminate the Purchase Order, without liability for any such revision, reduction or termination. In such cases the Seller shall promptly refund any advances received from the customer.</span>
+                      <!--                    <span>Bulk MRO shall not be liable for any third party claims arising out of the use of quoted goods. The customer shall keep Bulk MRO indemnified from/against all such claims.</span>-->
+                    </td>
+                  </tr>
                 </tbody>
               </table>
               <table border="0" cellspacing="0" style="width: 100%;">
                 <tbody>
-                <tr style="background: #d3d3d3;">
-                  <td align="left" class="invoiceheader1" colspan="16" style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-top: 1px solid #3c3c3c;" valign="top">
-                    <b><span>Other Information:</span></b></td>
-                </tr>
-                <tr>
-                  <td align="left" style=" padding-left: 10px;" valign="top">
-                    <span>
-                      <% if locals[:inquiry].bill_from.present? && locals[:inquiry].bill_from.legacy_id == 12 %>
-                      1. Please reference our Bulk MRO Industrial Supply Inc. Purchase Order #<%= locals[:metadata][:PoNum] %>
-                        when shipping goods.
+                  <tr style="background: #d3d3d3;">
+                    <td align="left" class="invoiceheader1" colspan="16" style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-top: 1px solid #3c3c3c;" valign="top">
+                      <b><span>Other Information:</span></b></td>
+                  </tr>
+                  <tr>
+                    <td align="left" style=" padding-left: 10px;" valign="top">
+                      <span>
+                        <% if locals[:inquiry].bill_from.present? && locals[:inquiry].bill_from.legacy_id == 12 %>
+                          1. Please reference our Bulk MRO Industrial Supply Inc. Purchase Order #<%= locals[:metadata][:PoNum] %>
+                          when shipping goods.
                         <% else %>
-                      1. Please reference our Bulk MRO Industrial Supply Pvt. Ltd. Purchase Order #<%= locals[:metadata][:PoNum] %>
-                        when shipping goods.
-                      <% end %>
-                    </span>
-                  </td>
-                </tr>
+                          1. Please reference our Bulk MRO Industrial Supply Pvt. Ltd. Purchase Order #<%= locals[:metadata][:PoNum] %>
+                          when shipping goods.
+                        <% end %>
+                      </span>
+                    </td>
+                  </tr>
                 </tbody>
               </table>
               <table border="0" cellspacing="0" style="width: 100%;">
                 <tbody>
-                <tr style="background: #d3d3d3;">
-                  <td align="left" class="invoiceheader1" colspan="16" style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-top: 1px solid #3c3c3c;" valign="top">
-                    <b><span>Note:</span></b>
-                  </td>
-                </tr>
-                <tr>
-                  <td align="left" style="padding-left: 10px; padding-top: 0px" valign="top">
-                    <span>
-                      <% if locals[:purchase_order].commercial_terms_and_conditions.present? %>
-                      <%= (locals[:purchase_order].commercial_terms_and_conditions.gsub(/\n/, '<br>')).html_safe %>
-                        <%# else %>
-                      <%#= (locals[:inquiry].commercial_terms_and_conditions.gsub(/\n/, '<br>')).html_safe %>
-                      <% end %>
-                    </span>
-                  </td>
-                </tr>
+                  <tr style="background: #d3d3d3;">
+                    <td align="left" class="invoiceheader1" colspan="16" style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-top: 1px solid #3c3c3c;" valign="top">
+                      <b><span>Note:</span></b>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td align="left" style="padding-left: 10px; padding-top: 0px" valign="top">
+                      <span>
+                        <% if locals[:purchase_order].commercial_terms_and_conditions.present? %>
+                          <%= (locals[:purchase_order].commercial_terms_and_conditions.gsub(/\n/, '<br>')).html_safe %>
+                          <%# else %>
+                          <%#= (locals[:inquiry].commercial_terms_and_conditions.gsub(/\n/, '<br>')).html_safe %>
+                        <% end %>
+                      </span>
+                    </td>
+                  </tr>
                 </tbody>
               </table>
             </div>
