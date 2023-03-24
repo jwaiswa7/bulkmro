@@ -1,0 +1,84 @@
+<div class="form-row">
+    <% if @dashboard.entries.any? %>
+      <div class="col-12 col-lg-12">
+        <div class="card">
+          <div class="card-body">
+            <table class="table w-100 wrap-whitespace datatable" data-sort="false" data-fixed-header="false">
+              <thead>
+              <tr>
+                <th class="no-sort text-right"></th>
+                <th class="no-sort text-right">Inquiry</th>
+                <th class="no-sort text-right">Quotes</th>
+                <th class="no-sort text-right">Orders</th>
+                <th class="no-sort text-right">Invoices</th>
+                <th class="no-sort text-right">Purchase Orders</th>
+              </tr>
+              </thead>
+              <tbody>
+              <% @dashboard.entries.each do |month, values| %>
+                <tr>
+                  <td><strong><%= format_month_without_date(month) %></strong></td>
+                  <% values.each do |column, value| %>
+                    <td class="text-uppercase text-right text-black-50">
+                      <% if column.to_s == "inquiry" %>
+                        <%= link_to(number_with_delimiter(value[:count], delimiter: ','), filtered_path(eval("overseers_#{column.to_s.pluralize}_path"), [
+                            filter_by_monthrange('Date', month.to_date)
+                        ]), target: '_blank') %>
+                        <hr class="my-1">
+                        <strong>
+                          <%= link_to(format_currency(value[:total], precision: 0, show_symbol: true), filtered_path(eval("overseers_#{column.to_s.pluralize}_path"), [
+                              filter_by_monthrange('Date', month.to_date)
+                          ]), target: '_blank') %>
+                        </strong>
+                      <% end %>
+                      <% if column.to_s == "sales_quotes" %>
+                        <%= number_with_delimiter(value[:count], delimiter: ',') %>
+                        <hr class="my-1">
+                        <strong>
+                          <%= format_currency(value[:total], precision: 0, show_symbol: true) %>
+                        </strong>
+                      <% end %>
+                      <% if column.to_s == "sales_order" %>
+                        <%= link_to(number_with_delimiter(value[:count], delimiter: ','), filtered_path(eval("overseers_#{column.to_s.pluralize}_path"), [
+                            filter_by_monthrange('Order Date', month.to_date)
+                        ]), target: '_blank') %>
+                        <hr class="my-1">
+                        <strong>
+                          <%= link_to(format_currency(value[:total], precision: 0, show_symbol: true), filtered_path(eval("overseers_#{column.to_s.pluralize}_path"), [
+                              filter_by_monthrange('Order Date', month.to_date)
+                          ]), target: '_blank') %>
+                        </strong>
+                      <% end %>
+                      <% if column.to_s == "sales_invoice" %>
+                        <%= link_to(number_with_delimiter(value[:count], delimiter: ','), filtered_path(eval("overseers_#{column.to_s.pluralize}_path"), [
+                            filter_by_monthrange('Created At', month.to_date)
+                        ]), target: '_blank') %>
+                        <hr class="my-1">
+                        <strong>
+                          <%= link_to(format_currency(value[:total], precision: 0, show_symbol: true), filtered_path(eval("overseers_#{column.to_s.pluralize}_path"), [
+                              filter_by_monthrange('Created At', month.to_date)
+                          ]), target: '_blank') %>
+                        </strong>
+                      <% end %>
+                      <% if column.to_s == "purchase_order" %>
+                        <%= link_to(number_with_delimiter(value[:count], delimiter: ','), filtered_path(eval("overseers_#{column.to_s.pluralize}_path"), [
+                            filter_by_monthrange('PO Date', month.to_date)
+                        ]), target: '_blank') %>
+                        <hr class="my-1">
+                        <strong>
+                          <%= link_to(format_currency(value[:total], precision: 0, show_symbol: true), filtered_path(eval("overseers_#{column.to_s.pluralize}_path"), [
+                              filter_by_monthrange('PO Date', month.to_date)
+                          ]), target: '_blank') %>
+                        </strong>
+                      <% end %>
+                    </td>
+                  <% end %>
+                </tr>
+              <% end %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>

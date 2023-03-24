@@ -256,6 +256,8 @@ GEM
     file_validators (2.3.0)
       activemodel (>= 3.2)
       mime-types (>= 1.0)
+    fiscali (2.4.4)
+      activesupport
     gaffe (1.2.0)
       rails (>= 4.0.0)
     gli (2.18.0)
@@ -680,6 +682,7 @@ DEPENDENCIES
   faker
   fast_jsonapi
   file_validators
+  fiscali
   gaffe
   google-api-client (~> 0.11)
   googleauth
