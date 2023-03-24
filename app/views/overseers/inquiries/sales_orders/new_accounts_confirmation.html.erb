@@ -32,9 +32,6 @@
               <li class="bmro-status-cancel sales_order_confirm_unit_price"> Unit Price</li>
               <li class="bmro-status-cancel sales_order_confirm_customer_order_date"> Customer Order Date</li>
               <li class="bmro-status-cancel sales_order_confirm_customer_name"> Customer Name</li>
-
-
-
             </ul>
           </div>
         </div>
@@ -43,7 +40,6 @@
         <%= simple_form_for(@sales_order, url: create_account_confirmation_overseers_inquiry_sales_order_path(@inquiry, @sales_order), method: :post, :html => {:class => 'was-validated needs-validation new_accounts_confirmation', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
           <%= f.hidden_field :parent_id %>
           <%= f.hidden_field :sales_quote_id %>
-
           <% if f.object.errors.any? %>
             <% f.object.errors.full_messages.each do |message| %>
               <li><%= message %></li>
@@ -52,7 +48,6 @@
           <div class="card">
             <div class="card-header bmro-bg">
               <div class=form-row>
-
                 <div class="col-6 col-md-3">
                   <strong class="d-block">Order Number</strong>
                   #<%= @sales_order.try(:order_number).blank? ? "SAP Request Pending" : @sales_order.order_number %>
@@ -70,7 +65,6 @@
                   <%= @sales_order.inquiry.present? ? @sales_order.inquiry.opportunity_type.capitalize.titleize : '-' %>
                 </div>
               </div>
-
             </div>
             <div class="card-body">
               <div class="form-row mb-1">
@@ -83,8 +77,6 @@
                   <%= @inquiry.customer_order_date %>
                   <%= f.input :confirm_customer_order_date, as: :boolean, wrapper: :custom_boolean, :required => true %>
                   <%= f.input :confirm_customer_name, as: :boolean, wrapper: :custom_boolean, :required => true %>
-
-
                 </div>
                 <div class="col-6 col-md-2 mt-2 mt-md-0">
                   <strong class="d-block">Customer Committed Date</strong>
@@ -105,7 +97,6 @@
                   <%= f.input :confirm_payment_terms, as: :boolean, wrapper: :custom_boolean, :required => true %>
                 </div>
               </div>
-
               <div class="card-alternative bmro-bg mt-3">
                 <div class="form-row">
                   <div class="col-md-6 mt-2 mt-md-0">
@@ -137,24 +128,18 @@
                     <% end %>
                   </div>
                 </div>
-
                 <div class="form-row">
                   <div class="col-md-6 mt-2">
                     <%= f.input :confirm_billing_warehouse, as: :boolean, wrapper: :custom_boolean, :required => true %>
                     <%= f.input :confirm_billing_warehouse_gst, as: :boolean, wrapper: :custom_boolean,  label: 'Confirm GST Number', :required => true %>
                     <%= f.input :confirm_billing_warehouse_pincode, as: :boolean, wrapper: :custom_boolean,  label: 'Confirm Billing Pincode', :required => true %>
-
-
                   </div>
                   <div class="col-md-6 mt-2">
                     <%= f.input :confirm_shipping_warehouse, as: :boolean, wrapper: :custom_boolean, :required => true %>
                     <%= f.input :confirm_shipping_warehouse_gst, as: :boolean, wrapper: :custom_boolean,  label: 'Confirm GST Number', :required => true %>
                     <%= f.input :confirm_shipping_warehouse_pincode, as: :boolean, wrapper: :custom_boolean,  label: 'Confirm Shipping Pincode', :required => true %>
-
-
                   </div>
                 </div>
-
                 <div class="form-row mt-0 mt-md-2">
                   <div class="col-md-6 mt-2 mt-md-0">
                     <strong class="d-block">Customer - Billing Address</strong>
@@ -171,8 +156,8 @@
                     <span class="d-block"><%= (@inquiry.shipping_company.name) %></span>
                     <span class="d-block"><%= @sales_order.serialized_shipping_address.to_compact_multiline_s %></span>
                     <% if @inquiry.shipping_contact.phone.present? %>
-            <span class="d-block"><strong><em>Contact</em></strong>: <%= @inquiry.shipping_contact.full_name %>
-              - <%= @inquiry.shipping_contact.phone %></span>
+                      <span class="d-block"><strong><em>Contact</em></strong>: <%= @inquiry.shipping_contact.full_name %>
+                        - <%= @inquiry.shipping_contact.phone %></span>
                     <% end %>
                     <strong><em>Email</em></strong>: <%= @inquiry.shipping_contact.email if @inquiry.shipping_contact.email.present? %>
                     <span class="d-block"><strong><em>GST Number</em></strong>: <%= @sales_order.serialized_shipping_address.gst || @inquiry.company.default_shipping_address.gst %></span>
@@ -183,31 +168,24 @@
                     <%= f.input :confirm_billing_address, as: :boolean, wrapper: :custom_boolean, :required => true %>
                     <%= f.input :confirm_billing_address_gst, as: :boolean, wrapper: :custom_boolean,  label: 'Confirm GST Number', :required => true %>
                     <%= f.input :confirm_billing_address_pincode, as: :boolean, wrapper: :custom_boolean,  label: 'Confirm Billing Pincode', :required => true %>
-
-
                   </div>
                   <div class="col-md-6 mt-2">
                     <%= f.input :confirm_shipping_address, as: :boolean, wrapper: :custom_boolean, :required => true %>
                     <%= f.input :confirm_shipping_address_gst, as: :boolean, wrapper: :custom_boolean,  label: 'Confirm GST Number', :required => true %>
                     <%= f.input :confirm_shipping_address_pincode, as: :boolean, wrapper: :custom_boolean,  label: 'Confirm Shipping Pincode', :required => true %>
-
                   </div>
                 </div>
               </div>
               <div class="form-row mt-3">
                 <% if @inquiry.calculation_sheet.attached? %>
-
                   <div class="col-6 mb-1">
                     <strong class="d-block">Calculation Sheet</strong>
                     <%= link_to @inquiry.calculation_sheet, target: '_blank' do %>
                       <%= @inquiry.calculation_sheet.filename %>
                     <% end %>
                   </div>
-
                 <% end %>
-
                 <% if @inquiry.attachments.present? %>
-
                   <div class="col-6 mb-1">
                     <strong class="d-block">Customer Purchase Order</strong>
                     <%= link_to @inquiry.customer_po_sheet, target: '_blank' do %>
@@ -236,44 +214,43 @@
                   </div>
                 <% end %>
               </div>
-
               <table class="w-100 table table-bordered dt-responsive datatable wrap-whitespace" data-fixed-header="false">
                 <thead>
-                <tr>
-                  <th class="no-sort">
-                    <span data-toggle="tooltip" title="Serial Number">Sr.</span>
-                  </th>
-                  <th class="no-sort product-width-adjustment">
-                    <span>Product</span>
-                  </th>
-                  <th class="no-sort text-right">
-                    <span data-toggle="tooltip" title="Quantity">Qty</span>
-                  </th>
-                  <th class="no-sort text-left">
-                    <span data-toggle="tooltip" title="Unit of Measurement">UoM</span>
-                  </th>
-                  <th class="no-sort text-right">
-                    <span data-toggle="tooltip" title="Unit Cost">UC</span>
-                  </th>
-                  <th class="no-sort text-right">
-                    <span data-toggle="tooltip" title="Margin Percentage">%</span>
-                  </th>
-                  <th class="no-sort text-right">
-                    <span data-toggle="tooltip" title="Unit Selling Price">USP</span>
-                  </th>
-                  <th class="no-sort text-right">
-                    <span data-toggle="tooltip" title="Total Selling Price">TSP</span>
-                  </th>
-                  <th class="no-sort text-right">
-                    <span data-toggle="tooltip" title="Total Selling Price with Tax">TSP w. Tax</span>
-                  </th>
-                  <th class="no-sort text-right">
-                    <span data-toggle="tooltip" title="Tax Code">T. Code</span>
-                  </th>
-                  <th class="no-sort text-right">
-                    <span data-toggle="tooltip" title="Tax Rate">T. Rate</span>
-                  </th>
-                  <% if @sales_order.sales_quote.tax_summary.strip == '0' ||
+                  <tr>
+                    <th class="no-sort">
+                      <span data-toggle="tooltip" title="Serial Number">Sr.</span>
+                    </th>
+                    <th class="no-sort product-width-adjustment">
+                      <span>Product</span>
+                    </th>
+                    <th class="no-sort text-right">
+                      <span data-toggle="tooltip" title="Quantity">Qty</span>
+                    </th>
+                    <th class="no-sort text-left">
+                      <span data-toggle="tooltip" title="Unit of Measurement">UoM</span>
+                    </th>
+                    <th class="no-sort text-right">
+                      <span data-toggle="tooltip" title="Unit Cost">UC</span>
+                    </th>
+                    <th class="no-sort text-right">
+                      <span data-toggle="tooltip" title="Margin Percentage">%</span>
+                    </th>
+                    <th class="no-sort text-right">
+                      <span data-toggle="tooltip" title="Unit Selling Price">USP</span>
+                    </th>
+                    <th class="no-sort text-right">
+                      <span data-toggle="tooltip" title="Total Selling Price">TSP</span>
+                    </th>
+                    <th class="no-sort text-right">
+                      <span data-toggle="tooltip" title="Total Selling Price with Tax">TSP w. Tax</span>
+                    </th>
+                    <th class="no-sort text-right">
+                      <span data-toggle="tooltip" title="Tax Code">T. Code</span>
+                    </th>
+                    <th class="no-sort text-right">
+                      <span data-toggle="tooltip" title="Tax Rate">T. Rate</span>
+                    </th>
+                    <% if @sales_order.sales_quote.tax_summary.strip == '0' ||
                       (@sales_order.sales_quote.tax_summary.to_s.include? "IGST") %>
                     <th class="no-sort text-right">
                       <span data-toggle="tooltip" title="Tax Rate">IGST Rate</span>
@@ -299,19 +276,19 @@
                     <span data-toggle="tooltip" title="Total Freight">T. Freight</span>
                   </th>
                 </tr>
-                </thead>
-                <tbody>
+              </thead>
+              <tbody>
                 <% @sales_order.rows.each do |row| %>
                   <tr>
                     <td class="text-center">
                       <div class="custom-control custom-checkbox">
-                      <input name="sales_order[row_check_<%=row.sr_no%>]" type="hidden" value="0">
-                      <input class="custom-control-input boolean required selectable-checkbox" id = "select-row-box-<%=row.sr_no%>"  required="required"  aria-required="true" type="checkbox" value="1" name="sales_order[row_check_<%=row.sr_no%>]" >
-                      <label class="custom-control-label text-capitalize boolean  required" for="select-row-box-<%=row.sr_no%>"><%= row.sr_no %></label>
-                    </div>
+                        <input name="sales_order[row_check_<%=row.sr_no%>]" type="hidden" value="0">
+                        <input class="custom-control-input boolean required selectable-checkbox" id = "select-row-box-<%=row.sr_no%>"  required="required"  aria-required="true" type="checkbox" value="1" name="sales_order[row_check_<%=row.sr_no%>]" >
+                        <label class="custom-control-label text-capitalize boolean  required" for="select-row-box-<%=row.sr_no%>"><%= row.sr_no %></label>
+                      </div>
                     </td>
                     <td>
-                      <span><%= row.sales_quote_row %></span>
+                      <span id="test"><%= row.sales_quote_row.to_s %></span>
                     </td>
                     <td class="text-right">
                       <span><%= row.quantity %></span>
@@ -342,129 +319,128 @@
                     </td>
                     <% if @sales_order.sales_quote.tax_summary.strip == '0' ||
                         (@sales_order.sales_quote.tax_summary.to_s.include? "IGST") %>
-                      <td class="text-right">
-                        <span><%= row.sales_quote_row.applicable_tax_percentage * 100 %>%</span>
-                      </td>
-                      <td class="text-right">
-                        <span><%= format_currency(row.sales_quote_row.converted_total_tax, precision: 2, symbol: nil) %></span>
-                      </td>
-                    <% else %>
-                      <td class="text-right">
-                        <span><%= row.sales_quote_row.best_tax_rate.tax_percentage / 2 if row.sales_quote_row.best_tax_rate.present? %>%</span>
-                      </td>
-                      <td class="text-right">
-                        <span><%= number_to_currency(row.sales_quote_row.converted_total_tax.to_f / 2, precision: 2, unit: '') %></span>
-                      </td>
-                      <td class="text-right">
-                        <span><%= row.sales_quote_row.best_tax_rate.tax_percentage / 2 if row.sales_quote_row.best_tax_rate.present? %>%</span>
-                      </td>
-                      <td class="text-right">
-                        <span><%= number_to_currency(row.sales_quote_row.converted_total_tax.to_f / 2, precision: 2, unit: '') %></span>
-                      </td>
-                    <% end %>
                     <td class="text-right">
-                      <span><%= format_currency(row.freight_cost_subtotal, symbol: @sales_order.currency_sign) %></span>
+                      <span><%= row.sales_quote_row.applicable_tax_percentage * 100 %>%</span>
                     </td>
-                  </tr>
-                <% end %>
-                </tbody>
-              </table>
-
-              <div class="form-row">
-                <div class="col-2">
-                  <%= f.input :confirm_hsn_codes, as: :boolean, wrapper: :custom_boolean, label: 'Confirm HSN Codes', :required => true %>
-                </div>
-                <div class="col-2">
-                <%= f.input :confirm_order_quantity, as: :boolean, wrapper: :custom_boolean, label: 'Confirm order quantity', :required => true %>
-                </div>
-                <div class="col-2">
-                  <%= f.input :confirm_tax_rates, as: :boolean, wrapper: :custom_boolean, label: 'Confirm Tax Rates', :required => true %>
-                </div>
-                 <div class="col-2">
-                  <%= f.input :confirm_unit_price, as: :boolean, wrapper: :custom_boolean, label: 'Confirm Unit Price', :required => true %>
-                </div>
-                <div class="col-2">
-                  <%= f.input :confirm_tax_types, as: :boolean, wrapper: :custom_boolean, label: 'Confirm Tax Types', :required => true %>
-                </div>
-                <div class="col-2">
-                  <%= f.input :confirm_delivery_dates, as: :boolean, wrapper: :custom_boolean, :required => true %>
-                </div>
-              </div>
+                    <td class="text-right">
+                      <span><%= format_currency(row.sales_quote_row.converted_total_tax, precision: 2, symbol: nil) %></span>
+                    </td>
+                  <% else %>
+                    <td class="text-right">
+                      <span><%= row.sales_quote_row.best_tax_rate.tax_percentage / 2 if row.sales_quote_row.best_tax_rate.present? %>%</span>
+                    </td>
+                    <td class="text-right">
+                      <span><%= number_to_currency(row.sales_quote_row.converted_total_tax.to_f / 2, precision: 2, unit: '') %></span>
+                    </td>
+                    <td class="text-right">
+                      <span><%= row.sales_quote_row.best_tax_rate.tax_percentage / 2 if row.sales_quote_row.best_tax_rate.present? %>%</span>
+                    </td>
+                    <td class="text-right">
+                      <span><%= number_to_currency(row.sales_quote_row.converted_total_tax.to_f / 2, precision: 2, unit: '') %></span>
+                    </td>
+                  <% end %>
+                  <td class="text-right">
+                    <span><%= format_currency(row.freight_cost_subtotal, symbol: @sales_order.currency_sign) %></span>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+          <div class="form-row">
+            <div class="col-2">
+              <%= f.input :confirm_hsn_codes, as: :boolean, wrapper: :custom_boolean, label: 'Confirm HSN Codes', :required => true %>
             </div>
-            <div class="card-footer bmro-card-footer">
-              <div class=form-row>
-                <div class="col-5 col-md-1">
-                  Products
-                  <strong class="d-block"><%= @sales_order.rows.size %></strong>
-                </div>
-                <div class="col-5 col-md-1">
-                  Total Freight
-                  <strong class="d-block"><%= format_currency(@sales_order.calculated_freight_cost_total, symbol: @sales_order.currency_sign) %></strong>
-                </div>
-                <div class="col-5 col-md-1">
-                  Cost
-                  <strong class="d-block"><%= format_currency(@sales_order.converted_total_cost, symbol: @sales_order.currency_sign) %></strong>
-                </div>
-                <div class="col-5 col-md-2 mt-2 mt-md-0">
-                  Margin
-                  <strong class="d-block"><%= format_currency(@sales_order.converted_total_margin, symbol: @sales_order.currency_sign) %>
-                    (<%= @sales_order.calculated_total_margin_percentage %>%)</strong>
-                </div>
-                <div class="col-5 col-md-2 mt-2 mt-md-0">
-                  Selling Price (E. tax)
-                  <strong class="d-block"><%= format_currency(@sales_order.converted_total, symbol: @sales_order.currency_sign) %></strong>
-                </div>
-                <div class="col-5 col-md-1 mt-2 mt-md-0">
-                  Tax
-                  <strong class="d-block"><%= format_currency(@sales_order.converted_total_tax, symbol: @sales_order.currency_sign) %></strong>
-                </div>
-                <div class="col-5 col-md-2 mt-2 mt-md-0">
-                  Selling Price (I. tax)
-                  <strong class="d-block"><%= format_currency(@sales_order.converted_total_with_tax, symbol: @sales_order.currency_sign) %></strong>
-                </div>
-                <div class="col-5 col-md-2 mt-2 mt-md-0 d-flex align-items-center">
-                  <%= f.input :confirm_ord_values, as: :boolean, wrapper: :custom_boolean, label: 'Confirm order values', :required => true %>
-
-                </div>
-              </div>
+            <div class="col-2">
+              <%= f.input :confirm_order_quantity, as: :boolean, wrapper: :custom_boolean, label: 'Confirm order quantity', :required => true %>
+            </div>
+            <div class="col-2">
+              <%= f.input :confirm_tax_rates, as: :boolean, wrapper: :custom_boolean, label: 'Confirm Tax Rates', :required => true %>
+            </div>
+            <div class="col-2">
+              <%= f.input :confirm_unit_price, as: :boolean, wrapper: :custom_boolean, label: 'Confirm Unit Price', :required => true %>
+            </div>
+            <div class="col-2">
+              <%= f.input :confirm_tax_types, as: :boolean, wrapper: :custom_boolean, label: 'Confirm Tax Types', :required => true %>
+            </div>
+            <div class="col-2">
+              <%= f.input :confirm_delivery_dates, as: :boolean, wrapper: :custom_boolean, :required => true %>
             </div>
           </div>
-          <div class="card-footer bmro-card-footer">
-            <div class="form-row">
-              <div class="col-6">
-                <a class="bmro-button btn btn-block account-rejection bmro-button" data-parent="#rejection-comments" data-toggle="collapse" data-target="#internal-comments" style="color: #FFFFFF;">Reject</a>
-              </div>
-              <div class="col-6">
-                <%= f.submit 'Approve', class: 'btn btn-success btn-block account-approval bmro-button', name: 'approve' %>
-              </div>
+        </div>
+        <div class="card-footer bmro-card-footer">
+          <div class=form-row>
+            <div class="col-5 col-md-1">
+              Products
+              <strong class="d-block"><%= @sales_order.rows.size %></strong>
             </div>
-            <div><br></div>
-            <div class="form-row" id="rejection-comments">
-              <div class="col-12">
-                <div id="accordion">
-                  <div class="card ">
-                    <div id="internal-comments" class="collapse" data-parent="#accordion">
-                      <div class="card-body">
-                        <%= f.simple_fields_for :custom_fields do |c| %>
-                          <div class="form-group">
-                            <%= c.label :reject_reasons, 'Reject Reasons', class: "form-control-label text-capitalize string optional"%>
-                            <%= c.select :reject_reasons, SalesOrder.reject_reasons,
+            <div class="col-5 col-md-1">
+              Total Freight
+              <strong class="d-block"><%= format_currency(@sales_order.calculated_freight_cost_total, symbol: @sales_order.currency_sign) %></strong>
+            </div>
+            <div class="col-5 col-md-1">
+              Cost
+              <strong class="d-block"><%= format_currency(@sales_order.converted_total_cost, symbol: @sales_order.currency_sign) %></strong>
+            </div>
+            <div class="col-5 col-md-2 mt-2 mt-md-0">
+              Margin
+              <strong class="d-block"><%= format_currency(@sales_order.converted_total_margin, symbol: @sales_order.currency_sign) %>
+                (<%= @sales_order.calculated_total_margin_percentage %>%)</strong>
+            </div>
+            <div class="col-5 col-md-2 mt-2 mt-md-0">
+              Selling Price (E. tax)
+              <strong class="d-block"><%= format_currency(@sales_order.converted_total, symbol: @sales_order.currency_sign) %></strong>
+            </div>
+            <div class="col-5 col-md-1 mt-2 mt-md-0">
+              Tax
+              <strong class="d-block"><%= format_currency(@sales_order.converted_total_tax, symbol: @sales_order.currency_sign) %></strong>
+            </div>
+            <div class="col-5 col-md-2 mt-2 mt-md-0">
+              Selling Price (I. tax)
+              <strong class="d-block"><%= format_currency(@sales_order.converted_total_with_tax, symbol: @sales_order.currency_sign) %></strong>
+            </div>
+            <div class="col-5 col-md-2 mt-2 mt-md-0 d-flex align-items-center">
+              <%= f.input :confirm_ord_values, as: :boolean, wrapper: :custom_boolean, label: 'Confirm order values', :required => true %>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card-footer bmro-card-footer">
+        <div class="form-row">
+          <div class="col-6">
+            <a class="bmro-button btn btn-block account-rejection bmro-button" data-parent="#rejection-comments" data-toggle="collapse" data-target="#internal-comments" style="color: #FFFFFF;">Reject</a>
+          </div>
+          <div class="col-6">
+            <%= f.submit 'Approve', class: 'btn btn-success btn-block account-approval bmro-button', name: 'approve' %>
+          </div>
+        </div>
+        <div><br>
+        </div>
+        <div class="form-row" id="rejection-comments">
+          <div class="col-12">
+            <div id="accordion">
+              <div class="card ">
+                <div id="internal-comments" class="collapse" data-parent="#accordion">
+                  <div class="card-body">
+                    <%= f.simple_fields_for :custom_fields do |c| %>
+                      <div class="form-group">
+                        <%= c.label :reject_reasons, 'Reject Reasons', class: "form-control-label text-capitalize string optional"%>
+                        <%= c.select :reject_reasons, SalesOrder.reject_reasons,
                                          {selected: SalesOrder.reject_reasons.values}, :multiple => true, :class => 'form-control select2-multiple bmro-dropdown-icon-none', required: true %>
-                          </div>
-                          <%= c.input :message, :placeholder => 'Type message', required: false,input_html: {class: 'bmro-form-input'}  %>
-                          <%= c.submit 'Reply and Reject', name: 'reject', class: 'btn btn-danger bmro-button' if policy(@sales_order).reject? %>
-                        <% end %>
                       </div>
-                    </div>
+                      <%= c.input :message, :placeholder => 'Type message', required: false,input_html: {class: 'bmro-form-input'}  %>
+                      <%= c.submit 'Reply and Reject', name: 'reject', class: 'btn btn-danger bmro-button' if policy(@sales_order).reject? %>
+                    <% end %>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        <% end %>
+        </div>
       </div>
-    </div>
-  <% end %>
+    <% end %>
+  </div>
+</div>
+<% end %>
 </div>
 <% if @modal_show %>
   <div class="modal fade" id="salesOrderApproverMessage">
@@ -490,12 +466,38 @@
 <script>
   const selectAllCheckbox = document.querySelector('#select-all-checkbox');
   const selectableCheckboxes = document.querySelectorAll('.selectable-checkbox');
+  const dropdown = document.querySelector("#sales_order_custom_fields_reject_reasons");
+
+  let addSkuToRejectReasons = () => {
+      for (let i = 0; i < selectableCheckboxes.length; i++) {
+        const checkbox = selectableCheckboxes[i];
+        const data = checkbox.closest('tr').querySelector('#test').textContent;
+        const dropdownItem = dropdown.querySelector('option[value="' + data + '"]')
+        if (checkbox && !checkbox.checked  && !dropdownItem) {
+          const newOption = document.createElement("option");
+          newOption.value = data;
+          newOption.textContent = data;
+          newOption.selected = true;
+          dropdown.appendChild(newOption);
+        }
+        else if ( checkbox && dropdownItem && checkbox.checked){
+          dropdownItem.remove();
+        }
+      }
+    }
+addSkuToRejectReasons();
+  selectableCheckboxes.forEach(function(checkbox) {
+    checkbox.addEventListener('click', function() {
+      addSkuToRejectReasons();
+    });
+  });
 
   selectAllCheckbox.addEventListener('change', function() {
+    addSkuToRejectReasons();
     const isChecked = selectAllCheckbox.checked;
     selectableCheckboxes.forEach(function(checkbox) {
       checkbox.checked = isChecked;
       checkbox.dispatchEvent(new Event('change'));
     });
-});
+  });
 </script>
