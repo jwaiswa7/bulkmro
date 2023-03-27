@@ -60,7 +60,7 @@
           <!--            <p class="bmro-level-one-heading bmro-heading-docs m-0">Favourites</p>-->
           <!--          </div>-->
         </div>
-        
+
         <div class="bmro-dashboard-link">
           <i class="material-icons">keyboard_arrow_left</i>
           <a href="<%= overseers_dashboard_path %>" class="bmro-dashbord-click bmro-big-heading bmro-dash-heading-menu">
@@ -220,6 +220,8 @@
           <div class="bmro-small-container"><%= nav_dropdown_item_new 'Smart Queue', smart_queue_overseers_inquiries_path, is_authorized(:inquiry, 'smart_queue') %></div>
           <div class="bmro-small-container"><%= nav_dropdown_item_new 'Sales Shipments', overseers_sales_shipments_path, is_authorized(:sales_shipment, 'index') %></div>
           <div class="bmro-small-container"><%= nav_dropdown_item_new 'Activities', overseers_activities_path, is_authorized(:activity, 'index') %></div>
+          <div class="bmro-small-container"><%= nav_dropdown_item_new 'Tasks', overseers_tasks_path, is_authorized(:task, 'index') %></div>
+
         </div>
 
         <div class="bmro-second-and-third-level-headings-container" id="logistics_heading_container">

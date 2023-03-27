@@ -119,6 +119,9 @@ Rails.application.routes.draw do
       get 'get_account_executive_data'
     end
 
+    resources :tasks do
+    end
+
     resources :remote_requests do
       member do
         get 'show'
