@@ -14,6 +14,10 @@ class TasksIndex < BaseIndex
     field :company_name, value: -> (record) {record.company.to_s}, analyzer: 'substring'
     field :department_key, value: -> (record) {departments[record.department]} , type: 'integer'
     field :department, value: -> (record) {record.department}
+    field :assignees, value: -> (record) {record.overseers.pluck(:id).uniq} , fielddata: true
+    field :created_by_id, value: -> (record) {record.created_by.id if record.created_by.present?}, type: 'integer'
+    field :test, value: -> (record) {1}, type: 'integer'
+
     field :created_at, type: 'date'
     field :updated_at, type: 'date'
   end

@@ -266,6 +266,18 @@ class Services::Overseers::Notifications::Notify < Services::Shared::Notificatio
         @to = activity.created_by.parent
         send
       end
-      
+
+  def send_task_created(task, action, notifiable, url)
+    @action = action; @notifiable = notifiable; @url = url
+    @message = "#{task.created_by.name} created a task # #{task.task_number}"
+    if task.overseer_ids.count > 0
+      task.overseers.uniq.each do | to |
+        @to = to
+        end
+    elsif task.created_by.parent.present?
+      @to = task.created_by.parent
+      end
+    end
+
   end
 end

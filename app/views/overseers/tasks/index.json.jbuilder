@@ -1,9 +1,18 @@
 json.data (@tasks) do |task|
   json.array! [
                   [
-                      # if is_authorized(task, 'edit') && policy(task).edit?;
-                        row_action_button(edit_overseers_task_path(task), 'pencil', 'Edit Task', 'warning', :_blank),
+                      if is_authorized(task, 'edit') && policy(task).edit?;
+                        row_action_button(edit_overseers_task_path(task), 'pencil', 'Edit Task', 'warning', :_blank)
+                      end,
+                      # if is_authorized(task, 'show') && policy(task).show?;
+                        row_action_button(overseers_task_path(task), 'eye', 'View Task', 'warning', :_blank),
                       # end,
+                      if is_authorized(task, 'index')
+                        link_to('', class: ['icon-title btn btn-sm btn-success comment-task'], 'data-model-id': task.id, title: 'Comment', 'data-title': 'Comment', remote: true) do
+                          concat content_tag(:span, '')
+                          concat content_tag :i, nil, class: ['bmro-icon-table bmro-icon-comment'].join
+                        end
+                      end,
                   ].join(' '),
                   task.task_id,
                   task.subject,

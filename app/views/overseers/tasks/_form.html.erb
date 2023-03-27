@@ -7,11 +7,11 @@
              <div class="col-4">
             <%= f.input :subject, as: :string, input_html: {class: 'bmro-form-input'}, label: 'Subject', required: true %>
              </div>
-             <div class="col-4">
-              <%= f.input :description, as: :string, input_html: {class: 'bmro-form-input'}, label: 'Description' %>
+             <div class="col-8">
+               <%= f.input :department, as: :string, required: true, input_html: { class: 'select2-single bmro-form-input bmro-dropdown-icon bmro-width-select' } , as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(Task.departments), selected: @task.department%>
             </div>
-             <div class="col-4">
-              <%= f.input :department, as: :string, required: true, input_html: { class: 'select2-single bmro-form-input bmro-dropdown-icon bmro-width-select' } , as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(Task.departments), selected: @task.department%>
+             <div class="col-12">
+              <%= f.input :description, as: :string, input_html: {class: 'bmro-form-input'}, label: 'Description' %>
             </div>
             </div>
           <div class="row">

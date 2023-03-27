@@ -12,6 +12,7 @@ class EmailMessage < ApplicationRecord
   belongs_to :supplier_rfq, required: false
   belongs_to :customer_rfq, required: false
   belongs_to :activity, required: false
+  belongs_to :task, required: false
   belongs_to :revision_request, required: false
 
   # Added polymophic relationship
