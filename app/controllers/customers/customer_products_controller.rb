@@ -7,6 +7,12 @@ class Customers::CustomerProductsController < Customers::BaseController
   def index
     authorize :customer_product
 
+    if @view == 'grid'
+      params[:page] = 1 unless params[:page].present?
+      params[:per] = 24
+    end
+
+
     account = Account.find(2431)
     service = Services::Customers::Finders::CustomerProducts.new(params.merge(published: true), current_customers_contact, current_company, sort_by: sort_by, sort_order: 'desc')
     service.call
@@ -19,6 +25,8 @@ class Customers::CustomerProductsController < Customers::BaseController
     if @is_henkel
       @default_quantity = 0
     end
+
+    @customer_products_paginate = @indexed_customer_products.page(params[:page]) if params[:page].present?
   end
 
   def autocomplete
@@ -58,7 +66,7 @@ class Customers::CustomerProductsController < Customers::BaseController
     @most_ordered_products = products.drop(5).map { |id, c| [Product.find(id), [c, 'times'].join(' ')] }
   end
 
-  def product_details 
+  def product_details
     authorize :customer_product
     @product = Product.find(params[:id])
     product_details = {}
