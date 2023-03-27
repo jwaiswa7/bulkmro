@@ -1,9 +1,7 @@
 class Services::Overseers::Chart::InquiriesByIsp
 
-  def initialize 
-    start_of_financial_year = Date.today.beginning_of_financial_year
-    end_of_financial_year = Date.today.end_of_financial_year
-    @inquiries = Inquiry.where(created_at: start_of_financial_year .. end_of_financial_year)
+  def initialize(inquiries:)
+    @inquiries = inquiries
     @inside_sales_owner_hash = Hash.new
     @status_count_hash = Hash.new
     statuses = @inquiries.pluck(:status).uniq

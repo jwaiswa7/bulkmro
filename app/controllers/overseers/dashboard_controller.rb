@@ -3,10 +3,14 @@ class Overseers::DashboardController < Overseers::BaseController
 
   def show
     authorize_acl :dashboard
-    @data = Services::Overseers::Chart::InquiriesByStatuses.new.call 
-    @data_location = Services::Overseers::Chart::InquiriesByLocation.new.call
-    @data_bar = Services::Overseers::Chart::InquiriesByIsp.new.call
-    @inquiry_summary = Services::Overseers::Chart::InquirySummary.new.call
+    start_of_financial_year = Date.today.beginning_of_financial_year
+    end_of_financial_year = Date.today.end_of_financial_year
+    inquiries = Inquiry.where(created_at: start_of_financial_year .. end_of_financial_year)
+
+    @data = Services::Overseers::Chart::InquiriesByStatuses.new(inquiries: inquiries).call 
+    @data_location = Services::Overseers::Chart::InquiriesByLocation.new(inquiries: inquiries).call
+    @data_bar = Services::Overseers::Chart::InquiriesByIsp.new(inquiries: inquiries).call
+    @inquiry_summary = Services::Overseers::Chart::InquirySummary.new(inquiries: inquiries).call
     render 'admin_dashboard'
   end
 
