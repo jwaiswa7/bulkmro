@@ -124,6 +124,9 @@ Rails.application.routes.draw do
         get 'render_modal_form'
         patch 'add_comment'
       end
+      scope module: 'tasks' do
+        resources :comments
+      end
     end
 
     resources :remote_requests do

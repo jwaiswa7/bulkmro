@@ -11,5 +11,9 @@ class Overseers::TaskPolicy < Overseers::ApplicationPolicy
     true
   end
 
+  def comments?
+    record.persisted?
+  end
+
 
 end

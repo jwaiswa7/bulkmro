@@ -1,40 +1,37 @@
-  <div class="col-lg-12 bmro-padding-0">
-    <%= render 'shared/snippets/page_header', e: @task %>
-      <%= simple_form_for([:overseers, @task], :html => {:class => 'needs-validation', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
-             <div class="card">
+
+<div class="col-lg-12 bmro-padding-0">
+  <%= render 'shared/snippets/page_header', e: @task %>
+  <%= simple_form_for([:overseers, @task], :html => {:class => 'needs-validation', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
+    <div class="card">
       <div class="card-body">
-             <div class="row">
-             <div class="col-4">
+        <div class="row">
+          <div class="col-4">
             <%= f.input :subject, as: :string, input_html: {class: 'bmro-form-input'}, label: 'Subject', required: true %>
-             </div>
-             <div class="col-8">
-               <%= f.input :department, as: :string, required: true, input_html: { class: 'select2-single bmro-form-input bmro-dropdown-icon bmro-width-select' } , as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(Task.departments), selected: @task.department%>
-            </div>
-             <div class="col-12">
-              <%= f.input :description, as: :string, input_html: {class: 'bmro-form-input'}, label: 'Description' %>
-            </div>
-            </div>
-          <div class="row">
-           <div class="col-4">
+          </div>
+          <div class="col-8">
+            <%= f.input :department, as: :string, required: true, input_html: { class: 'select2-single bmro-form-input bmro-dropdown-icon bmro-width-select' } , as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(Task.departments), selected: @task.department%>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-4">
             <%= f.input :status, input_html: { class: 'select2-single bmro-form-input bmro-dropdown-icon bmro-width-select' }, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(Task.statuses), selected: @task.status %>
-            </div>
-            <div class="col-4">
-              <%= f.input :due_date, as: :string, required: true, input_html: {:'data-toggle' => 'futureDatePicker', class: 'bmro-form-input', id: "due_date"} %>
-            </div>
-             <div class="col-4">
-              <%= f.input :priority, as: :select,input_html: { class: 'select2-single bmro-form-input bmro-dropdown-icon' } , :wrapper => :custom_multi_select, collection: enum_to_collection(Task.priorities)%>
-            </div>
-            </div>
-             <div class="row">
-             <div class="col-4">
-           <%= f.input :company_id, as: :select, collection: [f.object.company], input_html: {class: "select2-ajax bmro-form-input bmro-dropdown-icon" , placeholder: 'Select Company' , :'data-source' => autocomplete_overseers_suppliers_path, :'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''}, label: "Company" %>
-            </div>
-            <div class="col-8  mb-2">
+          </div>
+          <div class="col-4">
+            <%= f.input :due_date, as: :string, required: true, input_html: {:'data-toggle' => 'futureDatePicker', class: 'bmro-form-input', id: "due_date"} %>
+          </div>
+          <div class="col-4">
+            <%= f.input :priority, as: :select,input_html: { class: 'select2-single bmro-form-input bmro-dropdown-icon' } , :wrapper => :custom_multi_select, collection: enum_to_collection(Task.priorities)%>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-4">
+            <%= f.input :company_id, as: :select, collection: [f.object.company], input_html: {class: "select2-ajax bmro-form-input bmro-dropdown-icon" , placeholder: 'Select Company' , :'data-source' => autocomplete_overseers_suppliers_path, :'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''}, label: "Company" %>
+          </div>
+          <div class="col-8  mb-2">
             <div class="d-block d-md-flex align-items-end">
               <div class="flex-grow-1 bmro-chosen-height-parent">
                 <%= f.input :attachments, wrapper: :custom_file, input_html: {class: 'select2-ajax bmro-form-input bmro-dropdown-icon select2-single '}, input_html: {multiple: true}, label: 'Attachments' %>
               </div>
-
               <div class="form-group">
                 <% f.object.attachments.each do |attachment| %>
                   <%= link_to url_for(attachment), class: ' btn bmro-button btn-success bmro-new-margins', target: '_blank', :"data-toggle" => 'tooltip', :status => attachment.filename do %>
@@ -46,17 +43,19 @@
                 <% end if f.object.attachments.attached? %>
               </div>
             </div>
-            </div>
-            <div class="col-6 col-md-12">
-              <%= f.association :overseers, collection: Overseer.all ,label: 'Assigned to' , placeholder:  "Select other overseers" , input_html: {class: 'custom-select2-search select2-multiple ', multiple: true } %>
-            </div>
-             <div class="col-12 mt-2">
-                <%= button_tag(type: "submit", class: "btn btn-warning btn-block bmro-button") do %>
-                  <i class="fal fa-pen"></i> <%= submit_text(@task) %>
-                <% end %>
-              </div>
           </div>
+          <div class="col-6 col-md-12">
+            <%= f.association :overseers, collection: Overseer.all ,label: 'Assigned to' , placeholder:  "Select other overseers" , input_html: {class: 'custom-select2-search select2-multiple ', multiple: true } %>
           </div>
+          <div class="col-12">
+            <%= f.input :description, as: :text, input_html: {class: 'bmro-form-input bmro-form-input-text'}, label: 'Description' %>
           </div>
-
-<% end %>
+          <div class="col-12 mt-2">
+            <%= button_tag(type: "submit", class: "btn btn-warning btn-block bmro-button") do %>
+              <i class="fal fa-pen"></i> <%= submit_text(@task) %>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
