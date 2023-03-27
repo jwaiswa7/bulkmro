@@ -1,153 +1,46 @@
-<%= render layout: 'overseers/dashboard/show' do %>
-
-  <div class="form-row mt-2 mt-lg-4">
-    <% if is_authorized(:account, 'index') %>
-      <div class="col-md-3">
-        <div class="card mb-3">
-          <div class="card-body">
-            <div class="text-center">
-              <p class="text-uppercase mb-1"><strong>Accounts</strong></p>
-              <h3 class="mb-0"><%= number_with_delimiter(Account.all.size, delimiter: ',') %></h3>
+<div class="row">
+   <div class="col-6" style='margin: 0px; padding: 0px'>
+      <div class=''>
+         <div class='card' style='height: 45vh; width: 100%; '>
+            <div class='card-body'>
+              <h4 style='font-size: 1rem'>Inquiry count by status</h4>
+              <%= pie_chart @data[:data], @data[:options] %>
             </div>
-          </div>
-          <div class="card-footer">
-            <a href="<%= overseers_accounts_path %>" class="bmro-button btn btn-lg btn-block align-self-center">
-              See Accounts
-            </a>
-          </div>
-        </div>
-      </div>
-    <% end %>
-    <% if is_authorized(:company, 'index') %>
-      <div class="col-md-3">
-        <div class="card mb-3">
-          <div class="card-body">
-            <div class="text-center">
-              <p class="text-uppercase text-black-50 mb-1"><strong>Companies</strong>
-              </p>
-              <h3 class="mb-0"><%= number_with_delimiter(Company.all.size, delimiter: ',') %></h3>
+         </div>
+         <div class='card' style='height: 45vh; width: 100%; '>
+            <div class='card-body'>
+              <h4 style='font-size: 1rem'>Inquiry count by location</h4>
+              <%= pie_chart @data_location[:data], @data_location[:options] %>
             </div>
-          </div>
-          <div class="card-footer">
-            <a href="<%= overseers_companies_path %>" class="bmro-button btn btn-lg btn-block align-self-center">See Companies</a>
-          </div>
-        </div>
+         </div>
       </div>
-    <% end %>
-    <% if is_authorized(:contact, 'index') %>
-      <div class="col-md-3">
-        <div class="card mb-3">
-          <div class="card-body">
-            <div class="text-center">
-              <p class="text-uppercase mb-1"><strong>Contacts</strong></p>
-              <h3 class="mb-0"><%= number_with_delimiter(Contact.all.size, delimiter: ',') %></h3>
+   </div>
+   <div class="col-4">
+      <div class=''>
+         <div class='card' style='height: 90vh'>
+            <div class='card-body'>
+              <h4 style='font-size: 1rem'>Inquiry count by ISP & status</h4>
+              <div style='overflow-x: scroll; height: 80vh'>
+                <%= horizontal_bar_chart @data_bar[:data], @data_bar[:options] %>
+              </div>
             </div>
-          </div>
-          <div class="card-footer">
-            <a href="<%= overseers_contacts_path %>" class="bmro-button btn btn-lg btn-block align-self-center">See Contacts</a>
-          </div>
-        </div>
+         </div>
       </div>
-    <% end %>
-    <% if is_authorized(:product, 'index') %>
-      <div class="col-md-3">
-        <div class="card mb-3">
-          <div class="card-body">
-            <div class="text-center">
-              <p class="text-uppercase mb-1"><strong>Products</strong></p>
-              <h3 class="mb-0"><%= number_with_delimiter(Product.all.size, delimiter: ',') %></h3>
-            </div>
-          </div>
-          <div class="card-footer">
-            <a href="<%= overseers_products_path %>" class="bmro-button btn btn-lg btn-block align-self-center">See Products</a>
-          </div>
-        </div>
+   </div>
+   <div class="col-2">
+      <div class='' style='height: 90vh; overflow-x: scroll;'>
+         <ul class="list-unstyled">
+           <% @inquiry_summary.each do |key, value| %>
+            <li >
+              <div class='card'>
+                 <div class='card-body'>
+                  <h2><%= number_to_human(value, :format => '%n%u', :precision => 4, :units => { :thousand => 'K', :million => 'M', :billion => 'B' }) %></h2>
+                  <p><%= key.to_s.humanize %></p>
+                 </div>
+              </div>
+            </li>
+           <% end %>
+         </ul>  
       </div>
-    <% end %>
-  </div>
-
-  <div class="form-row">
-    <% if @dashboard.entries.any? %>
-      <div class="col-12 col-lg-12">
-        <div class="card">
-          <div class="card-body">
-            <table class="table w-100 wrap-whitespace datatable" data-sort="false" data-fixed-header="false">
-              <thead>
-              <tr>
-                <th class="no-sort text-right"></th>
-                <th class="no-sort text-right">Inquiry</th>
-                <th class="no-sort text-right">Quotes</th>
-                <th class="no-sort text-right">Orders</th>
-                <th class="no-sort text-right">Invoices</th>
-                <th class="no-sort text-right">Purchase Orders</th>
-              </tr>
-              </thead>
-              <tbody>
-              <% @dashboard.entries.each do |month, values| %>
-                <tr>
-                  <td><strong><%= format_month_without_date(month) %></strong></td>
-                  <% values.each do |column, value| %>
-                    <td class="text-uppercase text-right text-black-50">
-                      <% if column.to_s == "inquiry" %>
-                        <%= link_to(number_with_delimiter(value[:count], delimiter: ','), filtered_path(eval("overseers_#{column.to_s.pluralize}_path"), [
-                            filter_by_monthrange('Date', month.to_date)
-                        ]), target: '_blank') %>
-                        <hr class="my-1">
-                        <strong>
-                          <%= link_to(format_currency(value[:total], precision: 0, show_symbol: true), filtered_path(eval("overseers_#{column.to_s.pluralize}_path"), [
-                              filter_by_monthrange('Date', month.to_date)
-                          ]), target: '_blank') %>
-                        </strong>
-                      <% end %>
-                      <% if column.to_s == "sales_quotes" %>
-                        <%= number_with_delimiter(value[:count], delimiter: ',') %>
-                        <hr class="my-1">
-                        <strong>
-                          <%= format_currency(value[:total], precision: 0, show_symbol: true) %>
-                        </strong>
-                      <% end %>
-                      <% if column.to_s == "sales_order" %>
-                        <%= link_to(number_with_delimiter(value[:count], delimiter: ','), filtered_path(eval("overseers_#{column.to_s.pluralize}_path"), [
-                            filter_by_monthrange('Order Date', month.to_date)
-                        ]), target: '_blank') %>
-                        <hr class="my-1">
-                        <strong>
-                          <%= link_to(format_currency(value[:total], precision: 0, show_symbol: true), filtered_path(eval("overseers_#{column.to_s.pluralize}_path"), [
-                              filter_by_monthrange('Order Date', month.to_date)
-                          ]), target: '_blank') %>
-                        </strong>
-                      <% end %>
-                      <% if column.to_s == "sales_invoice" %>
-                        <%= link_to(number_with_delimiter(value[:count], delimiter: ','), filtered_path(eval("overseers_#{column.to_s.pluralize}_path"), [
-                            filter_by_monthrange('Created At', month.to_date)
-                        ]), target: '_blank') %>
-                        <hr class="my-1">
-                        <strong>
-                          <%= link_to(format_currency(value[:total], precision: 0, show_symbol: true), filtered_path(eval("overseers_#{column.to_s.pluralize}_path"), [
-                              filter_by_monthrange('Created At', month.to_date)
-                          ]), target: '_blank') %>
-                        </strong>
-                      <% end %>
-                      <% if column.to_s == "purchase_order" %>
-                        <%= link_to(number_with_delimiter(value[:count], delimiter: ','), filtered_path(eval("overseers_#{column.to_s.pluralize}_path"), [
-                            filter_by_monthrange('PO Date', month.to_date)
-                        ]), target: '_blank') %>
-                        <hr class="my-1">
-                        <strong>
-                          <%= link_to(format_currency(value[:total], precision: 0, show_symbol: true), filtered_path(eval("overseers_#{column.to_s.pluralize}_path"), [
-                              filter_by_monthrange('PO Date', month.to_date)
-                          ]), target: '_blank') %>
-                        </strong>
-                      <% end %>
-                    </td>
-                  <% end %>
-                </tr>
-              <% end %>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-    <% end %>
-  </div>
-<% end %>
+   </div>
+</div>

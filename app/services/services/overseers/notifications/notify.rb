@@ -266,6 +266,15 @@ class Services::Overseers::Notifications::Notify < Services::Shared::Notificatio
         @to = activity.created_by.parent
         send
       end
-      
-  end
+    end
+
+    def send_task_comment(to, action, notifiable, url, msg)
+      @action = action
+      @notifiable = notifiable
+      @url = url
+      @message = msg
+      @to = Overseer.find(to)
+      send
+    end
+
 end

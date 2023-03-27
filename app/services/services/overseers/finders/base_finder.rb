@@ -65,7 +65,6 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
     else
       all_records
     end
-
     @indexed_records = non_paginated_records.page(page).per(per) if non_paginated_records.present?
     @indexed_records = non_paginated_records if !paginate
 
@@ -348,6 +347,30 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
         }
     }
   end
+
+  def filter_by_array_or_value(array_field , key_field , values)
+  {
+    "bool": {
+      "should": [
+        {
+          "terms_set": {
+            "#{array_field}": {
+              "terms": values,
+              "minimum_should_match_field": "test"
+            }
+          }
+        },
+        {
+          "terms": {
+            "#{key_field}": values
+          }
+        }
+      ]
+    }
+  }
+
+end
+
 
   attr_accessor :query_string, :page, :per, :records, :indexed_records, :current_overseer, :search_filters, :range_filters, :paginate, :base_filter, :sort_by, :sort_order
 end

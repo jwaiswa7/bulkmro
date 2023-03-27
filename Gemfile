@@ -266,3 +266,5 @@ gem 'parallel'
 
 # toogle buttons 
 gem 'bootstrap-toggle-rails'
+
+gem 'fiscali'
