@@ -206,10 +206,10 @@
                     <th align="center" valign="center">
                       <b><span>Unit Price<br>
                           (INR)</span></b></th>
+                    <th align="center" valign="center">
+                      <b><span>Subtotal<br>
+                          (INR)</span></b></th>
                   <% end %>
-                  <th align="center" valign="center">
-                    <b><span>Subtotal<br>
-                        (INR)</span></b></th>
                   <% if (locals[:metadata][:PopTaxRate].to_s.include? "IG") || (locals[:metadata][:ItemLine][0][:PopTaxRate].to_s.include? "IG") %>
                     <th align="center" valign="center">
                       <b><span>IGST<br>
@@ -288,10 +288,10 @@
                       <td align="right" valign="top">
                         <span><%= number_to_currency(item.unit_selling_price, precision: 2, unit: '') %></span>
                       </td>
+                      <td align="right" valign="top">
+                        <span><%= number_to_currency(item.total_selling_price, precision: 2, unit: '') %></span>
+                      </td>
                     <% end %>
-                    <td align="right" valign="top">
-                      <span><%= number_to_currency(item.total_selling_price, precision: 2, unit: '') %></span>
-                    </td>
                     <% if (locals[:metadata][:PopTaxRate].to_s.include? "IG") || (locals[:metadata][:ItemLine][0][:PopTaxRate].to_s.include? "IG") %>
                       <td align="center" valign="top">
                         <span><%= item.po_request_tax_rate %>%</span>
@@ -389,155 +389,155 @@
                   <td align="center" valign="top">
                     <span></span>
                   </td>
+                <td align="center" valign="top">
+                  <span></span>
+                </td>
+                <% if !(locals[:purchase_order].company&.is_international) %>
                   <td align="center" valign="top">
                     <span></span>
                   </td>
-                  <% if !(locals[:purchase_order].company&.is_international) %>
-                    <td align="center" valign="top">
-                      <span></span>
-                    </td>
-                  <% end %>
                   <td align="right" valign="top">
                     <b><span><%= number_to_currency(locals[:purchase_order].calculated_total, precision: 2, unit: '') %></span></b>
                   </td>
+                <% end %>
+                <td align="center" valign="top">
+                  <span></span>
+                </td>
+                <% if (locals[:metadata][:PoTaxRate].to_s.include? "IG") || (locals[:metadata][:ItemLine][0][:PopTaxRate].to_s.include? "IG") %>
+                  <td align="right" valign="top">
+                    <b><span><%= number_to_currency(locals[:purchase_order].calculated_total_tax, precision: 2, unit: '') %></span></b>
+                  </td>
+                <% else %>
                   <td align="center" valign="top">
                     <span></span>
                   </td>
-                  <% if (locals[:metadata][:PoTaxRate].to_s.include? "IG") || (locals[:metadata][:ItemLine][0][:PopTaxRate].to_s.include? "IG") %>
-                    <td align="right" valign="top">
-                      <b><span><%= number_to_currency(locals[:purchase_order].calculated_total_tax, precision: 2, unit: '') %></span></b>
-                    </td>
-                  <% else %>
-                    <td align="center" valign="top">
-                      <span></span>
-                    </td>
-                    <td align="right" valign="top">
-                      <b><span><%= number_to_currency(locals[:purchase_order].calculated_total_tax / 2, precision: 2, unit: '') %></span></b>
-                    </td>
-                    <td align="center" valign="top">
-                      <span></span>
-                    </td>
-                    <td align="right" valign="top">
-                      <b><span><%= number_to_currency(locals[:purchase_order].calculated_total_tax / 2, precision: 2, unit: '') %></span></b>
-                    </td>
-                  <% end %>
-                  <% if !(locals[:purchase_order].company&.is_international) %>
-                    <td align="right" valign="top">
-                      <b><span><%= number_to_currency(locals[:purchase_order].calculated_total_with_tax, precision: 2, unit: '') %></span></b>
-                    </td>
-                  <% end %>
+                  <td align="right" valign="top">
+                    <b><span><%= number_to_currency(locals[:purchase_order].calculated_total_tax / 2, precision: 2, unit: '') %></span></b>
+                  </td>
                   <td align="center" valign="top">
                     <span></span>
                   </td>
-                  <% if (locals[:purchase_order].company&.is_international) %>
-                    <td align="center" valign="top">
-                      <span></span>
-                    </td>
-                    <td align="right" valign="top">
-                      <b><span></span></b>
-                    </td>
-                    <td align="center" valign="top">
-                      <span></span>
-                    </td>
-                  <%end%>
+                  <td align="right" valign="top">
+                    <b><span><%= number_to_currency(locals[:purchase_order].calculated_total_tax / 2, precision: 2, unit: '') %></span></b>
+                  </td>
+                <% end %>
+                <% if !(locals[:purchase_order].company&.is_international) %>
+                  <td align="right" valign="top">
+                    <b><span><%= number_to_currency(locals[:purchase_order].calculated_total_with_tax, precision: 2, unit: '') %></span></b>
+                  </td>
+                <% end %>
+                <td align="center" valign="top">
+                  <span></span>
+                </td>
+                <% if (locals[:purchase_order].company&.is_international) %>
+                  <td align="center" valign="top">
+                    <span></span>
+                  </td>
+                  <td align="right" valign="top">
+                    <b><span></span></b>
+                  </td>
+                  <td align="center" valign="top">
+                    <span></span>
+                  </td>
+                <%end%>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <br clear="all">
+        <div class="bottom-info" style="position: relative">
+          <div id="stamp" style="width:94%;position:absolute;top:0px; padding-top: 1px;padding-bottom: 1px;">
+            <div id="inner-stamp" style="float: right; position: relative;">
+              <%= wicked_pdf_image_tag 'BulkMRO-stamp.png', :width => "95", :height => "95" %>
+            </div>
+          </div>
+          <div id="noteInvoiceContainer" style="border:1px solid; border-radius: 5px;">
+            <table border="0" cellspacing="0" style="width: 100%;">
+              <tbody>
+                <tr>
+                  <td align="left" colspan="16" style="background: #d3d3d3; padding-left: 10px;border-bottom: 1px solid #3c3c3c" valign="top">
+                    <b><span>Commercial Terms and Conditions:</span></b></td>
+                </tr>
+                <tr>
+                  <td height="" style="padding-left:10px;" valign="top">1.</td>
+                  <td align="left" valign="top">
+                    <span>Seller to email Original Invoice to logistics@bulkmro.com after Order is dispatched.
+                    </span>
+                  </td>
+                </tr>
+                <tr>
+                  <td height="" style="padding-left:10px;" valign="top">2.</td>
+                  <td align="left" valign="top">
+                    <span>In the case of (a) any delays in receiving invoice, (b) errors or omissions in invoice, or (c) lack of supporting documentation required by the terms of the Purchase Order, Buyer will have cause to withhold settlement and shall not lose any discount privilege that applied to the products affected by such action or in action.
+                    </span>
+                  </td>
+                </tr>
+                <tr>
+                  <td height="" style="padding-left:10px;" valign="top">3.</td>
+                  <td align="left" valign="top">
+                    <span>All payments will be issued to Seller at the location specified in Seller’s block on the Purchase Order, unless proper authority for deviation is supplied to Buyer’s Accounts Payable Department</span>
+                  </td>
+                </tr>
+                <tr>
+                  <td height="" style="padding-left:10px;" valign="top">4.</td>
+                  <td align="left" valign="top"><span>
+                      Time of delivery, as provided, is of the essence. Seller must notify Buyer as soon as possible but not later than 3 business days in advance of delivery schedule that will not be met or if material is on back order.</span>
+                  </td>
+                </tr>
+                <tr>
+                  <td height="" style="padding-left:10px;" valign="top">5.</td>
+                  <td align="left" valign="top">
+                    <span>If Seller for any reason does not meet the time of delivery as to all goods ordered, Buyer may at it's option either approve the revised delivery schedule, reduce the total quantity covered by the Purchase Order by the amount of omitted shipments reducing the price pro rata, or terminate the Purchase Order, without liability for any such revision, reduction or termination. In such cases the Seller shall promptly refund any advances received from the customer.</span>
+                    <!--                    <span>Bulk MRO shall not be liable for any third party claims arising out of the use of quoted goods. The customer shall keep Bulk MRO indemnified from/against all such claims.</span>-->
+                  </td>
                 </tr>
               </tbody>
             </table>
-          </div>
-          <br clear="all">
-          <div class="bottom-info" style="position: relative">
-            <div id="stamp" style="width:94%;position:absolute;top:0px; padding-top: 1px;padding-bottom: 1px;">
-              <div id="inner-stamp" style="float: right; position: relative;">
-                <%= wicked_pdf_image_tag 'BulkMRO-stamp.png', :width => "95", :height => "95" %>
-              </div>
-            </div>
-            <div id="noteInvoiceContainer" style="border:1px solid; border-radius: 5px;">
-              <table border="0" cellspacing="0" style="width: 100%;">
-                <tbody>
-                  <tr>
-                    <td align="left" colspan="16" style="background: #d3d3d3; padding-left: 10px;border-bottom: 1px solid #3c3c3c" valign="top">
-                      <b><span>Commercial Terms and Conditions:</span></b></td>
-                  </tr>
-                  <tr>
-                    <td height="" style="padding-left:10px;" valign="top">1.</td>
-                    <td align="left" valign="top">
-                      <span>Seller to email Original Invoice to logistics@bulkmro.com after Order is dispatched.
-                      </span>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td height="" style="padding-left:10px;" valign="top">2.</td>
-                    <td align="left" valign="top">
-                      <span>In the case of (a) any delays in receiving invoice, (b) errors or omissions in invoice, or (c) lack of supporting documentation required by the terms of the Purchase Order, Buyer will have cause to withhold settlement and shall not lose any discount privilege that applied to the products affected by such action or in action.
-                      </span>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td height="" style="padding-left:10px;" valign="top">3.</td>
-                    <td align="left" valign="top">
-                      <span>All payments will be issued to Seller at the location specified in Seller’s block on the Purchase Order, unless proper authority for deviation is supplied to Buyer’s Accounts Payable Department</span>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td height="" style="padding-left:10px;" valign="top">4.</td>
-                    <td align="left" valign="top"><span>
-                        Time of delivery, as provided, is of the essence. Seller must notify Buyer as soon as possible but not later than 3 business days in advance of delivery schedule that will not be met or if material is on back order.</span>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td height="" style="padding-left:10px;" valign="top">5.</td>
-                    <td align="left" valign="top">
-                      <span>If Seller for any reason does not meet the time of delivery as to all goods ordered, Buyer may at it's option either approve the revised delivery schedule, reduce the total quantity covered by the Purchase Order by the amount of omitted shipments reducing the price pro rata, or terminate the Purchase Order, without liability for any such revision, reduction or termination. In such cases the Seller shall promptly refund any advances received from the customer.</span>
-                      <!--                    <span>Bulk MRO shall not be liable for any third party claims arising out of the use of quoted goods. The customer shall keep Bulk MRO indemnified from/against all such claims.</span>-->
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-              <table border="0" cellspacing="0" style="width: 100%;">
-                <tbody>
-                  <tr style="background: #d3d3d3;">
-                    <td align="left" class="invoiceheader1" colspan="16" style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-top: 1px solid #3c3c3c;" valign="top">
-                      <b><span>Other Information:</span></b></td>
-                  </tr>
-                  <tr>
-                    <td align="left" style=" padding-left: 10px;" valign="top">
-                      <span>
-                        <% if locals[:inquiry].bill_from.present? && locals[:inquiry].bill_from.legacy_id == 12 %>
-                          1. Please reference our Bulk MRO Industrial Supply Inc. Purchase Order #<%= locals[:metadata][:PoNum] %>
-                          when shipping goods.
-                        <% else %>
-                          1. Please reference our Bulk MRO Industrial Supply Pvt. Ltd. Purchase Order #<%= locals[:metadata][:PoNum] %>
-                          when shipping goods.
-                        <% end %>
-                      </span>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-              <table border="0" cellspacing="0" style="width: 100%;">
-                <tbody>
-                  <tr style="background: #d3d3d3;">
-                    <td align="left" class="invoiceheader1" colspan="16" style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-top: 1px solid #3c3c3c;" valign="top">
-                      <b><span>Note:</span></b>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td align="left" style="padding-left: 10px; padding-top: 0px" valign="top">
-                      <span>
-                        <% if locals[:purchase_order].commercial_terms_and_conditions.present? %>
-                          <%= (locals[:purchase_order].commercial_terms_and_conditions.gsub(/\n/, '<br>')).html_safe %>
-                          <%# else %>
-                          <%#= (locals[:inquiry].commercial_terms_and_conditions.gsub(/\n/, '<br>')).html_safe %>
-                        <% end %>
-                      </span>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
+            <table border="0" cellspacing="0" style="width: 100%;">
+              <tbody>
+                <tr style="background: #d3d3d3;">
+                  <td align="left" class="invoiceheader1" colspan="16" style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-top: 1px solid #3c3c3c;" valign="top">
+                    <b><span>Other Information:</span></b></td>
+                </tr>
+                <tr>
+                  <td align="left" style=" padding-left: 10px;" valign="top">
+                    <span>
+                      <% if locals[:inquiry].bill_from.present? && locals[:inquiry].bill_from.legacy_id == 12 %>
+                        1. Please reference our Bulk MRO Industrial Supply Inc. Purchase Order #<%= locals[:metadata][:PoNum] %>
+                        when shipping goods.
+                      <% else %>
+                        1. Please reference our Bulk MRO Industrial Supply Pvt. Ltd. Purchase Order #<%= locals[:metadata][:PoNum] %>
+                        when shipping goods.
+                      <% end %>
+                    </span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <table border="0" cellspacing="0" style="width: 100%;">
+              <tbody>
+                <tr style="background: #d3d3d3;">
+                  <td align="left" class="invoiceheader1" colspan="16" style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-top: 1px solid #3c3c3c;" valign="top">
+                    <b><span>Note:</span></b>
+                  </td>
+                </tr>
+                <tr>
+                  <td align="left" style="padding-left: 10px; padding-top: 0px" valign="top">
+                    <span>
+                      <% if locals[:purchase_order].commercial_terms_and_conditions.present? %>
+                        <%= (locals[:purchase_order].commercial_terms_and_conditions.gsub(/\n/, '<br>')).html_safe %>
+                        <%# else %>
+                        <%#= (locals[:inquiry].commercial_terms_and_conditions.gsub(/\n/, '<br>')).html_safe %>
+                      <% end %>
+                    </span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </div>
       </div>
     </div>
   </div>
+</div>
 </div>
