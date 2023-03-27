@@ -3,6 +3,7 @@ class Services::Overseers::Chart::InquiriesByStatuses
     start_of_financial_year = Date.today.beginning_of_financial_year
     end_of_financial_year = Date.today.end_of_financial_year
     @inquiries = Inquiry.where(created_at: start_of_financial_year .. end_of_financial_year).select(:status).group(:status).count
+    @inquiries.delete(nil)
   end
 
   def call
@@ -29,7 +30,7 @@ class Services::Overseers::Chart::InquiriesByStatuses
     def options
       {
         height: '200px',
-        legend: { display: false, position: 'right'},
+        legend: { display: true, position: 'right'},
         id: 'statuses-chart'
       }
     end
