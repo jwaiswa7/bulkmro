@@ -10,7 +10,7 @@ class Services::Overseers::Chart::InquiriesByIsp
   
 
   def call 
-    build_inside_sales_owner_hash
+    @inside_sales_owner_hash = build_inside_sales_owner_hash
     build_status_count_hash
     {
       data: data ,
@@ -21,12 +21,17 @@ class Services::Overseers::Chart::InquiriesByIsp
   private 
   attr_accessor :inquiries , :statuses, :status_hash, :inside_sales_owner_hash, :status_count_hash
 
-  def build_inside_sales_owner_hash 
-    inquiries.map{|inquiry| inside_sales_owner_hash[inquiry.inside_sales_owner&.name] = inquiry.inside_sales_owner_id}.uniq
+  def build_inside_sales_owner_hash
+    inside_sales_owner_hash = {}
+    inquiries.includes(:inside_sales_owner).each do |inquiry|
+      inside_sales_owner = inquiry.inside_sales_owner
+      inside_sales_owner_hash[inside_sales_owner.name] = inside_sales_owner.id if inside_sales_owner
+    end
+    inside_sales_owner_hash
   end
 
   def build_status_count_hash
-    inside_sales_owner_hash.each do |name, id|
+    @inside_sales_owner_hash.each do |name, id|
       status_count_hash[name] = statuses.values.map{|s| inquiries.where(inside_sales_owner_id: id, status: s).count}
     end
   end
@@ -60,7 +65,7 @@ class Services::Overseers::Chart::InquiriesByIsp
 
   def data 
     {
-      labels: inside_sales_owner_hash.keys,
+      labels: @inside_sales_owner_hash.keys,
       datasets: data_sets
     };
   end
@@ -80,4 +85,3 @@ class Services::Overseers::Chart::InquiriesByIsp
     }
   end
 end
-      
