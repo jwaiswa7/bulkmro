@@ -7,7 +7,7 @@ json.data (@invoice_requests) do |invoice_request|
                       if is_authorized(invoice_request, 'edit') && policy(invoice_request).check_cancelled_status?
                         row_action_button_without_fa(edit_overseers_invoice_request_path(invoice_request), 'bmro-icon-table bmro-icon-pencil', "Edit #{invoice_request.readable_status}", 'warning')
                       end,
-                      if !invoice_request.status.downcase.include?('cancel') && is_authorized(invoice_request, 'can_cancel_or_reject') && !(invoice_request.status == 'Inward Completed')
+                      if !invoice_request.status.downcase.include?('cancel') && is_authorized(invoice_request, 'can_cancel_or_reject') && policy(invoice_request).can_cancel?
                         link_to('', class: ['icon-title btn btn-sm btn-danger cancel-invoice'], 'data-invoice-request-id': invoice_request.id, title: 'Cancel', remote: true) do
                           concat content_tag(:span, '')
                           concat content_tag :i, nil, class: ['bmro-icon-table bmro-icon-ban'].join
