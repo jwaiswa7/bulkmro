@@ -105,7 +105,7 @@
                     <%= f.input :attachments, wrapper: :custom_file, input_html: {class: 'select2-ajax bmro-form-input bmro-dropdown-icon select2-single '}, input_html: {multiple: true}, label: 'Attachments' %>
                   </div>
                   <div class="col-6 col-md-12">
-    <%= f.input :tag_user_id ,collection: Overseer.all ,label: 'Tag User' ,input_html: {class: 'select2-single bmro-form-input bmro-dropdown-icon'},required: true %>
+                    <%= f.input :tag_user_id ,collection: Overseer.all ,label: 'Tag User' ,input_html: {class: 'select2-single bmro-form-input bmro-dropdown-icon'},required: true %>
                   </div>
                 </div>
               </div>
@@ -116,12 +116,6 @@
                   <div class="form-row">
                     <div class="col-12 col-md-2">
                       <%= f.submit 'Reply', name: 'reply', class: 'btn btn-dark btn-block bmro-button' %>
-                    </div>
-                    <div class="col-12 col-md-5 mt-1 mt-md-0">
-                      <%= f.submit 'Reply and Approve', name: 'approve', class: 'btn btn-success btn-block bmro-button' if is_authorized(@product, 'approve') && policy(@product).approve? %>
-                    </div>
-                    <div class="col-12 col-md-5 mt-1 mt-md-0">
-                      <%= f.submit 'Reply and Reject', name: 'reject', class: 'btn btn-danger btn-block bmro-button' if is_authorized(@product, 'reject') && policy(@product).reject? %>
                     </div>
                   </div>
                 </div>
