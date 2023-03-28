@@ -302,6 +302,10 @@ class PurchaseOrder < ApplicationRecord
     self.po_request.present? ? (self.po_request.status == 'Supplier PO Sent' || self.po_request.status == 'Supplier PO: Created Not Sent') : false
   end
 
+  def po_request_type
+    (po_request.po_request_type == "Stock" ? "Stock" : "PO Request") rescue nil
+  end
+
   def get_followup_status
     if self.followup_date.blank?
       'Follow-up Date missing'
@@ -349,6 +353,14 @@ class PurchaseOrder < ApplicationRecord
 
   def supplier_contact
      self.po_request.contact_phone if self.po_request.present? && self.po_request.contact_phone.present?
+  end
+
+  def self.total_of_sub_total
+    where.not(status: :Cancelled).or(where(status: nil)).sum(&:calculated_total)
+  end
+
+  def self.total_of_grand_total
+    where.not(status: :Cancelled).or(where(status: nil)).sum(&:calculated_total_with_tax)
   end
   # tcs_for_po
   # def calculate_tcs_amount

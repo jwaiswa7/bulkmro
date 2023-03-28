@@ -113,6 +113,20 @@
         </tr>
         <div class="sales-order-cancel" data-inquiry-id="<%= sales_order.inquiry.id %>" data-order-id="<%= sales_order.id %>"></div>
       <% end %>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td><span data-toggle="tooltip" title="The totals do not include amount from Cancelled or Rejected documents."><%= format_currency(@sales_orders.total_quote_amount)%></span></td>
+        <td><span data-toggle="tooltip" title="The totals do not include amount from Cancelled or Rejected documents."><%= format_currency(@sales_orders.total_order_amount)%></span></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
     <% end %>
   <% end %>
 </div>

@@ -433,4 +433,14 @@ class SalesOrder < ApplicationRecord
       false
     end
   end
+
+  def self.total_quote_amount
+    joins(:sales_quote)
+      .where.not(status: [:Cancelled, :Rejected])
+      .sum { |order| order.sales_quote.calculated_total }
+  end
+
+  def self.total_order_amount
+    where.not(status: [:Cancelled, :Rejected]).sum(&:calculated_total)
+  end
 end
