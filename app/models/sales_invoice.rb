@@ -415,6 +415,10 @@ class SalesInvoice < ApplicationRecord
     end
   end
 
+  def credit_memo_amount
+    credit_notes.present? ? credit_notes.first.memo_amount.to_f : 0.0 
+  end
+
   def net_amount
     metadata['base_grand_total'].to_f - metadata['base_tax_amount'].to_f
   end
@@ -424,10 +428,22 @@ class SalesInvoice < ApplicationRecord
   end
 
   def self.total_net_amount
-    where.not(status: :Cancelled).sum(&:net_amount)
+    where.not(status: [:Cancelled, :'Credit Note Issued: Full']).sum(&:net_amount)
   end
 
   def self.total_tax_amount
-    where.not(status: :Cancelled).sum(&:tax_amount)
+    where.not(status: [:Cancelled, :'Credit Note Issued: Full']).sum(&:tax_amount)
+  end
+
+  def self.total_of_total_amount
+    total_sum = 0.0
+
+    all_sales_invoices = self.where.not(status: [:Cancelled, :'Credit Note Issued: Full'])
+    all_sales_invoices.each do |sales_invoice|
+      total_amount = (sales_invoice.net_amount + sales_invoice.tax_amount) - sales_invoice.credit_memo_amount
+      total_sum += total_amount
+    end
+
+    total_sum
   end
 end
