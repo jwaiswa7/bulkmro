@@ -23,9 +23,9 @@ class Services::Overseers::Chart::InquiriesByIsp
 
   def build_inside_sales_owner_hash
     inside_sales_owner_hash = {}
-    inquiries.includes(:inside_sales_owner).each do |inquiry|
-      inside_sales_owner = inquiry.inside_sales_owner
-      inside_sales_owner_hash[inside_sales_owner.name] = inside_sales_owner.id if inside_sales_owner
+    overseers = Overseer.where(id: (inquiries.group_by(&:inside_sales_owner_id).keys))
+    overseers.each do |overseer|
+      inside_sales_owner_hash[overseer.name] = overseer.id
     end
     inside_sales_owner_hash
   end
