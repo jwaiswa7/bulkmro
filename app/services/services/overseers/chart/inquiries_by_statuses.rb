@@ -1,8 +1,6 @@
 class Services::Overseers::Chart::InquiriesByStatuses
-  def initialize
-    start_of_financial_year = Date.today.beginning_of_financial_year
-    end_of_financial_year = Date.today.end_of_financial_year
-    @inquiries = Inquiry.where(created_at: start_of_financial_year .. end_of_financial_year).select(:status).group(:status).count
+  def initialize(inquiries:)
+    @inquiries = inquiries.select(:status).group(:status).count
     @inquiries.delete(nil)
   end
 
