@@ -15,6 +15,9 @@ json.data (@overseers) do |overseer|
                       end,
                       if is_authorized('overseer', 'change_password') && policy(overseer).change_password?
                         row_action_button(change_password_overseers_overseer_path(overseer), 'key', 'Edit Password Overseer', 'danger')
+                      end,
+                      if is_authorized('overseer', 'becomes') && policy(overseer).becomes?
+                        row_action_button(becomes_overseers_overseer_path(overseer), 'fal fa-sign-in', 'Sign in as Overseer', 'dark')
                       end
                   ].join(' '),
                   overseer.hierarchy_to_s,

@@ -230,6 +230,7 @@ Rails.application.routes.draw do
         patch 'update_acl'
         get 'change_password'
         patch 'update_password'
+        get 'becomes'
       end
 
       collection do
