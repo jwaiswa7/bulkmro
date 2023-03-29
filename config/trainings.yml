@@ -203,4 +203,10 @@
   type: text
   category: Sales
   url: "https://docs.google.com/document/d/1owu_xB1xRE5I_Gvm9uklvbzlUw-KjL6byqKbjv6_GbE/edit?usp=share_link"
+- 
+  title: How to use the Task Management System
+  slug: task_management
+  type: text
+  category: Miscellaneous
+  url: ""
 
