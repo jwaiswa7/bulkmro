@@ -471,7 +471,7 @@
   let addSkuToRejectReasons = () => {
       for (let i = 0; i < selectableCheckboxes.length; i++) {
         const checkbox = selectableCheckboxes[i];
-        const data = checkbox.closest('tr').querySelector('#test').textContent;
+        const data = checkbox.closest('tr').querySelector('#test').textContent.slice(0, 7);
         const dropdownItem = dropdown.querySelector('option[value="' + data + '"]')
         if (checkbox && !checkbox.checked  && !dropdownItem) {
           const newOption = document.createElement("option");
@@ -493,11 +493,11 @@ addSkuToRejectReasons();
   });
 
   selectAllCheckbox.addEventListener('change', function() {
-    addSkuToRejectReasons();
     const isChecked = selectAllCheckbox.checked;
     selectableCheckboxes.forEach(function(checkbox) {
       checkbox.checked = isChecked;
       checkbox.dispatchEvent(new Event('change'));
     });
+    addSkuToRejectReasons();
   });
 </script>
