@@ -27,7 +27,7 @@ class Services::Overseers::Chart::InquiriesByStatuses
 
     def options
       {
-        height: '200px',
+        height: 200,
         legend: { display: false, position: 'right'},
         id: 'statuses-chart'
       }

@@ -26,7 +26,7 @@ class Services::Overseers::Chart::InquiriesByLocation
     end
 
     def options 
-      {height: '200px', legend: { display: false, position: 'right' }}
+      {height: 200, legend: { display: false, position: 'right' }}
     end
 
     def addresses
