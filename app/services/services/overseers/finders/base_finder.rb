@@ -314,6 +314,11 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
                     sum: {
                         field: aggregation_field
                     }
+                },
+                total_value_without_tax: {
+                    sum: {
+                        field: 'subtotal_value'
+                    }
                 }
             }
         }

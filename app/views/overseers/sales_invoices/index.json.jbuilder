@@ -104,4 +104,4 @@ json.draw params[:draw]
 json.recordsSummary SalesInvoice.statuses.map { |status, status_id| { status_id: status_id, "label": status, "size": @statuses[status_id] } }.as_json
 json.recordsMainSummary SalesInvoice.main_summary_statuses.map { |status, status_id| { status_id: status_id, "label": status, "size": @statuses[status_id] } }.as_json
 json.recordsTotalValue @total_values
-json.recordsTotalValue_without_tax @total_values_without_tax
+json.recordsTotalValueWithoutTax @total_values_without_tax
