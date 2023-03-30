@@ -55,26 +55,19 @@ const newAction = () => {
         }
     });
 
-    $(document).ready(function () {
-        let isInternational = $('input[name="inquiry[is_inquiry_offline]"]:checked').val();
-        if (isInternational === 'true') {
-            $('#inquiry_upload_sales_quote').prop("disabled", false);
-            $('#inquiry_upload_vendor_quote').prop("disabled", false);
-        }
-        else{
-            $('#inquiry_upload_sales_quote').prop("disabled", true);
-            $('#inquiry_upload_vendor_quote').prop("disabled", true);
-        }
-    });
     $('input[name="inquiry[is_inquiry_offline]"]').on('change', function () {
         if ($(this).val() === 'true') {
             console.log("yes");
             $('#inquiry_upload_sales_quote').prop("disabled", false);
             $('#inquiry_upload_vendor_quote').prop("disabled", false);
+            $("#inquiry_upload_sales_quote").prop("required", true);
+            $("#inquiry_upload_vendor_quote").prop("required", true);
         } else {
             console.log("no");
             $('#inquiry_upload_sales_quote').prop("disabled", true);
             $('#inquiry_upload_vendor_quote').prop("disabled", true);
+            $("#inquiry_upload_sales_quote").prop("required", false);
+            $("#inquiry_upload_vendor_quote").prop("required", false);
         }
     });
 };
