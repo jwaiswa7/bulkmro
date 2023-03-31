@@ -81,7 +81,7 @@ class Services::Overseers::Chart::InquiriesByIsp
             stacked: true
         }]
       }, 
-      legend: {display: true}
+      legend: {display: false}
     }
   end
 end
