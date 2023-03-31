@@ -55,6 +55,19 @@ const newAction = () => {
         }
     });
 
+    $('input[name="inquiry[is_inquiry_offline]"]').on('change', function () {
+        if ($(this).val() === 'true') {
+            $('#inquiry_upload_sales_quote').prop("disabled", false);
+            $('#inquiry_upload_vendor_quote').prop("disabled", false);
+            $("#inquiry_upload_sales_quote").prop("required", true);
+            $("#inquiry_upload_vendor_quote").prop("required", true);
+        } else {
+            $('#inquiry_upload_sales_quote').prop("disabled", true);
+            $('#inquiry_upload_vendor_quote').prop("disabled", true);
+            $("#inquiry_upload_sales_quote").prop("required", false);
+            $("#inquiry_upload_vendor_quote").prop("required", false);
+        }
+    });
 };
 
 let onShippingCompanyChange = (container, reset) => {

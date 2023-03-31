@@ -85,6 +85,9 @@ class Inquiry < ApplicationRecord
   has_one_attached :committed_delivery_attachment
   has_one_attached :customer_po_received_attachment
   has_one_attached :customer_po_delivery_attachment
+  has_one_attached :upload_sales_quote
+  has_one_attached :upload_vendor_quote
+
   enum status: {
       'Lead by O/S': 11,
       'New Inquiry': 0,
@@ -309,6 +312,7 @@ class Inquiry < ApplicationRecord
     end
 
     if self.company.present?
+      self.is_inquiry_offline ||= false
       self.inside_sales_owner ||= self.company.inside_sales_owner if not_legacy?
       self.outside_sales_owner ||= self.company.outside_sales_owner if not_legacy?
       self.sales_manager ||= self.company.sales_manager if not_legacy?

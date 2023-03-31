@@ -346,6 +346,10 @@ class Overseers::InquiriesController < Overseers::BaseController
         @inquiry.lost_regret_reason = nil
         Services::Overseers::Inquiries::UpdateStatus.new(@inquiry, :default).call
       end
+      if @inquiry.is_inquiry_offline
+        @inquiry.status == 'Quotation Sent'
+        Services::Overseers::Inquiries::UpdateStatus.new(@inquiry, :quotation_email_sent).call
+      end
       message = params['inquiry']['comments_attributes']['0']['message']
       if message.present?
         @inquiry.comments.create(message: "Status changed to: #{@inquiry.status}. \r\n Lost or Regret Reason: #{@inquiry.lost_regret_reason}. \r\n Comment: #{message}.", overseer: current_overseer)
@@ -725,6 +729,7 @@ class Overseers::InquiriesController < Overseers::BaseController
           :expected_closing_date,
           :quote_category,
           :price_type,
+          :is_inquiry_offline,
           :potential_amount,
           :freight_option,
           :freight_cost,
@@ -734,6 +739,8 @@ class Overseers::InquiriesController < Overseers::BaseController
           :payment_option_id,
           :weight_in_kgs,
           :customer_po_sheet,
+          :upload_sales_quote,
+          :upload_vendor_quote,
           :final_supplier_quote,
           :copy_of_email,
           :is_sez,
