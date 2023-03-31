@@ -13,6 +13,10 @@ class Overseers::OverseerPolicy < Overseers::ApplicationPolicy
     (admin? || hr?)
   end
 
+  def becomes?
+    super_admin?
+  end
+
   def get_resources?
     true
   end
