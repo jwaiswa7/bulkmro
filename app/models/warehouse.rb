@@ -45,7 +45,8 @@ class Warehouse < ApplicationRecord
       'CH': 21,
       'KA': 22,
       'RJ': 23,
-      'CG': 24
+      'CG': 24,
+      'OD': 25
   }
 
 
