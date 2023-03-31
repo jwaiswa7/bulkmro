@@ -69,8 +69,8 @@
                 <h5 class="mb-0 bmro-ar-report-data mt-auto text-<%= status_color(status) %> status-count-<%= status_id %>"></h5>
                 <% if klass != 'Activity'.constantize %>
                   <h5 class="my-0 bmro-ar-report-subdata text-small text-<%= status_color(status) %> status-value-<%= status_id %>"><%= Settings.currency.name %>0</h5>
-                  <% if klass == 'SalesInvoice'.constantize && status == 'Invoiced' %>
-                    <h5 class="my-0 bmro-ar-report-subdata text-small status-value-without-tax text-<%= status_color(status)%>"><%= Settings.currency.name %>0</h5>
+                  <% if klass == 'SalesInvoice'.constantize %>
+                    <div class="form-row"><p class="my-0 bmro-ar-report-subdata text-small">SubTotal :</p><h5 class="my-0 bmro-ar-report-subdata text-small text-<%= status_color(status) %> status-value-without-tax-<%= status_id %>"><%= Settings.currency.name %>0</h5></div>
                   <% end %>
                 <% end %>
               </div>
