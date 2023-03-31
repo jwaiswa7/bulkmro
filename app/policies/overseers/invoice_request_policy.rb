@@ -42,7 +42,7 @@ class Overseers::InvoiceRequestPolicy < Overseers::ApplicationPolicy
   end
 
   def can_cancel?
-    admin? || accounts?
+    admin? || accounts? || logistics?
   end
 
 
