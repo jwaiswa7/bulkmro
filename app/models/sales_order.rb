@@ -214,11 +214,12 @@ class SalesOrder < ApplicationRecord
 
   def customer_order_status
      if invoices.any?
-       invoice = invoices.last
-       if invoice.delivery_date.present? || invoice.mis_date.present?
-        "Delivered"
-       else
+       if self.get_invoiced_qty == 0
         "Processed"
+       elsif self.get_invoiced_qty > 0 && self.get_invoiced_qty < total_qty
+        "Partially Delivered"
+       else
+        "Delivered"
        end
      else
        "Processed"
@@ -406,7 +407,7 @@ class SalesOrder < ApplicationRecord
   end
 
   def total_qty
-    self.rows.sum(:quantity).to_i
+    self.rows.sum(&:quantity).to_i
   end
 
   def is_invoices_cancelled

@@ -8,7 +8,7 @@ class SalesOrdersIndex < BaseIndex
     witchcraft!
     field :id, type: 'integer'
     field :order_number, value: -> (record) { record.order_number }, type: 'long'
-    field :order_status, value: -> (record) {record.customer_order_status == "Delivered"?  1 : 3}, type: 'integer'
+    field :order_status, value: -> (record) {record.customer_order_status == "Delivered"?  1 : record.customer_order_status == "Processed" ? 3 : 2}, type: 'integer'
     field :inquiry_number, value: -> (record) { record.inquiry.inquiry_number.to_i if record.inquiry.present? }, type: 'integer'
     field :inquiry_number_string, value: -> (record) { record.inquiry.inquiry_number.to_s if record.inquiry.present? }, analyzer: 'substring'
     field :status_string, value: -> (record) { record.status.to_s }, analyzer: 'substring'

@@ -368,7 +368,7 @@ class SalesInvoice < ApplicationRecord
   end
 
   def total_quantity
-    self.rows.sum(&:quantity)
+    self.rows.sum(&:quantity).to_i
   end
 
   def cosr_calculate_time_delay
@@ -416,7 +416,7 @@ class SalesInvoice < ApplicationRecord
   end
 
   def credit_memo_amount
-    credit_notes.present? ? credit_notes.first.memo_amount.to_f : 0.0 
+    credit_notes.present? ? credit_notes.first.memo_amount.to_f : 0.0
   end
 
   def net_amount
