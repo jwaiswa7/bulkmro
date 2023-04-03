@@ -1,11 +1,11 @@
 class Overseers::DashboardController < Overseers::BaseController
   skip_before_action :authenticate_overseer!, only: :migrations
 
+  before_action :set_year, only: :show
+
   def show
     authorize_acl :dashboard
-    start_of_financial_year = Date.today.beginning_of_financial_year
-    end_of_financial_year = Date.today.end_of_financial_year
-    inquiries = Inquiry.where(created_at: start_of_financial_year .. end_of_financial_year)
+    inquiries = Inquiry.where(created_at: @start_of_financial_year .. @end_of_financial_year)
 
     @data = Services::Overseers::Chart::InquiriesByStatuses.new(inquiries: inquiries).call 
     @data_location = Services::Overseers::Chart::InquiriesByLocation.new(inquiries: inquiries).call
@@ -237,5 +237,15 @@ class Overseers::DashboardController < Overseers::BaseController
           :customer_po_number,
           :customer_order_date
       )
+    end
+
+    def set_year
+      diff = if params[:year].present? 
+        Date.today.year - params[:year].to_i
+      else 
+        0 
+      end
+      @start_of_financial_year = Date.today.beginning_of_financial_year - diff.years
+      @end_of_financial_year = Date.today.end_of_financial_year - diff.years
     end
 end
