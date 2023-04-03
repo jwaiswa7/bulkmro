@@ -6,7 +6,7 @@
         Select Financial Year
       </button>
       <ul class="dropdown-menu" role="menu">
-        <% [*2016 .. @start_of_financial_year.year].reverse.each do |year|  %>
+        <% [*2016 .. Date.today.beginning_of_financial_year.year].reverse.each do |year|  %>
           <li><%= link_to year, overseers_dashboard_path(year: year) %></li>   
         <% end %>
       </ul>

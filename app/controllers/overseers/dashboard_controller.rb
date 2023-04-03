@@ -10,7 +10,7 @@ class Overseers::DashboardController < Overseers::BaseController
     @data = Services::Overseers::Chart::InquiriesByStatuses.new(inquiries: inquiries).call 
     @data_location = Services::Overseers::Chart::InquiriesByLocation.new(inquiries: inquiries).call
     @data_bar = Services::Overseers::Chart::InquiriesByIsp.new(inquiries: inquiries).call
-    @inquiry_summary = Services::Overseers::Chart::InquirySummary.new(inquiries: inquiries).call
+    @inquiry_summary = Services::Overseers::Chart::InquirySummary.new(inquiries: inquiries, start_of_financial_year: @start_of_financial_year, end_of_financial_year: @end_of_financial_year).call
     render 'admin_dashboard'
   end
 

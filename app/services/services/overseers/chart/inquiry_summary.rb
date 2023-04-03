@@ -1,6 +1,8 @@
 class Services::Overseers::Chart::InquirySummary
-    def initialize(inquiries:)
+    def initialize(inquiries:, start_of_financial_year:, end_of_financial_year:)
       @inquiries =  inquiries
+      @start_of_financial_year = start_of_financial_year
+      @end_of_financial_year = end_of_financial_year
     end
 
     def call 
