@@ -23,8 +23,6 @@ json.data (@sales_invoices) do |sales_invoice|
                   sales_invoice.inquiry.shipping_contact.try(:name) || sales_invoice.inquiry.billing_contact.try(:name),
                   sales_invoice.inquiry.present? ? sales_invoice.sales_order.order_number : '',
                   sales_invoice.inquiry.present? ? sales_invoice.rows.count : '',
-                  sales_invoice.inquiry.present? ? sales_invoice.inquiry.inside_sales_owner.to_s : '',
-                  sales_invoice.inquiry.present? ? sales_invoice.inquiry.outside_sales_owner.to_s : '',
                   format_date(sales_invoice.delivery_date),
                   format_boolean_with_badge(sales_invoice.pod_status)
               ]
@@ -41,8 +39,6 @@ json.columnFilters [
                        [],
                        [],
                        [{ "source": autocomplete_overseers_company_contacts_path(current_company) }],
-                       [],
-                       [],
                        [],
                        [],
                        []
