@@ -14,28 +14,19 @@ const newAccountsConfirmation = () => {
         checkCheckboxStatus();
     });
 
+    $(document).on('change', '.checkbox-class', function() {
+        checkCheckboxStatus();
+        $('input[type="checkbox"][required]').each(function() {
+            test(this);
+            $(this).trigger('change');
+          });
+    });
 
     $('.new_accounts_confirmation input[type=checkbox]').click(function (f) {
         checkCheckboxStatus();
-        let target = f.currentTarget.id;
-        let rejectReason = rejectReasonMapping(target);
-        let $select = $('#sales_order_custom_fields_reject_reasons');
-        let values = $select.val();
-        let i = values.indexOf(rejectReason);
-
-        if (f.currentTarget.checked == true) {
-            $(".summary-list ."+ target).removeClass('bmro-status-cancel').addClass('dummy');
-            if (i >= 0) {
-                values.splice(i, 1);
-                $select.val(values).change();
-            }
-
-        } else if (f.currentTarget.checked == false) {
-            $(".summary-list ."+ target).removeClass('dummy').addClass('bmro-status-cancel');
-            values.push(rejectReason);
-            $select.val(values).change();
-
-        }
+        let current_target = f.currentTarget;
+        test(current_target);
+        current_target.dispatchEvent(new Event('change'));
     });
 
     $('.account-rejection').click(function () {
@@ -68,6 +59,28 @@ let checkCheckboxStatus = () => {
         $('#sales_order_custom_fields_reject_reasons').attr('required', 'required');
     }
 
+
+};
+
+let test = (current_target ) => {
+    let target = current_target.id;
+    let rejectReason = rejectReasonMapping(target);
+    let $select = $('#sales_order_custom_fields_reject_reasons');
+    let values = $select.val();
+    let i = values.indexOf(rejectReason);
+
+    if (current_target.checked == true) {
+        $(".summary-list ."+ target).removeClass('bmro-status-cancel').addClass('dummy');
+        if (i >= 0) {
+            values.splice(i, 1);
+            $select.val(values).change();
+        }
+    } else if (current_target.checked == false) {
+        $(".summary-list ."+ target).removeClass('dummy').addClass('bmro-status-cancel');
+        values.push(rejectReason);
+        $select.val(values).change();
+
+    }
 
 };
 
