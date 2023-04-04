@@ -1,5 +1,5 @@
 class CustomerProductsIndex < BaseIndex
-  define_type CustomerProduct.all do
+  define_type CustomerProduct.with_includes do
     field :id, type: 'integer'
     field :company_id, type: 'integer'
     field :company, value: -> (record) { record.company.name.to_s }, analyzer: 'substring'
