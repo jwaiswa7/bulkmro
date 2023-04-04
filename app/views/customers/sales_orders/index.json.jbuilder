@@ -49,7 +49,7 @@ end
                        [],
                        [],
                        [],
-                       [{label: "Delivered", value: 1}, {label: "Processed", value: 3}],
+                       [{label: "Delivered", value: 1}, {label: "Partially Delivered", value: 2},  {label: "Processed", value: 3}],
                        [],
                        [],
                        [],
