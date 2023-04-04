@@ -47,6 +47,7 @@
           <% end %>
           <div class="card">
             <div class="card-header bmro-bg">
+              <%= f.input :approve_all, as: :boolean, wrapper: :custom_boolean, input_html: { class: "checkbox-class" } %>
               <div class=form-row>
                 <div class="col-6 col-md-3">
                   <strong class="d-block">Order Number</strong>
@@ -462,35 +463,50 @@
     </div>
   </div>
 <%end %>
-
 <script>
   const selectAllCheckbox = document.querySelector('#select-all-checkbox');
   const selectableCheckboxes = document.querySelectorAll('.selectable-checkbox');
+  const approveAllCheckbox = document.querySelector('#sales_order_approve_all');
   const dropdown = document.querySelector("#sales_order_custom_fields_reject_reasons");
+  const allCheckboxes = document.querySelectorAll('input[type="checkbox"]');
 
   let addSkuToRejectReasons = () => {
-      for (let i = 0; i < selectableCheckboxes.length; i++) {
-        const checkbox = selectableCheckboxes[i];
-        const data = checkbox.closest('tr').querySelector('#test').textContent.slice(0, 7);
-        const dropdownItem = dropdown.querySelector('option[value="' + data + '"]')
-        if (checkbox && !checkbox.checked  && !dropdownItem) {
-          const newOption = document.createElement("option");
-          newOption.value = data;
-          newOption.textContent = data;
-          newOption.selected = true;
-          dropdown.appendChild(newOption);
-        }
-        else if ( checkbox && dropdownItem && checkbox.checked){
-          dropdownItem.remove();
-        }
+    for (let i = 0; i < selectableCheckboxes.length; i++) {
+      const checkbox = selectableCheckboxes[i];
+      const data = checkbox.closest('tr').querySelector('#test').textContent.slice(0, 7);
+      const dropdownItem = dropdown.querySelector('option[value="' + data + '"]')
+      if (checkbox && !checkbox.checked && !dropdownItem) {
+        const newOption = document.createElement("option");
+        newOption.value = data;
+        newOption.textContent = data;
+        newOption.selected = true;
+        dropdown.appendChild(newOption);
+      }
+      else if (checkbox && dropdownItem && checkbox.checked) {
+        dropdownItem.remove();
       }
     }
-addSkuToRejectReasons();
+  }
+
+  const checkAllCheckboxes = () => {
+    const isChecked = approveAllCheckbox.checked;
+    allCheckboxes.forEach(function(checkbox) {
+      if (checkbox !== approveAllCheckbox ) {
+        checkbox.checked = isChecked;
+        checkbox.dispatchEvent(new Event('change'));
+      }
+    });
+    addSkuToRejectReasons();
+  }
+
+  addSkuToRejectReasons();
   selectableCheckboxes.forEach(function(checkbox) {
     checkbox.addEventListener('click', function() {
       addSkuToRejectReasons();
     });
   });
+
+  approveAllCheckbox.addEventListener('change', checkAllCheckboxes);
 
   selectAllCheckbox.addEventListener('change', function() {
     const isChecked = selectAllCheckbox.checked;
