@@ -1,4 +1,4 @@
-<% if @indexed_customer_products.count.positive? %>
+<% if @customer_products.present? %>
   <% provide :container_fluid, true %>
   <% provide :can_be_ajaxed, true %>
   <% provide :wrap_whitespace, true %>

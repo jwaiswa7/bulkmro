@@ -8,10 +8,10 @@ class Customers::CustomerProductsController < Customers::BaseController
     authorize :customer_product
 
     if @view == 'grid'
-      params[:page] = 1 unless params[:page].present?
       params[:per] = 24
     end
 
+    params[:page] = 1 unless params[:page].present?
 
     account = Account.find(2431)
     service = Services::Customers::Finders::CustomerProducts.new(params.merge(published: true), current_customers_contact, current_company, sort_by: sort_by, sort_order: 'desc')
