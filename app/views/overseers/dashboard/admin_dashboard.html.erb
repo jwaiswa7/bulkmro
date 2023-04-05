@@ -1,13 +1,13 @@
 <div class="row">
   <div class="col-12">
-     Showing resuls for financial year <%= @start_of_financial_year.financial_year %>
+     Showing resuls for financial year <%= "#{@start_of_financial_year.year} - #{@end_of_financial_year.year}" %>
      <div class="btn-group">
       <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
         Select Financial Year
       </button>
       <ul class="dropdown-menu" role="menu">
         <% [*2016 .. Date.today.beginning_of_financial_year.year].reverse.each do |year|  %>
-          <li><%= link_to year, overseers_dashboard_path(year: year) %></li>   
+          <li><%= link_to "#{year} - #{year + 1}", overseers_dashboard_path(year: year) %></li>   
         <% end %>
       </ul>
     </div>
