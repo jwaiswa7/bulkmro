@@ -29,7 +29,7 @@ class Services::Overseers::Chart::InquiriesByLocation
       {
         height: 150,
         responsive: true,
-        legend: { display: true, position: 'right' }
+        legend: { display: false, position: 'right' }
       }
     end
 

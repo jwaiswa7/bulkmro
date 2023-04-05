@@ -29,7 +29,7 @@ class Services::Overseers::Chart::InquiriesByStatuses
       {
         height: 150,
         responsive: true,
-        legend: { display: true, position: 'right'},
+        legend: { display: false, position: 'right'},
         id: 'statuses-chart'
       }
     end
