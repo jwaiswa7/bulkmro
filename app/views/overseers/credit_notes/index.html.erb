@@ -7,6 +7,8 @@
 <% provide :credit_note_can_be_created, true %>
 <% provide :can_be_directly_exported_partial, true %>
 <% content_for :page_title do %>
+<% provide :show_date_filter, true %>
+
   AR Credit Memo
 <% end %>
 
@@ -23,7 +25,7 @@
     <th class="no-sort desktop text-center" width="70px" data-name="order_number">Order #</th>
     <th class="no-sort desktop text-left" width="130px" data-name="outward_dispatches">Outward Dispatches</th>
     <th class="no-sort desktop text-center-wrap" width="80px" data-name="account_id">Account</th>
-    <th class="sort all desktop text-center-wrap" width="135px" data-name="company_name">Company</th>
+    <th class="sort all desktop text-center-wrap" width="135px" data-name="company_id">Company</th>
     <th class="no-sort desktop text-center" width="60px">Line <br /> Items</th>
     <th class="no-sort desktop text-center" width='120px'>Status</th>
     <th class="no-sort desktop text-center" data-name="inside_sales_executive" data-toggle="tooltip" width="53px" title="Inside Sales & Procurement">IS&P</th>
@@ -41,8 +43,8 @@
     <td data-filter="false"></td>
     <td data-filter="false"></td>
     <td data-filter="false"></td>
-    <td data-filter="false"></td>
-    <td data-filter="false"></td>
+    <td data-filter="ajax"></td>
+    <td data-filter="ajax"></td>
     <td data-filter="false"></td>
     <td data-filter="false"></td>
     <td data-filter="false"></td>
