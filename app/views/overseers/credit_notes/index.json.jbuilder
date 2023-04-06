@@ -22,7 +22,7 @@ json.data (@credit_notes) do |credit_note|
                   status_badge((memo_amount == invoice_amount ? "Credit Note Issued: Full": "Credit Note Issued: Partial")),
                   credit_note.sales_invoice&.inquiry&.present? ? credit_note.sales_invoice&.inquiry&.inside_sales_owner.to_s : '',
                   credit_note.sales_invoice&.inquiry&.present? ? credit_note.sales_invoice&.inquiry&.outside_sales_owner.to_s : '',
-                  format_succinct_date(credit_note.sales_invoice&.created_at)
+                  format_succinct_date(credit_note&.created_at)
               ]
 end
 
