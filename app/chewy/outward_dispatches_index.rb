@@ -8,6 +8,8 @@ class OutwardDispatchesIndex < BaseIndex
     field :sales_order_number_string, value: -> (record) { record.sales_invoice.sales_order.order_number.to_s if record.sales_invoice.sales_order.present? }, analyzer: 'substring'
     field :sales_invoice_number, value: -> (record) { record.sales_invoice.invoice_number if record.sales_invoice.present? }, type: 'integer'
     field :sales_invoice_number_string, value: -> (record) { record.sales_invoice.invoice_number.to_s if record.sales_invoice.present? }, analyzer: 'substring'
+    field :company_id, value: -> (record) { record.sales_invoice.inquiry.company_id if record.sales_invoice.present? }
+    field :company, value: -> (record) { record.sales_invoice.inquiry.company.to_s if record.sales_invoice.present? }, analyzer: 'substring'
     field :status, value: -> (record) { statuses[record.status] }, type: 'integer'
     field :status_string, value: -> (record) { record.status.to_s }, analyzer: 'substring'
     field :dispatch_mail_sent_to_the_customer, value: -> (record) { record.dispatch_mail_sent_to_the_customer ? record.dispatch_mail_sent_to_the_customer : false }
@@ -15,7 +17,7 @@ class OutwardDispatchesIndex < BaseIndex
     field :created_at, type: 'date'
     field :material_dispatch_date, type: 'date'
     field :expected_date_of_delivery, type: 'date'
-    field :material_delivery_date, type: 'date' 
+    field :material_delivery_date, type: 'date'
     field :material_delivery_status, value: ->(record) { (statuses[record.get_material_delivery_status].to_i if record.get_material_delivery_status.present?) }, type: 'integer'
     field :material_delivery_status_string, value: ->(record) { (record.get_material_delivery_status.downcase if record.get_material_delivery_status.present?) }, analyzer: 'substring'
     field :logistics_owner_id, value: -> (record) { record.sales_invoice.inquiry.company.logistics_owner_id if record.sales_invoice.present? && record.sales_invoice.inquiry.present? && record.sales_invoice.inquiry.company.present? }, type: 'integer'
