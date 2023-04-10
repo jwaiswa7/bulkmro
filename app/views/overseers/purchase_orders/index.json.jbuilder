@@ -26,6 +26,11 @@ json.data (@purchase_orders) do |purchase_order|
 =end
                   ].join(' '),
                   conditional_link(purchase_order.po_number, overseers_inquiry_purchase_orders_path(purchase_order.inquiry), is_authorized(purchase_order.inquiry, 'edit')),
+                  if purchase_order.po_request_id.present?
+                    conditional_link(purchase_order.po_request_id, overseers_po_request_path(purchase_order.po_request),true)
+                  else
+                    ''
+                  end,
                   conditional_link(purchase_order.inquiry.inquiry_number, edit_overseers_inquiry_path(purchase_order.inquiry), is_authorized(purchase_order.inquiry, 'edit')),
                   (purchase_order.supplier.present? ? conditional_link(purchase_order.supplier.try(:name), overseers_company_path(purchase_order.supplier), is_authorized(purchase_order.inquiry, 'show')) : '-'),
                   format_star((purchase_order.get_supplier(purchase_order.rows.first.metadata['PopProductId'].to_i).try(:rating) if purchase_order.rows.present?)),
@@ -46,6 +51,7 @@ json.data (@purchase_orders) do |purchase_order|
 end
 
 json.columnFilters [
+                       [],
                        [],
                        [],
                        [],
