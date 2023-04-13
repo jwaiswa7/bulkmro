@@ -3,7 +3,7 @@ class TasksIndex < BaseIndex
   statuses = Task.statuses
   priorities = Task.priorities
 
-  define_type Task.all do
+  index_scope Task.all
     field :id, type: 'integer'
     field :task_id, value: -> (record) {record.task_id.to_s} ,analyzer: 'substring'
     field :status_key, value: -> (record) {statuses[record.status]} , type: 'integer'
@@ -21,7 +21,6 @@ class TasksIndex < BaseIndex
 
     field :created_at, type: 'date'
     field :updated_at, type: 'date'
-  end
 end
 
 
