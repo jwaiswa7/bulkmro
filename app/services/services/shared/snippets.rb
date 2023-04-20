@@ -66,7 +66,7 @@ class Services::Shared::Snippets < Services::Shared::BaseService
 
     company.sales_quotes.first
 
-    SalesQuotesIndex::SalesQuote.import SalesQuote.all, update_fields: [:is_final]
+    SalesQuotesIndex.import SalesQuote.all, update_fields: [:is_final]
   end
 
   def update_amat_statuses
