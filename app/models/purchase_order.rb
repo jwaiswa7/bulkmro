@@ -295,7 +295,7 @@ class PurchaseOrder < ApplicationRecord
     else
       self.update_attribute(:material_status, 'Material Readiness Follow-Up')
     end
-    PurchaseOrdersIndex::PurchaseOrder.import([self.id])
+    PurchaseOrdersIndex.import([self.id])
   end
 
   def po_request_present?
