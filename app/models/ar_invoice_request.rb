@@ -53,7 +53,7 @@ class ArInvoiceRequest < ApplicationRecord
       product_ids = self.rows.pluck(:product_id)
       if product_ids.present?
         inward_dispatch_ids = InwardDispatch.where(sales_order_id: sales_order.id).includes(:rows).where(inward_dispatch_rows: {product_id: product_ids}).pluck(:id).uniq
-        InwardDispatchesIndex::InwardDispatch.import([inward_dispatch_ids])
+        InwardDispatchesIndex.import([inward_dispatch_ids])
       end
     end
   end
