@@ -146,9 +146,9 @@ class PoRequest < ApplicationRecord
 
   def update_po_index
     if purchase_order.present?
-      PurchaseOrdersIndex::PurchaseOrder.import([self.purchase_order.id])
+      PurchaseOrdersIndex.import([self.purchase_order.id])
     elsif self.saved_change_to_status? && self.status == 'Cancelled' && self.purchase_order_id_before_last_save.present?
-      PurchaseOrdersIndex::PurchaseOrder.import([self.purchase_order_id_before_last_save])
+      PurchaseOrdersIndex.import([self.purchase_order_id_before_last_save])
     end
   end
 
