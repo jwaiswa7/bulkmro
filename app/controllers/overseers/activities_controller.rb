@@ -93,7 +93,7 @@ class Overseers::ActivitiesController < Overseers::BaseController
     authorize_acl @activity
     ActiveRecord::Base.transaction do
       @activity.create_approval(overseer: current_overseer)
-      ActivitiesIndex::Activity.import([@activity.id])
+      ActivitiesIndex.import([@activity.id])
     end
     redirect_to overseers_activities_path, notice: flash_message(@activity, action_name)
   end
@@ -105,7 +105,7 @@ class Overseers::ActivitiesController < Overseers::BaseController
     @activities.each do |activity|
       ActiveRecord::Base.transaction do
         activity.create_approval(overseer: current_overseer)
-        ActivitiesIndex::Activity.import([activity.id])
+        ActivitiesIndex.import([activity.id])
       end
     end
   end
@@ -117,7 +117,7 @@ class Overseers::ActivitiesController < Overseers::BaseController
     @activities.each do |activity|
       ActiveRecord::Base.transaction do
         activity.create_rejection(overseer: current_overseer)
-        ActivitiesIndex::Activity.import([activity.id])
+        ActivitiesIndex.import([activity.id])
       end
     end
   end
@@ -126,7 +126,7 @@ class Overseers::ActivitiesController < Overseers::BaseController
     authorize_acl @activity
     ActiveRecord::Base.transaction do
       @activity.create_rejection(overseer: current_overseer)
-      ActivitiesIndex::Activity.import([@activity.id])
+      ActivitiesIndex.import([@activity.id])
     end
     redirect_to overseers_activities_path, notice: flash_message(@activity, action_name)
   end

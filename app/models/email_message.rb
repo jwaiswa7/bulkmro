@@ -59,7 +59,7 @@ class EmailMessage < ApplicationRecord
       if self.sales_invoice.present? && self.sales_invoice.ar_invoice_request.present?
         outward_dispatches = self.sales_invoice.outward_dispatches
         outward_dispatches.update_all(dispatch_mail_sent_to_the_customer: true)
-        OutwardDispatchesIndex::OutwardDispatch.import([outward_dispatches.pluck(:id)])
+        OutwardDispatchesIndex.import([outward_dispatches.pluck(:id)])
       elsif self.outward_dispatch
         outward_dispatch = self.outward_dispatch
         if !(outward_dispatch.status == 'Material Delivered')
@@ -72,7 +72,7 @@ class EmailMessage < ApplicationRecord
       if self.sales_invoice.present? && self.sales_invoice.ar_invoice_request.present?
         outward_dispatches = self.sales_invoice.outward_dispatches
         outward_dispatches.update_all(material_delivered_mail_sent_to_customer: true)
-        OutwardDispatchesIndex::OutwardDispatch.import([outward_dispatches.pluck(:id)])
+        OutwardDispatchesIndex.import([outward_dispatches.pluck(:id)])
       end
     end
   end
