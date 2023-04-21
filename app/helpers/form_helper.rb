@@ -42,7 +42,7 @@ module FormHelper
   def placeholder_for(f, name)
 		  singular = ['simple_form', 'placeholders', f.object.class.name.underscore, name].join('.')
 		plural = ['simple_form', 'placeholders', f.object.class.name.underscore.pluralize, name].join('.')
-
+    
 		if I18n.exists?(singular, I18n.locale)
 			 I18n.t(singular)
 		else
