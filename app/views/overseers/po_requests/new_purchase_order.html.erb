@@ -277,7 +277,9 @@
             </tr>
           <% end %>
             <tr>
-              <td colspan="14"></td>
+              <% 14.times do %>
+                <td colspan=""></td>
+              <% end %>
               <td>
                 <span><%= format_currency(@po_request.calculated_total_with_tax) %></span>
               </td>

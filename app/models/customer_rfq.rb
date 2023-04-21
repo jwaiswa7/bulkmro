@@ -14,7 +14,7 @@ class CustomerRfq < ApplicationRecord
 
   after_commit :send_email_notification, on: :create
 
-  update_index('customer_rfqs#customer_rfq') {self}
+  update_index('customer_rfqs') {self}
 
   scope :with_includes, -> { includes(:created_by, :updated_by, :inquiry) }
 
