@@ -28,7 +28,7 @@ class Overseers::BaseController < ApplicationController
         else
           resource_model = model.to_s.gsub(':', '')
         end
-        if resource_ids[resource_model].blank? && resource_ids[resource_model][action].blank?
+        if resource_ids[resource_model].blank? || resource_ids[resource_model][action].blank?
           @authorized = false
         elsif allowed_resources.include? resource_ids[resource_model][action].to_s
           @authorized = true
