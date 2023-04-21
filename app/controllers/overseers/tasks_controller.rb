@@ -7,8 +7,8 @@ class Overseers::TasksController < Overseers::BaseController
     service.call
     @indexed_tasks = service.indexed_records
     @tasks = service.records
-    authorize_acl @tasks
-end
+    # authorize_acl @tasks
+  end
 
 
   def new
