@@ -258,7 +258,7 @@ class Overseers::InquiryPolicy < Overseers::ApplicationPolicy
   end
 
   def edit_products?
-    edit? && record.inquiry_products.present?
+    edit?
   end
 
   def update_products?
