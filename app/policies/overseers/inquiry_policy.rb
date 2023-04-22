@@ -257,6 +257,14 @@ class Overseers::InquiryPolicy < Overseers::ApplicationPolicy
     end
   end
 
+  def edit_products?
+    edit? && record.inquiry_products.present?
+  end
+
+  def update_products?
+    edit_products?
+  end
+
   class Scope
     attr_reader :overseer, :scope
 
