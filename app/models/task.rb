@@ -19,7 +19,7 @@ class Task < ApplicationRecord
   EMAIL_FROM_ADDRESS = 'itop@bulkmro.com'
 
 
-  update_index('tasks#task') { self }
+  update_index('tasks') { self }
 
   scope :with_includes, -> {}
 
