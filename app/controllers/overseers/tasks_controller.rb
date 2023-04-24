@@ -13,13 +13,13 @@ class Overseers::TasksController < Overseers::BaseController
 
   def new
     @task = Task.new(overseer: current_overseer)
-    authorize_acl @task
+    # authorize_acl @task
   end
 
 
   def create
     @task = Task.new(task_params.merge(overseer: current_overseer))
-    authorize_acl @task
+    # authorize_acl @task
     if @task.save
       t_number = Services::Resources::Shared::UidGenerator.generate_task_number(@task.id)
       @task.update_attributes(task_id: t_number)
@@ -37,7 +37,7 @@ class Overseers::TasksController < Overseers::BaseController
 
 
   def update
-    authorize_acl @task
+    # authorize_acl @task
 
     @task.assign_attributes(task_params.merge(overseer: current_overseer))
     if @task.valid?
