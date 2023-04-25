@@ -685,7 +685,7 @@ class Overseers::InquiriesController < Overseers::BaseController
     authorize_acl @inquiry
     if @inquiry.save_and_sync
       Services::Overseers::Inquiries::UpdateStatus.new(@inquiry, :cross_reference).call if @inquiry.inquiry_products.present?
-      redirect_to edit_products_overseers_inquiry_path(@inquiry), notice: flash_message(@inquiry, action_name)
+      redirect_to edit_products_overseers_inquiry_path(@inquiry), notice: flash_message(@inquiry, action_name) and return
     else
       render 'edit_products'
     end
