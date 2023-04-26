@@ -57,7 +57,7 @@ class Services::Customers::CustomerOrders::CreateQuoteAndOrder < Services::Share
         row.converted_unit_selling_price = row.calculated_converted_unit_selling_price
         end
 
-        sales_orders_total = @customer_order.company.company_transactions_amounts.where(financial_year: Company.current_financial_year).last.total_amount
+        sales_orders_total = @customer_order.company.company_transactions_amounts.where(financial_year: Company.current_financial_year).last&.total_amount
         sales_quote.metadata = { company_total: sales_orders_total }
         sales_quote.save!
         sales_quote.save_and_sync

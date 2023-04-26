@@ -121,7 +121,7 @@ class PurchaseOrderRow < ApplicationRecord
   end
 
   def po_request_tax_rate
-    self.po_request_row.tax_rate.tax_percentage
+    self.po_request_row.present? ? self.po_request_row.tax_rate.tax_percentage : 0
   end
 
   def po_request_bp_catalog_name
