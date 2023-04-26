@@ -268,3 +268,9 @@ gem 'parallel'
 gem 'bootstrap-toggle-rails'
 
 gem 'fiscali'
+
+gem 'net-ssh'
+
+gem 'ed25519'
+
+gem 'bcrypt_pbkdf'
