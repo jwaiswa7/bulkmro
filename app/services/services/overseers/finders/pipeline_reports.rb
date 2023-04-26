@@ -58,7 +58,7 @@ class Services::Overseers::Finders::PipelineReports < Services::Overseers::Finde
         'inquiries_over_time': {
             'date_histogram': {
                 'field': 'created_at',
-                'interval': 'month',
+                'calendar_interval': 'month',
                 format: 'dd-MM-yyy H:m:s',
                 keyed: true,
                 order: {_key: 'desc'}
