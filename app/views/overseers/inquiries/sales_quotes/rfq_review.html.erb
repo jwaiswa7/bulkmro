@@ -44,6 +44,7 @@
           </thead>
           <tbody>
           <% f.object.rows.sort_by(&:sr_no).group_by(&:inquiry_product).each do |inquiry_product, rows| %>
+           <% rows = rows.sort_by(&:unit_cost_price).reject { |row| row.unit_cost_price == 0.0 }%>
             <tr>
               <td>
                 <span><%= inquiry_product.sr_no %></span>
