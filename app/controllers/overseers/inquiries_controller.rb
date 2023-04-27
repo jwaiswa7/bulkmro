@@ -682,12 +682,12 @@ class Overseers::InquiriesController < Overseers::BaseController
     end
     Rails.cache.write(inquiry_status, @inquiry)
     @inquiry.assign_attributes(inquiry_params.merge(overseer: current_overseer))
-    authorize_acl @inquiry
+    # authorize_acl @inquiry
     if @inquiry.save_and_sync
       Services::Overseers::Inquiries::UpdateStatus.new(@inquiry, :cross_reference).call if @inquiry.inquiry_products.present?
-      redirect_to edit_products_overseers_inquiry_path(@inquiry), notice: flash_message(@inquiry, action_name) and return
+      redirect_to edit_products_overseers_inquiry_path(@inquiry), notice: flash_message(@inquiry, action_name)
     else
-      render 'edit_products' unless performed?
+      render 'edit_products'
     end
   end
 
