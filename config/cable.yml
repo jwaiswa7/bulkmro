@@ -6,14 +6,10 @@ test:
 
 staging:
   adapter: redis
-  url: <%= ENV["REDIS_URL"] %>
+  url: <%= ENV.fetch("REDIS_URL") { "redis://localhost:6379/1" } %>
   channel_prefix: bulkmro_staging
-  ssl_params:
-    verify_mode: <%= OpenSSL::SSL::VERIFY_NONE %>
 
 production:
   adapter: redis
-  url: <%= ENV["REDIS_URL"] %>
+  url: <%= ENV.fetch("REDIS_URL") { "redis://localhost:6379/1" } %>
   channel_prefix: bulkmro_production
-  ssl_params:
-    verify_mode: <%= OpenSSL::SSL::VERIFY_NONE %>
