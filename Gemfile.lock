@@ -755,6 +755,7 @@ DEPENDENCIES
   rails (~> 5.2.0)
   ratyrate
   razorpay
+  redis
   rspec-rails (~> 5.0.0)
   rubocop (~> 0.63.0)
   rubyzip (~> 1.2)
