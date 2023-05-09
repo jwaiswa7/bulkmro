@@ -21,7 +21,7 @@ class Resources::SalesOpportunity < Resources::ApplicationResource
                 SalesPerson: record.inside_sales_owner.salesperson_uid, # Inside Sales
                 StartDate: record.created_date,
                 ClosingDate: record.created_date,
-                StageKey: Inquiry.stages[record.stage],
+                StageKey: Inquiry.update_stages[Inquiry.stages[record.stage].to_s],
                 PercentageRate: 1,
                 MaxLocalTotal: record.potential_amount,
                 Remarks: record.commercial_terms_and_conditions,

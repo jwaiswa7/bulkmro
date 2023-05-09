@@ -153,17 +153,24 @@ class Inquiry < ApplicationRecord
       sales_order_approved: 92
   }
 
+  enum update_stages: {
+    '1': 3,
+    '5': 7,
+    '6':  8,
+    '92': 16
+  }
+
   enum opportunity_type: {
-      amazon: 10,
-      rate_contract: 20,
-      financing: 30,
-      regular: 40,
-      service: 50,
-      repeat: 60,
-      list: 65,
-      route_through: 70,
-      tender: 80,
-      stock: 90
+      'Amazon': 10,
+      'Rate Contract': 20,
+      'Financing': 30,
+      'Regular': 40,
+      'Service': 50,
+      'Repeat': 60,
+      'List': 65,
+      'Route Through': 70,
+      'Tender': 80,
+      'Stock': 90
   }
 
   enum opportunity_source: {
