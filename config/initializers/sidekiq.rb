@@ -7,9 +7,6 @@ Sidekiq.configure_server do |config|
     chain.add Sidekiq::ChewyMiddleware, :atomic
   end
 
-  config.on_shutdown do
-    Sidekiq.redis.shutdown { |conn| conn.close }
-  end
 
   config.redis = {
     url: ENV["REDIS_URL"],
