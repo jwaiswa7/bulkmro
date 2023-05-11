@@ -145,7 +145,7 @@ class Resources::Quotation < Resources::ApplicationResource
         U_Frghtterm: record.inquiry.freight_option,
         U_PackFwd: record.inquiry.packing_and_forwarding_option,
         U_BM_BillFromTo: record.inquiry.bill_from.remote_uid, # Bill FROM Address
-        U_SQ_Status: Inquiry.statuses[record.inquiry.status], # Commercial Status (Preparing Quotation, Quotation Sent, Follow-up etc)
+        U_SQ_Status: Inquiry.status_updates[Inquiry.statuses[record.inquiry.status].to_s], # Commercial Status (Preparing Quotation, Quotation Sent, Follow-up etc)
         BPL_IDAssignedToInvoice: record.inquiry.ship_from.remote_branch_code,
         ShipToCode: record.inquiry.remote_shipping_address_uid, # record.inquiry.shipping_address.remote_uid,
         PayToCode: record.inquiry.billing_address.remote_uid,
@@ -156,7 +156,7 @@ class Resources::Quotation < Resources::ApplicationResource
         U_SalesMgr: record.inquiry.sales_manager.try(:full_name) || 'Devang Shah',
         U_In_Sales_Own: record.inquiry.inside_sales_owner.try(:full_name),
         U_Out_Sales_Own: record.inquiry.outside_sales_owner.try(:full_name),
-        U_QuotType: record.inquiry.opportunity_type,
+        U_QuotType: Inquiry.opportunity_type_updates[Inquiry.opportunity_types[record.inquiry.opportunity_type].to_s],
         Project: record.inquiry.project_uid,
         TaxExtension: sez,
         BPChannelCode: record.inquiry.remote_shipping_company_uid,

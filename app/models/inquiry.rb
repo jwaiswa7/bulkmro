@@ -113,6 +113,25 @@ class Inquiry < ApplicationRecord
       'Sales Quote Revision Requested': 23
   }
 
+  enum status_updates: {
+      '0': 1,
+      '2': 2,
+      '3': 3,
+      '12': 4,
+      '4': 5,
+      '5': 6,
+      '6': 7,
+      '7': 8,
+      '15': 9,
+      '8': 11,
+      '18': 14,
+      '17': 10,
+      '19': 12,
+      '20': 13,
+      '9': 15,
+      '10': 16,
+  }
+
   enum pipeline_status: {
       # 'Lead by O/S': 11,
       'New Inquiry': 0,
@@ -153,13 +172,6 @@ class Inquiry < ApplicationRecord
       sales_order_approved: 92
   }
 
-  enum update_stages: {
-    '1': 3,
-    '5': 7,
-    '6':  8,
-    '92': 16
-  }
-
   enum opportunity_type: {
       'Amazon': 10,
       'Rate Contract': 20,
@@ -172,6 +184,17 @@ class Inquiry < ApplicationRecord
       'Tender': 80,
       'Stock': 90
   }
+
+  enum opportunity_type_updates: {
+    '40': 1,
+    '80': 3,
+    '30': 5,
+    '50': 6,
+    '60': 7,
+    '70': 8,
+    '80': 80,
+    '90': 90
+}
 
   enum opportunity_source: {
       unsure: 5,
