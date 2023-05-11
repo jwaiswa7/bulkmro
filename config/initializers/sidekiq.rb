@@ -1,7 +1,6 @@
 
 Sidekiq.configure_server do |config|
   # Add chewy middleware from lib/sidekiq/chewy_middleware.rb
-  config = YAML.load_file(Rails.root.join('config', 'sidekiq.yml'))
 
   config.server_middleware do |chain|
     chain.add Sidekiq::ChewyMiddleware, :atomic
@@ -14,10 +13,10 @@ Sidekiq.configure_server do |config|
       verify_mode: OpenSSL::SSL::VERIFY_NONE
     }
   }
+  config = YAML.load_file(Rails.root.join('config', 'sidekiq.yml'))
 end
 
 Sidekiq.configure_client do |config|
-  config = YAML.load_file(Rails.root.join('config', 'sidekiq.yml'))
 
   config.redis = {
     url: ENV["REDIS_URL"],
@@ -25,4 +24,6 @@ Sidekiq.configure_client do |config|
       verify_mode: OpenSSL::SSL::VERIFY_NONE
     }
   }
+  config = YAML.load_file(Rails.root.join('config', 'sidekiq.yml'))
+
 end
