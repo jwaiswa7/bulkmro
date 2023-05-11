@@ -1,9 +1,14 @@
-Sidekiq.default_worker_options = { 'retry' => 5 }
 
 Sidekiq.configure_server do |config|
   # Add chewy middleware from lib/sidekiq/chewy_middleware.rb
+  config = YAML.load_file(Rails.root.join('config', 'sidekiq.yml'))
+
   config.server_middleware do |chain|
     chain.add Sidekiq::ChewyMiddleware, :atomic
+  end
+
+  config.on_shutdown do
+    Sidekiq.redis.shutdown { |conn| conn.close }
   end
 
   config.redis = {
@@ -15,6 +20,8 @@ Sidekiq.configure_server do |config|
 end
 
 Sidekiq.configure_client do |config|
+  config = YAML.load_file(Rails.root.join('config', 'sidekiq.yml'))
+
   config.redis = {
     url: ENV["REDIS_URL"],
     ssl_params: {
