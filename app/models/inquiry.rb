@@ -216,10 +216,10 @@ class Inquiry < ApplicationRecord
       'CIF': 30,
       'CFR': 40,
       'DAP': 50,
-      'Door delivery': 60,
+      'Door Delivery': 60,
       'FCA Mumbai': 70,
       'CIP': 80,
-      'CIP Mumbai airport': 100
+      'CIP Mumbai Airport': 100
   }
 
   enum freight_option: {
