@@ -276,3 +276,5 @@ gem 'ed25519'
 gem 'bcrypt_pbkdf'
 
 gem 'redis'
+
+gem 'resolv-replace'
