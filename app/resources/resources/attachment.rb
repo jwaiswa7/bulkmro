@@ -77,7 +77,7 @@ end
 
     path = ActiveStorage::Blob.service.send(:path_for,i.customer_po_sheet.key)
     filename = path.split("/").last
-    scp.upload!(path, SAP.attachment_directory :recursive => true)
+    scp.upload!(path, SAP.attachment_directory)
 
 
   end
