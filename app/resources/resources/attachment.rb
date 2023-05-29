@@ -68,9 +68,9 @@ end
             }
         ]
     }
-=end
+end
 
-=begin
+begin
 
   Net::SCP.start(SAP.server[:host], SAP.login[:user], :password => SAP.login[:password]) do |scp|
     # upload a file to a remote server
@@ -80,7 +80,9 @@ end
     scp.upload!(path, SAP.attachment_directory)
 
 
-  end
+end
+
+begin
 
 Net::SCP.upload!(SAP.server[:host], SAP.login[:user], ActiveStorage::Blob.service.send(:path_for,i.customer_po_sheet.key), [SAP.attachment_directory,"_POSHEET"], :ssh => { :password => SAP.login[:password] })
 
