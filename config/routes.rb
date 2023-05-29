@@ -15,6 +15,8 @@ Rails.application.routes.draw do
   get '/release_notes', to: 'overseers/site_updates#show'
   post '/release_notes', to: 'overseers/site_updates#create'
 
+  resources :customer_feedbacks, only: [:create, :new]
+
   devise_for :overseers, controllers: {sessions: 'overseers/sessions', omniauth_callbacks: 'overseers/omniauth_callbacks'}
   # devise_for :contacts, controllers: {sessions: 'customers/sessions', passwords: 'customers/passwords'}, path: :customers
 
