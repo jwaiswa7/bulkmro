@@ -4,7 +4,7 @@ class CreateCustomerFeedbacks < ActiveRecord::Migration[5.2]
       t.string :customer_email
       t.integer :experience
       t.text :most_liked
-      t.text :to_imporve
+      t.text :to_improve
       t.text :comments
 
       t.timestamps

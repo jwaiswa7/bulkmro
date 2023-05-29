@@ -1,0 +1,16 @@
+<div class="container" style='padding-top: 50px'>
+  <div class="row">
+    <div class="col-4"></div>
+    <div class="col-6">
+      <h1 class="text-center">Customer Feedback</h1>
+       <%= simple_form_for([:customers, @customer_feedback]) do |f| %>
+           <%= f.input :experience, as: :select, collection: CustomerFeedback.experiences.map {|k,v| [k,k]}, include_blank: 'Select', label: 'Experience', input_html: {class: "select2-single"} %>
+           <%= f.input :most_liked %>
+           <%= f.hidden_field :customer_email, value: @email %>
+           <%= f.input :to_improve %>
+           <%= f.input :comments %>
+           <%= f.submit 'Submit', class: 'btn btn-rounded btn-success btn-block' %>
+       <% end %>
+    </div>
+  </div>
+</div>

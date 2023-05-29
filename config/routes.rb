@@ -15,8 +15,6 @@ Rails.application.routes.draw do
   get '/release_notes', to: 'overseers/site_updates#show'
   post '/release_notes', to: 'overseers/site_updates#create'
 
-  resources :customer_feedbacks, only: [:create, :new]
-
   devise_for :overseers, controllers: {sessions: 'overseers/sessions', omniauth_callbacks: 'overseers/omniauth_callbacks'}
   # devise_for :contacts, controllers: {sessions: 'customers/sessions', passwords: 'customers/passwords'}, path: :customers
 
@@ -952,6 +950,9 @@ Rails.application.routes.draw do
   end
 
   namespace 'customers' do
+    resources :customer_feedbacks, only: [:create, :new] do
+      get 'thank_you', on: :collection
+    end
     resource 'sign_in_steps', controller: 'sign_in_steps' do
       post 'reset_current_company'
       get 'edit_current_company'
