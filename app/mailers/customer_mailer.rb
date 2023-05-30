@@ -9,4 +9,5 @@ class CustomerMailer < Devise::Mailer
 		email = mail(to: @user.email, subject: "Reset password instructions")
 		email.delivery_method.settings = Settings.sendgrid_smtp.to_hash
     end
+
 end

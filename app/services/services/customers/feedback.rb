@@ -7,12 +7,28 @@ class Services::Customers::Feedback
     company = Company.find(@company_id)
 
     company.contacts.each do |contact|
-      puts "send feedback request email to contact #{contact.email}}"
+        send_email(contact)
+
     end
     {success: true, message: 'Feedback request sent successfully'}
   end
 
   private 
-   
+
+  def send_email(contact)
+
+    email_message = email_messages.build(contact: contact)
+      email_message.assign_attributes(
+        subject: 'Your feedback is important to us',
+        body: CustomerMailer.feedback_requested(email_message).body.raw_source,
+        from: 'itops@bulkmro.com',
+        to: contact.email
+      )
+
+      if email_message.save
+        CustomerMailer.request_feedback(email_message).deliver_now
+      end
+  end
+
   attr_accessor :company
 end
