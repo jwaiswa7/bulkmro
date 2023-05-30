@@ -70,9 +70,9 @@ class ReindexTables < ActiveRecord::Migration[5.2]
     add_index :sales_orders, :remote_uid
     #add_index :sales_quote_rows, :remote_uid
     #add_index :kits, :remote_uid
-    add_index :inquiry_status_records, :remote_uid
-    add_index :sales_quotes, :remote_uid, unique: false
-    add_index :purchase_orders, :remote_uid, unique: false
+    #add_index :inquiry_status_records, :remote_uid
+    #add_index :sales_quotes, :remote_uid, unique: false
+    #add_index :purchase_orders, :remote_uid, unique: false
   end
 
   def down 
@@ -98,12 +98,10 @@ class ReindexTables < ActiveRecord::Migration[5.2]
     remove_index :sales_order_rows, [:sales_order_id, :sales_quote_row_id]
     remove_index :activity_overseers, [:overseer_id, :activity_id]
     remove_index :customer_order_rows, [:customer_order_id, :product_id]
-    #remove_index :customer_products, [:company_id, :sku]
     remove_index :image_readers, :status
     remove_index :image_readers, :created_at
     remove_index :rating_caches, [:cacheable_id, :cacheable_type]
     remove_index :rates, [:rateable_id, :rateable_type]
-    #remove_index :company_reviews, [:company_id, :survey_type, :created_by_id]
     remove_index :company_ratings, [:company_review_id, :review_question_id, :created_by_id]
     remove_index :inward_dispatch_rows, [:inward_dispatch_id, :purchase_order_row_id]
     remove_index :acl_resources, [:resource_model_name, :resource_action_name]
@@ -131,8 +129,8 @@ class ReindexTables < ActiveRecord::Migration[5.2]
     remove_index :sales_orders, :remote_uid
     remove_index :sales_quote_rows, :remote_uid
     remove_index :kits, :remote_uid
-    #remove_index :inquiry_status_records, :remote_uid
-    #remove_index :sales_quotes, :remote_uid
-    #remove_index :purchase_orders, :remote_uid
+    remove_index :inquiry_status_records, :remote_uid
+    remove_index :sales_quotes, :remote_uid
+    remove_index :purchase_orders, :remote_uid
   end
 end
