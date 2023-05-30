@@ -75,6 +75,7 @@ Rails.application.routes.draw do
   end
 
   namespace 'overseers' do
+    resources :customer_feedbacks, only: :index
     get '/docs/*page' => 'docs#index'
     resources :delivery_challans do
       collection do

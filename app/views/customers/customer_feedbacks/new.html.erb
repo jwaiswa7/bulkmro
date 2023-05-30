@@ -5,10 +5,10 @@
       <h1 class="text-center">Customer Feedback</h1>
        <%= simple_form_for([:customers, @customer_feedback]) do |f| %>
            <%= f.input :experience, as: :select, collection: CustomerFeedback.experiences.map {|k,v| [k,k]}, include_blank: 'Select', label: 'Experience', input_html: {class: "select2-single"} %>
-           <%= f.input :most_liked %>
+           <%= f.input :most_liked, label: 'What do you like most' %>
            <%= f.hidden_field :customer_email, value: @email %>
-           <%= f.input :to_improve %>
-           <%= f.input :comments %>
+           <%= f.input :to_improve, label: 'What to imporve' %>
+           <%= f.input :comments, label: 'Any other comments' %>
            <%= f.submit 'Submit', class: 'btn btn-rounded btn-success btn-block' %>
        <% end %>
     </div>
