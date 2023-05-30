@@ -72,7 +72,7 @@ class ReindexTables < ActiveRecord::Migration[5.2]
     add_index :kits, :remote_uid
     add_index :inquiry_status_records, :remote_uid
     add_index :sales_quotes, :remote_uid, unique: false
-    add_index :purchase_orders, :remote_uid, unique: true
+    add_index :purchase_orders, :remote_uid, unique: false
   end
 
   def down 
