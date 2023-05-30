@@ -99,7 +99,7 @@ class ReindexTables < ActiveRecord::Migration[5.2]
     remove_index :sales_order_rows, [:sales_order_id, :sales_quote_row_id]
     remove_index :activity_overseers, [:overseer_id, :activity_id]
     remove_index :customer_order_rows, [:customer_order_id, :product_id]
-    #remove_index :customer_products, [:company_id, :sku]
+    remove_index :customer_products, [:company_id, :sku]
     remove_index :image_readers, :status
     remove_index :image_readers, :created_at
     remove_index :rating_caches, [:cacheable_id, :cacheable_type]
