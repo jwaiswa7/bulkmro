@@ -10,6 +10,7 @@
       <% if is_authorized(@company, 'edit') %>
         <a href="<%= edit_overseers_account_company_path(@company.account, @company) %>" target='_blank' class="btn btn-warning bmro-button btn-rounded align-self-center btn-block-sm-down mb" ><i class="bmro-update-icon"></i>Edit
           Company</a>
+          <%= link_to 'Request Customer feedback', request_feedback_overseers_customer_feedbacks_path(company_id: 3), method: :post, remote: true, class: 'btn btn-warning bmro-button btn-rounded align-self-center btn-block-sm-down mb ml-1' %>
       <% end %>
     </div>
   </section>
