@@ -104,7 +104,7 @@ class ReindexTables < ActiveRecord::Migration[5.2]
     remove_index :image_readers, :created_at
     remove_index :rating_caches, [:cacheable_id, :cacheable_type]
     remove_index :rates, [:rateable_id, :rateable_type]
-    remove_index :company_reviews, [:company_id, :survey_type, :created_by_id]
+    #remove_index :company_reviews, [:company_id, :survey_type, :created_by_id]
     remove_index :company_ratings, [:company_review_id, :review_question_id, :created_by_id]
     remove_index :inward_dispatch_rows, [:inward_dispatch_id, :purchase_order_row_id]
     remove_index :acl_resources, [:resource_model_name, :resource_action_name]
