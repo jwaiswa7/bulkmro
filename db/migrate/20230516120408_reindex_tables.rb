@@ -38,12 +38,11 @@ class ReindexTables < ActiveRecord::Migration[5.2]
     add_index :sales_order_rows, [:sales_order_id, :sales_quote_row_id], unique: true
     add_index :activity_overseers, [:overseer_id, :activity_id], unique: true
     add_index :customer_order_rows, [:customer_order_id, :product_id], unique: true
-    add_index :customer_products, [:company_id, :sku], unique: false
+  
     add_index :image_readers, :status
     add_index :image_readers, :created_at
     add_index :rating_caches, [:cacheable_id, :cacheable_type]
     add_index :rates, [:rateable_id, :rateable_type]
-    add_index :company_reviews, [:company_id, :survey_type, :created_by_id], unique: false, name: 'index_on_company_review'
     add_index :company_ratings, [:company_review_id, :review_question_id, :created_by_id], unique: true, name: 'index_on_company_rating'
     add_index :inward_dispatch_rows, [:inward_dispatch_id, :purchase_order_row_id], unique: true, name: 'index_idr_on_id_and_por'
     add_index :acl_resources, [:resource_model_name, :resource_action_name], unique: true, name: 'resource_model_action_index'
