@@ -128,7 +128,7 @@ class ReindexTables < ActiveRecord::Migration[5.2]
     remove_index :brands, :remote_uid
     remove_index :categories, :remote_uid
     remove_index :products, :remote_uid
-    remove_index :company_banks, :remote_uid
+    #remove_index :company_banks, :remote_uid
     remove_index :sales_orders, :remote_uid
     remove_index :sales_quote_rows, :remote_uid
     remove_index :kits, :remote_uid
