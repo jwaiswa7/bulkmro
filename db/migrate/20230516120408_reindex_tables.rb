@@ -68,7 +68,7 @@ class ReindexTables < ActiveRecord::Migration[5.2]
     add_index :products, :remote_uid, unique: true
     #add_index :company_banks, :remote_uid
     add_index :sales_orders, :remote_uid
-    add_index :sales_quote_rows, :remote_uid
+    #add_index :sales_quote_rows, :remote_uid
     add_index :kits, :remote_uid
     add_index :inquiry_status_records, :remote_uid
     add_index :sales_quotes, :remote_uid, unique: false
