@@ -16,18 +16,18 @@ class Services::Customers::Feedback
   private 
 
   def send_email(contact)
+    email_message = EmailMessage.new(contact: contact)
+    email_message.assign_attributes(
+      subject: 'Your feedback is important to us',
+      body: CustomerFeedbackMailer.feedback_requested(email_message).body.raw_source,
+      from: 'itops@bulkmro.com',
+      to: contact.email
+    )
 
-    email_message = email_messages.build(contact: contact)
-      email_message.assign_attributes(
-        subject: 'Your feedback is important to us',
-        body: CustomerMailer.feedback_requested(email_message).body.raw_source,
-        from: 'itops@bulkmro.com',
-        to: contact.email
-      )
-
-      if email_message.save
-        CustomerMailer.request_feedback(email_message).deliver_now
-      end
+    if email_message.save
+      CustomerFeedbackMailer.request_feedback(email_message).deliver_now
+    end
+    
   end
 
   attr_accessor :company
