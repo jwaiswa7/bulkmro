@@ -1,0 +1,15 @@
+<p>Dear <%= @name %>,</p>
+
+<p>Your satisfaction is our top priority, and we would greatly appreciate your feedback to help us enhance our offerings.</p>
+
+<p>To gather your valuable insights, we have created a short feedback form. It will only take a few moments of your time. We kindly request you to click on the button below to access the form:</p>
+
+<%= link_to 'Feedback Form', new_customers_customer_feedback_url(email: @email) %>
+
+<p>Your feedback will enable us to understand your experience better and make any necessary improvements. We truly value your opinion, and rest assured that your responses will be kept confidential.</p>
+
+<p>Thank you for choosing our services, and we appreciate your willingness to share your thoughts.</p>
+
+<p>We look forward to hearing from you!</p>
+
+<p>Best regards</p>

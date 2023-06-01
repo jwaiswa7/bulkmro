@@ -75,6 +75,9 @@ Rails.application.routes.draw do
   end
 
   namespace 'overseers' do
+    resources :customer_feedbacks, only: :index do 
+      post 'request_feedback', on: :collection
+    end
     get '/docs/*page' => 'docs#index'
     resources :delivery_challans do
       collection do
@@ -950,6 +953,9 @@ Rails.application.routes.draw do
   end
 
   namespace 'customers' do
+    resources :customer_feedbacks, only: [:create, :new] do
+      get 'thank_you', on: :collection
+    end
     resource 'sign_in_steps', controller: 'sign_in_steps' do
       post 'reset_current_company'
       get 'edit_current_company'
