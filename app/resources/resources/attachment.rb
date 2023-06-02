@@ -33,7 +33,7 @@ class Resources::Attachment < Resources::ApplicationResource
               remote_attachment = OpenStruct.new(
                 FileExtension: extension,
                 FileName: filename,
-                SourcePath: SAP.attachment_directory,
+                SourcePath: attachment.blob.service_url,
                 UserID: '1'
               )
 
