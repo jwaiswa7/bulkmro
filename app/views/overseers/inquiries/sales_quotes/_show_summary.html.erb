@@ -58,7 +58,7 @@
         <div class="col-md-6 mt-2 mt-md-0">
           <strong class="d-block">Supplier - Billing Address</strong>
           <% if @inquiry.bill_from.present? %>
-            <span class="d-block"><%= @inquiry.bill_from..address.name.to_s %></span>
+            <span class="d-block"><%= @inquiry.bill_from.address.name.to_s %></span>
             <%= @inquiry.bill_from.address.to_compact_multiline_s if @inquiry.bill_from.present? %>
             <% if @inquiry.bill_from.address.phone.present? %>
               <span class="d-block"><strong><em>Contact</em></strong>:  <%= @inquiry.contact.full_name %></span>
