@@ -1,7 +1,9 @@
 # frozen_string_literal: true
 
+require "timeout"
+
 class ApplicationJob < ActiveJob::Base
-  queue_as :default
+  queue_as :priority_queue
 
   around_perform do |job, block|
     Chewy.strategy(:atomic) do
@@ -12,6 +14,13 @@ class ApplicationJob < ActiveJob::Base
   def perform(service_name, *args)
     service_class = service_name.constantize
     service = service_class.send(:new, *args)
-    service.call_later
+
+    begin
+      Timeout.timeout(30.minutes) do
+        service.call_later
+      end
+    rescue Timeout::Error
+      Rails.logger.error "Timeout reached for job"
+    end
   end
 end
