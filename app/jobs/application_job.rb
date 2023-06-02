@@ -16,7 +16,7 @@ class ApplicationJob < ActiveJob::Base
     service = service_class.send(:new, *args)
 
     begin
-      Timeout.timeout(30.minutes) do
+      Timeout.timeout(30) do
         service.call_later
       end
     rescue Timeout::Error
