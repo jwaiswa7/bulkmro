@@ -6,7 +6,7 @@
         <% if @account.id == 3 %> <!-- To show logo of GE for GE Account -->
           <img src="<%= url_for(@account.companies.where(id: 2).first.try(:logo)) %>" alt="<%= @account.name %>" height="65" class="pr-2">
         <% else %>
-          <img src="https://ui-avatars.com/api/?size=128&name=<%= @account.name %>&rounded=true&font-size=0.5&background=0D8ABC&color=fff" height="35" class="pr-2"/><%= @account.alias %>
+          <img src="https://ui-avatars.com/api/?size=128&name=<%= @account.name %>&rounded=true&font-size=0.5&background=0D8ABC&color=fff" height="35" class="pr-2"/><%= @account.name %>
         <% end %>
 <!--        <span class="pl-2 lead text-muted bmro-form-heading"><%#= @account.name %></span>-->
       </h3>
