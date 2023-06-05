@@ -5,6 +5,8 @@ class Overseers::CustomerFeedbacksController < Overseers::BaseController
 
     def request_feedback
         RequestCustomerFeedbackJob.perform_later(params[:company_id])
-        render json: {success: true, message: "Feedback request sent successfully"}
+        respond_to do |format|
+            format.js
+        end
     end
 end
