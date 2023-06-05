@@ -20,7 +20,7 @@ class ApplicationJob < ActiveJob::Base
         service.call_later
       end
     rescue Timeout::Error
-      Rails.logger.error "Timeout reached for job"
+      raise "Timeout reached for job: #{self.class.name}"
     end
   end
 end
