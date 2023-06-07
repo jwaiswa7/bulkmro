@@ -4,7 +4,7 @@ class CustomerFeedbackMailer < ApplicationMailer
 
     def feedback_requested(email_message)
        @name = email_message.contact.first_name
-       @email = email_message.contact.email
+       @email = "bhargav.trivedi@bulkmro.com" #email_message.contact.email
        standard_email(email_message)
     end
 
