@@ -1,0 +1,24 @@
+<div class="col-lg-12">
+  <% content_for :heading_byline do %>
+    This will send a customer feedback request to the customer
+  <% end %>
+
+  <%= render layout: 'shared/layouts/form' do %>
+    <%= simple_form_for([:overseers, @company, @email_message], :html => {:class => 'card needs-validation mt-3', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
+      <div class="card-body">
+        <%= hidden_field_tag :type, params[:type] %>
+        <%= f.input :from, disabled: true %>
+        <%= f.input :to %>
+        <%= f.input :cc %>
+        <%= f.input :bcc %>
+        <%= f.input :subject %>
+        <%= f.input :body, input_html: {rows: 10, class: 'html-editor'} %>
+      </div>
+      <div class="card-footer">
+        <%= button_tag(type: "submit", class: "btn btn-success bmro-button btn-block") do %>
+          <i class="bmro-fa-paper-plane"></i> Send Email
+        <% end %>
+      </div>
+    <% end %>
+  <% end %>
+</div>

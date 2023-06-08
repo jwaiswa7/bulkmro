@@ -75,9 +75,8 @@ Rails.application.routes.draw do
   end
 
   namespace 'overseers' do
-    resources :customer_feedbacks, only: :index do 
-      post 'request_feedback', on: :collection
-    end
+    resources :customer_feedbacks, only: :index 
+
     get '/docs/*page' => 'docs#index'
     resources :delivery_challans do
       collection do
@@ -810,6 +809,8 @@ Rails.application.routes.draw do
         get 'get_account'
       end
       scope module: 'companies' do
+        resources :email_messages, only: [:new, :create]
+        
         resources :customer_orders
 
         resources :product_images
