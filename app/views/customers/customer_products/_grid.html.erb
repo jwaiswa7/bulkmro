@@ -33,12 +33,16 @@
   </section>
 <% end %>
 
+<form action="/customers/products">
 <div class="input-group input-group-round">
   <div class="input-group-prepend">
     <span class="input-group-text"><i class="material-icons"></i></span>
   </div>
   <input type="search" name="q" class="form-control filter-list-input" placeholder="Enter search term/keywords" value="<%= params[:q] %>">
+  <input type='hidden' name='view', value='grid' %>
+  <button type="submit">Search</button>
 </div>
+</form>
 
 <!--Incomplete feature-->
 <%# if @tags.count > 0 %>
