@@ -136,6 +136,6 @@
 
   <div class="col-12 mt-2">
     <div class="text-center mb-2 text-uppercase"><%= page_entries_info @customer_products_paginate, entry_name: 'products' %></div>
-    <%= paginate @customer_products_paginate, remote: false, :params => {:view => "grid_view", :q => params[:q]} %>
+    <%= paginate @customer_products_paginate, remote: false, :params => {:view => "grid", :q => params[:q]} %>
   </div>
 </div>
