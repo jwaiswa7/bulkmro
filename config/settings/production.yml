@@ -1,7 +1,7 @@
 omniauth:
   google_oauth2:
-    client_id: 912089915617-1sidmhg6q6ttfhghmb0r6gsdr81qk1n6.apps.googleusercontent.com
-    client_secret: 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
+    client_id: 912089915617-j9qkcmkqtuqt9eabvkkn8l7fk867ta8h.apps.googleusercontent.com
+    client_secret: _ogqBdW-vW-XFF8Kw8Sdg_Is
 
 email_messages:
   from: no-reply@bulkmro.com
@@ -89,7 +89,7 @@ razorpay:
 
 sap:
   ENDPOINT: 'https://35.244.5.222:50000/b1s/v1'
-  DATABASE: 'NEW_SPRINT'
+  DATABASE: 'BULKMRO_PRODUCTION'
   USERNAME: 'manager'
   PASSWORD: 'vm1234'
   ATTACHMENT_ENDPOINT: 'https://35.244.5.222:22'
