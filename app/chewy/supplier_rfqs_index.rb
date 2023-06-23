@@ -3,12 +3,12 @@ class SupplierRfqsIndex < BaseIndex
   index_scope SupplierRfq 
     witchcraft!
     field :id, type: 'integer'
-    field :inquiry_number, value: -> (record) { record.inquiry.inquiry_number.to_i }, type: 'integer'
+    field :inquiry_number, value: -> (record) { record&.inquiry.inquiry_number.to_i }, type: 'integer'
     field :email_sent_at, type: 'date'
     field :status_string, value: -> (record) { record.status.to_s }, analyzer: 'substring'
     field :status, value: -> (record) { statuses[record.status] }
     field :status_key, value: -> (record) { statuses[record.status] }, type: 'integer'
-    field :line_items, value: -> (record) { record.inquiry_product_suppliers.map { |ips| ips.inquiry_product.product }.count }, analyzer: 'substring'
+    field :line_items, value: -> (record) { record&.inquiry_product_suppliers.map { |ips| ips.inquiry_product.product }.count }, analyzer: 'substring'
     field :supplier_id, value: -> (record) { record.supplier_id }, type: 'integer'
     field :created_at, type: 'date'
     field :updated_at, type: 'date'
