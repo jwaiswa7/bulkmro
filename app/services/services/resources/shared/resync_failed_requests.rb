@@ -84,7 +84,7 @@ class Services::Resources::Shared::ResyncFailedRequests < Services::Shared::Base
           # end
         elsif resync_request.subject_type == 'Product'
           item_code = ::Resources::Item.custom_find_resync(["#{model.sku}", 'ItemCode'])
-          model.update_attributes(remote_uid: item_code)
+          model.update_attributes(remote_uid: item_code) if model.remote_uid.blank?
           resync_request.update_attributes(hits: resync_request.hits + 1)
         end
       end if resync_request.status == 'failed'
