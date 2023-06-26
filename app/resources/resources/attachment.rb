@@ -17,6 +17,11 @@ class Resources::Attachment < Resources::ApplicationResource
 
     ssh_private_keys = [SAP.ssh_key]
     Net::SSH.start(SAP.server[:host], SAP.attachment_username, key_data: ssh_private_keys, keys_only: true) do |ssh|
+      channel.request_pty do |ch, success|
+      if success
+      puts "pty successfully obtained"
+      else
+      puts "could not obtain pty"
       record.attachments.each do |attachment|
         if attachment.present? && attachment.try(:key)
           if ActiveStorage::Blob.service.exist?(attachment.key)
