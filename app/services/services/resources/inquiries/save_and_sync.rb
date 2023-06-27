@@ -1,11 +1,12 @@
 class Services::Resources::Inquiries::SaveAndSync < Services::Shared::BaseService
-  def initialize(inquiry)
+  def initialize(inquiry, now = false)
     @inquiry = inquiry
+    @now = now
   end
 
   def call
     if inquiry.save
-      perform_later(inquiry)
+      perform_later(inquiry, now)
     end
   end
 
@@ -32,5 +33,5 @@ class Services::Resources::Inquiries::SaveAndSync < Services::Shared::BaseServic
     end
   end
 
-  attr_accessor :inquiry
+  attr_accessor :inquiry, :now
 end

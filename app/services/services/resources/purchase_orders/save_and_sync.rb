@@ -1,7 +1,8 @@
 class Services::Resources::PurchaseOrders::SaveAndSync < Services::Shared::BaseService
-  def initialize(purchase_order, po_request = nil)
+  def initialize(purchase_order, po_request = nil, now = false)
     @purchase_order = purchase_order
     @po_request = po_request
+    @now = now
   end
 
   def call
@@ -24,5 +25,5 @@ class Services::Resources::PurchaseOrders::SaveAndSync < Services::Shared::BaseS
     end
   end
 
-  attr_accessor :purchase_order, :po_request
+  attr_accessor :purchase_order, :po_request, :now
 end

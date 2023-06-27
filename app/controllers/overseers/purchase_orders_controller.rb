@@ -1,5 +1,5 @@
 class Overseers::PurchaseOrdersController < Overseers::BaseController
-  before_action :set_purchase_order, only: [:show, :edit_material_followup, :update_material_followup, :resync_po, :cancelled_purchase_modal, :cancelled_purchase_order, :change_material_status, :render_modal_form, :add_comment]
+  before_action :set_purchase_order, only: [:show, :edit_material_followup, :update_material_followup, :resync_urgent_po, :resync_po, :cancelled_purchase_modal, :cancelled_purchase_order, :change_material_status, :render_modal_form, :add_comment]
 
   def index
     authorize_acl :purchase_order
@@ -62,6 +62,12 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
   def resync_po
     authorize_acl @purchase_order
     @purchase_order.save_and_sync(@purchase_order.po_request)
+    redirect_to pending_sap_sync_overseers_purchase_orders_path
+  end
+
+  def resync_urgent_po
+    authorize_acl @purchase_order
+    @purchase_order.save_and_sync(@purchase_order.po_request, true)
     redirect_to pending_sap_sync_overseers_purchase_orders_path
   end
 

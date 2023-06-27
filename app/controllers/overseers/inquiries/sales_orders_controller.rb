@@ -1,6 +1,6 @@
 class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseController
   before_action :set_sales_order, only: [:show, :proforma, :edit, :update, :new_confirmation, :create_confirmation,
-                                         :resync, :edit_mis_date, :update_mis_date, :fetch_order_data, :relationship_map,
+                                         :resync,:resync_urgent, :edit_mis_date, :update_mis_date, :fetch_order_data, :relationship_map,
                                          :get_relationship_map_json, :new_accounts_confirmation, :create_account_confirmation, :order_cancellation_modal, :order_cancellation_modal_by_isp, :cancellation, :isp_order_cancellation, :revise_committed_delivery_date, :update_revised_committed_delivery_date, :isp_so_cancellation_email]
   before_action :set_notification, only: [:create_confirmation, :create_account_confirmation]
 
@@ -195,6 +195,12 @@ class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseCo
   def resync
     authorize_acl @sales_order
     @sales_order.save_and_sync
+    redirect_to so_sync_pending_overseers_sales_orders_path
+  end
+
+  def resync_urgent 
+    authorize_acl @sales_order
+    @sales_order.save_and_sync(true)
     redirect_to so_sync_pending_overseers_sales_orders_path
   end
 

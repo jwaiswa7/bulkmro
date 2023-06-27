@@ -1,11 +1,12 @@
 class Services::Resources::SalesOrders::SaveAndSync < Services::Shared::BaseService
-  def initialize(sales_order)
+  def initialize(sales_order, now = false)
     @sales_order = sales_order
+    @now = now
   end
 
   def call
     if sales_order.save
-      perform_later(sales_order)
+      perform_later(sales_order, now)
     end
   end
 
@@ -22,5 +23,5 @@ class Services::Resources::SalesOrders::SaveAndSync < Services::Shared::BaseServ
     end
   end
 
-  attr_accessor :sales_order
+  attr_accessor :sales_order, :now
 end

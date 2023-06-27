@@ -12,6 +12,9 @@ json.data (@sales_orders) do |sales_order|
                       end,
                       if is_authorized(sales_order, 'go_to_inquiry') && policy(sales_order).go_to_inquiry?
                         row_action_button_without_fa(edit_overseers_inquiry_path(sales_order.inquiry), 'bmro-icon-table bmro-icon-comments-approval', 'Go to Inquiry', 'dark')
+                      end, 
+                      if is_authorized(sales_order, 'resync')
+                        row_action_button_without_fa(resync_urgent_overseers_inquiry_sales_order_path(sales_order.inquiry, sales_order), 'bmro-icon-table bmro-icon-refresh', 'Resync Urgent', 'danger', :_self, :post)
                       end
                   ].join(' '),
                   sales_order.id,
