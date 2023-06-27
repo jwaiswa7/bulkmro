@@ -4,9 +4,9 @@ Rails.application.routes.draw do
   get '/faq', to: 'static_pages#faq'
   mount Maily::Engine, at: '/maily' if Rails.env.development?
   mount ActionCable.server, at: '/cable'
-  authenticate :overseer, lambda { |u| u.admin? } do
-    mount Sidekiq::Web => '/sidekiq'
-  end
+  source "https://gems.contribsys.com/" do
+    gem 'sidekiq-pro'
+   end
   root to: 'overseers/inquiries#index'
   get '/overseers', to: redirect('/overseers/dashboard'), as: 'overseer_root'
   get '/customers', to: redirect('/customers/dashboard'), as: 'customer_root'
