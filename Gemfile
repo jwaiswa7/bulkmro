@@ -152,7 +152,9 @@ gem 'hightop'
 gem 'groupdate'
 
 # Background tasks
-gem 'sidekiq'
+source "https://gems.contribsys.com/" do
+  gem 'sidekiq-pro'
+end
 
 # NET SCP for sending files to SAP
 gem 'net-scp'
