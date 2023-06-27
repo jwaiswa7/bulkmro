@@ -198,6 +198,12 @@ class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseCo
     redirect_to so_sync_pending_overseers_sales_orders_path
   end
 
+  def resync_urgent 
+    authorize_acl @sales_order
+    @sales_order.save_and_sync(true)
+    redirect_to so_sync_pending_overseers_sales_orders_path
+  end
+
   def fetch_order_data
     authorize_acl @sales_order
     Services::Overseers::SalesOrders::FetchOrderData.new(@sales_order).call

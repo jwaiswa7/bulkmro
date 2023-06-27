@@ -722,6 +722,7 @@ Rails.application.routes.draw do
             post 'create_account_confirmation'
             post 'create_account_rejection'
             post 'resync'
+            post 'resync_urgent'
             get 'fetch_order_data'
             get 'relationship_map'
             get 'get_relationship_map_json'
