@@ -1,4 +1,5 @@
 # config/initializers/redis_config.rb
+require "action_cable/subscription_adapter/redis"
 
 def redis_url
   ENV["REDIS_URL"]
