@@ -200,8 +200,12 @@ class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseCo
 
   def resync_urgent 
     authorize_acl @sales_order
-    @sales_order.save_and_sync(true)
-    redirect_to so_sync_pending_overseers_sales_orders_path
+    if @sales_order.save_and_sync(true)
+      message = "Sales Order #{params[:id]} has been resynced successfully."
+    else
+      message "Sales Order #{params[:id]} has not been resynced successfully."
+    end
+    redirect_to so_sync_pending_overseers_sales_orders_path, notice: message
   end
 
   def fetch_order_data
