@@ -68,9 +68,9 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
   def resync_urgent_po
     authorize_acl @purchase_order
     if @purchase_order.save_and_sync(@purchase_order.po_request)
-      message = "Purchase Order #{@purchase_order} has been successfully synced."
+      message = "Purchase Order #{@purchase_order.po_number} has been successfully synced."
     else  
-      message = "Purchase Order #{@purchase_order} has not been synced."
+      message = "Purchase Order #{@purchase_order.po_number} has not been synced."
     end
     redirect_to pending_sap_sync_overseers_purchase_orders_path, notice: message
   end
