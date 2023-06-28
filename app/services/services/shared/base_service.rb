@@ -10,6 +10,13 @@ class Services::Shared::BaseService
   end
 
   def perform_later(*args)
+     
+    if defined? now 
+      now = now
+    else
+      now = false
+    end
+  
     if !now && Rails.env.production? || Rails.env.staging?
       ApplicationJob.perform_later(self.class.name, *args)
     else
