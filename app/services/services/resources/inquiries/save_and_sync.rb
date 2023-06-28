@@ -5,8 +5,12 @@ class Services::Resources::Inquiries::SaveAndSync < Services::Shared::BaseServic
   end
 
   def call
-    if inquiry.save
-      perform_later(inquiry, now)
+    if sales_order.save
+      if now 
+        perfom_now(inquiry)
+      else 
+        perform_later(inquiry)
+      end
     end
   end
 
