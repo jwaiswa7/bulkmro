@@ -658,6 +658,7 @@ Rails.application.routes.draw do
         get 'pipeline_report'
         get 'suggestion'
         get 'export_pipeline_report'
+        resources :pending_syncs
       end
 
       scope module: 'inquiries' do

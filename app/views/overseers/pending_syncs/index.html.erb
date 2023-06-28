@@ -1,0 +1,22 @@
+<%= provide :container_fluid, true %>
+<% provide :can_be_ajaxed, true %>
+<% provide :wrap_whitespace, true %>
+<% if is_authorized(:purchase_order, 'resync_all_purchase_orders') %>
+  <% provide :heading_buttons do %>
+    <a href="<%= '#' %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down ml-1 mt-2"><i class="fal fa-retweet mr-1"></i>Resync
+      All Inquiries</a>
+  <% end %>
+<% end %>
+
+<% content_for :header_row do %>
+  <th class="no-sort all" width="98px">Quick Actions</th>
+  <th class="no-sort desktop text-right">Status</th>
+  <th class="no-sort desktop text-right">Account</th>
+  <th class="no-sort desktop text-right">Company</th>
+  <th class="no-sort desktop text-right">Created at</th>
+<% end %>
+
+<div class="col-lg-12">
+  <%= render layout: 'shared/layouts/datatable' do %>
+  <% end %>
+</div>
