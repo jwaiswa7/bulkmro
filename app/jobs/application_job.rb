@@ -8,6 +8,8 @@ class ApplicationJob < ActiveJob::Base
   # If record is no longer available, it is safe to ignore
   discard_on ActiveJob::DeserializationError
 
+  discard_on ActiveRecord::RecordNotFound
+
   around_perform do |job, block|
     Chewy.strategy(:atomic) do
       block.call
