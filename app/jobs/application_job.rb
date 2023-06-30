@@ -5,6 +5,9 @@ require "timeout"
 class ApplicationJob < ActiveJob::Base
   queue_as :priority_queue
 
+  # If record is no longer available, it is safe to ignore
+  discard_on ActiveJob::DeserializationError
+
   around_perform do |job, block|
     Chewy.strategy(:atomic) do
       block.call
