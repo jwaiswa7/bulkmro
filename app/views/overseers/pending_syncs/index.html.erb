@@ -3,13 +3,14 @@
 <% provide :wrap_whitespace, true %>
 <% if is_authorized(:purchase_order, 'resync_all_purchase_orders') %>
   <% provide :heading_buttons do %>
-    <a href="<%= '#' %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down ml-1 mt-2"><i class="fal fa-retweet mr-1"></i>Resync
+    <a href="<%= resync_all_overseers_pending_syncs_path %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down ml-1 mt-2"><i class="fal fa-retweet mr-1"></i>Resync
       All Inquiries</a>
   <% end %>
 <% end %>
 
 <% content_for :header_row do %>
   <th class="no-sort all" width="98px">Quick Actions</th>
+  <th class="no-sort desktop text-right">Inquiry number</th>
   <th class="no-sort desktop text-right">Status</th>
   <th class="no-sort desktop text-right">Account</th>
   <th class="no-sort desktop text-right">Company</th>

@@ -658,7 +658,13 @@ Rails.application.routes.draw do
         get 'pipeline_report'
         get 'suggestion'
         get 'export_pipeline_report'
-        resources :pending_syncs
+        resources :pending_syncs, only: :index do 
+          get 'resync'
+          collection do
+            get 'resync_all'
+          end 
+          get 'resync_urgent'
+        end
       end
 
       scope module: 'inquiries' do
