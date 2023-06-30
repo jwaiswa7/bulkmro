@@ -3,6 +3,11 @@
 class BulkProductUploadJob < ActiveJob::Base
 	queue_as :default
 
+      # If record is no longer available, it is safe to ignore
+      discard_on ActiveJob::DeserializationError
+
+      discard_on ActiveRecord::RecordNotFound
+
 	def perform(file_path, overseer)
       doc = SimpleXlsxReader.open(file_path)
       rows = doc.sheets.first.rows

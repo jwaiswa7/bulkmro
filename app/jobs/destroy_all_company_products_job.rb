@@ -6,6 +6,11 @@ class DestroyAllCompanyProductsJob < ActiveJob::Base
   # include Sidekiq::Worker
   queue_as :default
 
+  # If record is no longer available, it is safe to ignore
+  discard_on ActiveJob::DeserializationError
+
+  discard_on ActiveRecord::RecordNotFound
+
   def perform(company_id)
     company = Company.find(company_id)
     company.customer_products.each do |customer_product|

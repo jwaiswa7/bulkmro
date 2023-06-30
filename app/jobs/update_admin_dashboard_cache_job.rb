@@ -5,6 +5,11 @@ class UpdateAdminDashboardCacheJob < ActiveJob::Base
   queue_as :default
   # sidekiq_options retry: 1, queue: 'high_priority'
 
+  # If record is no longer available, it is safe to ignore
+  discard_on ActiveJob::DeserializationError
+
+  discard_on ActiveRecord::RecordNotFound
+
   def perform
     # GC.start
     service = Services::Overseers::Dashboards::Admin.new
