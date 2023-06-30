@@ -1,6 +1,9 @@
 class Overseers::PendingSyncsController < Overseers::BaseController
    
+    before_action :validate_super_admin
     before_action :set_inquiry, only: [:resync, :resync_urgent]
+
+
 
     def index 
        
@@ -27,6 +30,11 @@ class Overseers::PendingSyncsController < Overseers::BaseController
       service = Services::Resources::Inquiries::SaveAndSync.new(@inquiry, true)
       service.call
       redirect_to overseers_pending_syncs_path, notice: "Resync urget inquiry #{@inquiry.inquiry_number}}"
+    end
+    private 
+
+    def validate_super_admin
+      redirect_to root_path, notice: 'You are not authorized' unless current_overseer.is_super_admin?
     end
 
     def set_inquiry 
