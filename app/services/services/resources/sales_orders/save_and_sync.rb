@@ -6,7 +6,12 @@ class Services::Resources::SalesOrders::SaveAndSync < Services::Shared::BaseServ
 
   def call
     if sales_order.save
-      perform_later(sales_order, now)
+      if now 
+        perfom_now(sales_order)
+      else 
+        perform_later(sales_order)
+      end
+      
     end
   end
 

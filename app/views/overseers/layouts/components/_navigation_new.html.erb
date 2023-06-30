@@ -151,6 +151,7 @@
             <div>
             <%= nav_dropdown_sub_item 'Inquiries List', overseers_inquiries_path, is_authorized(:inquiry, 'index') %>
             <%= nav_dropdown_sub_item 'Inquiries Regret Requests', regret_inquiry_request_queue_overseers_inquiries_path, is_authorized(:inquiry, 'regret_inquiry_request_queue') %>
+            <%= nav_dropdown_sub_item 'Inquiries Not synced', overseers_pending_syncs_path, true %>
             </div>
           </div>
           <div class="bmro-small-container">
