@@ -200,7 +200,8 @@ class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseCo
 
   def resync_urgent 
     authorize_acl @sales_order
-    if @sales_order.save_and_sync(true)
+    service = Services::Resources::SalesOrders::SaveAndSync.new(@sales_order, true)
+    if service.call 
       message = "Sales Order #{params[:id]} has been resynced successfully."
     else
       message "Sales Order #{params[:id]} has not been resynced successfully."
