@@ -32,7 +32,6 @@ class Resources::Order < Resources::ApplicationResource
     {
         HandWritten: 'tYES',
         DocNum: record.order_number,
-        AttachmentEntry: record.inquiry.attachment_uid, # 6383, #$quote['attachment_entry'] ------------
         DocStatus: record.status == 'Cancelled' ? 'C' : 'O',
         Canceled: record.status == 'Cancelled' ? 'Y' : 'N',
         BPL_IDAssignedToInvoice: record.inquiry.ship_from.remote_branch_code, # record.inquiry.bill_from.remote_uid, #record.warehouser.remote_branch_code ----------

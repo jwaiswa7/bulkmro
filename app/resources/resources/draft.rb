@@ -21,7 +21,6 @@ class Resources::Draft < Resources::ApplicationResource
     company_shipping_contact = record.inquiry.company.company_contacts.joins(:contact).where('contacts.email = ?', record.inquiry.shipping_contact.email).first
 
     {
-        AttachmentEntry: record.inquiry.attachment_uid, # 6383, #$quote['attachment_entry'] ------------
         BPL_IDAssignedToInvoice: record.inquiry.bill_from.remote_branch_code, # record.inquiry.bill_from.remote_uid, #record.warehouser.remote_branch_code ----------
         CardCode: record.inquiry.company.remote_uid, # record.inquiry.contact.remote_uid, #customer_id ------
         CntctCode: record.inquiry.contact.full_name,
@@ -73,7 +72,6 @@ end
 
 =begin
     {
-        AttachmentEntry: record.inquiry.attachment_uid,
         BPL_IDAssignedToInvoice: 1,
         CardCode: "3",
         CntctCode: "Alok Jha",

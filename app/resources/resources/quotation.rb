@@ -136,7 +136,6 @@ class Resources::Quotation < Resources::ApplicationResource
         DocDate: record.created_date, # Quote Create Date
         DocDueDate: record.inquiry.valid_end_time.present? ? record.inquiry.valid_end_time.strftime('%Y-%m-%d') : nil, # Quotation Valid Till ?
         TaxDate: record.inquiry.customer_order_date.present? ? record.inquiry.customer_order_date.strftime('%Y-%m-%d') : nil, # record.created_date , #Tax Date??
-        AttachmentEntry: record.inquiry.attachment_uid,
         DocumentLines: items, # [Products]
         U_Ovr_Margin: record.calculated_total_margin_percentage,
         PaymentGroupCode: record.inquiry.payment_option.remote_uid,
