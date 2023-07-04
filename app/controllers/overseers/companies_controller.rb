@@ -36,6 +36,7 @@ class Overseers::CompaniesController < Overseers::BaseController
   def create
     @company = Company.new(company_params.merge(overseer: current_overseer))
     authorize_acl @company
+    bt_code = @company.is_supplier? ? "SC-#{@company.id}" : @company.id
     if company_params[:company_creation_request_id].present?
       if @company.save
         if @company.company_creation_request.present?
@@ -49,7 +50,7 @@ class Overseers::CompaniesController < Overseers::BaseController
           )
         end
         if @company.save_and_sync
-          @company.update_attributes(remote_uid: @company.id)
+          @company.update_attributes(remote_uid: bt_code)
           redirect_to overseers_company_path(@company), notice: flash_message(@company, action_name)
         end
       else
@@ -64,7 +65,7 @@ class Overseers::CompaniesController < Overseers::BaseController
       end
       @company.account = @account
       @company.save_and_sync
-      @company.update_attributes(remote_uid: @company.id)
+      @company.update_attributes(remote_uid: bt_code)
       redirect_to overseers_company_path(@company), notice: flash_message(@company, action_name)
     end
   end
