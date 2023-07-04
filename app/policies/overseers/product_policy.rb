@@ -6,8 +6,8 @@ class Overseers::ProductPolicy < Overseers::ApplicationPolicy
   end
 
   def edit? 
-    return false unless record.approval.present?
-    return false unless record.rejection.present?
+    return true if admin? || cataloging?
+    return false unless record.approval.present? || record.rejection.present?
     true 
   end
 
