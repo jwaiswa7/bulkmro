@@ -5,6 +5,12 @@ class Overseers::ProductPolicy < Overseers::ApplicationPolicy
     cataloging? || admin?
   end
 
+  def edit? 
+    return false unless record.approval.present?
+    return false unless record.rejection.present?
+    true 
+  end
+
   def comments?
     record.persisted?
   end
