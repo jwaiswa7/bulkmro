@@ -27,6 +27,7 @@ class PurchaseOrder < ApplicationRecord
   has_many :email_messages
   has_many :products, through: :rows
 
+  validates :po_number, uniqueness: true
   validates_with FileValidator, attachment: :document, file_size_in_megabytes: 2
   has_many_attached :attachments
 
