@@ -132,7 +132,7 @@
                   <td style="width: 2%;"></td>
                   <td class="address-wrapper" style="height: auto;width: 49%;">
                     <% if locals[:purchase_order].present? %>
-                      <%= locals[:purchase_order].shipping_address.name if locals[:purchase_order].shipping_address.name.present? %><br>
+                      <%= locals[:purchase_order].shipping_address&.name if locals[:purchase_order].shipping_address.present? %><br>
                       <%= locals[:purchase_order].shipping_address&.to_multiline_s %>
                       <br>
                       Tel: <%= locals[:purchase_order].supplier_contact || (locals[:supplier].default_company_contact.present? ? locals[:supplier].default_company_contact.contact&.phone : '') %>
