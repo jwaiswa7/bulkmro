@@ -201,7 +201,7 @@ sa7n//xAy34wAyzA5Df1he7HyawvNl0KB5P55f844FVRHLuVrjBx
   end
 
   def self.get_validated_response(raw_response)
-    raw_response.body.force_encoding('UTF-8')
+    #raw_response.body.force_encoding('UTF-8')
     if raw_response['odata.metadata'] || (200...300).include?(raw_response.code)
       OpenStruct.new(raw_response.parsed_response)
     elsif raw_response['error']
@@ -262,6 +262,8 @@ sa7n//xAy34wAyzA5Df1he7HyawvNl0KB5P55f844FVRHLuVrjBx
 
   def self.log_response(response, method = 'get', url = '', body = '')
     status = :success
+    p response
+    p response[:error_message]
     if response[:error_message].present? && (response[:error_message].downcase.include? 'invalid session')
       Rails.cache.delete('sap_cookie')
       status = :failed
