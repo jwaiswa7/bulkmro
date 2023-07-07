@@ -201,6 +201,7 @@ sa7n//xAy34wAyzA5Df1he7HyawvNl0KB5P55f844FVRHLuVrjBx
   end
 
   def self.get_validated_response(raw_response)
+    raw_response.body.force_encoding('UTF-8')
     if raw_response['odata.metadata'] || (200...300).include?(raw_response.code)
       OpenStruct.new(raw_response.parsed_response)
     elsif raw_response['error']
