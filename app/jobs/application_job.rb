@@ -10,6 +10,8 @@ class ApplicationJob < ActiveJob::Base
 
   discard_on ActiveRecord::RecordNotFound
 
+  discard_on ActiveRecord::RecordInvalid
+
   around_perform do |job, block|
     Chewy.strategy(:atomic) do
       block.call
