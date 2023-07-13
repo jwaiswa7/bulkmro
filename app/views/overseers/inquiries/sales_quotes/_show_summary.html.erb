@@ -84,6 +84,7 @@
         <div class="col-md-6 mt-2 mt-md-0">
           <strong class="d-block">Customer - Billing Address</strong>
           <span class="d-block"><%= @inquiry.contact.full_name %></span>
+          <span class="d-block"><%= @inquiry.company.name %></span>
           <span class="d-block"><%= @inquiry.billing_address %></span>
           <% if @inquiry.contact.phone.present? %>
               <span class="d-block"><strong><em>Contact</em></strong>: <%= @inquiry.contact.full_name %>
