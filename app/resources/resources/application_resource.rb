@@ -282,8 +282,10 @@ sa7n//xAy34wAyzA5Df1he7HyawvNl0KB5P55f844FVRHLuVrjBx
         @resync_remote_request.update_attributes(response: response, status: status, hits: 0)
         @resync_remote_request
 
-        resync_service = Services::Resources::Shared::ResyncFailedRequests.new(@resync_remote_request)
-        resync_service.call
+        if @resync_remote_request.present?
+          resync_service = Services::Resources::Shared::ResyncFailedRequests.new(@resync_remote_request)
+          resync_service.call
+        end
       end
     end
 
