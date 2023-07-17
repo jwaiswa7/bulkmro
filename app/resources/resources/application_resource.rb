@@ -12,7 +12,7 @@ class Resources::ApplicationResource
           body: {CompanyDB: Settings.sap.DATABASE, UserName: Settings.sap.USERNAME, Password: Settings.sap.PASSWORD}.to_json,
           verify: false,
           debug_output: $stdout,
-          timeout: 30
+          timeout: 60
       )
       response['SessionId']
      rescue => exception
