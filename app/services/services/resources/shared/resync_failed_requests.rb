@@ -30,42 +30,44 @@ class Services::Resources::Shared::ResyncFailedRequests < Services::Shared::Base
   end
 
   def call
-    if resync_request.hits <= 5
-      case resync_request.resource
-      when 'EmployeesInfo'
-        # resync_employee
-      when 'ProductTrees'
-        # resync_product_tree
-      when 'Items'
-        resync_products
-      when 'BusinessPartnerGroups'
-        # resync_bp_group
-      when 'Projects'
-        resync_project
-      when 'SalesOpportunities'
-        # resync_opportunity
-      when 'Quotations'
-        # resync_bp_group
-        if resync_request.error_message.present?
-          if resync_request.error_message.include?('Field cannot be updated (ODBC -1029)')
-            # reset_quote ?
-          elsif resync_request.error_message.include?('No matching records found (ODBC -2028)')
-            resync_project
-            resync_products
-            resync_business_partners
+    if resync_request&.hits.present?
+      if resync_request.hits <= 5
+        case resync_request.resource
+        when 'EmployeesInfo'
+          # resync_employee
+        when 'ProductTrees'
+          # resync_product_tree
+        when 'Items'
+          resync_products
+        when 'BusinessPartnerGroups'
+          # resync_bp_group
+        when 'Projects'
+          resync_project
+        when 'SalesOpportunities'
+          # resync_opportunity
+        when 'Quotations'
+          # resync_bp_group
+          if resync_request.error_message.present?
+            if resync_request.error_message.include?('Field cannot be updated (ODBC -1029)')
+              # reset_quote ?
+            elsif resync_request.error_message.include?('No matching records found (ODBC -2028)')
+              resync_project
+              resync_products
+              resync_business_partners
+            end
           end
-        end
-      when 'BusinessPartners'
-        # resync_bp_group
+        when 'BusinessPartners'
+          # resync_bp_group
 
-      when 'Drafts'
-        # resync_bp_group
-        # when 'ItemGroups'
-        # when 'SalesPersons'
-        # when 'Manufacturers'
-        # when 'Invoices'
-        # when 'Attachments2'
-        # when 'PaymentTermsTypes'
+        when 'Drafts'
+          # resync_bp_group
+          # when 'ItemGroups'
+          # when 'SalesPersons'
+          # when 'Manufacturers'
+          # when 'Invoices'
+          # when 'Attachments2'
+          # when 'PaymentTermsTypes'
+        end
       end
     end
   end
