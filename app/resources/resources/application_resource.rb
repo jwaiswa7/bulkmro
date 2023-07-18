@@ -262,8 +262,7 @@ sa7n//xAy34wAyzA5Df1he7HyawvNl0KB5P55f844FVRHLuVrjBx
 
   def self.log_response(response, method = 'get', url = '', body = '')
     status = :success
-    p response
-    p response[:error_message]
+    p "error-message-log = #{response[:error_message]}"
     if response[:error_message].present? && (response[:error_message].downcase.include? 'invalid session')
       Rails.cache.delete('sap_cookie')
       status = :failed

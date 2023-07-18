@@ -19,5 +19,7 @@ module Bulkmro
     config.time_zone = 'Mumbai'
     config.active_record.default_timezone = :local
     config.active_record.time_zone_aware_attributes = false
+
+    config.middleware.insert 0, Rack::UTF8Sanitizer
   end
 end

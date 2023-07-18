@@ -280,3 +280,5 @@ gem 'bcrypt_pbkdf'
 gem 'redis'
 
 gem 'resolv-replace'
+
+gem 'rack-utf8_sanitizer'
