@@ -3,6 +3,9 @@
 require "timeout"
 
 class ApplicationJob < ActiveJob::Base
+  
+  TIME_OUT_ERROR = "Timeout::Error: execution expired"
+
   queue_as :priority_queue
 
   # If record is no longer available, it is safe to ignore
@@ -27,7 +30,7 @@ class ApplicationJob < ActiveJob::Base
         service.call_later
       end
     rescue Timeout::Error
-      raise "Timeout reached for job: #{self.class.name}"
+      Rails.logger.error TIME_OUT_ERROR   
     end
   end
 end
