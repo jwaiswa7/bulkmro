@@ -1,6 +1,7 @@
 ---
 :verbose: false
 :concurrency: <%= ENV.fetch("RAILS_MAX_THREADS") { 10 } %>
+:max_retries: 5
 :queues:
   - default
   - [high_priority, 2] # high priority
