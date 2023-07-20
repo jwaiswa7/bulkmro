@@ -261,12 +261,12 @@ gem 'unparser'
 # gem 'rails_autoscale_agent'
 
 # CXML parser and builder
-gem 'cxml', '~> 0.1.7', git: "https://github.com/cef/cxml.git"
+gem 'cxml', '~> 0.2.3', git: "https://github.com/cef/cxml.git"
 
 # running tasks parallely
 gem 'parallel'
 
-# toogle buttons 
+# toogle buttons
 gem 'bootstrap-toggle-rails'
 
 gem 'fiscali'

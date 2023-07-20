@@ -20,6 +20,9 @@ module Bulkmro
     config.active_record.default_timezone = :local
     config.active_record.time_zone_aware_attributes = false
 
+    #Testing configuration for a specific domain
+    config.session_store :cookie_store, key: '_bulkmro_session', same_site: :none, secure: true
+
     config.middleware.insert 0, Rack::UTF8Sanitizer
   end
 end
