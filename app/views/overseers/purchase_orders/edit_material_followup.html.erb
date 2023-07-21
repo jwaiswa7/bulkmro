@@ -86,7 +86,7 @@
               <% @purchase_order.rows.each_with_index do |row, index| %>
                 <tr>
                   <td><%= index + 1 %></td>
-                  <td><%= row.to_s %></td>
+                  <td><%= row.product_to_s %></td>
                   <td><%= row.quantity %></td>
                   <td><%= row.get_pickup_quantity %></td>
                   <td><%= row.quantity - row.get_pickup_quantity || 'N/A' %></td>

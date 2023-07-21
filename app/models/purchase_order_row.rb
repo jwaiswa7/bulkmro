@@ -116,6 +116,10 @@ class PurchaseOrderRow < ApplicationRecord
     "#{sku ? "#{sku} -" : ''} #{metadata['PopProductName']}"
   end
 
+  def product_to_s
+    "#{product.sku ? "#{product.sku} -" : ''} #{po_request_description.present? ? po_request_description : metadata['PopProductName']}"
+  end
+
   def get_product_id
     self.get_product.present? ? self.get_product.id : self.product_id
   end
